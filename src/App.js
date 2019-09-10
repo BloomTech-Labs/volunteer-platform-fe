@@ -1,26 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import { ThemeProvider } from "styled-components";
+import { Route } from "react-router-dom";
+import { signedIn, signedOut } from "./actions/auth";
+import firebase from "./firebase/FirebaseConfig";
+import Login from "./views/Login";
+import "./App.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+function App(){
+  
+  /**
+   * todo: Get hook from Ethan for dispatch.
+   */
+  //const [ dispatch ] = useState();
+  
+  /**
+   * Set up google auth on change event handler.
+   */
+  useEffect( () => {
+    firebase.auth()
+      .onAuthStateChanged( ( user ) => {
+        if( user ){
+          //signedIn( dispatch );
+        }else{
+          //signedOut( dispatch );
+        }
+        
+      } );
+  }, [] );
+  
+  return ( <div className="App">
+    <ThemeProvider theme={ theme }>
+      <Route to={ "/" } component={ Login }/>
+    </ThemeProvider>
+  </div> );
 }
+
+const theme = {
+  primaryColor: "blue", secondaryColor: "green"
+};
 
 export default App;
