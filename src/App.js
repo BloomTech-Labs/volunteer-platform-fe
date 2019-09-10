@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { ThemeProvider } from "styled-components";
 import { Route } from "react-router-dom";
 import { signedIn, signedOut } from "./actions/auth";
 import firebase from "./firebase/FirebaseConfig";
@@ -29,14 +28,12 @@ function App(){
   }, [] );
   
   return ( <div className="App">
-    <ThemeProvider theme={ theme }>
+    
       <Route to={ "/" } component={ Login }/>
-    </ThemeProvider>
+    
   </div> );
 }
 
-const theme = {
-  primaryColor: "blue", secondaryColor: "green"
-};
+
 
 export default App;
