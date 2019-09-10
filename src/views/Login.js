@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import {
-  StyledButton, StyledForm, StyledInput, StyledCard
-} from "../components/Styled";
+  StyledButton, StyledForm, StyledInput
+} from "../styled";
 import { Form, Icon } from "antd";
 
 const StyledLogin = styled.div`

@@ -6,6 +6,7 @@
     "antd": "^3.23.2",
     "axios": "^0.19.0",
     "firebase": "^6.5.0",
+    "jsdoc": "^3.6.3",
     "nodemailer": "^6.3.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
@@ -17,7 +18,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "jsdoc": "jsdoc -c ./jsdoc.json"
   },
   "eslintConfig": {
     "extends": "react-app"
