@@ -12,6 +12,7 @@
 > Web app used to connect non profits and volunteers.
 
 ### 🏠 [Homepage](https://volunteerplatform.netlify.com)
+### :page_facing_up: [Documentation](https://jeremiahtenbrink.github.io/volunteer-platform/)
 
 ## Install
 
