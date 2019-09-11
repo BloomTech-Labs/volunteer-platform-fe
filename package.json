@@ -1,7 +1,13 @@
 {
   "name": "volunteer-platform",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
+  "description": "Web app used to connect non profits and volunteers.",
+  "repositor": {
+    "type": "git",
+    "url": "https://github.com/jeremiahtenbrink/volunteer-platform"
+  },
+  "homepage": "https://volunteerplatform.netlify.com",
   "dependencies": {
     "antd": "^3.23.2",
     "axios": "^0.19.0",
