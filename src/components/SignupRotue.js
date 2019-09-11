@@ -4,7 +4,7 @@ import { useStateValue } from "../hooks/useStateValue";
 
 const SignupRoute = ( { component: Component, ...rest } ) => {
   const [ state ] = useStateValue();
-  debugger;
+  
   return ( <Route
     { ...rest }
     render={ props => {

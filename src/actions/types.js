@@ -1,3 +1,17 @@
+/** @module Types */
+
+/**
+ * @typedef ActionType
+ * @type {string}
+ * @description String value indicating action type for reducers.
+ */
+
+/**
+ * @typedef Dispatch
+ * @type {function}
+ * @description Dispatch function from useStateValue() hook.
+ */
+
 /**
  * @typedef User
  * @type {object}
@@ -10,3 +24,4 @@
  * @property {string} zipCode - users zip code
  * @property {string} uid - users google auth unique id
  */
+

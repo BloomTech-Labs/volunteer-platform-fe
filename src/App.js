@@ -23,7 +23,7 @@ function App(){
   useEffect( () => {
     firebase.auth()
       .onAuthStateChanged( ( user ) => {
-        debugger;
+        
         if( user ){
           signedIn( user, dispatch );
         }else{

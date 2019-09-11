@@ -16,14 +16,13 @@ const Signup = () => {
   
   const [ state, dispatch ] = useStateValue();
   /**
-   *
    * @type {User}
    */
   let user = {};
   const [ localState, setState ] = useState( user );
   
   useEffect( () => {
-    debugger;
+    
     if( state.auth.googleAuthUser ){
       user.uid = state.auth.googleAuthUser.uid;
       if( state.auth.googleAuthUser.displayName ){
