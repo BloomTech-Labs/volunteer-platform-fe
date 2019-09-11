@@ -1,6 +1,13 @@
 /** @module Types */
 
 /**
+ * @typedef Action
+ * @type {object}
+ * @property {ActionType} type - type of action for reducer
+ * @property {*} [payload] - action payload for reducer
+ */
+
+/**
  * @typedef ActionType
  * @type {string}
  * @description String value indicating action type for reducers.

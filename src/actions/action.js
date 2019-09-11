@@ -1,9 +1,10 @@
 /**
  * Create Action
  *
- * @param {string} type
+ * @function
+ * @param {ActionType} type
  * @param {*} [payload]
- * @returns {*}
+ * @returns {Action} action - action for reducer
  */
 export const action = ( type, payload ) => {
   if( payload ){
