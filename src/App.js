@@ -1,10 +1,16 @@
 import React, { useEffect } from "react";
-import { Route } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router";
 import { signedIn, signedOut } from "./actions/auth";
 import { useStateValue } from "./hooks/useStateValue";
 import firebase from "./firebase/FirebaseConfig";
-import Login from "./views/Login";
+import MainDashboard from "./views/MainDashboard";
 import "./App.css";
+import Login from "./views/Login";
+import CreateOrg from "./views/CreateOrg";
+import OrganizationDashboard from "./views/OrganizationDashboard";
+import Signup from "./views/Signup";
+import ProtectedRoute from "./components/ProtectedRoute";
+import LoginRoute from "./components/LoginRoute";
 
 function App(){
   
@@ -26,8 +32,14 @@ function App(){
   }, [] );
   
   return ( <div className="App">
-    
-    <Route to={ "/" } component={ Login }/>
+    <Switch>
+      <ProtectedRoute path={ "/" } component={ MainDashboard } exact/>
+      <LoginRoute path={ "/login" } component={ Login }/>
+      <ProtectedRoute path={ "/create-org" } component={ CreateOrg }/>
+      <ProtectedRoute path={ "/org-dashboard" }
+                      component={ OrganizationDashboard }/>
+      <Route path={ "/signup" } component={ Signup }/>
+    </Switch>
   
   </div> );
 }

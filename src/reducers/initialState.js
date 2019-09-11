@@ -1,1 +1,5 @@
-export const initialState = {}
+export const initialState = {
+  auth: {
+    loggedIn: false, signedUp: true, user: null
+  }
+};

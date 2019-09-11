@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import {
   StyledButton, StyledForm, StyledInput
 } from "../styled";
 import { Form, Icon } from "antd";
+import {
+  signIn, GOOGLE_PROVIDER, FACEBOOK_PROVIDER, TWITTER_PROVIDER, EMAIL_PROVIDER
+} from "../actions";
+import { useStateValue } from "../hooks/useStateValue";
 
 const StyledLogin = styled.div`
 display: flex;
@@ -21,25 +25,42 @@ display: flex;
 
 const Login = () => {
   
+  const [ state, dispatch ] = useStateValue();
+  const [ email, setEmail ] = useState( "" );
+  const [ password, setPassword ] = useState( "" );
+  
   return ( <StyledLogin>
     <h1>Login with</h1>
     <Inline>
       <StyledButton type={ "primary" }
-                    style={ { margin: " 0 2rem 1rem 0" } }> Google </StyledButton>
+                    style={ { margin: " 0 2rem 1rem 0" } }
+                    onClick={ () => signIn( GOOGLE_PROVIDER,
+                      dispatch
+                    ) }> Google </StyledButton>
       <StyledButton type={ "primary" }
-                    style={ { margin: " 0 2rem 1rem 0" } }>Facebook</StyledButton>
-      <StyledButton type={ "primary" }>Twitter</StyledButton>
+                    style={ { margin: " 0 2rem 1rem 0" } }
+                    onClick={ () => signIn( FACEBOOK_PROVIDER,
+                      dispatch
+                    ) }>Facebook</StyledButton>
+      <StyledButton type={ "primary" } onClick={ () => signIn( TWITTER_PROVIDER,
+        dispatch
+      ) }>Twitter</StyledButton>
     </Inline>
-    <StyledForm>
+    <StyledForm
+      onSubmit={ () => signIn( EMAIL_PROVIDER, dispatch, email, password ) }>
       <Form.Item>
         <StyledInput
+          value={ email }
+          onChange={ e => setEmail(e.target.value) }
           prefix={ <Icon type="user"
                          style={ { color: "rgba(0,0,0,.25)" } }/> }
-          placeholder="Username"
+          placeholder="Email"
         />
       </Form.Item>
       <Form.Item>
         <StyledInput
+          value={ password }
+          onChange={ e => setPassword(e.target.value) }
           prefix={ <Icon type="lock"
                          style={ { color: "rgba(0,0,0,.25)" } }/> }
           type="password"

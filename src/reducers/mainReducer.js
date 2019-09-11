@@ -1,5 +1,7 @@
-export const mainReducer = (state, action) => ({
-    //newSomeState: someStateReducer(oldSomeState, action)
-});
+import {authReducer} from "./authReducer";
+
+export const mainReducer = ( {auth}, action ) => ( {
+  auth: authReducer(auth, action),
+} );
 
 
