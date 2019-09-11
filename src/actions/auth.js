@@ -4,7 +4,7 @@ import firebase, { store } from "../firebase/FirebaseConfig";
 export const SIGNED_IN = "SIGNED_IN";
 
 /**
- * Sign a user in.
+ * Sign a googleAuthUser in.
  *
  * @param {Object} user
  * @param {Function} dispatch
@@ -16,7 +16,7 @@ export const signedIn = ( user, dispatch ) => {
 export const SIGNED_OUT = "SIGNED_OUT";
 
 /**
- * Sign a user out.
+ * Sign a googleAuthUser out.
  *
  * @param {Function} dispatch
  */
@@ -42,7 +42,7 @@ export const SIGNIN_FAILED = "SIGNIN_FAILED";
 export const GET_USER_ACCOUNT_SUCCESSFUL = "GET_USER_ACCOUNT_SUCCESSFUL";
 
 /**
- * Log a user in.
+ * Log a googleAuthUser in.
  *
  * @param {string} authType
  * @param {function} dispatch
@@ -57,15 +57,17 @@ export const signIn = ( authType, dispatch, email, password ) => {
       .signInWithEmailAndPassword( email, password )
       .then( result => {
         debugger;
-        signedIn( result.user, dispatch );
-        store.collection( "users" ).doc( result.user.uid ).then( user => {
-          debugger;
-          if( user ){
-          
-          }else{
-            dispatch( action( SIGNIN_NEW_USER ) );
-          }
-        } );
+        signedIn( result.googleAuthUser, dispatch );
+        store.collection( "users" )
+          .doc( result.googleAuthUser.uid )
+          .then( user => {
+            debugger;
+            if( user ){
+            
+            }else{
+              dispatch( action( SIGNIN_NEW_USER ) );
+            }
+          } );
       } )
       .catch( error => {
         debugger;
@@ -79,21 +81,25 @@ export const signIn = ( authType, dispatch, email, password ) => {
     .signInWithPopup( provider )
     .then( function( result ){
       debugger;
-      if( result.user ){
-        signedIn( result.user, dispatch );
-        store.collection( "users" ).doc( result.user.uid ).get().then( res => {
-          debugger;
-          if( res.exists ){
-            const data = res.data();
-            dispatch(action(GET_USER_ACCOUNT_SUCCESSFUL, data));
-          }else{
-            dispatch( action( SIGNIN_NEW_USER ) );
-          }
-        } ).catch( err => {
-          console.log( err );
-        } );
+      if( result.googleAuthUser ){
+        signedIn( result.googleAuthUser, dispatch );
+        store.collection( "users" )
+          .doc( result.googleAuthUser.uid )
+          .get()
+          .then( res => {
+            debugger;
+            if( res.exists ){
+              const data = res.data();
+              dispatch( action( GET_USER_ACCOUNT_SUCCESSFUL, data ) );
+            }else{
+              dispatch( action( SIGNIN_NEW_USER ) );
+            }
+          } )
+          .catch( err => {
+            console.log( err );
+          } );
       }else{
-        dispatch( action( SIGNIN_SUCCESS, result.user ) );
+        dispatch( action( SIGNIN_SUCCESS, result.googleAuthUser ) );
       }
     } )
     .catch( function( error ){
@@ -101,4 +107,24 @@ export const signIn = ( authType, dispatch, email, password ) => {
       dispatch( action( SIGNIN_FAILED, error.message ) );
     } );
   
+};
+
+export const REGISTER_INIT = "REGISTER_INIT";
+export const REGISTER_SUECESSFUL = "REGISTER_SUECESSFUL";
+export const REGISTER_FAILED = "REGISTER_FAILED";
+
+/**
+ * Register a new User
+ * @param {User} user
+ * @param {function} dispatch
+ */
+export const register = ( user, dispatch ) => {
+  debugger;
+  dispatch( action( REGISTER_INIT ) );
+  store.collection( "users" ).doc( user.uid ).set( user ).then( res => {
+    dispatch( action( REGISTER_SUECESSFUL, user ) );
+  } ).catch( err => {
+    console.log( err );
+    dispatch( action( REGISTER_FAILED ) );
+  } );
 };

@@ -5,12 +5,13 @@ import Signup from "../views/Signup";
 
 const ProtectedRoute = ( { component: Component, ...rest } ) => {
   const [ state ] = useStateValue();
-  
+  debugger;
   return ( <Route
     { ...rest }
     render={ props => {
-      return !state.auth.signedUp ? <Component { ...props }/> :
-        <Redirect to={ "/signup" }/>;
+      return !state.auth.loggedIn ||
+      ( state.auth.loggedIn && state.auth.signedUp ) ?
+        <Component { ...props }/> : <Redirect to={ "/signup" }/>;
     } }
   /> );
 };

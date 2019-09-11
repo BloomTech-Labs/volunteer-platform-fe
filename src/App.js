@@ -11,6 +11,7 @@ import OrganizationDashboard from "./views/OrganizationDashboard";
 import Signup from "./views/Signup";
 import ProtectedRoute from "./components/ProtectedRoute";
 import LoginRoute from "./components/LoginRoute";
+import SignupRoute from "./components/SignupRotue";
 
 function App(){
   
@@ -22,6 +23,7 @@ function App(){
   useEffect( () => {
     firebase.auth()
       .onAuthStateChanged( ( user ) => {
+        debugger;
         if( user ){
           signedIn( user, dispatch );
         }else{
@@ -38,7 +40,7 @@ function App(){
       <ProtectedRoute path={ "/create-org" } component={ CreateOrg }/>
       <ProtectedRoute path={ "/org-dashboard" }
                       component={ OrganizationDashboard }/>
-      <Route path={ "/signup" } component={ Signup }/>
+      <SignupRoute path={ "/signup" } component={ Signup }/>
     </Switch>
   
   </div> );
