@@ -96,6 +96,14 @@ export const signIn = ( authType, dispatch, email, password ) => {
   
 };
 
+export const signOut = ( dispatch ) => {
+  firebase.auth().signOut().then( () => {
+    signedOut( dispatch );
+  } ).catch( err => {
+    console.log( err );
+  } );
+};
+
 /**
  * Checks a user is registered.
  *

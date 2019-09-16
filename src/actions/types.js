@@ -30,5 +30,12 @@
  * @property {string} state - users state
  * @property {string} zipCode - users zip code
  * @property {string} uid - users google auth unique id
+ * @property {number} age - users age
  */
+
+/**
+ * @typedef Organization
+ * @type {{organizationType: string, aboutUs: string, website: string, organizationName: string, organizationOwnerUID: string, city: string, phone: string, missionStatement: string, state: string, socialMedia: Array, email: string}}
+ */
+
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: actions/action.js</title>
+    <title>JSDoc: Source: actions/organization.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: actions/action.js</h1>
+    <h1 class="page-title">Source: actions/organization.js</h1>
 
     
 
@@ -26,19 +26,20 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * Create Action
- *
- * @function
- * @param {ActionType} type
- * @param {*} [payload]
- * @returns {Action} action - action for reducer
+            <pre class="prettyprint source linenums"><code>import { action } from "./action";
+import firebase, { store } from "../firebase/FirebaseConfig";
+
+/**
+ * Register a new non profit organization.
+ * @param {Organization} org - non profit to be registered
+ * @param {Dispatch} dispatch
  */
-export const action = ( type, payload ) => {
-  if( payload ){
-    return { type, payload };
-  }
-  return { type };
+export const registerOrganization = (org, dispatch) => {
+	store.collection("organizations").add(org).then(res => {
+	
+	}).catch(err => {
+		console.log(err);
+	})
 };</code></pre>
         </article>
     </section>

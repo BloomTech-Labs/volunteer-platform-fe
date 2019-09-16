@@ -48,19 +48,19 @@ const Login = () => {
     </Inline>
     <StyledForm
       onSubmit={ () => signIn( EMAIL_PROVIDER, dispatch, email, password ) }>
+      <StyledInput
+        values={ { email } }
+        name={ "Email" }
+        onChange={ setEmail }
+        prefix={ <Icon type="user"
+                       style={ { color: "rgba(0,0,0,.25)" } }/> }
+        placeholder="Email"
+      />
       <Form.Item>
         <StyledInput
-          value={ email }
-          onChange={ e => setEmail(e.target.value) }
-          prefix={ <Icon type="user"
-                         style={ { color: "rgba(0,0,0,.25)" } }/> }
-          placeholder="Email"
-        />
-      </Form.Item>
-      <Form.Item>
-        <StyledInput
-          value={ password }
-          onChange={ e => setPassword(e.target.value) }
+          values={ { password } }
+          name={ "Password" }
+          onChange={ setPassword }
           prefix={ <Icon type="lock"
                          style={ { color: "rgba(0,0,0,.25)" } }/> }
           type="password"

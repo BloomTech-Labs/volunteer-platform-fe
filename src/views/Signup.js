@@ -18,11 +18,21 @@ const Signup = () => {
   /**
    * @type {User}
    */
-  let user = {};
+  let user = {
+    firstName: "",
+    lastName: "",
+    city: "",
+    state: "",
+    zipCode: "",
+    phoneNumber: "",
+    email: "",
+    uid: "",
+    age: 18
+  };
   const [ localState, setState ] = useState( user );
   
   useEffect( () => {
-    
+    debugger;
     if( state.auth.googleAuthUser ){
       user.uid = state.auth.googleAuthUser.uid;
       if( state.auth.googleAuthUser.displayName ){
@@ -42,20 +52,12 @@ const Signup = () => {
       if( state.auth.googleAuthUser.photoURL ){
         user.photoURL = state.auth.googleAuthUser.photoURL;
       }
-      setState( user );
+      setState( { ...user } );
     }
   }, [ state ] );
   
   const changeValue = e => {
     setState( { ...localState, [ e.target.name ]: e.target.value } );
-  };
-  
-  const formItemLayout = {
-    labelCol: {
-      xs: { span: 24 }, sm: { span: 8 },
-    }, wrapperCol: {
-      xs: { span: 24 }, sm: { span: 16 },
-    },
   };
   
   const handleSubmit = e => {
@@ -67,36 +69,25 @@ const Signup = () => {
     { localState.photoURL &&
     <Avatar src={ localState.photoURL } shape="square" size={ 64 }
             icon="user"/> }
-    <StyledForm { ...formItemLayout } onSubmit={ handleSubmit }>
-      <Form.Item label="First Name">
-        <StyledInput name={ "firstName" } value={ localState[ "firstName" ] }
-                     onChange={ changeValue }/>
-      </Form.Item>
-      <Form.Item label="Last Name">
-        <StyledInput name={ "lastName" } value={ localState[ "lastName" ] }
-                     onChange={ changeValue }/>
-      </Form.Item>
-      <Form.Item label="Phone Number">
-        <StyledInput name={ "phoneNumber" }
-                     value={ localState[ "phoneNumber" ] }
-                     onChange={ changeValue }/>
-      </Form.Item>
-      <Form.Item label="E-mail">
-        <StyledInput name={ "email" } value={ localState[ "email" ] }
-                     onChange={ changeValue }/>
-      </Form.Item>
-      <Form.Item label="City">
-        <StyledInput name={ "city" } value={ localState[ "city" ] }
-                     onChange={ changeValue }/>
-      </Form.Item>
-      <Form.Item label="State">
-        <StyledInput name={ "state" } value={ localState[ "state" ] }
-                     onChange={ changeValue }/>
-      </Form.Item>
-      <Form.Item label="Zip Code">
-        <StyledInput name={ "zipCode" } value={ localState[ "zipCode" ] }
-                     onChange={ changeValue }/>
-      </Form.Item>
+    <StyledForm onSubmit={ handleSubmit }>
+      <StyledInput name={ "First Name" } values={ localState }
+                   onChange={ changeValue }/>
+      <StyledInput name={ "Last Name" } values={ localState }
+                   onChange={ changeValue }/>
+      <StyledInput name={ "Phone Number" }
+                   values={ localState }
+                   onChange={ changeValue }/>
+      <StyledInput name={ "Age" }
+                   values={ localState }
+                   onChange={ changeValue }/>
+      <StyledInput name={ "Email" } values={ localState }
+                   onChange={ changeValue }/>
+      <StyledInput name={ "City" } values={ localState }
+                   onChange={ changeValue }/>
+      <StyledInput name={ "State" } values={ localState }
+                   onChange={ changeValue }/>
+      <StyledInput name={ "Zip Code" } values={ localState }
+                   onChange={ changeValue }/>
       
       <StyledButton type="primary" htmlType="submit">
         Register
