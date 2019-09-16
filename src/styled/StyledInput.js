@@ -35,11 +35,12 @@ export const StyledInput = ( props ) => {
 	return ( <Form.Item { ...formItemLayout } label={ props.name }>
 		<InputStyled name={ camelCase } value={ props.values[ camelCase ] }
 								 onChange={ props.onChange }/>
-		{ props.child && props.children }
+		{ props.children && props.children }
 	</Form.Item> );
 };
 
 StyledInput.propTypes = {
-	name: PropTypes.string.required,
+	name: PropTypes.string.isRequired,
 	values: PropTypes.objectOf(PropTypes.any),
+	onChange: PropTypes.function.isRequired,
 };
