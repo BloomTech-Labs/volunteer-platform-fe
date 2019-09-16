@@ -18,7 +18,7 @@ const formItemLayout = {
 };
 
 export const StyledInput = ( props ) => {
-  debugger;
+  
   let camelCase = '';
   if( props.name ){
     camelCase = props.name.split( ' ' );
@@ -43,5 +43,5 @@ export const StyledInput = ( props ) => {
 StyledInput.propTypes = {
   name: PropTypes.string.isRequired,
   values: PropTypes.objectOf( PropTypes.any ),
-  onChange: PropTypes.function.isRequired,
+  onChange: PropTypes.func.isRequired,
 };

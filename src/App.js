@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Route, Switch, Redirect } from "react-router";
+import { Switch } from "react-router";
 import { signedIn, signedOut } from "./actions/auth";
 import { useStateValue } from "./hooks/useStateValue";
 import firebase from "./firebase/FirebaseConfig";

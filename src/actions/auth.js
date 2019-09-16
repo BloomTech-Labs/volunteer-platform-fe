@@ -1,5 +1,5 @@
-import { action } from "./action";
-import firebase, { store } from "../firebase/FirebaseConfig";
+import { action } from './action';
+import firebase, { store } from '../firebase/FirebaseConfig';
 
 /**
  * Auth Actions
@@ -7,7 +7,7 @@ import firebase, { store } from "../firebase/FirebaseConfig";
  *
  */
 
-export const SIGNED_IN = "SIGNED_IN";
+export const SIGNED_IN = 'SIGNED_IN';
 
 /**
  * Marks a user signed in in state.
@@ -18,9 +18,10 @@ export const SIGNED_IN = "SIGNED_IN";
  */
 export const signedIn = ( user, dispatch ) => {
   dispatch( action( SIGNED_IN, user ) );
+  checkUserRegistered( user.uid, dispatch );
 };
 
-export const SIGNED_OUT = "SIGNED_OUT";
+export const SIGNED_OUT = 'SIGNED_OUT';
 
 /**
  * Sign a googleAuthUser out.
@@ -30,12 +31,13 @@ export const SIGNED_OUT = "SIGNED_OUT";
  */
 export const signedOut = ( dispatch ) => {
   dispatch( action( SIGNED_OUT ) );
+  
 };
 
-export const GOOGLE_PROVIDER = "GOOGLE_PROVIDER";
-export const FACEBOOK_PROVIDER = "FACEBOOK_PROVIDER";
-export const TWITTER_PROVIDER = "TWITTER_PROVIDER";
-export const EMAIL_PROVIDER = "EMAIL_PROVIDER";
+export const GOOGLE_PROVIDER = 'GOOGLE_PROVIDER';
+export const FACEBOOK_PROVIDER = 'FACEBOOK_PROVIDER';
+export const TWITTER_PROVIDER = 'TWITTER_PROVIDER';
+export const EMAIL_PROVIDER = 'EMAIL_PROVIDER';
 const providers = {
   GOOGLE_PROVIDER: new firebase.auth.GoogleAuthProvider(),
   FACEBOOK_PROVIDER: new firebase.auth.FacebookAuthProvider(),
@@ -43,10 +45,10 @@ const providers = {
   EMAIL_PROVIDER: new firebase.auth.EmailAuthProvider(),
 };
 
-export const SIGNIN_INIT = "SIGNIN_INIT";
-export const SIGNIN_NEW_USER = "SIGNIN_NEW_USER";
-export const SIGNIN_FAILED = "SIGNIN_FAILED";
-export const GET_USER_ACCOUNT_SUCCESSFUL = "GET_USER_ACCOUNT_SUCCESSFUL";
+export const SIGNIN_INIT = 'SIGNIN_INIT';
+export const SIGNIN_NEW_USER = 'SIGNIN_NEW_USER';
+export const SIGNIN_FAILED = 'SIGNIN_FAILED';
+export const GET_USER_ACCOUNT_SUCCESSFUL = 'GET_USER_ACCOUNT_SUCCESSFUL';
 
 /**
  * Log a googleAuthUser in.
@@ -62,15 +64,32 @@ export const signIn = ( authType, dispatch, email, password ) => {
   dispatch( { type: SIGNIN_INIT } );
   if( authType === EMAIL_PROVIDER ){
     firebase.auth()
-      .signInWithEmailAndPassword( email, password )
+      .createUserWithEmailAndPassword( email, password )
       .then( result => {
-        signedIn( result.user, dispatch );
-        checkUserRegistered( result.user.uid, dispatch );
-        
+        debugger;
+        firebase.auth()
+          .signInWithEmailAndPassword( email, password )
+          .then( res => {
+            debugger;
+            signedIn( res.user, dispatch );
+            
+          } );
       } )
       .catch( error => {
-        console.log( error );
-        dispatch( action( SIGNIN_FAILED ) );
+        debugger;
+        console.log( error.code );
+        if( error.code.includes( 'email-already-in-use' ) ){
+          firebase.auth()
+            .signInWithEmailAndPassword( email, password )
+            .then( res => {
+              debugger;
+              signedIn( res.user, dispatch );
+            } ).catch( err => {
+            
+            debugger;
+            console.log( err );
+          } );
+        }
       } );
     return;
   }
@@ -83,7 +102,6 @@ export const signIn = ( authType, dispatch, email, password ) => {
       
       if( result.user ){
         signedIn( result.user, dispatch );
-        checkUserRegistered( result.user.uid, dispatch );
       }else{
         dispatch( action( SIGNIN_FAILED ) );
       }
@@ -112,7 +130,7 @@ export const signOut = ( dispatch ) => {
  * @param {Dispatch} dispatch - function from useStateValue() hook.
  */
 export const checkUserRegistered = ( uid, dispatch ) => {
-  store.collection( "users" )
+  store.collection( 'users' )
     .doc( uid )
     .get()
     .then( res => {
@@ -129,9 +147,9 @@ export const checkUserRegistered = ( uid, dispatch ) => {
     } );
 };
 
-export const REGISTER_INIT = "REGISTER_INIT";
-export const REGISTER_SUECESSFUL = "REGISTER_SUECESSFUL";
-export const REGISTER_FAILED = "REGISTER_FAILED";
+export const REGISTER_INIT = 'REGISTER_INIT';
+export const REGISTER_SUECESSFUL = 'REGISTER_SUECESSFUL';
+export const REGISTER_FAILED = 'REGISTER_FAILED';
 
 /**
  * Register a new User
@@ -143,7 +161,7 @@ export const REGISTER_FAILED = "REGISTER_FAILED";
 export const register = ( user, dispatch ) => {
   
   dispatch( action( REGISTER_INIT ) );
-  store.collection( "users" ).doc( user.uid ).set( user ).then( res => {
+  store.collection( 'users' ).doc( user.uid ).set( user ).then( res => {
     dispatch( action( REGISTER_SUECESSFUL, user ) );
   } ).catch( err => {
     console.log( err );
