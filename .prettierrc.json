@@ -5,7 +5,7 @@
   "singleQuote": true,
   "trailingComma": "es5",
   "arrowParens": "avoid",
-  "useTabs": true,
+  "useTabs": false,
   "printWidth": 80,
   "jsxBracketSameLine": false
 }
