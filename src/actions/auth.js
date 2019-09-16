@@ -1,5 +1,6 @@
 import { action } from './action';
 import firebase, { store } from '../firebase/FirebaseConfig';
+import { getUsersOrganizations } from './organization';
 
 /**
  * Auth Actions
@@ -19,6 +20,7 @@ export const SIGNED_IN = 'SIGNED_IN';
 export const signedIn = ( user, dispatch ) => {
   dispatch( action( SIGNED_IN, user ) );
   checkUserRegistered( user.uid, dispatch );
+  getUsersOrganizations( user.uid, dispatch );
 };
 
 export const SIGNED_OUT = 'SIGNED_OUT';
@@ -66,27 +68,26 @@ export const signIn = ( authType, dispatch, email, password ) => {
     firebase.auth()
       .createUserWithEmailAndPassword( email, password )
       .then( result => {
-        debugger;
+        
         firebase.auth()
           .signInWithEmailAndPassword( email, password )
           .then( res => {
-            debugger;
+            
             signedIn( res.user, dispatch );
             
           } );
       } )
       .catch( error => {
-        debugger;
+        
         console.log( error.code );
         if( error.code.includes( 'email-already-in-use' ) ){
           firebase.auth()
             .signInWithEmailAndPassword( email, password )
             .then( res => {
-              debugger;
+              
               signedIn( res.user, dispatch );
             } ).catch( err => {
             
-            debugger;
             console.log( err );
           } );
         }
