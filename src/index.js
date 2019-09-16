@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
 import { StateProvider } from './contexts/StateProvider';
+import * as Sentry from '@sentry/browser';
 import 'antd/dist/antd.css';
 import './index.css';
 import App from './App';
@@ -10,6 +11,8 @@ import * as reset from './styles/reset.css';
 import * as global from './styles/global.css';
 import { initialState } from './reducers/initialState';
 import { mainReducer } from './reducers/mainReducer';
+
+Sentry.init({ dsn: 'https://0ff73aa2b95c4b75b27ed6fff1c45dab@sentry.io/1728693' });
 
 const GlobalStyle = createGlobalStyle`
     ${ reset }
