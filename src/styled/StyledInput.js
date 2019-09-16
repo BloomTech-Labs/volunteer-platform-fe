@@ -33,7 +33,8 @@ export const StyledInput = ( props ) => {
   }
   
   return ( <Form.Item { ...formItemLayout } label={ props.name }>
-    <InputStyled name={ camelCase } value={ props.values[ camelCase ] }
+    <InputStyled name={ camelCase }
+                 value={ props.values ? props.values[ camelCase ] : '' }
                  onChange={ props.onChange }>
       { props.children && props.children }
     </InputStyled>
