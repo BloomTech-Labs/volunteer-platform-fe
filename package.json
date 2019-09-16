@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": false,
   "description": "Web app used to connect non profits and volunteers.",
-  "repositor": {
+  "repository": {
     "type": "git",
-    "url": "https://github.com/jeremiahtenbrink/volunteer-platform"
+    "url": "https://github.com/Lambda-School-Labs/volunteer-platform-fe"
   },
-  "homepage": "https://volunteerplatform.netlify.com",
+  "homepage": "https://volunteer-platform.netlify.com",
   "dependencies": {
     "antd": "^3.23.2",
     "axios": "^0.19.0",
