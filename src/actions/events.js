@@ -22,7 +22,7 @@ export const createEvent = ( event, dispatch ) => {
     dispatch( action( CREATE_EVENT, event ) );
   } ).catch( error => {
     console.log( error );
-    dispatch( action( CREATE_EVENT_FAILED ) );
+    dispatch( action( CREATE_EVENT_FAILED) );
   } );
 };
 
