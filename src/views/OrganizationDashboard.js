@@ -14,18 +14,24 @@ const OrganizationDashboard = () => {
     if( state.auth.googleAuthUser ){
       const uid = state.auth.googleAuthUser.uid;
       getUsersOrganizations(uid, dispatch);
-    };
-    if (state.org.userOrganizations.length > 0) {
-      setDisplayOrg(state.org.userOrganizations[0]);
-      if (displayOrg) {
-        getAllEventsByOrg(displayOrg.orgId, dispatch);
-      }
     }
-  }, [state.org.userOrganizations] );
+  }, [state.auth.googleAuthUser]);
   
   const changeHandler = value => {
     setDisplayOrg(state.org.userOrganizations.find(item => item.orgId === value))
   }
+  
+  useEffect( () => {
+    if (state.org.userOrganizations.length > 0) {
+      setDisplayOrg(state.org.userOrganizations[0]);
+    }
+  }, [state.org.userOrganizations])
+
+  useEffect( () => {
+    if (displayOrg) {
+      getAllEventsByOrg(displayOrg.orgId, dispatch);
+    }
+  }, [displayOrg])
 
   return ( 
     <div>
@@ -39,14 +45,14 @@ const OrganizationDashboard = () => {
         </> 
       )}
       <h1>Organization dashboard</h1>
-        <Select defaultValue='select' onChange={changeHandler}>
-          <Select.Option value='select' disabled>Select one</Select.Option>
-          {state.org.userOrganizations.map(item => (
-            <Select.Option key={item.orgId} value={item.orgId}>{item.organizationName}</Select.Option>
-          ))}
-        </Select>
-        {displayOrg ? <OrganizationInfo org={displayOrg} /> : <div>You have not created any organization yet</div>}
-        {state.events.events.length > 0 ? <EventList events={state.events.events}/> : <div>No event has been created</div>}
+      <Select defaultValue='select' onChange={changeHandler}>
+        <Select.Option value='select' disabled>Select one</Select.Option>
+        {state.org.userOrganizations.map(item => (
+          <Select.Option key={item.orgId} value={item.orgId}>{item.organizationName}</Select.Option>
+        ))}
+      </Select>
+      {displayOrg ? <OrganizationInfo org={displayOrg} /> : <div>You have not created any organization yet</div>}
+      {state.events.events.length > 0 ? <EventList events={state.events.events}/> : <div>No event has been created</div>}
     </div> 
   );
 };
