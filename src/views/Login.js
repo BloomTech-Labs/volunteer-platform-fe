@@ -25,13 +25,14 @@ const Inline = styled.div`
 `;
 
 const Login = () => {
-  const [state, dispatch] = useStateValue();
-  const [localState, setState] = useState({});
+    const [state, dispatch] = useStateValue();
+    const [localState, setState] = useState({});
 
-  const onChange = e => {
-    setState({ ...localState, [e.target.name]: e.target.value });
-  };
+    const onChange = e => {
+      setState({ ...localState, [e.target.name]: e.target.value });
+    };
 
+  
   return (
     <StyledLogin>
       <h1>Login with</h1>
