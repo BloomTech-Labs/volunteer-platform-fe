@@ -10,12 +10,12 @@ const OrganizationDashboard = () => {
   const [ state, dispatch ] = useStateValue();
   const [ displayOrg, setDisplayOrg ] = useState(''); 
 
-  useEffect( () => {
+  useEffect( () => {   
     if( state.auth.googleAuthUser ){
       const uid = state.auth.googleAuthUser.uid;
       getUsersOrganizations(uid, dispatch);
     }
-  }, [state.auth.googleAuthUser]);
+  }, []);
   
   const changeHandler = value => {
     setDisplayOrg(state.org.userOrganizations.find(item => item.orgId === value))
@@ -30,7 +30,7 @@ const OrganizationDashboard = () => {
   useEffect( () => {
     if (displayOrg) {
       getAllEventsByOrg(displayOrg.orgId, dispatch);
-    }
+    } 
   }, [displayOrg])
 
   return ( 
