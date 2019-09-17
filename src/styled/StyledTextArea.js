@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import { Input, Form } from 'antd';
 const {TextArea} = Input;
 
@@ -36,3 +37,12 @@ export const AreaText = ( props ) => {
         </Form.Item>
     );
 }
+
+
+AreaText.propTypes = {
+    name: PropTypes.string.isRequired,
+    values: PropTypes.objectOf( PropTypes.any ),
+    onChange: PropTypes.func.isRequired,
+    minRows: PropTypes.number,
+    maxRows: PropTypes.number
+  };
