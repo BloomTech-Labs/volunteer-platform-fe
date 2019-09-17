@@ -42,9 +42,9 @@ export const getUsersOrganizations = ( uid, dispatch ) => {
       if( !res.empty ){
         const orgs = [];
         res.forEach( org => {
-          let organization = org.data;
+          let organization = org.data();
           organization.orgId = org.id;
-          orgs.push( org.data() );
+          orgs.push( organization );
         } );
         dispatch( action( GET_USER_ORGANIZATIONS, orgs ) );
       }else{
