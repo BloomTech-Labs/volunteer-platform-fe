@@ -1,8 +1,8 @@
 import {
   GET_USER_ORGANIZATIONS,
   GET_USER_ORGANIZATIONS_FAILED,
-} from '../../actions/organization';
-import { SIGNED_OUT } from '../../actions/auth';
+} from '../actions/organization';
+import { SIGNED_OUT } from '../actions';
 
 export const orgReducer = (state, action) => {
   switch (action.type) {
