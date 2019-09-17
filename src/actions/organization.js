@@ -20,7 +20,6 @@ export const GET_USER_ORGANIZATIONS = 'GET_USER_ORGANIZATIONS';
 export const GET_USER_ORGANIZATIONS_FAILED = 'GET_USER_ORGANIZATIONS_FAILED';
 
 export const getUsersOrganizations = ( uid, dispatch ) => {
-  debugger;
   store.collection( 'organizations' )
     .where( 'organizationOwnerUID', '==', uid )
     .get()
