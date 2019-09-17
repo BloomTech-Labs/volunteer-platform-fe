@@ -4,4 +4,7 @@ export const initialState = {
   }, org: {
     createdOrg: false, organizations: [],
   },
+  events: {
+    events: [],
+  }
 };
