@@ -5,6 +5,6 @@ export const initialState = {
     createdOrg: false, organizations: [],
   },
   events: {
-    events: [],
+    events: [], createEventFailedError: '', deleteEventFailedError: '', editEventFailedError: '', getEventsFailedError: ''
   }
 };
