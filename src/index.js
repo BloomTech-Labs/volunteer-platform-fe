@@ -12,27 +12,34 @@ import * as global from './styles/global.css';
 import { initialState } from './reducers/initialState';
 import { mainReducer } from './reducers/mainReducer';
 
-Sentry.init({ dsn: 'https://0ff73aa2b95c4b75b27ed6fff1c45dab@sentry.io/1728693' });
+Sentry.init({
+  dsn: 'https://0ff73aa2b95c4b75b27ed6fff1c45dab@sentry.io/1728693',
+});
 
 const GlobalStyle = createGlobalStyle`
-    ${ reset }
-    ${ global }
+    ${reset}
+    ${global}
     body{
-        font-family: ${ ( { theme } ) => theme.loraFont }
+        font-family: ${({ theme }) => theme.loraFont}
     }
 `;
 
 const theme = {
-  primaryColor: 'blue', secondaryColor: 'green', borderRadiusDefault: '10px',
+  primaryColor: 'blue',
+  secondaryColor: 'green',
+  borderRadiusDefault: '10px',
 };
 
-ReactDOM.render( <ThemeProvider theme={ theme }>
-  <>
-    <GlobalStyle/>
-    <StateProvider initialState={ initialState } reducer={ mainReducer }>
-      <Router>
-        <App/>
-      </Router>
-    </StateProvider>
-  </>
-</ThemeProvider>, document.getElementById( 'root' ) );
+ReactDOM.render(
+  <ThemeProvider theme={theme}>
+    <>
+      <GlobalStyle />
+      <StateProvider initialState={initialState} reducer={mainReducer}>
+        <Router>
+          <App />
+        </Router>
+      </StateProvider>
+    </>
+  </ThemeProvider>,
+  document.getElementById('root')
+);
