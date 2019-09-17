@@ -35,7 +35,35 @@
 
 /**
  * @typedef Organization
+ * @property {string}
  * @type {{organizationType: string, aboutUs: string, website: string, organizationName: string, organizationOwnerUID: string, city: string, phone: string, missionStatement: string, state: string, socialMedia: Array, email: string}}
  */
+
+/**
+ * @typedef Event
+ * @property {String} [eventId] Id of the event in the db.
+ * @property {String} orgId Id of the organization that created the event.
+ * @property {String} volunteerType The volunteer event type
+ * @property {String} numberOfPeople The number of people needed at event.
+ * @property {number} startTime Start time timestamp
+ * @property {number} stopTime Timestamp when the event is supposed to end.
+ * @property {String} pointOfContact Contact information for people to contact.
+ * @property {String[]} tags Array of string values
+ * @property {String} description Description of the event.
+ * @property {String} volunteerRequirements Requirements volunteers must meet.
+ *
+ */
+const Event = {
+  eventId: '',
+  orgId: '',
+  volunteerType: '',
+  numberOfPeople: 0,
+  startTime: 0,
+  stopTime: 0,
+  pointOfContact: '',
+  tags: [],
+  description: '',
+  volunteerRequirements: ''
+};
 
 

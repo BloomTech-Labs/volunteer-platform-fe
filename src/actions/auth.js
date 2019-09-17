@@ -115,6 +115,10 @@ export const signIn = ( authType, dispatch, email, password ) => {
   
 };
 
+/**
+ * Signs a user out of google auth.
+ * @param {Dispatch} dispatch
+ */
 export const signOut = ( dispatch ) => {
   firebase.auth().signOut().then( () => {
     signedOut( dispatch );

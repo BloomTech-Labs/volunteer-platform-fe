@@ -1,10 +1,17 @@
 import { action } from './action';
 import firebase, { store } from '../firebase/FirebaseConfig';
 
+/**
+ * Auth Actions
+ * @module actions/organizations
+ *
+ */
+
 export const CREATED_ORGANIZATION = 'CREATED_ORGANIZATION';
 
 /**
  * Register a new non profit organization.
+ * @function
  * @param {Organization} org - non profit to be registered
  * @param {Dispatch} dispatch
  */
@@ -19,6 +26,12 @@ export const registerOrganization = ( org, dispatch ) => {
 export const GET_USER_ORGANIZATIONS = 'GET_USER_ORGANIZATIONS';
 export const GET_USER_ORGANIZATIONS_FAILED = 'GET_USER_ORGANIZATIONS_FAILED';
 
+/**
+ * Gets all the users organizations
+ * @function
+ * @param {string} uid User unique id from google auth.
+ * @param {Dispatch} dispatch From useStateValue hook
+ */
 export const getUsersOrganizations = ( uid, dispatch ) => {
   debugger;
   store.collection( 'organizations' )

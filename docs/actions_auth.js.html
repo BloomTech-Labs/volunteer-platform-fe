@@ -26,8 +26,9 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { action } from "./action";
-import firebase, { store } from "../firebase/FirebaseConfig";
+            <pre class="prettyprint source linenums"><code>import { action } from './action';
+import firebase, { store } from '../firebase/FirebaseConfig';
+import { getUsersOrganizations } from './organization';
 
 /**
  * Auth Actions
@@ -35,7 +36,7 @@ import firebase, { store } from "../firebase/FirebaseConfig";
  *
  */
 
-export const SIGNED_IN = "SIGNED_IN";
+export const SIGNED_IN = 'SIGNED_IN';
 
 /**
  * Marks a user signed in in state.
@@ -46,9 +47,11 @@ export const SIGNED_IN = "SIGNED_IN";
  */
 export const signedIn = ( user, dispatch ) => {
   dispatch( action( SIGNED_IN, user ) );
+  checkUserRegistered( user.uid, dispatch );
+  getUsersOrganizations( user.uid, dispatch );
 };
 
-export const SIGNED_OUT = "SIGNED_OUT";
+export const SIGNED_OUT = 'SIGNED_OUT';
 
 /**
  * Sign a googleAuthUser out.
@@ -58,12 +61,13 @@ export const SIGNED_OUT = "SIGNED_OUT";
  */
 export const signedOut = ( dispatch ) => {
   dispatch( action( SIGNED_OUT ) );
+  
 };
 
-export const GOOGLE_PROVIDER = "GOOGLE_PROVIDER";
-export const FACEBOOK_PROVIDER = "FACEBOOK_PROVIDER";
-export const TWITTER_PROVIDER = "TWITTER_PROVIDER";
-export const EMAIL_PROVIDER = "EMAIL_PROVIDER";
+export const GOOGLE_PROVIDER = 'GOOGLE_PROVIDER';
+export const FACEBOOK_PROVIDER = 'FACEBOOK_PROVIDER';
+export const TWITTER_PROVIDER = 'TWITTER_PROVIDER';
+export const EMAIL_PROVIDER = 'EMAIL_PROVIDER';
 const providers = {
   GOOGLE_PROVIDER: new firebase.auth.GoogleAuthProvider(),
   FACEBOOK_PROVIDER: new firebase.auth.FacebookAuthProvider(),
@@ -71,10 +75,10 @@ const providers = {
   EMAIL_PROVIDER: new firebase.auth.EmailAuthProvider(),
 };
 
-export const SIGNIN_INIT = "SIGNIN_INIT";
-export const SIGNIN_NEW_USER = "SIGNIN_NEW_USER";
-export const SIGNIN_FAILED = "SIGNIN_FAILED";
-export const GET_USER_ACCOUNT_SUCCESSFUL = "GET_USER_ACCOUNT_SUCCESSFUL";
+export const SIGNIN_INIT = 'SIGNIN_INIT';
+export const SIGNIN_NEW_USER = 'SIGNIN_NEW_USER';
+export const SIGNIN_FAILED = 'SIGNIN_FAILED';
+export const GET_USER_ACCOUNT_SUCCESSFUL = 'GET_USER_ACCOUNT_SUCCESSFUL';
 
 /**
  * Log a googleAuthUser in.
@@ -90,15 +94,31 @@ export const signIn = ( authType, dispatch, email, password ) => {
   dispatch( { type: SIGNIN_INIT } );
   if( authType === EMAIL_PROVIDER ){
     firebase.auth()
-      .signInWithEmailAndPassword( email, password )
+      .createUserWithEmailAndPassword( email, password )
       .then( result => {
-        signedIn( result.user, dispatch );
-        checkUserRegistered( result.user.uid, dispatch );
         
+        firebase.auth()
+          .signInWithEmailAndPassword( email, password )
+          .then( res => {
+            
+            signedIn( res.user, dispatch );
+            
+          } );
       } )
       .catch( error => {
-        console.log( error );
-        dispatch( action( SIGNIN_FAILED ) );
+        
+        console.log( error.code );
+        if( error.code.includes( 'email-already-in-use' ) ){
+          firebase.auth()
+            .signInWithEmailAndPassword( email, password )
+            .then( res => {
+              
+              signedIn( res.user, dispatch );
+            } ).catch( err => {
+            
+            console.log( err );
+          } );
+        }
       } );
     return;
   }
@@ -111,7 +131,6 @@ export const signIn = ( authType, dispatch, email, password ) => {
       
       if( result.user ){
         signedIn( result.user, dispatch );
-        checkUserRegistered( result.user.uid, dispatch );
       }else{
         dispatch( action( SIGNIN_FAILED ) );
       }
@@ -124,6 +143,10 @@ export const signIn = ( authType, dispatch, email, password ) => {
   
 };
 
+/**
+ * Signs a user out of google auth.
+ * @param {Dispatch} dispatch
+ */
 export const signOut = ( dispatch ) => {
   firebase.auth().signOut().then( () => {
     signedOut( dispatch );
@@ -140,7 +163,7 @@ export const signOut = ( dispatch ) => {
  * @param {Dispatch} dispatch - function from useStateValue() hook.
  */
 export const checkUserRegistered = ( uid, dispatch ) => {
-  store.collection( "users" )
+  store.collection( 'users' )
     .doc( uid )
     .get()
     .then( res => {
@@ -157,9 +180,9 @@ export const checkUserRegistered = ( uid, dispatch ) => {
     } );
 };
 
-export const REGISTER_INIT = "REGISTER_INIT";
-export const REGISTER_SUECESSFUL = "REGISTER_SUECESSFUL";
-export const REGISTER_FAILED = "REGISTER_FAILED";
+export const REGISTER_INIT = 'REGISTER_INIT';
+export const REGISTER_SUECESSFUL = 'REGISTER_SUECESSFUL';
+export const REGISTER_FAILED = 'REGISTER_FAILED';
 
 /**
  * Register a new User
@@ -171,7 +194,7 @@ export const REGISTER_FAILED = "REGISTER_FAILED";
 export const register = ( user, dispatch ) => {
   
   dispatch( action( REGISTER_INIT ) );
-  store.collection( "users" ).doc( user.uid ).set( user ).then( res => {
+  store.collection( 'users' ).doc( user.uid ).set( user ).then( res => {
     dispatch( action( REGISTER_SUECESSFUL, user ) );
   } ).catch( err => {
     console.log( err );
@@ -187,13 +210,13 @@ export const register = ( user, dispatch ) => {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-actions_auth.html">actions/auth</a></li><li><a href="module-Types.html">Types</a></li></ul><h3>Global</h3><ul><li><a href="global.html#action">action</a></li><li><a href="global.html#registerOrganization">registerOrganization</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-actions_auth.html">actions/auth</a></li><li><a href="module-actions_events.html">actions/events</a></li><li><a href="module-actions_organizations.html">actions/organizations</a></li><li><a href="module-Types.html">Types</a></li></ul><h3>Global</h3><ul><li><a href="global.html#action">action</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Mon Sep 16 2019 10:35:22 GMT-0600 (Mountain Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Tue Sep 17 2019 11:35:11 GMT-0600 (Mountain Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>
