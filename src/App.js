@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Switch, Route } from 'react-router';
 import { signedIn, signedOut } from './actions/auth';
 import { useStateValue } from './hooks/useStateValue';
-import firebase from './firebase/FirebaseConfig';
+import firebase from './contexts/firebase/FirebaseConfig';
 import MainDashboard from './views/MainDashboard';
 import './App.css';
 import Login from './views/Login';
@@ -36,7 +36,10 @@ function App() {
         <ProtectedRoute path={'/'} component={MainDashboard} exact />
         <LoginRoute path={'/login'} component={Login} />
         <ProtectedRoute path={'/create-org'} component={CreateOrg} />
-        <Route path={'/org-dashboard/create-event'} component={CreateEvent} />
+        <ProtectedRoute
+          path={'/org-dashboard/create-event'}
+          component={CreateEvent}
+        />
         <ProtectedRoute
           path={'/org-dashboard'}
           component={OrganizationDashboard}

@@ -1,21 +1,34 @@
 import React, { useState } from 'react';
-import { StyledButton, StyledForm, StyledInput, StyledTag } from '../styled';
-import { Tag, Tooltip, Icon } from 'antd';
+import {
+  StyledButton,
+  StyledForm,
+  StyledInput,
+  StyledTag,
+  StyledDatePicker,
+  StyledNumber,
+  StyledTimePicker,
+} from '../styled';
+import { Tag, Tooltip, Icon, message } from 'antd';
+import moment from 'moment';
 import { useStateValue } from '../hooks/useStateValue';
 import { createEvent } from '../actions';
 
 const CreateEvent = () => {
   const [localState, setState] = useState({
     event: {
-      tags: [],
+      tags: ['Add a tag'],
     },
     inputVisible: false,
     inputValue: '',
   });
+
   const [state, dispatch] = useStateValue();
 
   //Destructuring
   let { event, inputVisible, inputValue } = localState;
+
+  //Date Format
+  const dateFormat = 'MM/DD/YYYY';
 
   const changeValue = e => {
     setState({
@@ -27,10 +40,46 @@ const CreateEvent = () => {
     });
   };
 
+  //Handle DatePicker
+  const handleDatePicker = datestring => {
+    setState({
+      ...localState,
+      event: {
+        ...event,
+        date: datestring,
+      },
+    });
+  };
+
+  //Handle Time
+  const handleStartTime = (_time, timeObject) => {
+    console.log(timeObject);
+    setState({
+      ...localState,
+      event: {
+        ...event,
+        startTime: timeObject,
+      },
+    });
+  };
+
+  const handleEndTime = (_time, timeObject) => {
+    console.log(timeObject);
+    setState({
+      ...localState,
+      event: {
+        ...event,
+        endTime: timeObject,
+      },
+    });
+  };
+
   //Handle Submit for Form
   const handleSubmit = e => {
     e.preventDefault();
-    createEvent(localState.event, dispatch);
+    if (isFormValid()) {
+      createEvent(localState.event, dispatch);
+    }
   };
 
   //Handles Tags Opening/Closing
@@ -57,9 +106,13 @@ const CreateEvent = () => {
 
   //Handles Tag Submitt
   const handleInputSubmit = () => {
+    if (event.tags.includes(inputValue)) {
+      message.error('Please enter a different tag name...');
+    }
     if (inputValue && event.tags.indexOf(inputValue) === -1) {
       event.tags = [...event.tags, inputValue];
     }
+
     setState({
       ...localState,
       event,
@@ -68,12 +121,23 @@ const CreateEvent = () => {
     });
   };
 
+  //Handles Numbers
+  const handleNumber = value => {
+    setState({
+      ...localState,
+      event: {
+        ...event,
+        numberOfPeople: value,
+      },
+    });
+  };
+
   //Handles Tags
   const handleTags = event.tags.map((tag, index) => {
-    const isTagLong = tag.length > 10;
+    const isTagLong = tag.length > 1;
     const tagElem = (
       <Tag key={tag} closable={index !== 0} onClose={() => handleClose(tag)}>
-        {isTagLong ? `${tag.slice(0, 5)}` : tag}
+        {isTagLong ? `${tag.slice(0, 11)}` : tag}
       </Tag>
     );
     return isTagLong ? (
@@ -85,8 +149,34 @@ const CreateEvent = () => {
     );
   });
 
+  //Error Handling
+
+  const isFormValid = () => {
+    if (isFormEmpty()) {
+      message.error('Please fill out all fields...');
+      return false;
+    } else {
+      return true;
+    }
+  };
+  const isFormEmpty = () => {
+    if (
+      !event.volunteerType ||
+      !event.numberOfPeople ||
+      !event.startTime ||
+      !event.endTime ||
+      !event.date ||
+      !event.pointOfContact ||
+      !event.description ||
+      !event.volunteerRequirements
+    ) {
+      return true;
+    }
+  };
+
   return (
     <div>
+      <h1>Create An Event</h1>
       <StyledForm onSubmit={handleSubmit}>
         <StyledInput
           name={'Volunteer Type'}
@@ -94,31 +184,40 @@ const CreateEvent = () => {
           onChange={changeValue}
           type="text"
         />
-
-        <StyledInput
+        <label>Number: </label>
+        <StyledNumber
           name={'Number of People'}
-          values={event}
-          onChange={changeValue}
+          onChange={handleNumber}
           type="number"
         />
-        <StyledInput
+        <label>Start Time: </label>
+        <StyledTimePicker
           name={'Start Time'}
-          values={event}
-          onChange={changeValue}
+          defaultOpenValue={moment('00:00', 'hh:mm')}
+          onChange={handleStartTime}
+          use12Hours
+          format={'h:mm a'}
           type="time"
         />
-        <StyledInput
+
+        <label>End Time: </label>
+        <StyledTimePicker
           name={'End Time'}
-          values={event}
-          onChange={changeValue}
+          defaultOpenValue={moment('00:00', 'hh:mm')}
+          onChange={handleEndTime}
+          use12Hours
+          format={'h:mm a'}
           type="time"
         />
-        <StyledInput
+        <label>Date: </label>
+        <StyledDatePicker
           name={'Date'}
           values={event}
-          onChange={changeValue}
-          type="date"
+          onChange={handleDatePicker}
+          defaultValue={moment('11/11/1111', dateFormat)}
+          format={dateFormat}
         />
+
         <StyledInput
           name={'Point of Contact'}
           values={event}
@@ -140,7 +239,7 @@ const CreateEvent = () => {
         />
 
         <label>Tags: </label>
-        {handleTags}
+        {event.tags.length >= 0 ? handleTags : console.log('nahh')}
         {inputVisible && (
           <StyledTag
             type="text"
@@ -158,7 +257,7 @@ const CreateEvent = () => {
             onClick={showInput}
             style={{ background: '#fff', borderStyle: 'dashed' }}
           >
-            <Icon type="plus" /> Add a Tag
+            <Icon type="plus" />
           </Tag>
         )}
         <StyledButton type="primary" htmlType="submit">
