@@ -1,8 +1,59 @@
+import React from 'react';
 import styled from 'styled-components';
-import { DatePicker } from 'antd';
+import PropTypes from 'prop-types';
+import { DatePicker, Form } from 'antd';
 
-export const StyledDatePicker = styled(DatePicker)`
+const DatePickerStyled = styled(DatePicker)`
   && {
-    max-width: 500px;
   }
 `;
+
+const formItemLayout = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 8 },
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 16 },
+  },
+};
+
+export const StyledDatePicker = ({
+  name,
+  values,
+  onChange,
+  children,
+  ...rest
+}) => {
+  let camelCase = '';
+  if (name) {
+    camelCase = name.split(' ');
+    for (let i = 0; i < camelCase.length; i++) {
+      camelCase[i] = camelCase[i].toLowerCase();
+      if (i > 0) {
+        camelCase[i] =
+          camelCase[i].charAt(0).toUpperCase() + camelCase[i].slice(1);
+      }
+    }
+    camelCase = camelCase.join('');
+  }
+
+  return (
+    <Form.Item {...formItemLayout} label={name}>
+      <DatePickerStyled
+        {...rest}
+        name={camelCase}
+        title={camelCase}
+        onChange={onChange}
+      >
+        {children && children}
+      </DatePickerStyled>
+    </Form.Item>
+  );
+};
+
+DatePickerStyled.propTypes = {
+  name: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
