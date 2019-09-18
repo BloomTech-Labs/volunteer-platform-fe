@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { Tag, Tooltip, Icon, message } from 'antd';
+import moment from 'moment';
 import {
   StyledButton, StyledForm, StyledInput, StyledTag, StyledDatePicker,
   StyledNumber, StyledTimePicker,
 } from '../styled';
-import { Tag, Tooltip, Icon, message } from 'antd';
-import moment from 'moment';
 import { useStateValue } from '../hooks/useStateValue';
 import { createEvent } from '../actions';
 
@@ -28,11 +28,8 @@ const CreateEvent = props => {
         },
       } );
     }
-  }, [ props.location.state.org ] );
-  
-  console.log( localState.event.orgId );
-  
-  //Date Format
+  }, [props.location.state.org]);
+
   const dateFormat = 'MM/DD/YYYY';
   
   const changeValue = e => {
@@ -53,20 +50,22 @@ const CreateEvent = props => {
   };
   
   //Handle Time
-  const handleStartTime = ( _time, timeObject ) => {
-    console.log( timeObject );
-    setState( {
-      ...localState, event: {
-        ...event, startTime: timeObject,
+  const handleStartTime = (_time, timeObject) => {
+    setState({
+      ...localState,
+      event: {
+        ...event,
+        startTime: timeObject,
       },
     } );
   };
-  
-  const handleEndTime = ( _time, timeObject ) => {
-    console.log( timeObject );
-    setState( {
-      ...localState, event: {
-        ...event, endTime: timeObject,
+
+  const handleEndTime = (_time, timeObject) => {
+    setState({
+      ...localState,
+      event: {
+        ...event,
+        endTime: timeObject,
       },
     } );
   };
@@ -83,8 +82,14 @@ const CreateEvent = props => {
   
   //Handles Tags Opening/Closing
   const handleClose = removedTag => {
-    const tags = event.tags.filter( tag => tag !== removedTag );
-    setState( { tags } );
+    const tags = event.tags.filter(tag => tag !== removedTag);
+    setState({
+        ...localState,
+        event: {
+            ...event,
+            tags
+        }
+     });
   };
   
   //Shows Input on Tag
