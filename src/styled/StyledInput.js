@@ -38,6 +38,7 @@ export const StyledInput = ({name, values, onChange, children, ...rest}) => {
       <InputStyled
         {...rest}
         name={camelCase}
+        title={camelCase}
         value={values ? values[camelCase] : ''}
         onChange={onChange}
       >
