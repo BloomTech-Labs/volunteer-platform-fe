@@ -1,5 +1,5 @@
 import { action } from './action';
-import firebase, { store } from '../firebase/FirebaseConfig';
+import firebase, { store } from '../contexts/firebase/FirebaseConfig';
 
 /**
  * Auth Actions
@@ -15,18 +15,22 @@ export const CREATED_ORGANIZATION = 'CREATED_ORGANIZATION';
  * @param {Organization} org - non profit to be registered
  * @param {Dispatch} dispatch
  */
-export const registerOrganization = ( org, dispatch ) => {
-  store.collection( 'organizations' ).add( org ).then( res => {
-    org.orgId = res.id;
-    dispatch( action( CREATED_ORGANIZATION ) );
-  } ).catch( err => {
-    console.log( err );
-  } );
+export const registerOrganization = (org, dispatch) => {
+  store
+    .collection('organizations')
+    .add(org)
+    .then(res => {
+      dispatch(action(CREATED_ORGANIZATION));
+    })
+    .catch(err => {
+      console.log(err);
+    });
 };
 
 export const GET_USER_ORGANIZATIONS = 'GET_USER_ORGANIZATIONS';
 export const GET_USER_ORGANIZATIONS_FAILED = 'GET_USER_ORGANIZATIONS_FAILED';
 export const USER_HAS_NO_ORGANIZATIONS = 'USER_HAS_NO_ORGANIZATIONS';
+
 
 /**
  * Gets all the users organizations
@@ -38,8 +42,8 @@ export const getUsersOrganizations = ( uid, dispatch ) => {
   store.collection( 'organizations' )
     .where( 'organizationOwnerUID', '==', uid )
     .get()
-    .then( res => {
-      if( !res.empty ){
+    .then(res => {
+      if (!res.empty) {
         const orgs = [];
         res.forEach( org => {
           let organization = org.data();

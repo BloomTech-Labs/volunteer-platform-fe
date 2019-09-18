@@ -2,7 +2,7 @@ import {
   GET_USER_ORGANIZATIONS, GET_USER_ORGANIZATIONS_FAILED, CREATED_ORGANIZATION,
   GET_ORG_BY_ID, GET_ORG_BY_ID_FAILED, USER_HAS_NO_ORGANIZATIONS,
 } from '../actions/organization';
-import { SIGNED_OUT } from '../actions/auth';
+import { SIGNED_OUT } from '../actions';
 
 export const orgReducer = ( state, action ) => {
   switch( action.type ){
@@ -14,6 +14,7 @@ export const orgReducer = ( state, action ) => {
     case GET_USER_ORGANIZATIONS:
       return {
         ...state, createdOrg: true, userOrganizations: action.payload,
+
       };
     case GET_USER_ORGANIZATIONS_FAILED:
       return {
@@ -45,5 +46,3 @@ export const orgReducer = ( state, action ) => {
       return state;
   }
 };
-
-
