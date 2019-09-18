@@ -1,5 +1,5 @@
 import { action } from './action';
-import firebase, { store } from '../contexts/firebase/FirebaseConfig';
+import firebase, { store } from '../firebase/FirebaseConfig';
 
 /**
  * Auth Actions
@@ -15,16 +15,16 @@ export const CREATED_ORGANIZATION = 'CREATED_ORGANIZATION';
  * @param {Organization} org - non profit to be registered
  * @param {Dispatch} dispatch
  */
-export const registerOrganization = (org, dispatch) => {
+export const registerOrganization = ( org, dispatch ) => {
   store
-    .collection('organizations')
-    .add(org)
-    .then(res => {
-      dispatch(action(CREATED_ORGANIZATION));
-    })
-    .catch(err => {
-      console.log(err);
-    });
+    .collection( 'organizations' )
+    .add( org )
+    .then( res => {
+      dispatch( action( CREATED_ORGANIZATION ) );
+    } )
+    .catch( err => {
+      console.log( err );
+    } );
 };
 
 export const GET_USER_ORGANIZATIONS = 'GET_USER_ORGANIZATIONS';
@@ -38,38 +38,46 @@ export const USER_HAS_NO_ORGANIZATIONS = 'USER_HAS_NO_ORGANIZATIONS';
  * @param {string} uid User unique id from google auth.
  * @param {Dispatch} dispatch From useStateValue hook
  */
-export const getUsersOrganizations = ( uid, dispatch ) => {
-  store.collection( 'organizations' )
-    .where( 'organizationOwnerUID', '==', uid )
+export const getUsersOrganizations = (uid, dispatch) => {
+  store
+    .collection('organizations')
+    .where('organizationOwnerUID', '==', uid)
     .get()
     .then(res => {
       if (!res.empty) {
         const orgs = [];
-        res.forEach( org => {
+        res.forEach(org => {
           let organization = org.data();
           organization.orgId = org.id;
           orgs.push( organization );
         } );
+        localStorage.setItem( 'createdOrg', 'true' );
         dispatch( action( GET_USER_ORGANIZATIONS, orgs ) );
+        
       }else{
+        localStorage.setItem( 'createdOrg', 'false' );
         dispatch( action( USER_HAS_NO_ORGANIZATIONS ) );
       }
-    } )
-    .catch( err => {
-      console.log( err );
-      dispatch( action( GET_USER_ORGANIZATIONS_FAILED ) );
-    } );
+    })
+    .catch(err => {
+      console.log(err);
+      dispatch(action(GET_USER_ORGANIZATIONS_FAILED));
+    });
 };
 
 export const GET_ORG_BY_ID = 'GET_ORG_BY_ID';
 export const GET_ORG_BY_ID_FAILED = 'GET_ORG_BY_ID_FAILED';
 
-export const getOrganizationByOrgId = ( orgId, dispatch ) => {
-  store.collection( 'organizations' ).doc( orgId ).get().then( res => {
-    if( res.exists ){
-      const org = res.data();
-      org.id = res.id;
-      dispatch(action(GET_ORG_BY_ID, org ));
-    }
-  } );
+export const getOrganizationByOrgId = (orgId, dispatch) => {
+  store
+    .collection('organizations')
+    .doc(orgId)
+    .get()
+    .then(res => {
+      if (res.exists) {
+        const org = res.data();
+        org.id = res.id;
+        dispatch(action(GET_ORG_BY_ID, org));
+      }
+    });
 };

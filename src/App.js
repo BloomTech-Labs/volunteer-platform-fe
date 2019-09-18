@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Switch, Route } from 'react-router';
 import { signedIn, signedOut } from './actions/auth';
 import { useStateValue } from './hooks/useStateValue';
-import firebase from './contexts/firebase/FirebaseConfig';
+import firebase from './firebase/FirebaseConfig';
 import MainDashboard from './views/MainDashboard';
 import './App.css';
 import Login from './views/Login';
@@ -15,7 +15,7 @@ import LoginRoute from './routes/LoginRoute';
 import SignupRoute from './routes/SignupRotue';
 import OrgDashboardRoute from './routes/OrgDashboardRoute';
 import CreateOrgRoute from './routes/CreateOrgRoute';
-import Navagation from './components/Navigation';
+import Navigation from './components/Navigation';
 import styled from 'styled-components';
 
 function App() {
@@ -36,7 +36,7 @@ function App() {
 
   return (
     <StyledApp className="App">
-      <Navagation />
+      <Navigation />
       <Switch>
         <ProtectedRoute path={'/'} component={MainDashboard} exact />
         <LoginRoute path={'/login'} component={Login} />
