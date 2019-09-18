@@ -1,6 +1,6 @@
 import {
   GET_USER_ORGANIZATIONS, GET_USER_ORGANIZATIONS_FAILED, CREATED_ORGANIZATION,
-  GET_ORG_BY_ID, GET_ORG_BY_ID_FAILED, USER_HAS_NO_ORGANIZATIONS,
+  GET_ORG_BY_ID, GET_ORG_BY_ID_FAILED, USER_HAS_NO_ORGANIZATIONS
 } from '../actions/organization';
 import { SIGNED_OUT } from '../actions';
 
@@ -42,6 +42,7 @@ export const orgReducer = ( state, action ) => {
       return {
         ...state, createdOrg: false, userOrganizations: [],
       };
+    
     default:
       return state;
   }

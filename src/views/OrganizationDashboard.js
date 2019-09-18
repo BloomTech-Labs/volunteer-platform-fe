@@ -42,10 +42,20 @@ const OrganizationDashboard = () => {
         item => ( <Select.Option key={ item.orgId }
                                  value={ item.orgId }>{ item.organizationName }</Select.Option> ) ) }
     </Select>
-    { displayOrg ? <OrganizationInfo org={ displayOrg }/> :
+    { displayOrg ? (
+      <>
+        <Link to={{
+          pathname: '/create-org', 
+          state: {
+            org: displayOrg,
+          },
+        }}>Edit organization info</Link>
+        <OrganizationInfo org={ displayOrg }/>
+      </> ) :
       <div>You have not created any organization yet</div> }
     <Link to={ {
-      pathname: '/org-dashboard/create-event', state: {
+      pathname: '/org-dashboard/create-event', 
+      state: {
         org: displayOrg,
       },
     } }>Create event</Link>

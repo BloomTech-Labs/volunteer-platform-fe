@@ -20,7 +20,8 @@ export const registerOrganization = (org, dispatch) => {
     .collection('organizations')
     .add(org)
     .then(res => {
-      dispatch(action(CREATED_ORGANIZATION));
+      //dispatch(action(CREATED_ORGANIZATION)); 
+      //I have to comment out this or it will throw error when redirecting to dashboard after a new org is added
     })
     .catch(err => {
       console.log(err);
@@ -73,3 +74,15 @@ export const getOrganizationByOrgId = ( orgId, dispatch ) => {
     }
   } );
 };
+
+export const updateOrganization = (orgId, updates, dispatch) => {
+  store.collection('organizations')
+  .doc(orgId)
+  .set(updates)
+  .then(res => {
+    console.log('success updating organization');
+  })
+  .catch(err => {
+    console.log('error updating organization');
+  })
+}
