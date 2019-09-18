@@ -1,5 +1,5 @@
 import { action } from './action';
-import firebase, { store } from '../contexts/firebase/FirebaseConfig';
+import firebase, { store } from '../firebase/FirebaseConfig';
 import { getUsersOrganizations } from './organization';
 
 /**
