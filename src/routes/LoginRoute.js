@@ -8,7 +8,7 @@ const LoginRoute = ( { component: Component, ...rest } ) => {
   return ( <Route
     { ...rest }
     render={ props => {
-      return state.auth.loggedIn ? <Redirect to={ "/" }/> :
+      return localStorage.getItem("loggedIn") === "true" ? <Redirect to={ "/" }/> :
         <Component { ...props }/>;
     } }
   /> );

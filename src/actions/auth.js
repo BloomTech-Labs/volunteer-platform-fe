@@ -17,10 +17,11 @@ export const SIGNED_IN = 'SIGNED_IN';
  * @param {Object} user - google auth user object.
  * @param {Dispatch} dispatch - useReducer dispatch function
  */
-export const signedIn = (user, dispatch) => {
-  dispatch(action(SIGNED_IN, user));
-  checkUserRegistered(user.uid, dispatch);
-  getUsersOrganizations(user.uid, dispatch);
+export const signedIn = ( user, dispatch ) => {
+  localStorage.setItem( 'loggedIn', 'true' );
+  dispatch( action( SIGNED_IN, user ) );
+  checkUserRegistered( user.uid, dispatch );
+  getUsersOrganizations( user.uid, dispatch );
 };
 
 export const SIGNED_OUT = 'SIGNED_OUT';
@@ -32,7 +33,8 @@ export const SIGNED_OUT = 'SIGNED_OUT';
  * @param {Dispatch} dispatch
  */
 export const signedOut = dispatch => {
-  dispatch(action(SIGNED_OUT));
+  localStorage.setItem( 'loggedIn', 'false' );
+  dispatch( action( SIGNED_OUT ) );
 };
 
 export const GOOGLE_PROVIDER = 'GOOGLE_PROVIDER';
@@ -60,64 +62,64 @@ export const GET_USER_ACCOUNT_SUCCESSFUL = 'GET_USER_ACCOUNT_SUCCESSFUL';
  * @param {string} [email]
  * @param {string} [password]
  */
-export const signIn = (authType, dispatch, email, password) => {
-  dispatch({ type: SIGNIN_INIT });
-  if (authType === EMAIL_PROVIDER) {
+export const signIn = ( authType, dispatch, email, password ) => {
+  dispatch( { type: SIGNIN_INIT } );
+  if( authType === EMAIL_PROVIDER ){
     firebase
       .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(result => {
+      .createUserWithEmailAndPassword( email, password )
+      .then( result => {
         firebase
           .auth()
-          .signInWithEmailAndPassword(email, password)
-          .then(res => {
-            signedIn(res.user, dispatch);
-          });
-      })
-      .catch(error => {
-        console.log(error.code);
-        if (error.code.includes('email-already-in-use')) {
+          .signInWithEmailAndPassword( email, password )
+          .then( res => {
+            signedIn( res.user, dispatch );
+          } );
+      } )
+      .catch( error => {
+        console.log( error.code );
+        if( error.code.includes( 'email-already-in-use' ) ){
           firebase
             .auth()
-            .signInWithEmailAndPassword(email, password)
-            .then(res => {
-              signedIn(res.user, dispatch);
-            })
-            .catch(err => {
-              console.log(err);
-            });
+            .signInWithEmailAndPassword( email, password )
+            .then( res => {
+              signedIn( res.user, dispatch );
+            } )
+            .catch( err => {
+              console.log( err );
+            } );
         }
-      });
+      } );
     return;
   }
-
-  const provider = providers[authType];
+  
+  const provider = providers[ authType ];
   firebase
     .auth()
-    .signInWithPopup(provider)
-    .then(function(result) {
-      if (result.user) {
-        signedIn(result.user, dispatch);
-      } else {
-        dispatch(action(SIGNIN_FAILED));
+    .signInWithPopup( provider )
+    .then( function( result ){
+      if( result.user ){
+        signedIn( result.user, dispatch );
+      }else{
+        dispatch( action( SIGNIN_FAILED ) );
       }
-    })
-    .catch(function(error) {
-      console.log(error);
-      dispatch(action(SIGNIN_FAILED));
-    });
+    } )
+    .catch( function( error ){
+      console.log( error );
+      dispatch( action( SIGNIN_FAILED ) );
+    } );
 };
 
 export const signOut = dispatch => {
   firebase
     .auth()
     .signOut()
-    .then(() => {
-      signedOut(dispatch);
-    })
-    .catch(err => {
-      console.log(err);
-    });
+    .then( () => {
+      signedOut( dispatch );
+    } )
+    .catch( err => {
+      console.log( err );
+    } );
 };
 
 /**
@@ -127,22 +129,24 @@ export const signOut = dispatch => {
  * @param {string} uid - unique user id from google auth
  * @param {Dispatch} dispatch - function from useStateValue() hook.
  */
-export const checkUserRegistered = (uid, dispatch) => {
+export const checkUserRegistered = ( uid, dispatch ) => {
   store
-    .collection('users')
-    .doc(uid)
+    .collection( 'users' )
+    .doc( uid )
     .get()
-    .then(res => {
-      if (res.exists) {
+    .then( res => {
+      if( res.exists ){
         const data = res.data();
-        dispatch(action(GET_USER_ACCOUNT_SUCCESSFUL, data));
-      } else {
-        dispatch(action(SIGNIN_NEW_USER));
+        localStorage.setItem( 'userRegistered', 'true' );
+        dispatch( action( GET_USER_ACCOUNT_SUCCESSFUL, data ) );
+      }else{
+        localStorage.setItem( 'userRegistered', 'false' );
+        dispatch( action( SIGNIN_NEW_USER ) );
       }
-    })
-    .catch(err => {
-      console.log(err);
-    });
+    } )
+    .catch( err => {
+      console.log( err );
+    } );
 };
 
 export const REGISTER_INIT = 'REGISTER_INIT';
@@ -156,17 +160,18 @@ export const REGISTER_FAILED = 'REGISTER_FAILED';
  * @param {User} user
  * @param {function} dispatch
  */
-export const register = (user, dispatch) => {
-  dispatch(action(REGISTER_INIT));
+export const register = ( user, dispatch ) => {
+  dispatch( action( REGISTER_INIT ) );
   store
-    .collection('users')
-    .doc(user.uid)
-    .set(user)
-    .then(res => {
-      dispatch(action(REGISTER_SUECESSFUL, user));
-    })
-    .catch(err => {
-      console.log(err);
-      dispatch(action(REGISTER_FAILED));
-    });
+    .collection( 'users' )
+    .doc( user.uid )
+    .set( user )
+    .then( res => {
+      localStorage.setItem( 'signedUp', 'true' );
+      dispatch( action( REGISTER_SUECESSFUL, user ) );
+    } )
+    .catch( err => {
+      console.log( err );
+      dispatch( action( REGISTER_FAILED ) );
+    } );
 };

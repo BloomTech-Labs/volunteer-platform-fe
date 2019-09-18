@@ -1,6 +1,6 @@
-import React from "react";
-import { Redirect, Route } from "react-router";
-import { useStateValue } from "../hooks/useStateValue";
+import React from 'react';
+import { Redirect, Route } from 'react-router';
+import { useStateValue } from '../hooks/useStateValue';
 
 const SignupRoute = ( { component: Component, ...rest } ) => {
   const [ state ] = useStateValue();
@@ -8,7 +8,7 @@ const SignupRoute = ( { component: Component, ...rest } ) => {
   return ( <Route
     { ...rest }
     render={ props => {
-      return state.auth.signedUp ? <Redirect to={ "/" }/> :
+      return localStorage.getItem('userRegistered') === "true" ? <Redirect to={ '/' }/> :
         <Component { ...props }/>;
     } }
   /> );
