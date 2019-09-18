@@ -27,7 +27,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --verbose --watch --coverage --setupFilesAfterEnv=@testing-library/jest-dom/extend-expect",
+    "test": "react-scripts test --setupFilesAfterEnv=@testing-library/jest-dom/extend-expect",
     "eject": "react-scripts eject",
     "jsdoc": "jsdoc -c ./jsdoc.json"
   },

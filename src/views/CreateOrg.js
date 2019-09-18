@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { StyledButton, StyledForm, StyledInput, StyledCard } from '../styled';
+import { Redirect } from 'react-router';
+import { StyledButton, StyledCard, StyledForm, StyledInput } from '../styled';
 import { registerOrganization } from '../actions';
 import { useStateValue } from '../hooks/useStateValue';
 import { AreaText } from '../styled/StyledTextArea';
+import styled from 'styled-components';
 
 const CreateOrg = () => {
-  
   const org = {
     organizationOwnerUID: '',
     organizationName: '',
@@ -42,6 +42,7 @@ const CreateOrg = () => {
   };
   return ( <StyledCreateOrg>
     <StyledCard>
+      <h1>Create new organization!!</h1>
       <StyledForm onSubmit={ handleSubmit }>
         <StyledInput name={ 'Organization Name' } values={ localState }
                      onChange={ changeValue }/>
@@ -73,11 +74,7 @@ const CreateOrg = () => {
 };
 
 const StyledCreateOrg = styled.div`
-margin: 2rem;
 display: flex;
 justify-content: center;
-align-items: center;
-flex-direction: column;
 `;
-
 export default CreateOrg;

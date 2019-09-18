@@ -1,58 +1,37 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import EventList from '../components/EventList';
-import { getAllEventsByState } from '../actions/events';
-import { StyledButton, StyledForm, StyledInput, StyledLink } from '../styled';
-import { signOut } from '../actions';
+import { StyledForm, StyledInput } from '../styled';
 import { useStateValue } from '../hooks/useStateValue';
+import EventList from '../components/EventList';
+import { getAllEventsByState } from '../actions';
 
 const MainDashboard = () => {
   const [ state, dispatch ] = useStateValue();
-  const [ inputState, setInputState ] = useState( '' );
-
-  useEffect( () => {   
-    axios.get(`http://ipinfo.io?token=${process.env.REACT_APP_ipinfoKey}`)
-      .then(response => {
-        console.log(response);
-      })  
-      .catch(error => {
-        console.log('unable to detect location');
-      })
-  }, [] );
-
-  useEffect( () => {   
-    if(inputState.length === 2 ) {
-      getAllEventsByState( state, dispatch );
+  const [ localState, setInputState ] = useState( { state: '' } );
+  
+  useEffect( () => {
+    
+    if( localState.state.length === 2 ){
+      getAllEventsByState( localState.state, dispatch );
     }
-  }, [inputState] );
-
+  }, [ localState ] );
+  
   const onChange = e => {
-    setInputState({ ...inputState, [e.target.name]: e.target.value });
+    setInputState( { ...localState, [ e.target.name ]: e.target.value } );
   };
-
-  return ( 
-    <div>
-      { state.org.createdOrg &&
-      <StyledLink to={ 'org-dashboard' }>Organization Dashboard</StyledLink> }
-      { !state.auth.loggedIn ? <StyledLink to={ '/login' }>Login</StyledLink> :
-        <><StyledLink to={ '/create-org' }>Create
-          Organization</StyledLink><StyledButton
-          onClick={ () => signOut( dispatch ) }>Log
-          out</StyledButton> </> }
-      <h1>Shows a list of events.</h1>
-      <div style={{display:'flex', justifyContent:'center'}}>
-        <StyledForm maxWidth='500px'>
+  return ( <div>
+    <h1>Shows a list of events.</h1>
+    <div style={ { display: 'flex', justifyContent: 'center' } }>
+      <StyledForm maxWidth='500px'>
         <StyledInput
-          values={inputState}
-          name={'State'}
-          onChange={onChange}
+          values={ localState }
+          name={ 'State' }
+          onChange={ onChange }
           placeholder="Enter State Initials"
         />
-        </StyledForm>
-      </div>
-      <EventList events={state.events.events} />
-    </div> 
-  );
+      </StyledForm>
+    </div>
+    <EventList events={ state.events.events }/>
+  </div> );
 };
 
 export default MainDashboard;

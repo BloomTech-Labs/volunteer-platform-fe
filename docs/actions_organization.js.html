@@ -63,7 +63,7 @@ export const USER_HAS_NO_ORGANIZATIONS = 'USER_HAS_NO_ORGANIZATIONS';
  * @param {Dispatch} dispatch From useStateValue hook
  */
 export const getUsersOrganizations = ( uid, dispatch ) => {
-  debugger;
+
   store.collection( 'organizations' )
     .where( 'organizationOwnerUID', '==', uid )
     .get()
