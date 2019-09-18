@@ -11,7 +11,7 @@ import { createEvent } from '../actions';
 const CreateEvent = props => {
   const [ localState, setState ] = useState( {
     event: {
-      tags: [ 'Add a tag' ],
+      tags: [ ],
     }, inputVisible: false, inputValue: '',
   } );
   
