@@ -19,10 +19,10 @@ const formItemLayout = {
   },
 };
 
-export const StyledInput = props => {
+export const StyledInput = ({name, values, onChange, children, ...rest}) => {
   let camelCase = '';
-  if (props.name) {
-    camelCase = props.name.split(' ');
+  if (name) {
+    camelCase = name.split(' ');
     for (let i = 0; i < camelCase.length; i++) {
       camelCase[i] = camelCase[i].toLowerCase();
       if (i > 0) {
@@ -34,14 +34,15 @@ export const StyledInput = props => {
   }
 
   return (
-    <Form.Item {...formItemLayout} label={props.name}>
+    <Form.Item {...formItemLayout} label={name}>
       <InputStyled
+        {...rest}
         name={camelCase}
-        value={props.values ? props.values[camelCase] : ''}
-        onChange={props.onChange}
         title={camelCase}
+        value={values ? values[camelCase] : ''}
+        onChange={onChange}
       >
-        {props.children && props.children}
+        {children && children}
       </InputStyled>
     </Form.Item>
   );

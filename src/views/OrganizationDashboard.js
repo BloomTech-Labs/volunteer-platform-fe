@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Select } from 'antd';
+import { Link } from 'react-router-dom';
 import { StyledLink, StyledButton } from '../styled';
 import { signOut, getUsersOrganizations, getAllEventsByOrg } from '../actions';
 import { useStateValue } from '../hooks/useStateValue';
@@ -11,7 +12,6 @@ const OrganizationDashboard = () => {
   const [ displayOrg, setDisplayOrg ] = useState( '' );
   
   useEffect( () => {
-    debugger;
     if( state.auth.googleAuthUser ){
       const uid = state.auth.googleAuthUser.uid;
       getUsersOrganizations( uid, dispatch );
@@ -24,14 +24,12 @@ const OrganizationDashboard = () => {
   };
   
   useEffect( () => {
-    debugger;
     if( state.org.userOrganizations.length > 0 ){
       setDisplayOrg( state.org.userOrganizations[ 0 ] );
     }
   }, [ state.org.userOrganizations ] );
   
   useEffect( () => {
-    debugger;
     if( displayOrg ){
       getAllEventsByOrg( displayOrg.orgId, dispatch );
     }
@@ -54,6 +52,11 @@ const OrganizationDashboard = () => {
       </Select>
       { displayOrg ? <OrganizationInfo org={ displayOrg }/> :
         <div>You have not created any organization yet</div> }
+      <Link to={{
+        pathname: '/org-dashboard/create-event',
+        state: {
+          org: displayOrg }
+        }} >Create event</Link>
       { state.events.events.length > 0 ?
         <EventList events={ state.events.events }/> :
         <div>No event has been created</div> }
