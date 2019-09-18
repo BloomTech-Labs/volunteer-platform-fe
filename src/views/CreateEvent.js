@@ -13,7 +13,7 @@ import moment from 'moment';
 import { useStateValue } from '../hooks/useStateValue';
 import { createEvent } from '../actions';
 
-const CreateEvent = (props) => {
+const CreateEvent = props => {
   const [localState, setState] = useState({
     event: {
       tags: ['Add a tag'],
@@ -26,7 +26,7 @@ const CreateEvent = (props) => {
 
   //Destructuring
   let { event, inputVisible, inputValue } = localState;
-  
+
   useEffect(() => {
     if (props.location.state.org) {
       setState({
@@ -37,10 +37,12 @@ const CreateEvent = (props) => {
         },
       });
     }
-  }, [props.location.state.org])
+  }, [props.location.state.org]);
 
   console.log(localState.event.orgId);
+
   //Date Format
+  const dateFormat = 'MM/DD/YYYY';
 
   const changeValue = e => {
     setState({
