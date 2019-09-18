@@ -7,7 +7,7 @@ import MainDashboard from './views/MainDashboard';
 import './App.css';
 import Login from './views/Login';
 import CreateOrg from './views/CreateOrg';
-import CreateEvent from './views/CreateEvent';
+import CreateEvent from './components/CreateEvent';
 import OrganizationDashboard from './views/OrganizationDashboard';
 import Signup from './views/Signup';
 import ProtectedRoute from './routes/ProtectedRoute';
