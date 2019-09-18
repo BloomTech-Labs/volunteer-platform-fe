@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Tag, Tooltip, Icon, message } from 'antd';
+import styled from 'styled-components';
 import moment from 'moment';
 import {
   StyledButton,
@@ -7,8 +8,10 @@ import {
   StyledInput,
   StyledTag,
   StyledDatePicker,
-  StyledNumber,
+  StyledInputNumber,
   StyledTimePicker,
+  AreaText,
+  StyledCard
 } from '../styled';
 import { useStateValue } from '../hooks/useStateValue';
 import { createEvent } from '../actions';
@@ -39,7 +42,7 @@ const CreateEvent = props => {
     }
   }, [ props.location.state.org ] );
   
-  console.log( localState.event.orgId );
+
   
   //Date Format
   const dateFormat = 'MM/DD/YYYY';
@@ -85,8 +88,8 @@ const CreateEvent = props => {
   //Handle Submit for Form
   const handleSubmit = e => {
     e.preventDefault();
-    localState.event.date = localState.event.date.unix();
     if (isFormValid()) {
+        localState.event.date = localState.event.date.unix();
       createEvent(localState.event, dispatch);
     }
   };
@@ -191,7 +194,8 @@ const CreateEvent = props => {
   };
 
   return (
-    <div>
+    <StyledCreateEvent>
+      <StyledCard>
       <h1>Create An Event</h1>
       <StyledForm onSubmit={handleSubmit}>
         <StyledInput
@@ -201,7 +205,7 @@ const CreateEvent = props => {
           type="text"
         />
         <label>Number: </label>
-        <StyledNumber
+        <StyledInputNumber
           name={'Number of People'}
           onChange={handleNumber}
           type="number"
@@ -240,7 +244,7 @@ const CreateEvent = props => {
           onChange={changeValue}
           type="text"
         />
-        <StyledInput
+        <AreaText
           name={'Description'}
           values={event}
           onChange={changeValue}
@@ -255,7 +259,7 @@ const CreateEvent = props => {
         />
         <StyledInput onChange={changeValue} name={'State'} values={event} />
         <StyledInput onChange={changeValue} name={'City'} values={event} />
-        <label>Tags: </label>
+        
         {event.tags.length >= 0 && handleTags}
         <StyledTag
           type="text"
@@ -271,8 +275,13 @@ const CreateEvent = props => {
           Create Event
         </StyledButton>
       </StyledForm>
-    </div>
+    </StyledCard>
+    </StyledCreateEvent>
   );
 };
 
+const StyledCreateEvent = styled.div`
+  display: flex;
+  justify-content: center;
+`;
 export default CreateEvent;
