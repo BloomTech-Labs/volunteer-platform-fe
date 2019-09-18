@@ -1,9 +1,9 @@
-import styled from "styled-components";
-import { Card } from "antd";
+import styled from 'styled-components';
+import { Card } from 'antd';
 
 export const StyledCard = styled( Card )`
 && {
-
-  max-width: 500px;
+width: 100%;
+max-width: 500px;
 }
 `;
