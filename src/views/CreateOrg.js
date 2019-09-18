@@ -30,12 +30,12 @@ const CreateOrg = (props) => {
         organizationOwnerUID: state.auth.googleAuthUser.uid,
       });
     }
-  }, [state]);
-
+  }, [ state ] );
+  
   const changeValue = e => {
-    setState({ ...localState, [e.target.name]: e.target.value });
+    setState( { ...localState, [ e.target.name ]: e.target.value } );
   };
-
+  
   const handleSubmit = e => {
     e.preventDefault();
 
@@ -78,6 +78,10 @@ const CreateOrg = (props) => {
 const StyledCreateOrg = styled.div`
 display: flex;
 justify-content: center;
+<<<<<<< HEAD
 `
 
+=======
+`;
+>>>>>>> staging
 export default CreateOrg;
