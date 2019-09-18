@@ -14,6 +14,7 @@
     "axios": "^0.19.0",
     "firebase": "^6.5.0",
     "jsdoc": "^3.6.3",
+    "moment": "^2.24.0",
     "nodemailer": "^6.3.0",
     "prop-types": "^15.7.2",
     "react": "^16.9.0",

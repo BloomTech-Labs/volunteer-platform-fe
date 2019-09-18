@@ -12,6 +12,7 @@ import * as global from './styles/global.css';
 import { initialState } from './reducers/initialState';
 import { mainReducer } from './reducers/mainReducer';
 
+
 //enable Sentry only for production builds
 if (process.env.NODE_ENV === 'production') {
   Sentry.init({ dsn: 
@@ -20,24 +21,29 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const GlobalStyle = createGlobalStyle`
-    ${ reset }
-    ${ global }
+    ${reset}
+    ${global}
     body{
-        font-family: ${ ( { theme } ) => theme.loraFont }
+        font-family: ${({ theme }) => theme.loraFont}
     }
 `;
 
 const theme = {
-  primaryColor: 'blue', secondaryColor: 'green', borderRadiusDefault: '10px',
+  primaryColor: 'blue',
+  secondaryColor: 'green',
+  borderRadiusDefault: '10px',
 };
 
-ReactDOM.render( <ThemeProvider theme={ theme }>
-  <>
-    <GlobalStyle/>
-    <StateProvider initialState={ initialState } reducer={ mainReducer }>
-      <Router>
-        <App/>
-      </Router>
-    </StateProvider>
-  </>
-</ThemeProvider>, document.getElementById( 'root' ) );
+ReactDOM.render(
+  <ThemeProvider theme={theme}>
+    <>
+      <GlobalStyle />
+      <StateProvider initialState={initialState} reducer={mainReducer}>
+        <Router>
+          <App />
+        </Router>
+      </StateProvider>
+    </>
+  </ThemeProvider>,
+  document.getElementById('root')
+);
