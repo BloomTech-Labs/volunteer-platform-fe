@@ -11,20 +11,17 @@ const Navigation = ( props ) => {
   const [ state, dispatch ] = useStateValue();
   const [ current, setCurrent ] = useState( 'Home' );
   
+  const pathNames = {'/': 'Home', '/create-org': 'Create Org', '/org-dashboard': 'Organization Dashboard', '/login': state.auth.loggedIn ? 'Logout' : 'Login'}
+
   useEffect( () => {
-    if( props.location.pathname === '/' ){
-      setCurrent( 'Home' );
-    }
-    
+    setCurrent(pathNames[props.location.pathname])    
   }, [ props.location.pathname ] );
   
   const handleClick = e => {
-    console.log( 'click ', e );
     if( e.key === 'Logout' ){
       signOut( dispatch );
       return;
     }
-    setCurrent( e.key );
   };
   
   return ( <StyledNavigation>
