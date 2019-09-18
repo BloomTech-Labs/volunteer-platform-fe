@@ -78,10 +78,5 @@ const CreateOrg = (props) => {
 const StyledCreateOrg = styled.div`
 display: flex;
 justify-content: center;
-<<<<<<< HEAD
-`
-
-=======
 `;
->>>>>>> staging
 export default CreateOrg;
