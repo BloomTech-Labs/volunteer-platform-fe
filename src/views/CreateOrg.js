@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router';
-import { StyledButton, StyledForm, StyledInput } from '../styled';
+import { StyledButton, StyledCard, StyledForm, StyledInput } from '../styled';
 import { registerOrganization } from '../actions';
 import { useStateValue } from '../hooks/useStateValue';
-import {AreaText} from '../styled/StyledTextArea';
+import { AreaText } from '../styled/StyledTextArea';
+import styled from 'styled-components';
 
 const CreateOrg = () => {
   
@@ -40,34 +41,42 @@ const CreateOrg = () => {
     
     registerOrganization( localState, dispatch );
   };
-  return ( <div>
-    <StyledForm onSubmit={ handleSubmit }>
-      <StyledInput name={ 'Organization Name' } values={ localState }
-                   onChange={ changeValue }/>
-      <StyledInput name={ 'Organization Type' } values={ localState }
-                   onChange={ changeValue }/>
-      <AreaText name={ 'Mission Statement' }
-                   values={ localState }
-                   onChange={ changeValue }/>
-      <AreaText name={ 'About Us' }
-                   values={ localState }
-                   onChange={ changeValue }/>
-      <StyledInput name={ 'City' } values={ localState }
-                   onChange={ changeValue }/>
-      <StyledInput name={ 'State' } values={ localState }
-                   onChange={ changeValue }/>
-      <StyledInput name={ 'Email' } values={ localState }
-                   onChange={ changeValue }/>
-      <StyledInput name={ 'Phone' } values={ localState }
-                   onChange={ changeValue }/>
-      <StyledInput name={ 'Website' } values={ localState }
-                   onChange={ changeValue }/>
-
-      <StyledButton type="primary" htmlType="submit">
-        Register
-      </StyledButton>
-    </StyledForm>
-  </div> );
+  return ( <StyledCreateOrg>
+    <StyledCard>
+      <h1>Create new organization!!</h1>
+      <StyledForm onSubmit={ handleSubmit }>
+        <StyledInput name={ 'Organization Name' } values={ localState }
+                     onChange={ changeValue }/>
+        <StyledInput name={ 'Organization Type' } values={ localState }
+                     onChange={ changeValue }/>
+        <AreaText name={ 'Mission Statement' }
+                  values={ localState }
+                  onChange={ changeValue }/>
+        <AreaText name={ 'About Us' }
+                  values={ localState }
+                  onChange={ changeValue }/>
+        <StyledInput name={ 'City' } values={ localState }
+                     onChange={ changeValue }/>
+        <StyledInput name={ 'State' } values={ localState }
+                     onChange={ changeValue }/>
+        <StyledInput name={ 'Email' } values={ localState }
+                     onChange={ changeValue }/>
+        <StyledInput name={ 'Phone' } values={ localState }
+                     onChange={ changeValue }/>
+        <StyledInput name={ 'Website' } values={ localState }
+                     onChange={ changeValue }/>
+        
+        <StyledButton type="primary" htmlType="submit">
+          Register
+        </StyledButton>
+      </StyledForm>
+    </StyledCard>
+  </StyledCreateOrg> );
 };
+
+const StyledCreateOrg = styled.div`
+display: flex;
+justify-content: center;
+`;
 
 export default CreateOrg;
