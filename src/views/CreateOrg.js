@@ -20,26 +20,25 @@ const CreateOrg = () => {
     socialMedia: [],
     website: '',
   };
-  const [localState, setState] = useState();
-  const [state, dispatch] = useStateValue();
-
-  useEffect(() => {
-    if (state.auth.googleAuthUser) {
-      setState({
-        ...localState,
-        organizationOwnerUID: state.auth.googleAuthUser.uid,
-      });
+  const [ localState, setState ] = useState();
+  const [ state, dispatch ] = useStateValue();
+  
+  useEffect( () => {
+    if( state.auth.googleAuthUser ){
+      setState( {
+        ...localState, organizationOwnerUID: state.auth.googleAuthUser.uid,
+      } );
     }
-  }, [state]);
-
+  }, [ state ] );
+  
   const changeValue = e => {
-    setState({ ...localState, [e.target.name]: e.target.value });
+    setState( { ...localState, [ e.target.name ]: e.target.value } );
   };
-
+  
   const handleSubmit = e => {
     e.preventDefault();
-
-    registerOrganization(localState, dispatch);
+    
+    registerOrganization( localState, dispatch );
   };
   return ( <StyledCreateOrg>
     <StyledCard>
@@ -77,5 +76,5 @@ const CreateOrg = () => {
 const StyledCreateOrg = styled.div`
 display: flex;
 justify-content: center;
-
+`;
 export default CreateOrg;
