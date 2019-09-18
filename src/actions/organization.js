@@ -15,21 +15,22 @@ export const CREATED_ORGANIZATION = 'CREATED_ORGANIZATION';
  * @param {Organization} org - non profit to be registered
  * @param {Dispatch} dispatch
  */
-export const registerOrganization = (org, dispatch) => {
+export const registerOrganization = ( org, dispatch ) => {
   store
-    .collection('organizations')
-    .add(org)
-    .then(res => {
-      dispatch(action(CREATED_ORGANIZATION));
-    })
-    .catch(err => {
-      console.log(err);
-    });
+    .collection( 'organizations' )
+    .add( org )
+    .then( res => {
+      dispatch( action( CREATED_ORGANIZATION ) );
+    } )
+    .catch( err => {
+      console.log( err );
+    } );
 };
 
 export const GET_USER_ORGANIZATIONS = 'GET_USER_ORGANIZATIONS';
 export const GET_USER_ORGANIZATIONS_FAILED = 'GET_USER_ORGANIZATIONS_FAILED';
 export const USER_HAS_NO_ORGANIZATIONS = 'USER_HAS_NO_ORGANIZATIONS';
+
 
 /**
  * Gets all the users organizations
@@ -48,11 +49,14 @@ export const getUsersOrganizations = (uid, dispatch) => {
         res.forEach(org => {
           let organization = org.data();
           organization.orgId = org.id;
-          orgs.push(organization);
-        });
-        dispatch(action(GET_USER_ORGANIZATIONS, orgs));
-      } else {
-        dispatch(action(USER_HAS_NO_ORGANIZATIONS));
+          orgs.push( organization );
+        } );
+        localStorage.setItem( 'createdOrg', 'true' );
+        dispatch( action( GET_USER_ORGANIZATIONS, orgs ) );
+        
+      }else{
+        localStorage.setItem( 'createdOrg', 'false' );
+        dispatch( action( USER_HAS_NO_ORGANIZATIONS ) );
       }
     })
     .catch(err => {

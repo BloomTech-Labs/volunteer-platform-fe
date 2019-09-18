@@ -1,6 +1,6 @@
-import React from "react";
-import { Redirect, Route } from "react-router";
-import { useStateValue } from "../hooks/useStateValue";
+import React from 'react';
+import { Redirect, Route } from 'react-router';
+import { useStateValue } from '../hooks/useStateValue';
 
 const CreateOrgRoute = ( { component: Component, ...rest } ) => {
   const [ state ] = useStateValue();
@@ -8,8 +8,8 @@ const CreateOrgRoute = ( { component: Component, ...rest } ) => {
   return ( <Route
     { ...rest }
     render={ props => {
-      return !state.auth.loggedIn ? <Redirect to={ "/" }/> :
-        <Component { ...props }/>;
+      return localStorage.getItem( 'loggedIn' ) !== 'true' ?
+        <Redirect to={ '/' }/> : <Component { ...props }/>;
     } }
   /> );
 };
