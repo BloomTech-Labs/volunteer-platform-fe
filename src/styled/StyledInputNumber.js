@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { Input, Form } from 'antd';
+import { InputNumber, Form } from 'antd';
 
-const TagStyled = styled(Input)`
+export const InputNumberStyled = styled(InputNumber)`
   && {
   }
 `;
@@ -14,12 +14,18 @@ const formItemLayout = {
     sm: { span: 8 },
   },
   wrapperCol: {
-    xs: { span: 35 },
+    xs: { span: 24 },
     sm: { span: 16 },
   },
 };
 
-export const StyledTag = ({ name, values, onChange, children, ...rest }) => {
+export const StyledInputNumber = ({
+  name,
+  values,
+  onChange,
+  children,
+  ...rest
+}) => {
   let camelCase = '';
   if (name) {
     camelCase = name.split(' ');
@@ -35,19 +41,19 @@ export const StyledTag = ({ name, values, onChange, children, ...rest }) => {
 
   return (
     <Form.Item {...formItemLayout} label={name}>
-      <TagStyled
+      <InputNumberStyled
         {...rest}
         name={camelCase}
         title={camelCase}
         onChange={onChange}
       >
         {children && children}
-      </TagStyled>
+      </InputNumberStyled>
     </Form.Item>
   );
 };
 
-TagStyled.propTypes = {
+InputNumberStyled.propTypes = {
   name: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
 };

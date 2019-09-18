@@ -37,8 +37,11 @@ const CreateEvent = props => {
         },
       });
     }
-  }, [props.location.state.org]);
-
+  }, [ props.location.state.org ] );
+  
+  console.log( localState.event.orgId );
+  
+  //Date Format
   const dateFormat = 'MM/DD/YYYY';
 
   const changeValue = e => {
@@ -63,22 +66,18 @@ const CreateEvent = props => {
   };
 
   //Handle Time
-  const handleStartTime = (_time, timeObject) => {
-    setState({
-      ...localState,
-      event: {
-        ...event,
-        startTime: timeObject,
+  const handleStartTime = ( _time, timeObject ) => {
+    setState( {
+      ...localState, event: {
+        ...event, startTime: timeObject,
       },
     });
   };
-
-  const handleEndTime = (_time, timeObject) => {
-    setState({
-      ...localState,
-      event: {
-        ...event,
-        endTime: timeObject,
+  
+  const handleEndTime = ( _time, timeObject ) => {
+    setState( {
+      ...localState, event: {
+        ...event, endTime: timeObject,
       },
     });
   };

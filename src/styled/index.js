@@ -5,5 +5,6 @@ export * from './StyledCard';
 export * from './StyledLink';
 export * from './StyledTag';
 export * from './StyledDatePicker';
-export * from './StyledNumber';
+export * from './StyledInputNumber';
 export * from './StyledTimePicker';
+export * from './StyledTextArea';
