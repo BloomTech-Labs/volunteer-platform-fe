@@ -33,7 +33,7 @@ export const AreaText = ( props ) => {
     return (
         <Form.Item { ...formItemLayout } label={ props.name }>
         <InputArea autosize={{minRows: props.minRows ? props.minRows : 4, maxRows: props.maxRows ? props.maxRows : 10}} value={ props.values ? props.values[ camelCase ] : '' }
-        onChange={ props.onChange } />
+        onChange={ props.onChange } name={ camelCase }/>
         </Form.Item>
     );
 }
