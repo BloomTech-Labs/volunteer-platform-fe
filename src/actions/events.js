@@ -22,7 +22,7 @@ export const createEvent = ( event, dispatch ) => {
     dispatch( action( CREATE_EVENT, event ) );
   } ).catch( error => {
     console.log( error );
-    dispatch( action( CREATE_EVENT_FAILED) );
+    dispatch( action( CREATE_EVENT_FAILED ) );
   } );
 };
 
@@ -109,6 +109,7 @@ export const NO_EVENTS_FOR_THAT_STATE = 'NO_EVENTS_FOR_THAT_STATE';
  * @param {Dispatch} dispatch
  */
 export const getAllEventsByState = ( state, dispatch ) => {
+  debugger;
   store.collection( 'events' )
     .where( 'state', '==', state )
     .get()
