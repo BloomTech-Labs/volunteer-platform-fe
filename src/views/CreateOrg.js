@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Redirect } from 'react-router';
+import { Redirect, withRouter } from 'react-router';
 import { StyledButton, StyledCard, StyledForm, StyledInput } from '../styled';
-import { registerOrganization } from '../actions';
+import { registerOrganization, updateOrganization } from '../actions';
 import { useStateValue } from '../hooks/useStateValue';
 import { AreaText } from '../styled/StyledTextArea';
 import styled from 'styled-components';
@@ -31,7 +31,13 @@ const CreateOrg = (props) => {
       });
     }
   }, [ state ] );
-  
+ 
+  useEffect( () => {
+    if ( props.location.state ) {
+      setState(props.location.state.org)
+    }
+  }, [props.location.state])
+
   const changeValue = e => {
     setState( { ...localState, [ e.target.name ]: e.target.value } );
   };
@@ -41,10 +47,29 @@ const CreateOrg = (props) => {
 
     registerOrganization(localState, dispatch);
     props.history.push('/org-dashboard')
+    if ( props.location.state ) {
+      updateOrganization( props.location.state.org.orgId, localState, dispatch );
+      props.history.push('/org-dashboard');
+    } else {
+      registerOrganization( localState, dispatch );
+      props.history.push('/org-dashboard');
+    }
+    setState(org);
   };
+
+  const cancel = e => {
+    e.preventDefault();
+    setState(org);
+    if ( props.location.state ) {
+      props.history.push('/org-dashboard');
+    } else {
+      props.history.push('/');
+    }
+  }
+
   return ( <StyledCreateOrg>
     <StyledCard>
-      <h1>Create new organization!!</h1>
+      <h1>{props.location.state ? 'Update organization info' : 'Create new organization!!'}</h1>
       <StyledForm onSubmit={ handleSubmit }>
         <StyledInput name={ 'Organization Name' } values={ localState }
                      onChange={ changeValue }/>
@@ -68,7 +93,10 @@ const CreateOrg = (props) => {
                      onChange={ changeValue }/>
         
         <StyledButton type="primary" htmlType="submit">
-          Register
+          {props.location.state ? 'Update' : 'Register'}
+        </StyledButton>
+        <StyledButton type="danger" onClick={cancel}>
+          Cancel
         </StyledButton>
       </StyledForm>
     </StyledCard>
@@ -79,4 +107,4 @@ const StyledCreateOrg = styled.div`
 display: flex;
 justify-content: center;
 `;
-export default CreateOrg;
+export default withRouter(CreateOrg);

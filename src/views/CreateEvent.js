@@ -28,8 +28,11 @@ const CreateEvent = props => {
         },
       } );
     }
-  }, [props.location.state.org]);
-
+  }, [ props.location.state.org ] );
+  
+  console.log( localState.event.orgId );
+  
+  //Date Format
   const dateFormat = 'MM/DD/YYYY';
   
   const changeValue = e => {
@@ -50,22 +53,18 @@ const CreateEvent = props => {
   };
   
   //Handle Time
-  const handleStartTime = (_time, timeObject) => {
-    setState({
-      ...localState,
-      event: {
-        ...event,
-        startTime: timeObject,
+  const handleStartTime = ( _time, timeObject ) => {
+    setState( {
+      ...localState, event: {
+        ...event, startTime: timeObject,
       },
     } );
   };
-
-  const handleEndTime = (_time, timeObject) => {
-    setState({
-      ...localState,
-      event: {
-        ...event,
-        endTime: timeObject,
+  
+  const handleEndTime = ( _time, timeObject ) => {
+    setState( {
+      ...localState, event: {
+        ...event, endTime: timeObject,
       },
     } );
   };
@@ -82,14 +81,12 @@ const CreateEvent = props => {
   
   //Handles Tags Opening/Closing
   const handleClose = removedTag => {
-    const tags = event.tags.filter(tag => tag !== removedTag);
-    setState({
-        ...localState,
-        event: {
-            ...event,
-            tags
-        }
-     });
+    const tags = event.tags.filter( tag => tag !== removedTag );
+    setState( {
+      ...localState, event: {
+        ...event, tags,
+      },
+    } );
   };
   
   //Shows Input on Tag
