@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Tag, Tooltip, Icon, message } from 'antd';
+import moment from 'moment';
 import {
   StyledButton,
   StyledForm,
@@ -8,8 +10,6 @@ import {
   StyledNumber,
   StyledTimePicker,
 } from '../styled';
-import { Tag, Tooltip, Icon, message } from 'antd';
-import moment from 'moment';
 import { useStateValue } from '../hooks/useStateValue';
 import { createEvent } from '../actions';
 
@@ -22,9 +22,8 @@ const CreateEvent = props => {
     inputValue: '',
   });
 
-  const [state, dispatch] = useStateValue();
+  const [, dispatch] = useStateValue();
 
-  //Destructuring
   let { event, inputVisible, inputValue } = localState;
 
   useEffect(() => {
@@ -39,9 +38,6 @@ const CreateEvent = props => {
     }
   }, [props.location.state.org]);
 
-  console.log(localState.event.orgId);
-
-  //Date Format
   const dateFormat = 'MM/DD/YYYY';
 
   const changeValue = e => {
@@ -67,7 +63,6 @@ const CreateEvent = props => {
 
   //Handle Time
   const handleStartTime = (_time, timeObject) => {
-    console.log(timeObject);
     setState({
       ...localState,
       event: {
@@ -78,7 +73,6 @@ const CreateEvent = props => {
   };
 
   const handleEndTime = (_time, timeObject) => {
-    console.log(timeObject);
     setState({
       ...localState,
       event: {
@@ -99,7 +93,13 @@ const CreateEvent = props => {
   //Handles Tags Opening/Closing
   const handleClose = removedTag => {
     const tags = event.tags.filter(tag => tag !== removedTag);
-    setState({ tags });
+    setState({
+        ...localState,
+        event: {
+            ...event,
+            tags
+        }
+     });
   };
 
   //Shows Input on Tag

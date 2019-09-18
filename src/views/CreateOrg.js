@@ -6,7 +6,7 @@ import { useStateValue } from '../hooks/useStateValue';
 import { AreaText } from '../styled/StyledTextArea';
 import styled from 'styled-components';
 
-const CreateOrg = () => {
+const CreateOrg = (props) => {
   const org = {
     organizationOwnerUID: '',
     organizationName: '',
@@ -22,7 +22,7 @@ const CreateOrg = () => {
   };
   const [localState, setState] = useState();
   const [state, dispatch] = useStateValue();
-
+  
   useEffect(() => {
     if (state.auth.googleAuthUser) {
       setState({
@@ -40,6 +40,7 @@ const CreateOrg = () => {
     e.preventDefault();
 
     registerOrganization(localState, dispatch);
+    props.history.push('/org-dashboard')
   };
   return ( <StyledCreateOrg>
     <StyledCard>
@@ -77,5 +78,6 @@ const CreateOrg = () => {
 const StyledCreateOrg = styled.div`
 display: flex;
 justify-content: center;
+`
 
 export default CreateOrg;

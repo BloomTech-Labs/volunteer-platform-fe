@@ -7,7 +7,7 @@ import { useStateValue } from '../hooks/useStateValue';
 
 const { SubMenu } = Menu;
 
-const Navagation = ( props ) => {
+const Navigation = ( props ) => {
   const [ state, dispatch ] = useStateValue();
   const [ current, setCurrent ] = useState( 'Home' );
   
@@ -60,4 +60,4 @@ const StyledNavigation = styled.div`
       
       `;
 
-export default withRouter( Navagation );
+export default withRouter( Navigation );
