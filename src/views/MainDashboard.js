@@ -9,7 +9,7 @@ const MainDashboard = () => {
   const [ localState, setInputState ] = useState( { state: '' } );
   
   useEffect( () => {
-    debugger;
+    
     if( localState.state.length === 2 ){
       getAllEventsByState( localState.state, dispatch );
     }
