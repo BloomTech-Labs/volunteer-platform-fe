@@ -1,6 +1,6 @@
 // Firebase App (the core Firebase SDK) is always required and must be listed
 // first
-import * as firebase from "firebase";
+import * as firebase from 'firebase';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_apiKey,
@@ -9,10 +9,10 @@ const firebaseConfig = {
   projectId: process.env.REACT_APP_projectId,
   storageBucket: process.env.REACT_APP_storageBucket,
   messagingSenderId: process.env.REACT_APP_messagingSenderId,
-  appId: process.env.REACT_APP_appId
+  appId: process.env.REACT_APP_appId,
 };
 // Initialize Firebase
-firebase.initializeApp( firebaseConfig );
+firebase.initializeApp(firebaseConfig);
 export const store = firebase.firestore();
 
 export default firebase;
