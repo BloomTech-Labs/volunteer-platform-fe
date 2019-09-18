@@ -39,8 +39,6 @@ const CreateEvent = props => {
     }
   }, [props.location.state.org]);
 
-  console.log(localState.event.orgId);
-
   //Date Format
   const dateFormat = 'MM/DD/YYYY';
 

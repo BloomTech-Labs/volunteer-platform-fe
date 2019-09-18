@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import EventList from '../components/EventList';
-import {getAllEventsByState} from '../actions/events';
+import { getAllEventsByState } from '../actions/events';
 import { StyledButton, StyledForm, StyledInput, StyledLink } from '../styled';
 import { signOut } from '../actions';
 import { useStateValue } from '../hooks/useStateValue';
@@ -10,10 +11,20 @@ const MainDashboard = () => {
   const [ inputState, setInputState ] = useState( '' );
 
   useEffect( () => {   
-      if(inputState.length === 2 ) {
-        getAllEventsByState( state, dispatch );
-      }
-    }, [inputState] );
+    axios.get(`http://ipinfo.io?token=${process.env.REACT_APP_ipinfoKey}`)
+      .then(response => {
+        console.log(response);
+      })  
+      .catch(error => {
+        console.log('unable to detect location');
+      })
+  }, [] );
+
+  useEffect( () => {   
+    if(inputState.length === 2 ) {
+      getAllEventsByState( state, dispatch );
+    }
+  }, [inputState] );
 
   const onChange = e => {
     setInputState({ ...inputState, [e.target.name]: e.target.value });
