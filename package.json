@@ -51,6 +51,8 @@
     "@testing-library/react": "^9.1.4"
   },
   "jest": {
-    "coverageReporters": ["html"]
+    "coverageReporters": [
+      "html"
+    ]
   }
 }
