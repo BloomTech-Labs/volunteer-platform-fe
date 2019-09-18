@@ -39,6 +39,7 @@ export const StyledInput = props => {
         name={camelCase}
         value={props.values ? props.values[camelCase] : ''}
         onChange={props.onChange}
+        title={camelCase}
       >
         {props.children && props.children}
       </InputStyled>
