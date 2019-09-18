@@ -6,13 +6,6 @@ import { useStateValue } from '../hooks/useStateValue';
 const MainDashboard = () => {
   const [ state, dispatch ] = useStateValue();
   return ( <div>
-    { state.org.createdOrg &&
-    <StyledLink to={ 'org-dashboard' }>Organization Dashboard</StyledLink> }
-    { !state.auth.loggedIn ? <StyledLink to={ '/login' }>Login</StyledLink> :
-      <><StyledLink to={ '/create-org' }>Create
-        Organization</StyledLink><StyledButton
-        onClick={ () => signOut( dispatch ) }>Log
-        out</StyledButton> </> }
     <h1>Shows a list of events.</h1>
   </div> );
 };

@@ -10,9 +10,11 @@ import CreateOrg from './views/CreateOrg';
 import CreateEvent from './views/CreateEvent';
 import OrganizationDashboard from './views/OrganizationDashboard';
 import Signup from './views/Signup';
-import ProtectedRoute from './components/ProtectedRoute';
-import LoginRoute from './components/LoginRoute';
-import SignupRoute from './components/SignupRotue';
+import ProtectedRoute from './routes/ProtectedRoute';
+import LoginRoute from './routes/LoginRoute';
+import SignupRoute from './routes/SignupRotue';
+import OrgDashboardRoute from './routes/OrgDashboardRoute';
+import CreateOrgRoute from './routes/CreateOrgRoute';
 import Navagation from './components/Navigation';
 import styled from 'styled-components';
 
@@ -37,12 +39,12 @@ function App(){
     <Switch>
       <ProtectedRoute path={ '/' } component={ MainDashboard } exact/>
       <LoginRoute path={ '/login' } component={ Login }/>
-      <ProtectedRoute path={ '/create-org' } component={ CreateOrg }/>
-      <ProtectedRoute
+      <CreateOrgRoute path={ '/create-org' } component={ CreateOrg }/>
+      <OrgDashboardRoute
         path={ '/org-dashboard/create-event' }
         component={ CreateEvent }
       />
-      <ProtectedRoute
+      <OrgDashboardRoute
         path={ '/org-dashboard' }
         component={ OrganizationDashboard }
       />
