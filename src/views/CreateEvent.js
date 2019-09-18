@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyledButton,
   StyledForm,
@@ -13,7 +13,7 @@ import moment from 'moment';
 import { useStateValue } from '../hooks/useStateValue';
 import { createEvent } from '../actions';
 
-const CreateEvent = () => {
+const CreateEvent = props => {
   const [localState, setState] = useState({
     event: {
       tags: ['Add a tag'],
@@ -26,6 +26,20 @@ const CreateEvent = () => {
 
   //Destructuring
   let { event, inputVisible, inputValue } = localState;
+
+  useEffect(() => {
+    if (props.location.state.org) {
+      setState({
+        ...localState,
+        event: {
+          ...event,
+          orgId: props.location.state.org.orgId,
+        },
+      });
+    }
+  }, [props.location.state.org]);
+
+  console.log(localState.event.orgId);
 
   //Date Format
   const dateFormat = 'MM/DD/YYYY';
