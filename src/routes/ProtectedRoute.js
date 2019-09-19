@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect, Route } from 'react-router';
 import { useStateValue } from '../hooks/useStateValue';
 
-const ProtectedRoute = ( { component: Component, ...rest } ) => {
+export const ProtectedRoute = ( { component: Component, ...rest } ) => {
   const [ state ] = useStateValue();
   
   return ( <Route

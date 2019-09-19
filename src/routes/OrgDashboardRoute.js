@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect, Route } from 'react-router';
 import { useStateValue } from '../hooks/useStateValue';
 
-const OrganizationRoute = ( { component: Component, ...rest } ) => {
+export const OrganizationRoute = ( { component: Component, ...rest } ) => {
   
   const [ state ] = useStateValue();
   
