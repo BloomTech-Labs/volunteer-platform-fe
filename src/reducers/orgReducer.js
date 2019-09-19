@@ -1,6 +1,6 @@
 import {
   GET_USER_ORGANIZATIONS, GET_USER_ORGANIZATIONS_FAILED, CREATED_ORGANIZATION,
-  GET_ORG_BY_ID, GET_ORG_BY_ID_FAILED, USER_HAS_NO_ORGANIZATIONS
+  GET_ORG_BY_ID, GET_ORG_BY_ID_FAILED, USER_HAS_NO_ORGANIZATIONS, DELETE_ORG,  DELETE_ORG_FAILED
 } from '../actions/organization';
 import { SIGNED_OUT } from '../actions';
 
@@ -43,6 +43,19 @@ export const orgReducer = ( state, action ) => {
         ...state, createdOrg: false, userOrganizations: [],
       };
     
+    case DELETE_ORG:
+      return {
+        ...state,
+        deleteEventFailedError: '',
+        userOrganizations: state. userOrganizations.filter(org => org.orgId !== action.payload),
+      };
+
+    case DELETE_ORG_FAILED:
+      return {
+        ...state, 
+        deleteOrgFailedError: 'Failed to remove org.'
+      };
+  
     default:
       return state;
   }
