@@ -71,7 +71,7 @@ const CreateEvent = props => {
   
   //Handle Submit for Form
   const handleSubmit = e => {
-    debugger;
+    
     e.preventDefault();
     localState.event.date = localState.event.date.unix();
     if( isFormValid() ){

@@ -6,7 +6,7 @@ const OrganizationRoute = ( { component: Component, ...rest } ) => {
   
   const [ state ] = useStateValue();
   
-  debugger;
+  
   return ( <Route
     { ...rest }
     render={ props => {
