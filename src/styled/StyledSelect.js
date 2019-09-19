@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { Select, Form } from 'antd';
+import { Select, Form, Tooltip, Icon } from 'antd';
 
 const SelectStyled = styled(Select)`
   && {
@@ -20,7 +20,7 @@ const formItemLayout = {
   },
 };
 
-export const StyledSelect = ({ name, values, onChange, children, ...rest }) => {
+export const StyledSelect = ({ name, values, onChange, children, tooltipTitle, ...rest }) => {
 
   let camelCase = '';
   if (name) {
@@ -36,13 +36,21 @@ export const StyledSelect = ({ name, values, onChange, children, ...rest }) => {
   }
 
   return (
-    <Form.Item {...formItemLayout} label={name}>
+    <Form.Item { ...formItemLayout} label={ 
+      <span>
+        {name} 
+        {tooltipTitle && (
+          <Tooltip title={tooltipTitle}>
+            <Icon type="question-circle-o" />
+          </Tooltip>
+        )}
+      </span> }>
       <SelectStyled
-        {...rest}
-        name={camelCase}
-        title={camelCase}
-        values={values ? values[camelCase] : ''}
-        onChange={onChange}
+        { ...rest }
+        name = { camelCase }
+        title={ camelCase }
+        tooltipTitle={ tooltipTitle }
+        onChange={ onChange }
       >
         {children && children}
       </SelectStyled>
@@ -52,7 +60,6 @@ export const StyledSelect = ({ name, values, onChange, children, ...rest }) => {
 
 StyledSelect.propTypes = {
   name: PropTypes.string.isRequired,
-  values: PropTypes.objectOf(PropTypes.any),
   onChange: PropTypes.func.isRequired,
 };
 

@@ -4,7 +4,7 @@ import { StyledButton, StyledCard, StyledForm, StyledInput, StyledSelect } from 
 import { registerOrganization, updateOrganization } from '../actions';
 import { useStateValue } from '../hooks/useStateValue';
 import { StyledTextArea } from '../styled/StyledTextArea';
-import { Select } from 'antd'
+import { Select, Icon, Tooltip } from 'antd'
 import styled from 'styled-components';
 
 const CreateOrg = (props) => {
@@ -81,12 +81,9 @@ const CreateOrg = (props) => {
       <StyledForm onSubmit={ handleSubmit }>
         <StyledInput name={ 'Organization Name' } values={ localState }
                      onChange={ changeValue }/>
-        <StyledSelect name={ 'Cause Areas' } value={localState.causeAreas} mode='multiple' onChange={ changeCauses }>
+        <StyledSelect name={ 'Cause Areas' } value={localState.causeAreas} mode='multiple' onChange={ changeCauses } tooltipTitle={'Choose all that apply'} >
           {state.tags.causeAreas.map(item => <Option key={item.id} value={item.name}>{item.name}</Option>)}
         </StyledSelect>
-        <StyledTextArea name={ 'Mission Statement' }
-                        values={ localState }
-                        onChange={ changeValue }/>
         <StyledTextArea name={ 'About Us' }
                         values={ localState }
                         onChange={ changeValue }/>
