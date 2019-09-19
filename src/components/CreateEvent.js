@@ -14,12 +14,12 @@ import { Tag, Tooltip, Icon, message } from 'antd';
 import moment from 'moment';
 import { useStateValue } from '../hooks/useStateValue';
 import { createEvent } from '../actions';
-import styled from 'styled-components';
+
 
 const CreateEvent = props => {
   const [localState, setState] = useState({
     event: {
-      tags: ['Add a tag'],
+      tags: [],
     },
     inputVisible: false,
     inputValue: '',
