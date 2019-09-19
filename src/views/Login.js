@@ -36,27 +36,27 @@ const Login = () => {
   return (
     <StyledLogin>
       <h1>Login with</h1>
+      <br></br>
       <Inline>
         <StyledButton
           type={'primary'}
           style={{ margin: ' 0 2rem 1rem 0' }}
           onClick={() => signIn(GOOGLE_PROVIDER, dispatch)}
         >
-          {' '}
-          Google{' '}
+          <Icon type="google" />
         </StyledButton>
         <StyledButton
           type={'primary'}
           style={{ margin: ' 0 2rem 1rem 0' }}
           onClick={() => signIn(FACEBOOK_PROVIDER, dispatch)}
         >
-          Facebook
+          <Icon type="facebook" theme="filled" />
         </StyledButton>
         <StyledButton
           type={'primary'}
           onClick={() => signIn(TWITTER_PROVIDER, dispatch)}
         >
-          Twitter
+          <Icon type="twitter-square" theme="filled" />
         </StyledButton>
       </Inline>
       <StyledForm
