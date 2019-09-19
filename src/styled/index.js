@@ -8,3 +8,4 @@ export * from './StyledDatePicker';
 export * from './StyledInputNumber';
 export * from './StyledTimePicker';
 export * from './StyledTextArea';
+export * from './StyledSelect';

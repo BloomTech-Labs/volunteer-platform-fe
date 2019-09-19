@@ -115,7 +115,7 @@ export const DELETE_ORG_FAILED = 'DELETE_ORG_FAILED';
  * @param {String} orgId
  * @param {Dispatch} dispatch
  */
-export const deleteOrganization = (ordId, dispatch) => {
+export const deleteOrganization = (orgId, dispatch) => {
   store.collection( 'organizations' )
     .doc( orgId )
     .delete()
