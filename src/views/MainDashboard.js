@@ -12,9 +12,10 @@ const MainDashboard = () => {
   
   //fetching user's location by IP
   useEffect(() => {
-    axios.get(`http://ipinfo.io?token=${process.env.REACT_APP_ipinfoKey}`)
+    axios.get(`https://geoip-db.com/json/${process.env.REACT_APP_ipinfoKey}`)
       .then(res => {
-        let stateAbbrev = Object.keys(stateConversion).find(key => stateConversion[key] === res.data.region);
+        console.log(res);
+        let stateAbbrev = Object.keys(stateConversion).find(key => stateConversion[key] === res.data.state);
         if (stateAbbrev) {
           setInputState({
             ...localState,
