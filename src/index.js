@@ -29,8 +29,21 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const theme = {
-  primaryColor: 'blue',
-  secondaryColor: 'green',
+  primary400: '#0B5B79',
+  primary300: '#0C6B8D',
+  primary200: '#12A0D3',
+  primary100: '#8AD6F5',
+  primary50: '#E8F7FD',
+  secondary400: '#CC6600',
+  secondary300: '#FF8000',
+  secondary200: '#FF9933',
+  secondary100: '#FFCC99',
+  secondary50: '#FFF7F0',
+  Gray400: '#181B1B99',
+  Gray300: '#181B1B80',
+  Gray200: '#181B1B4D',
+  Gray100: '#181B1B1A',
+  Gray50: '#181B1B0D',
   borderRadiusDefault: '10px',
 };
 
