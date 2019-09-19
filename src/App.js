@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Switch, Route } from 'react-router';
 import { signedIn, signedOut } from './actions/auth';
 import { useStateValue } from './hooks/useStateValue';
@@ -23,6 +23,7 @@ const { Sider, Footer, Content, Header } = Layout;
 
 function App(){
   const [ state, dispatch ] = useStateValue();
+  const [ collapsed, setCollapsed ] = useState( false );
   
   /**
    * Set up google auth on change event handler.
@@ -49,12 +50,25 @@ function App(){
         onCollapse={ ( collapsed, type ) => {
           console.log( collapsed, type );
         } }
-      
+        trigger={ null }
+        collapsed={ collapsed }
+        reverseArrow={ true }
       >
         <Navigation/>
       </StyledSider>
       <Layout>
         <Content>
+          <StyledHeader style={ { background: '#fff', padding: 0 } }
+                        collapsed={ collapsed }>
+            Header
+            <StyledMenuButton
+              collapsed={ collapsed }
+              className="trigger"
+              type={ collapsed ? 'menu-fold' : 'menu-unfold' }
+              onClick={ () => setCollapsed( !collapsed ) }
+            />
+          
+          </StyledHeader>
           <Switch>
             <ProtectedRoute path={ '/' } component={ MainDashboard } exact/>
             <LoginRoute path={ '/login' } component={ Login }/>
@@ -78,16 +92,33 @@ function App(){
   </StyledApp> );
 }
 
+const StyledMenuButton = styled( Icon )`
+&& {
+margin-right: ${ props => props.collapsed ? '30px' : '230px' };
+font-size: 2rem;
+margin-top: 20px;
+transition: all .2s;
+}
+`;
+
+const StyledHeader = styled( Header )`
+&& {
+display: flex;
+justify-content: space-between;
+}
+`;
+
 const StyledSider = styled( Sider )`
 position: absolute;
+right: 0;
 z-index: 10;
 min-height: 100%;
 height: 100%;
 `;
 
 const StyledApp = styled.div`
-  display: flex;
-  flex-direction: column;
+display: flex;
+flex-direction: column;
 `;
 
 export default App;
