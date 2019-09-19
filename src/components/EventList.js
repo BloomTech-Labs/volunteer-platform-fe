@@ -1,12 +1,14 @@
 import React from 'react';
 import Event from './Event';
-
-const EventList = ({events}) => {  
-    return (
-        <>
-        {events.map((event => <Event key={event.eventId} event={event} /> ))}
-        </>
-    )
+import { StyledEventList } from '../styled';
+const EventList = ({ events }) => {
+  return (
+    <StyledEventList>
+      {events.map(event => (
+        <Event key={event.eventId} event={event} />
+      ))}
+    </StyledEventList>
+  );
 };
 
 export default EventList;
