@@ -88,7 +88,8 @@ export const getOrganizationByOrgId = ( orgId, dispatch ) => {
     } );
 };
 /**
- *
+ * Update an organization in the db
+ * @function
  * @param {String} orgId
  * @param {Organization} updates
  * @param {Dispatch} dispatch
@@ -104,3 +105,25 @@ export const updateOrganization = ( orgId, updates, dispatch ) => {
       console.log( 'error updating organization' );
     } );
 };
+
+export const DELETE_ORG = 'DELETE_ORG';
+export const DELETE_ORG_FAILED = 'DELETE_ORG_FAILED';
+
+/**
+ * Delete an organization in the db
+ * @function
+ * @param {String} orgId
+ * @param {Dispatch} dispatch
+ */
+export const deleteOrganization = (ordId, dispatch) => {
+  store.collection( 'organizations' )
+    .doc( orgId )
+    .delete()
+    .then(res => {
+      dispatch(action(DELETE_ORG, orgId));
+    })
+    .catch(err => {
+      console.log(err);
+      dispatch(action(DELETE_ORG_FAILED));
+    })
+} 
