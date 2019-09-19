@@ -3,33 +3,36 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Select, Form, Tooltip, Icon } from 'antd';
 
-const SelectStyled = styled( Select )`
+const SelectStyled = styled(Select)`
   && {
-
-}
-`;
+  }`
 
 const formItemLayout = {
   labelCol: {
-    xs: { span: 24 }, sm: { span: 8 },
-  }, wrapperCol: {
-    xs: { span: 24 }, sm: { span: 16 },
+
+    xs: { span: 24 },
+    sm: { span: 8 },
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 16 },
+
   },
 };
 
 export const StyledSelect = ({ name, values, onChange, children, tooltipTitle, ...rest }) => {
 
   let camelCase = '';
-  if( name ){
-    camelCase = name.split( ' ' );
-    for( let i = 0; i < camelCase.length; i++ ){
-      camelCase[ i ] = camelCase[ i ].toLowerCase();
-      if( i > 0 ){
-        camelCase[ i ] = camelCase[ i ].charAt( 0 ).toUpperCase() +
-          camelCase[ i ].slice( 1 );
+  if (name) {
+    camelCase = name.split(' ');
+    for (let i = 0; i < camelCase.length; i++) {
+      camelCase[i] = camelCase[i].toLowerCase();
+      if (i > 0) {
+        camelCase[i] =
+          camelCase[i].charAt(0).toUpperCase() + camelCase[i].slice(1);
       }
     }
-    camelCase = camelCase.join( '' );
+    camelCase = camelCase.join('');
   }
 
   return (
@@ -49,13 +52,14 @@ export const StyledSelect = ({ name, values, onChange, children, tooltipTitle, .
         tooltipTitle={ tooltipTitle }
         onChange={ onChange }
       >
-        { children && children }
+        {children && children}
       </SelectStyled>
     </Form.Item>
-  )
-}
+  );
+};
 
 StyledSelect.propTypes = {
   name: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
 };
+
