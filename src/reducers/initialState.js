@@ -1,18 +1,28 @@
 export const initialState = {
   auth: {
-    loggedIn: true, signedUp: true, googleAuthUser: null, registeredUser: null,
-  }, org: {
+    loggedIn: true,
+    signedUp: true,
+    googleAuthUser: null,
+    registeredUser: null,
+  },
+  org: {
     createdOrg: false,
     userOrganizations: [],
     getOrganizationFailedError: '',
     organization: {},
-  }, events: {
+  },
+  events: {
     events: [],
     createEventFailedError: '',
     deleteEventFailedError: '',
     editEventFailedError: '',
     getEventsFailedError: '',
   },
+  tags: {
+      interests: [],
+      requirements: [],
+      causeAreas: []
+  }
 };
 
 /**
