@@ -9,7 +9,7 @@ const Event = ( { event } ) => {
   const [ { org, events }, dispatch ] = useStateValue();
   
   let ableToDelete = false;
-  debugger;
+  
   org.userOrganizations.forEach( organization => {
     if( organization.orgId === events.events.orgId ){
       ableToDelete = true;
