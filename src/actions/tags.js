@@ -61,7 +61,7 @@ export const getCauseAreas = dispatch => {
         cause.id = doc.id;
         causes.push(cause);
       });
-      dispatch(action(GOT_CAUSE_AREAS, cause));
+      dispatch(action(GOT_CAUSE_AREAS, causes));
     })
     .catch(err => {
       dispatch(action(GETTING_TAGS_ERROR));

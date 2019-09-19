@@ -17,6 +17,7 @@ import OrgDashboardRoute from './routes/OrgDashboardRoute';
 import CreateOrgRoute from './routes/CreateOrgRoute';
 import Navigation from './components/Navigation';
 import styled from 'styled-components';
+import {getInterestTags, getRequirementTags, getCauseAreas} from './actions'
 
 function App() {
   const [state, dispatch] = useStateValue();
@@ -34,6 +35,12 @@ function App() {
     });
   }, []);
 
+  useEffect(() => {
+    getInterestTags(dispatch)
+    getRequirementTags(dispatch)
+    getCauseAreas(dispatch)
+  }, [])
+  
   return (
     <StyledApp className="App">
       <Navigation />
