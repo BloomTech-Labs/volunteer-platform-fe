@@ -34,6 +34,16 @@ export const initialState = {
  */
 
 /**
+ * @typedef tags
+ * @type {Object}
+ * @property {Tag[]} interests Array of Tags for the event interests.
+ * @property {Tag[]} requirements Array of Tags for the volunteer requirements.
+ * @property {Tag[]} causeAreas Array of Tags for organization cause areas.
+ * @property {boolean} isGetting Is getting tags from the DB.
+ * @property {String} errorMessage Error message for getting tags from DB.
+ */
+
+/**
  * @typedef auth
  * @type {Object}
  * @property {boolean} loggedIn Indicates if the user is logged in or not.

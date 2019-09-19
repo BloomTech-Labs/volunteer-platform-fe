@@ -110,6 +110,7 @@ export const signIn = ( authType, dispatch, email, password ) => {
     } );
 };
 
+
 export const signOut = dispatch => {
   firebase
     .auth()

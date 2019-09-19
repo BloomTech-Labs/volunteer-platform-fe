@@ -46,6 +46,7 @@ export const SIGNED_IN = 'SIGNED_IN';
  * @param {Dispatch} dispatch - useReducer dispatch function
  */
 export const signedIn = ( user, dispatch ) => {
+  localStorage.setItem( 'loggedIn', 'true' );
   dispatch( action( SIGNED_IN, user ) );
   checkUserRegistered( user.uid, dispatch );
   getUsersOrganizations( user.uid, dispatch );
@@ -59,9 +60,9 @@ export const SIGNED_OUT = 'SIGNED_OUT';
  * @function
  * @param {Dispatch} dispatch
  */
-export const signedOut = ( dispatch ) => {
+export const signedOut = dispatch => {
+  localStorage.setItem( 'loggedIn', 'false' );
   dispatch( action( SIGNED_OUT ) );
-  
 };
 
 export const GOOGLE_PROVIDER = 'GOOGLE_PROVIDER';
@@ -90,34 +91,31 @@ export const GET_USER_ACCOUNT_SUCCESSFUL = 'GET_USER_ACCOUNT_SUCCESSFUL';
  * @param {string} [password]
  */
 export const signIn = ( authType, dispatch, email, password ) => {
-  
   dispatch( { type: SIGNIN_INIT } );
   if( authType === EMAIL_PROVIDER ){
-    firebase.auth()
+    firebase
+      .auth()
       .createUserWithEmailAndPassword( email, password )
       .then( result => {
-        
-        firebase.auth()
+        firebase
+          .auth()
           .signInWithEmailAndPassword( email, password )
           .then( res => {
-            
             signedIn( res.user, dispatch );
-            
           } );
       } )
       .catch( error => {
-        
         console.log( error.code );
         if( error.code.includes( 'email-already-in-use' ) ){
-          firebase.auth()
+          firebase
+            .auth()
             .signInWithEmailAndPassword( email, password )
             .then( res => {
-              
               signedIn( res.user, dispatch );
-            } ).catch( err => {
-            
-            console.log( err );
-          } );
+            } )
+            .catch( err => {
+              console.log( err );
+            } );
         }
       } );
     return;
@@ -128,7 +126,6 @@ export const signIn = ( authType, dispatch, email, password ) => {
     .auth()
     .signInWithPopup( provider )
     .then( function( result ){
-      
       if( result.user ){
         signedIn( result.user, dispatch );
       }else{
@@ -138,21 +135,20 @@ export const signIn = ( authType, dispatch, email, password ) => {
     .catch( function( error ){
       console.log( error );
       dispatch( action( SIGNIN_FAILED ) );
-      
     } );
-  
 };
 
-/**
- * Signs a user out of google auth.
- * @param {Dispatch} dispatch
- */
-export const signOut = ( dispatch ) => {
-  firebase.auth().signOut().then( () => {
-    signedOut( dispatch );
-  } ).catch( err => {
-    console.log( err );
-  } );
+
+export const signOut = dispatch => {
+  firebase
+    .auth()
+    .signOut()
+    .then( () => {
+      signedOut( dispatch );
+    } )
+    .catch( err => {
+      console.log( err );
+    } );
 };
 
 /**
@@ -163,15 +159,17 @@ export const signOut = ( dispatch ) => {
  * @param {Dispatch} dispatch - function from useStateValue() hook.
  */
 export const checkUserRegistered = ( uid, dispatch ) => {
-  store.collection( 'users' )
+  store
+    .collection( 'users' )
     .doc( uid )
     .get()
     .then( res => {
-      
       if( res.exists ){
         const data = res.data();
+        localStorage.setItem( 'userRegistered', 'true' );
         dispatch( action( GET_USER_ACCOUNT_SUCCESSFUL, data ) );
       }else{
+        localStorage.setItem( 'userRegistered', 'false' );
         dispatch( action( SIGNIN_NEW_USER ) );
       }
     } )
@@ -192,15 +190,21 @@ export const REGISTER_FAILED = 'REGISTER_FAILED';
  * @param {function} dispatch
  */
 export const register = ( user, dispatch ) => {
-  
   dispatch( action( REGISTER_INIT ) );
-  store.collection( 'users' ).doc( user.uid ).set( user ).then( res => {
-    dispatch( action( REGISTER_SUECESSFUL, user ) );
-  } ).catch( err => {
-    console.log( err );
-    dispatch( action( REGISTER_FAILED ) );
-  } );
-};</code></pre>
+  store
+    .collection( 'users' )
+    .doc( user.uid )
+    .set( user )
+    .then( res => {
+      localStorage.setItem( 'signedUp', 'true' );
+      dispatch( action( REGISTER_SUECESSFUL, user ) );
+    } )
+    .catch( err => {
+      console.log( err );
+      dispatch( action( REGISTER_FAILED ) );
+    } );
+};
+</code></pre>
         </article>
     </section>
 
@@ -210,13 +214,13 @@ export const register = ( user, dispatch ) => {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-actions_auth.html">actions/auth</a></li><li><a href="module-actions_events.html">actions/events</a></li><li><a href="module-actions_organizations.html">actions/organizations</a></li><li><a href="module-State.html">State</a></li><li><a href="module-Types.html">Types</a></li></ul><h3>Global</h3><ul><li><a href="global.html#action">action</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-actions_auth.html">actions/auth</a></li><li><a href="module-actions_events.html">actions/events</a></li><li><a href="module-actions_organizations.html">actions/organizations</a></li><li><a href="module-actions_tags.html">actions/tags</a></li><li><a href="module-State.html">State</a></li><li><a href="module-Types.html">Types</a></li></ul><h3>Global</h3><ul><li><a href="global.html#action">action</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Tue Sep 17 2019 13:13:18 GMT-0600 (Mountain Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Thu Sep 19 2019 12:46:22 GMT-0600 (Mountain Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

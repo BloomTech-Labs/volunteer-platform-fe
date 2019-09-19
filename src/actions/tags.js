@@ -5,6 +5,19 @@ export const GET_INTERESTS = 'GET_INTERESTS';
 export const GOT_INTERESTS = 'GOT_INTERESTS';
 export const GETTING_TAGS_ERROR = 'GETTING_TAGS_ERROR';
 
+/**
+ * Tag Actions
+ * @module actions/tags
+ *
+ */
+
+/**
+ * Get all Interests Tags
+ *
+ * @function
+ * @param {Dispatch} dispatch
+ */
+
 export const getInterestTags = dispatch => {
   dispatch(action(GET_INTERESTS));
   store
@@ -27,6 +40,13 @@ export const getInterestTags = dispatch => {
 export const GET_REQUIREMENTS = 'GET_REQUIREMENTS';
 export const GOT_REQUIREMENTS = 'GOT_REQUIREMENTS';
 
+/**
+ * Get all requirement tags from the DB.
+ *
+ * @function
+ * @param {Dispatch} dispatch
+ */
+
 export const getRequirementTags = dispatch => {
   dispatch(action(GET_REQUIREMENTS));
   store
@@ -48,6 +68,13 @@ export const getRequirementTags = dispatch => {
 
 export const GET_CAUSE_AREAS = 'GET_CAUSE_AREAS';
 export const GOT_CAUSE_AREAS = 'GOT_CAUSE_AREAS';
+
+/**
+ * Get all cause areas from DB.
+ *
+ * @function
+ * @param {Dispatch} dispatch
+ */
 
 export const getCauseAreas = dispatch => {
   dispatch(action(GET_CAUSE_AREAS));

@@ -20,7 +20,7 @@ const formItemLayout = {
   },
 };
 
-export const AreaText = props => {
+export const StyledTextArea = props => {
   let camelCase = '';
   if (props.name) {
     camelCase = props.name.split(' ');
@@ -49,7 +49,7 @@ export const AreaText = props => {
   );
 };
 
-AreaText.propTypes = {
+StyledTextArea.propTypes = {
   name: PropTypes.string.isRequired,
   values: PropTypes.objectOf(PropTypes.any),
   onChange: PropTypes.func.isRequired,
