@@ -15,7 +15,7 @@ const Event = ( { event } ) => {
       ableToDelete = true;
     }
   } );
-  
+  console.log(event)
   return ( <StyledCard>
     <h1>{ event.volunteerType }</h1>
     <h1>{ event.numberOfPeople }</h1>
@@ -30,3 +30,11 @@ const Event = ( { event } ) => {
 };
 
 export default Event;
+
+/* 
+    Title
+    Organization
+    Description...cut off with ellipsis
+    City, State
+    time and date
+*/
