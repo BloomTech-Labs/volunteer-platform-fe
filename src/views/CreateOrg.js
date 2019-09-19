@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Redirect, withRouter } from 'react-router';
-import { StyledButton, StyledCard, StyledForm, StyledInput } from '../styled';
+import { StyledButton, StyledCard, StyledForm, StyledInput, StyledSelect } from '../styled';
 import { registerOrganization, updateOrganization } from '../actions';
 import { useStateValue } from '../hooks/useStateValue';
 import { StyledTextArea } from '../styled/StyledTextArea';
+import { Select } from 'antd'
 import styled from 'styled-components';
 
 const CreateOrg = (props) => {
+  const { Option } = Select;
+
   const org = {
     organizationOwnerUID: '',
     organizationName: '',
-    organizationType: '',
+    causeAreas: [],
     missionStatement: '',
     aboutUs: '',
     city: '',
@@ -20,7 +23,7 @@ const CreateOrg = (props) => {
     socialMedia: [],
     website: '',
   };
-  const [localState, setState] = useState();
+  const [localState, setState] = useState(org);
   const [state, dispatch] = useStateValue();
   
   useEffect(() => {
@@ -36,17 +39,22 @@ const CreateOrg = (props) => {
     if ( props.location.state ) {
       setState(props.location.state.org)
     }
-  }, [props.location.state])
+    
+  }, [props.location.state]);
 
   const changeValue = e => {
     setState( { ...localState, [ e.target.name ]: e.target.value } );
   };
-  
+ 
+  const changeCauses = e => {
+    setState({
+      ...localState,
+      causeAreas: e
+    })
+  };
+
   const handleSubmit = e => {
     e.preventDefault();
-
-    registerOrganization(localState, dispatch);
-    props.history.push('/org-dashboard')
     if ( props.location.state ) {
       updateOrganization( props.location.state.org.orgId, localState, dispatch );
       props.history.push('/org-dashboard');
@@ -73,8 +81,9 @@ const CreateOrg = (props) => {
       <StyledForm onSubmit={ handleSubmit }>
         <StyledInput name={ 'Organization Name' } values={ localState }
                      onChange={ changeValue }/>
-        <StyledInput name={ 'Organization Type' } values={ localState }
-                     onChange={ changeValue }/>
+        <StyledSelect name={ 'Cause Areas' } value={localState.causeAreas} mode='multiple' onChange={ changeCauses }>
+          {state.tags.causeAreas.map(item => <Option key={item.id} value={item.name}>{item.name}</Option>)}
+        </StyledSelect>
         <StyledTextArea name={ 'Mission Statement' }
                         values={ localState }
                         onChange={ changeValue }/>
