@@ -17,23 +17,24 @@ export const GETTING_TAGS_ERROR = 'GETTING_TAGS_ERROR';
  * @function
  * @param {Dispatch} dispatch
  */
-export const getInterestTags = ( dispatch ) => {
-  dispatch( action( GET_INTERESTS ) );
+
+export const getInterestTags = dispatch => {
+  dispatch(action(GET_INTERESTS));
   store
-    .collection( 'tags' )
+    .collection('tags')
     .get()
-    .then( res => {
+    .then(res => {
       let interests = [];
-      res.forEach( doc => {
+      res.forEach(doc => {
         let interest = doc.data();
         interest.id = doc.id;
-        interests.push( interest );
-      } );
-      dispatch( action( GOT_INTERESTS, interests ) );
-    } )
-    .catch( err => {
-      dispatch( action( GETTING_TAGS_ERROR ) );
-    } );
+        interests.push(interest);
+      });
+      dispatch(action(GOT_INTERESTS, interests));
+    })
+    .catch(err => {
+      dispatch(action(GETTING_TAGS_ERROR));
+    });
 };
 
 export const GET_REQUIREMENTS = 'GET_REQUIREMENTS';
@@ -45,23 +46,24 @@ export const GOT_REQUIREMENTS = 'GOT_REQUIREMENTS';
  * @function
  * @param {Dispatch} dispatch
  */
-export const getRequirementTags = ( dispatch ) => {
-  dispatch( action( GET_REQUIREMENTS ) );
+
+export const getRequirementTags = dispatch => {
+  dispatch(action(GET_REQUIREMENTS));
   store
-    .collection( 'requirements' )
+    .collection('requirements')
     .get()
-    .then( res => {
+    .then(res => {
       let requirements = [];
-      res.forEach( req => {
+      res.forEach(req => {
         let requirement = req.data();
         requirement.id = req.id;
-        requirements.push( requirement );
-      } );
-      dispatch( action( GOT_REQUIREMENTS, requirements ) );
-    } )
-    .catch( err => {
-      dispatch( action( GETTING_TAGS_ERROR ) );
-    } );
+        requirements.push(requirement);
+      });
+      dispatch(action(GOT_REQUIREMENTS, requirements));
+    })
+    .catch(err => {
+      dispatch(action(GETTING_TAGS_ERROR));
+    });
 };
 
 export const GET_CAUSE_AREAS = 'GET_CAUSE_AREAS';
@@ -73,21 +75,22 @@ export const GOT_CAUSE_AREAS = 'GOT_CAUSE_AREAS';
  * @function
  * @param {Dispatch} dispatch
  */
-export const getCauseAreas = ( dispatch ) => {
-  dispatch( action( GET_CAUSE_AREAS ) );
+
+export const getCauseAreas = dispatch => {
+  dispatch(action(GET_CAUSE_AREAS));
   store
-    .collection( 'cause areas' )
+    .collection('cause areas')
     .get()
-    .then( res => {
+    .then(res => {
       let causes = [];
-      res.forEach( doc => {
+      res.forEach(doc => {
         let cause = doc.data();
         cause.id = doc.id;
-        causes.push( cause );
-      } );
-      dispatch( action( GOT_CAUSE_AREAS, cause ) );
-    } )
-    .catch( err => {
-      dispatch( action( GETTING_TAGS_ERROR ) );
-    } );
+        causes.push(cause);
+      });
+      dispatch(action(GOT_CAUSE_AREAS, causes));
+    })
+    .catch(err => {
+      dispatch(action(GETTING_TAGS_ERROR));
+    });
 };
