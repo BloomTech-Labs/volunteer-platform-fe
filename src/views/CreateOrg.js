@@ -3,7 +3,7 @@ import { Redirect, withRouter } from 'react-router';
 import { StyledButton, StyledCard, StyledForm, StyledInput } from '../styled';
 import { registerOrganization, updateOrganization } from '../actions';
 import { useStateValue } from '../hooks/useStateValue';
-import { AreaText } from '../styled/StyledTextArea';
+import { StyledTextArea } from '../styled/StyledTextArea';
 import styled from 'styled-components';
 
 const CreateOrg = (props) => {
@@ -75,12 +75,12 @@ const CreateOrg = (props) => {
                      onChange={ changeValue }/>
         <StyledInput name={ 'Organization Type' } values={ localState }
                      onChange={ changeValue }/>
-        <AreaText name={ 'Mission Statement' }
-                  values={ localState }
-                  onChange={ changeValue }/>
-        <AreaText name={ 'About Us' }
-                  values={ localState }
-                  onChange={ changeValue }/>
+        <StyledTextArea name={ 'Mission Statement' }
+                        values={ localState }
+                        onChange={ changeValue }/>
+        <StyledTextArea name={ 'About Us' }
+                        values={ localState }
+                        onChange={ changeValue }/>
         <StyledInput name={ 'City' } values={ localState }
                      onChange={ changeValue }/>
         <StyledInput name={ 'State' } values={ localState }

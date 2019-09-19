@@ -7,7 +7,7 @@ import {
   StyledDatePicker,
   StyledInputNumber,
   StyledTimePicker,
-  AreaText,
+  StyledTextArea,
   StyledCard,
 } from '../styled';
 import { Tag, Tooltip, Icon, message } from 'antd';
@@ -241,7 +241,7 @@ const CreateEvent = props => {
             onChange={changeValue}
             type="text"
           />
-          <AreaText
+          <StyledTextArea
             name={'Description'}
             values={event}
             onChange={changeValue}

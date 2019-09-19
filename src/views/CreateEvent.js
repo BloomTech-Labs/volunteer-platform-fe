@@ -10,7 +10,7 @@ import {
   StyledDatePicker,
   StyledInputNumber,
   StyledTimePicker,
-  AreaText,
+  StyledTextArea,
   StyledCard
 } from '../styled';
 import { useStateValue } from '../hooks/useStateValue';
@@ -244,7 +244,7 @@ const CreateEvent = props => {
           onChange={changeValue}
           type="text"
         />
-        <AreaText
+        <StyledTextArea
           name={'Description'}
           values={event}
           onChange={changeValue}

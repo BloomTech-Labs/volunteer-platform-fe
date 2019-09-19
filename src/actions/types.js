@@ -2,26 +2,26 @@
 
 /**
  * @typedef Action
- * @type {object}
+ * @type {Object}
  * @property {ActionType} type - type of action for reducer
  * @property {*} [payload] - action payload for reducer
  */
 
 /**
  * @typedef ActionType
- * @type {string}
+ * @type {String}
  * @description String value indicating action type for reducers.
  */
 
 /**
  * @typedef Dispatch
- * @type {function}
+ * @type {Function}
  * @description Dispatch function from useStateValue() hook.
  */
 
 /**
  * @typedef User
- * @type {object}
+ * @type {Object}
  * @property {string} firstName - users first name
  * @property {string} lastName - users last name
  * @property {string} phoneNumber - users phone number
@@ -59,6 +59,7 @@
 
 /**
  * @typedef Event
+ * @type {Object}
  * @property {String} [eventId] Id of the event in the db.
  * @property {String} orgId Id of the organization that created the event.
  * @property {String} volunteerType The volunteer event type
@@ -70,6 +71,12 @@
  * @property {String} description Description of the event.
  * @property {String} volunteerRequirements Requirements volunteers must meet.
  *
+ */
+
+/**
+ * @typedef Tag
+ * @type {Object}
+ * @property {String} name
  */
 
 
