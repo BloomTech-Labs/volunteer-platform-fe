@@ -21,7 +21,9 @@ export const initialState = {
   tags: {
       interests: [],
       requirements: [],
-      causeAreas: []
+      causeAreas: [],
+      isGetting: false,
+      errorMessage: ''
   }
 };
 
