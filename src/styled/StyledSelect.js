@@ -5,7 +5,7 @@ import { Select, Form } from 'antd';
 
 const SelectStyled = styled(Select)`
   && {
-  }
+  }`
 
 const formItemLayout = {
   labelCol: {
