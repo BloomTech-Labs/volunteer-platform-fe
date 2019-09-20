@@ -24,7 +24,7 @@ const Inline = styled.div`
   display: flex;
 `;
 
-export const Login = () => {
+export const Login = (props) => {
     const [state, dispatch] = useStateValue();
     const [localState, setState] = useState({});
 
@@ -32,7 +32,7 @@ export const Login = () => {
       setState({ ...localState, [e.target.name]: e.target.value });
     };
 
-  
+  console.log(props)
   return (
     <StyledLogin>
       <h1>Login with</h1>

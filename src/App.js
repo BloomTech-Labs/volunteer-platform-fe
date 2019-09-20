@@ -21,7 +21,7 @@ import {
 import {
   RegisteredAndLoggedInRoute,
   LoginRoute,
-  SignupRoute,
+  RegisterRoute,
   OrganizationRoute,
   ProtectedRoute,
 } from './routes/index';
@@ -98,6 +98,7 @@ function App() {
               <Route exact path={'/'} component={LandingPage} />
               <RegisteredAndLoggedInRoute path={'/dashboard'} component={MainDashboard} />
               <LoginRoute path={'/login'} component={Login} />
+              <LoginRoute path={'/signup'} component={Login} />
               <ProtectedRoute path={'/create-org'} component={CreateOrg} />
               <OrganizationRoute
                 path={'/org-dashboard/create-event'}
@@ -107,7 +108,7 @@ function App() {
                 path={'/org-dashboard'}
                 component={OrganizationDashboard}
               />
-              <SignupRoute path={'/signup'} component={Signup} />
+              <RegisterRoute path={'/register'} component={Signup} />
               <Route path={'/upload-image'} component={UploadImage} />
               <Route path={'/'} component={UploadImage} />
             </Switch>

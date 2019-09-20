@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 const { Header } = Layout;
 
-export const HeaderDiv = ({style, children}) => {
+export const HeaderDiv = ({ style, children }) => {
   return (
     <StyledHeader style={style}>
       VolunTier
@@ -16,9 +16,9 @@ export const HeaderDiv = ({style, children}) => {
   );
 };
 const StyledHeader = styled(Header)`
-&& {
+  && {
     display: flex;
     justify-content: space-between;
   }
-`
-export default HeaderDiv
+`;
+export default HeaderDiv;

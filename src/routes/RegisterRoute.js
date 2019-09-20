@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect, Route } from 'react-router';
 import { useStateValue } from '../hooks/useStateValue';
 
-export const SignupRoute = ( { component: Component, ...rest } ) => {
+export const RegisterRoute = ( { component: Component, ...rest } ) => {
   const [ state ] = useStateValue();
   
   return ( <Route
@@ -14,4 +14,4 @@ export const SignupRoute = ( { component: Component, ...rest } ) => {
   /> );
 };
 
-export default SignupRoute;
+export default RegisterRoute;
