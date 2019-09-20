@@ -52,8 +52,8 @@ export const CreateOrg = ( props ) => {
       ...localState, causeAreas: e,
     } );
   };
-
-  console.log(state.tags.causeAreas);
+  
+  console.log( state.tags.causeAreas );
   
   const handleSubmit = e => {
     e.preventDefault();
@@ -80,9 +80,14 @@ export const CreateOrg = ( props ) => {
     }
   };
   
+  const onFileUpload = ( path ) => {
+    debugger;
+    setState( { ...localState, imagePath: path } );
+  };
+  
   return ( <StyledCreateOrg>
     <StyledCard>
-      <UploadImage/>
+      <UploadImage fileUploadComplete={ onFileUpload }/>
       <h1>{ props.location.state ? 'Update organization info' :
         'Create new organization!!' }</h1>
       <StyledForm onSubmit={ handleSubmit }>
@@ -91,8 +96,9 @@ export const CreateOrg = ( props ) => {
         <StyledSelect name={ 'Cause Areas' } value={ localState.causeAreas }
                       mode='multiple' onChange={ changeCauses }
                       tooltipTitle={ 'Choose all that apply' }>
-          { state.tags.causeAreas.map( (item, index) => <Option key={ `causeArea${index}` }
-                                                       value={ item }>{ item }</Option> ) }
+          { state.tags.causeAreas.map( ( item, index ) => <Option
+            key={ `causeArea${ index }` }
+            value={ item }>{ item }</Option> ) }
         </StyledSelect>
         <StyledTextArea name={ 'About Us' }
                         values={ localState }
