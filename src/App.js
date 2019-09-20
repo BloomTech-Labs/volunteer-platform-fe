@@ -21,6 +21,7 @@ import Navigation from './components/Navigation';
 import styled from 'styled-components';
 import { getInterestTags, getRequirementTags, getCauseAreas } from './actions';
 import { Layout, Menu, Icon } from 'antd';
+import {LandingPage} from './views/LandingPage'
 
 const { Sider, Footer, Content, Header } = Layout;
 
@@ -68,11 +69,11 @@ function App() {
           <Content>
             <StyledHeader
               style={{ background: '#fff', padding: 0 }}
-              collapsed={collapsed}
+              collapsed={collapsed ? 1 : 0}
             >
               Header
               <StyledMenuButton
-                collapsed={collapsed}
+                collapsed={collapsed ? 1 : 0}
                 className="trigger"
                 type={collapsed ? 'menu-fold' : 'menu-unfold'}
                 onClick={() => setCollapsed(!collapsed)}
@@ -91,6 +92,7 @@ function App() {
                 component={OrganizationDashboard}
               />
               <SignupRoute path={'/signup'} component={Signup} />
+              <Route path={'/landing-page'} component={LandingPage} />
             </Switch>
           </Content>
           <Footer>Footer</Footer>

@@ -44,7 +44,7 @@ const MainDashboard = () => {
     <div>
       <h2>Browse Events</h2>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <StyledForm maxWidth="500px">
+        <StyledForm styled = {{maxWidth:"500px"}}>
           <StyledInput
             values={localState}
             name={'State'}
