@@ -7,9 +7,10 @@ import {
 import { registerOrganization, updateOrganization } from '../actions';
 import { useStateValue } from '../hooks/useStateValue';
 import { StyledTextArea, StyledTimePicker } from '../styled';
-import { message, Select, Checkbox } from 'antd';
+import { message, Select, Checkbox, Button } from 'antd';
 import styled from 'styled-components';
 import UploadImage from '../components/UploadImage';
+import CreatePOCFormList from '../components/CreatePOCFormList';
 
 const CreateOrg = ( props ) => {
   const { Option } = Select;
@@ -20,11 +21,7 @@ const CreateOrg = ( props ) => {
     city: '',
     state: '',
     phone: '',
-    pointOfContact: [{
-      firstName: '',
-      lastName: '',
-      email: ''
-    }],
+    pointOfContact: [],
     causeAreas: [],
     hoursOfOperations: {
       days: [],
@@ -62,13 +59,12 @@ const CreateOrg = ( props ) => {
     } );
   };
 
-  const changePOC = e => {
+  console.log(localState);
+
+  const changePOC = (value) => {
     setState( {
       ...localState,
-      pointOfContact: {
-        ...localState.pointOfContact,
-        [ e.target.name ]: e.target.value
-      }
+      pointOfContact: value
     })
   }
 
@@ -101,8 +97,6 @@ const CreateOrg = ( props ) => {
       }
     })
   }
-
-  console.log(localState);
 
   const validateForm = () => {
     if (!localState.organizationName) {
@@ -170,12 +164,8 @@ const CreateOrg = ( props ) => {
           <StyledInput name={ 'Phone' } values={ localState }
                       onChange={ changeValue }/>
           <h3>Who is the point of contact?</h3>
-          <StyledInput name={ 'First Name' } values={ localState }
-                      onChange={ changePOC }/>
-          <StyledInput name={ 'Last Name' } values={ localState }
-                      onChange={ changePOC }/>
-          <StyledInput name={ 'Email' } values={ localState }
-                      onChange={ changePOC }/>
+          <CreatePOCFormList changePOC={changePOC} pointOfContact={localState.pointOfContact}/>
+
           <h3>What are your hours of operation?</h3>
           <h5>Days of the week</h5>
           <Checkbox.Group options={ days } onChange={ changeDays }/>
