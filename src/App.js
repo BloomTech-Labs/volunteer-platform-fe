@@ -19,14 +19,8 @@ import {
 } from './routes/index';
 import Navigation from './components/Navigation';
 import styled from 'styled-components';
-import {
-  getInterestTags,
-  getRequirementTags,
-  subscribeToUserOrganizations,
-} from './actions';
 import { Layout, Menu, Icon } from 'antd';
-import LandingPage from './views/LandingPage';
-import HeaderDiv from './components/HeaderDiv'
+import { subscribeToUserOrganizations } from './actions';
 
 
 const { Sider, Footer, Content } = Layout;
@@ -46,19 +40,16 @@ function App() {
       } else {
         signedOut(dispatch);
       }
-    });
-  }, []);
-  useEffect(() => {
-    getInterestTags(dispatch);
-    getRequirementTags(dispatch);
-    window.addEventListener('resize', updateDimensions);
+    } );
+  }, [] );
+  useEffect( () => {
+    window.addEventListener( 'resize', updateDimensions );
     updateDimensions();
-  }, []);
-
-  useEffect(() => {
-    debugger;
-    if (state.auth.googleAuthUser && state.auth.googleAuthUser.uid) {
-      subscribeToUserOrganizations(state.auth.googleAuthUser.uid, dispatch);
+  }, [] );
+  
+  useEffect( () => {
+    if( state.auth.googleAuthUser && state.auth.googleAuthUser.uid ){
+      subscribeToUserOrganizations( state.auth.googleAuthUser.uid, dispatch );
     }
   }, state.auth.googleAuthUser);
 
