@@ -1,11 +1,9 @@
 import React from 'react';
 import { Upload, Icon, Modal, Alert } from 'antd';
 import { uploadImage } from '../actions/files';
-import firebase from '../firebase/FirebaseConfig';
-import uuid4 from 'uuid4';
 
 function getBase64( file ){
-  debugger;
+  
   return new Promise( ( resolve, reject ) => {
     const reader = new FileReader();
     reader.readAsDataURL( file );
@@ -14,16 +12,17 @@ function getBase64( file ){
   } );
 }
 
-class PicturesWall extends React.Component{
+class UploadImage extends React.Component{
   state = { loading: false, imageUrl: '' };
   
   handleChange = ( info ) => {
-    debugger;
+    
     if( info.file.status === 'uploading' ){
       this.setState( { loading: true } );
       return;
     }
     if( info.file.status === 'done' ){
+      debugger;
       getBase64( info.file.originFileObj, imageUrl => this.setState( {
         imageUrl, loading: false,
       } ) );
@@ -31,7 +30,7 @@ class PicturesWall extends React.Component{
   };
   
   beforeUpload = ( file ) => {
-    debugger;
+    
     const isImage = file.type.indexOf( 'image/' ) === 0;
     if( !isImage ){
       Alert.error( 'You can only upload image file!' );
@@ -46,24 +45,17 @@ class PicturesWall extends React.Component{
   };
   
   customUpload = async( { onError, onSuccess, file } ) => {
-    debugger;
-    const storage = firebase.storage();
-    const metadata = {
-      contentType: 'image/jpeg',
-    };
-    const storageRef = await storage.ref();
-    const imageName = uuid4(); //a unique name for the image
-    const imgFile = storageRef.child( `Vince Wear/${ imageName }.png` );
-    try{
-      const image = await imgFile.put( file, metadata );
-      onSuccess( null, image );
-    }catch( e ){
-      onError( e );
-    }
+    uploadImage( file, onError, onSuccess ).then( res => {
+      debugger;
+      console.log( res );
+    } ).catch( error => {
+      debugger;
+      console.log( error );
+    } );
   };
   
   render(){
-    debugger;
+    
     const { loading, imageUrl } = this.state;
     const uploadButton = ( <div>
       <Icon type={ loading ? 'loading' : 'plus' }/>
@@ -84,4 +76,4 @@ class PicturesWall extends React.Component{
   }
 }
 
-export default PicturesWall;
+export default UploadImage;

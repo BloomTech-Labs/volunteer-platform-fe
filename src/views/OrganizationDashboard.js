@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Select } from 'antd';
 import { Link } from 'react-router-dom';
-import { getUsersOrganizations, getAllEventsByOrg, deleteOrganization } from '../actions';
+import { getAllEventsByOrg, deleteOrganization } from '../actions';
 import { useStateValue } from '../hooks/useStateValue';
 import EventList from '../components/EventList';
 import OrganizationInfo from '../components/OrganizationInfo';
@@ -13,7 +13,6 @@ const OrganizationDashboard = () => {
   useEffect( () => {
     if( state.auth.googleAuthUser ){
       const uid = state.auth.googleAuthUser.uid;
-      getUsersOrganizations( uid, dispatch );
     }
   }, [] );
   
@@ -29,6 +28,7 @@ const OrganizationDashboard = () => {
   }, [ state.org.userOrganizations ] );
   
   useEffect( () => {
+    debugger;
     if( displayOrg ){
       getAllEventsByOrg( displayOrg.orgId, dispatch );
     }
@@ -37,8 +37,8 @@ const OrganizationDashboard = () => {
   const deleteOrg = e => {
     e.preventDefault();
     deleteOrganization( displayOrg.orgId, dispatch );
-  }
-
+  };
+  
   return ( <div>
     <h1>Organization dashboard</h1>
     <Select defaultValue='select' onChange={ changeHandler }>
@@ -47,21 +47,17 @@ const OrganizationDashboard = () => {
         item => ( <Select.Option key={ item.orgId }
                                  value={ item.orgId }>{ item.organizationName }</Select.Option> ) ) }
     </Select>
-    { displayOrg ? (
-      <>
-        <Link to={{
-          pathname: '/create-org', 
-          state: {
-            org: displayOrg,
-          },
-        }}>Edit organization info</Link>
-        <button onClick={deleteOrg}>Delete Org</button>
-        <OrganizationInfo org={ displayOrg }/>
-      </> ) :
-      <div>You have not created any organization yet</div> }
+    { displayOrg ? ( <>
+      <Link to={ {
+        pathname: '/create-org', state: {
+          org: displayOrg,
+        },
+      } }>Edit organization info</Link>
+      <button onClick={ deleteOrg }>Delete Org</button>
+      <OrganizationInfo org={ displayOrg }/>
+    </> ) : <div>You have not created any organization yet</div> }
     <Link to={ {
-      pathname: '/org-dashboard/create-event', 
-      state: {
+      pathname: '/org-dashboard/create-event', state: {
         org: displayOrg,
       },
     } }>Create event</Link>

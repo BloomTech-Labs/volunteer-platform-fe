@@ -1,6 +1,5 @@
 import { action } from './action';
 import firebase, { store } from '../firebase/FirebaseConfig';
-import { getUsersOrganizations } from './organization';
 
 /**
  * Auth Actions
@@ -21,7 +20,6 @@ export const signedIn = ( user, dispatch ) => {
   localStorage.setItem( 'loggedIn', 'true' );
   dispatch( action( SIGNED_IN, user ) );
   checkUserRegistered( user.uid, dispatch );
-  getUsersOrganizations( user.uid, dispatch );
 };
 
 export const SIGNED_OUT = 'SIGNED_OUT';
