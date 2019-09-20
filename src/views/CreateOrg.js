@@ -8,6 +8,7 @@ import { useStateValue } from '../hooks/useStateValue';
 import { StyledTextArea } from '../styled/StyledTextArea';
 import { Select } from 'antd';
 import styled from 'styled-components';
+import UploadImage from '../components/UploadImage';
 
 const CreateOrg = ( props ) => {
   const { Option } = Select;
@@ -79,6 +80,7 @@ const CreateOrg = ( props ) => {
   
   return ( <StyledCreateOrg>
     <StyledCard>
+      <UploadImage/>
       <h1>{ props.location.state ? 'Update organization info' :
         'Create new organization!!' }</h1>
       <StyledForm onSubmit={ handleSubmit }>
