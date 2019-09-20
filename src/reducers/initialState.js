@@ -1,6 +1,6 @@
 const causeAreas = [
   'Animal Care', 'Health & Medicine', 'Computers &' + ' Technology',
-  'Computers & Technology', 'mmigrants & Refugees', 'Seniors', 'Faith-Based',
+  'Computers & Technology', 'Immigrants & Refugees', 'Seniors', 'Faith-Based',
   'Crisis Support', 'Hunger', 'Sports & Recreation', 'Disaster Relief',
   'Education & Literacy', 'Justice & Legal', 'Women', 'Media & Broadcasting',
   'Emergency & Safety', 'Children & Youth', 'Politics', 'Homeless & Housing',
