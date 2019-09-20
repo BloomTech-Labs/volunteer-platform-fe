@@ -3,20 +3,19 @@ import ReactDOM from 'react-dom';
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
 import { StateProvider } from './contexts/StateProvider';
 import * as Sentry from '@sentry/browser';
+import * as reset from './styles/reset.css';
 import 'antd/dist/antd.css';
 import './index.css';
 import App from './App';
 import { BrowserRouter as Router } from 'react-router-dom';
-import * as reset from './styles/reset.css';
 import * as global from './styles/global.css';
 import { initialState } from './reducers/initialState';
 import { mainReducer } from './reducers/mainReducer';
 
-
 //enable Sentry only for production builds
 if (process.env.NODE_ENV === 'production') {
-  Sentry.init({ dsn: 
-    'https://0ff73aa2b95c4b75b27ed6fff1c45dab@sentry.io/1728693' 
+  Sentry.init({
+    dsn: 'https://0ff73aa2b95c4b75b27ed6fff1c45dab@sentry.io/1728693',
   });
 }
 
@@ -24,26 +23,51 @@ const GlobalStyle = createGlobalStyle`
     ${reset}
     ${global}
     body{
-        font-family: ${({ theme }) => theme.loraFont}
+        /* font-family: ${({ theme }) => theme.loraFont} */
     }
 `;
 
 const theme = {
-  primary400: '#0B5B79',
-  primary300: '#0C6B8D',
-  primary200: '#12A0D3',
-  primary100: '#8AD6F5',
-  primary50: '#E8F7FD',
-  secondary400: '#CC6600',
-  secondary300: '#FF8000',
-  secondary200: '#FF9933',
-  secondary100: '#FFCC99',
-  secondary50: '#FFF7F0',
-  Gray400: '#181B1B99',
-  Gray300: '#181B1B80',
-  Gray200: '#181B1B4D',
-  Gray100: '#181B1B1A',
-  Gray50: '#181B1B0D',
+  primary: '#12a0d3',
+  primary1: '#e6fcff',
+  primary2: '#baf6ff',
+  primary3: '#8ee8fa',
+  primary4: '#61d1ed',
+  primary5: '#38b9e0',
+  primary6: '#12a0d3',
+  primary7: '#077bad',
+  primary8: '#005a87',
+  primary9: '#003d61',
+  primary10: '#00233b',
+
+  accent: '#fa8c16',
+  accent1: '#fff7e6',
+  accent2: '#ffe7ba',
+  accent3: '#ffd591',
+  accent4: '#ffc069',
+  accent5: '#ffa940',
+  accent6: '#fa8c16',
+  accent7: '#d46b08',
+  accent8: '#ad4e00',
+  accent9: '#873800',
+  accent10: '#612500',
+
+  gray: '#bfbfbf',
+  gray1: '#ffffff',
+  gray2: '#fafafa',
+  gray3: '#f5f5f5',
+  gray4: '#e8e8e8',
+  gray5: '#d9d9d9',
+  gray6: '#bfbfbf',
+  gray7: '#8c8c8c',
+  gray8: '#595959',
+  gray9: '#262626',
+  gray10: '#000000',
+
+  bodytext:
+    "'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB','Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji','Segoe UI Emoji', 'Segoe UI Symbol'",
+  titletext: "'Arvo', sans-serif",
+
   borderRadiusDefault: '10px',
 };
 

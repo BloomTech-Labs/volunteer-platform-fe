@@ -12,6 +12,7 @@
     "@sentry/browser": "^5.6.3",
     "antd": "^3.23.2",
     "axios": "^0.19.0",
+    "cypress": "^3.4.1",
     "firebase": "^6.5.0",
     "jsdoc": "^3.6.3",
     "moment": "^2.24.0",
@@ -30,7 +31,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test --setupFilesAfterEnv=@testing-library/jest-dom/extend-expect",
     "eject": "react-scripts eject",
-    "jsdoc": "jsdoc -c ./jsdoc.json"
+    "jsdoc": "jsdoc -c ./jsdoc.json",
+    "cypress": "cypress open"
   },
   "eslintConfig": {
     "extends": "react-app"
