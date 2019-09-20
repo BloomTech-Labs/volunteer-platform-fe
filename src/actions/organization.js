@@ -45,6 +45,11 @@ export const subscribeToUserOrganizations = ( uid, dispatch ) => {
     .where( 'organizationOwnerUID', '==', uid )
     .onSnapshot( snapShot => {
       const orgs = [];
+      if( !snapShot.empty ){
+        localStorage.setItem( 'createdOrg', 'true' );
+      }else{
+        localStorage.setItem( 'createdOrg', 'false' );
+      }
       snapShot.forEach( doc => {
         const org = doc.data();
         org.orgId = doc.id;
