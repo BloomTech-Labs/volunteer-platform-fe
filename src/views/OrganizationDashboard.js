@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Select } from 'antd';
+import { Select, Avatar } from 'antd';
 import { Link } from 'react-router-dom';
-import { getAllEventsByOrg, deleteOrganization } from '../actions';
+import { getAllEventsByOrg, deleteOrganization, getFileUrl } from '../actions';
 import { useStateValue } from '../hooks/useStateValue';
 import EventList from '../components/EventList';
 import OrganizationInfo from '../components/OrganizationInfo';
@@ -9,6 +9,18 @@ import OrganizationInfo from '../components/OrganizationInfo';
 const OrganizationDashboard = () => {
   const [ state, dispatch ] = useStateValue();
   const [ displayOrg, setDisplayOrg ] = useState( '' );
+  const [ imageUrl, setImageUrl ] = useState( null );
+  
+  useEffect( () => {
+    debugger;
+    if( displayOrg.imagePath ){
+      getFileUrl( displayOrg.imagePath ).then( res => {
+        setImageUrl( res );
+      } );
+    }else{
+      setImageUrl( null );
+    }
+  }, [ displayOrg ] );
   
   useEffect( () => {
     if( state.auth.googleAuthUser ){
@@ -41,6 +53,8 @@ const OrganizationDashboard = () => {
   
   return ( <div>
     <h1>Organization dashboard</h1>
+    { imageUrl ? <Avatar shape="square" size={ 128 } src={ imageUrl }/> :
+      <Avatar shape="square" size={ 128 } icon={ 'user' }/> }
     <Select defaultValue='select' onChange={ changeHandler }>
       <Select.Option value='select' disabled>Select one</Select.Option>
       { state.org.userOrganizations.map(

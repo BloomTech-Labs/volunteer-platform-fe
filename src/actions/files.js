@@ -8,11 +8,25 @@ export async function uploadImage( file, onError, onSuccess ){
   };
   const storageRef = await storage.ref();
   const imageName = uuid4(); //a unique name for the image
-  const imgFile = storageRef.child( `Vince Wear/${ imageName }.png` );
+  const imgFile = storageRef.child( `images/${ imageName }.png` );
   try{
     const image = await imgFile.put( file, metadata );
     onSuccess( null, image );
+    return image;
   }catch( e ){
     onError( e );
+    return e;
   }
 }
+
+export const getFileUrl = async( path ) => {
+  debugger;
+  const storageRef = firebase.storage().ref();
+  return await storageRef.child( path ).getDownloadURL().then( res => {
+    debugger;
+    return res;
+  } ).catch( err => {
+    console.log( err );
+    return err;
+  } );
+};
