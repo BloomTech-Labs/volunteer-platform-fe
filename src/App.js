@@ -16,10 +16,8 @@ import {
 } from './routes/index';
 import Navigation from './components/Navigation';
 import styled from 'styled-components';
-import {
-  getInterestTags, getRequirementTags, subscribeToUserOrganizations,
-} from './actions';
 import { Layout, Menu, Icon } from 'antd';
+import { subscribeToUserOrganizations } from './actions';
 
 const { Sider, Footer, Content, Header } = Layout;
 
@@ -40,8 +38,6 @@ function App(){
     } );
   }, [] );
   useEffect( () => {
-    getInterestTags( dispatch );
-    getRequirementTags( dispatch );
     window.addEventListener( 'resize', updateDimensions );
     updateDimensions();
   }, [] );
