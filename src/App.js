@@ -23,7 +23,7 @@ import {
   LoginRoute,
   SignupRoute,
   OrganizationRoute,
-  CreateOrgRoute,
+  ProtectedRoute,
 } from './routes/index';
 
 const { Sider, Content } = Layout;
