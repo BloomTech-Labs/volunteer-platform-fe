@@ -60,11 +60,11 @@ function App() {
       setCollapsed(true);
     }
   };
-
+console.log(state)
   return (
     <StyledApp className="App">
       <Layout>
-        {state.auth.signedIn && (
+        {state.auth.loggedIn && (
           <StyledSider
             breakpoint="md"
             collapsedWidth="0"
@@ -85,7 +85,7 @@ function App() {
         <Layout>
           <Content>
             <StyledHeader style={{ background: '#fff', padding: 0 }}>
-              {state.auth.signedIn && (
+              {state.auth.LoggedIn && (
                 <StyledMenuButton
                   collapsed={collapsed}
                   className="trigger"
