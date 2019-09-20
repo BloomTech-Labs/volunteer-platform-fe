@@ -24,7 +24,7 @@ const Inline = styled.div`
   display: flex;
 `;
 
-const Login = () => {
+export const Login = () => {
     const [state, dispatch] = useStateValue();
     const [localState, setState] = useState({});
 

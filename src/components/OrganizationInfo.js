@@ -1,7 +1,7 @@
 import React from 'react';
 import { Descriptions, Tag } from 'antd';
 
-const OrganizationInfo = (props) => {
+export const OrganizationInfo = (props) => {
     let causeAreas = props.org.causeAreas && props.org.causeAreas.map(cause => {
         return <Tag>{`${cause}`}</Tag>
     })

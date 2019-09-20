@@ -6,7 +6,7 @@ import { useStateValue } from '../hooks/useStateValue';
 import EventList from '../components/EventList';
 import OrganizationInfo from '../components/OrganizationInfo';
 
-const OrganizationDashboard = () => {
+export const OrganizationDashboard = () => {
   const [ state, dispatch ] = useStateValue();
   const [ displayOrg, setDisplayOrg ] = useState( '' );
   const [ imageUrl, setImageUrl ] = useState( null );
