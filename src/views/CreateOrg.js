@@ -4,7 +4,7 @@ import { StyledButton, StyledCard, StyledForm, StyledInput, StyledSelect } from 
 import { registerOrganization, updateOrganization } from '../actions';
 import { useStateValue } from '../hooks/useStateValue';
 import { StyledTextArea } from '../styled/StyledTextArea';
-import { Select, Icon, Tooltip } from 'antd'
+import { Select } from 'antd'
 import styled from 'styled-components';
 
 const CreateOrg = (props) => {
@@ -75,6 +75,16 @@ const CreateOrg = (props) => {
     }
   }
 
+  const children = [];
+  for (let i = 10; i < 36; i++) {
+    children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
+  }
+
+  
+function handleChange(value) {
+  console.log(`selected ${value}`);
+}
+
   return ( <StyledCreateOrg>
     <StyledCard>
       <h1>{props.location.state ? 'Update organization info' : 'Create new organization!!'}</h1>
@@ -83,7 +93,16 @@ const CreateOrg = (props) => {
                      onChange={ changeValue }/>
         <StyledSelect name={ 'Cause Areas' } value={localState.causeAreas} mode='multiple' onChange={ changeCauses } tooltipTitle={'Choose all that apply'} >
           {state.tags.causeAreas.map(item => <Option key={item.id} value={item.name}>{item.name}</Option>)}
-        </StyledSelect>
+        </StyledSelect> 
+        <Select
+    mode="multiple"
+    style={{ width: '100%' }}
+    placeholder="Please select"
+    defaultValue={['a10', 'c12']}
+    onChange={handleChange}
+  >
+    {children}
+  </Select>,
         <StyledTextArea name={ 'About Us' }
                         values={ localState }
                         onChange={ changeValue }/>
