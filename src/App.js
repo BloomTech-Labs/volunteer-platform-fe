@@ -5,7 +5,6 @@ import { useStateValue } from './hooks/useStateValue';
 import firebase from './firebase/FirebaseConfig';
 import MainDashboard from './views/MainDashboard';
 import UploadImage from './components/UploadImage';
-import './App.css';
 import Login from './views/Login';
 import CreateOrg from './views/CreateOrg';
 import CreateEvent from './views/CreateEvent';
@@ -26,9 +25,12 @@ import {
   subscribeToUserOrganizations,
 } from './actions';
 import { Layout, Menu, Icon } from 'antd';
-import LandingPage from './views/LandingPage'
+import LandingPage from './views/LandingPage';
+import HeaderDiv from './components/HeaderDiv'
 
-const { Sider, Footer, Content, Header } = Layout;
+
+const { Sider, Footer, Content } = Layout;
+
 
 function App() {
   const [state, dispatch] = useStateValue();
@@ -69,7 +71,7 @@ function App() {
   return (
     <StyledApp className="App">
       <Layout>
-        <StyledSider
+        {state.auth.signedIn && <StyledSider
           breakpoint="md"
           collapsedWidth="0"
           theme={'light'}
@@ -84,17 +86,16 @@ function App() {
           reverseArrow={true}
         >
           <Navigation />
-        </StyledSider>
+        </StyledSider>}
         <Layout>
           <Content>
             <StyledHeader style={{ background: '#fff', padding: 0 }}>
-              Header
-              <StyledMenuButton
+              {state.auth.signedIn && <StyledMenuButton
                 collapsed={collapsed}
                 className="trigger"
                 type={collapsed ? 'menu-fold' : 'menu-unfold'}
                 onClick={() => setCollapsed(!collapsed)}
-              />
+              />}
             </StyledHeader>
             <Switch>
               <ProtectedRoute path={'/'} component={MainDashboard} exact />
@@ -129,7 +130,7 @@ const StyledMenuButton = styled(Icon)`
   }
 `;
 
-const StyledHeader = styled(Header)`
+const StyledHeader = styled(HeaderDiv)`
   && {
     display: flex;
     justify-content: space-between;
