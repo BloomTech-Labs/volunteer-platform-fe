@@ -12,7 +12,7 @@ function getBase64( file ){
   } );
 }
 
-class UploadImage extends React.Component{
+export class UploadImage extends React.Component{
   state = { loading: false, imageUrl: '' };
   
   handleChange = ( info ) => {

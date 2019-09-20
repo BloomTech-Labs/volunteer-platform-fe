@@ -7,7 +7,7 @@ import { useStateValue } from '../hooks/useStateValue';
 
 const { SubMenu } = Menu;
 
-const Navigation = props => {
+export const Navigation = props => {
   const [ state, dispatch ] = useStateValue();
   const [ current, setCurrent ] = useState( 'Home' );
   

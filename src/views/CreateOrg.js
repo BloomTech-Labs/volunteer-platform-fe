@@ -10,7 +10,7 @@ import { Select, Icon, Tooltip } from 'antd';
 import styled from 'styled-components';
 import UploadImage from '../components/UploadImage';
 
-const CreateOrg = ( props ) => {
+export const CreateOrg = ( props ) => {
   const { Option } = Select;
   
   const org = {

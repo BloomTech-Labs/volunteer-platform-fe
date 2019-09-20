@@ -6,7 +6,7 @@ import EventList from '../components/EventList';
 import { getAllEventsByState } from '../actions';
 import { stateConversion } from '../utility/stateConversion';
 
-const MainDashboard = () => {
+export const MainDashboard = () => {
   const [ state, dispatch ] = useStateValue();
   const [ localState, setInputState ] = useState( { state: '' } );
   

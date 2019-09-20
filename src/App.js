@@ -1,15 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { Switch, Route } from 'react-router';
-import { signedIn, signedOut } from './actions/auth';
-import { useStateValue } from './hooks/useStateValue';
+import styled from 'styled-components';
 import firebase from './firebase/FirebaseConfig';
-import MainDashboard from './views/MainDashboard';
-import UploadImage from './components/UploadImage';
-import Login from './views/Login';
-import CreateOrg from './views/CreateOrg';
-import CreateEvent from './views/CreateEvent';
-import OrganizationDashboard from './views/OrganizationDashboard';
-import Signup from './views/Signup';
+import { Layout, Menu, Icon } from 'antd';
+
+import { useStateValue } from './hooks/useStateValue';
+import { subscribeToUserOrganizations, signedIn, signedOut } from './actions';
+import { UploadImage, Navigation, HeaderDiv, FooterDiv } from './components';
+
+import {
+  MainDashboard,
+  OrganizationDashboard,
+  Signup,
+  CreateEvent,
+  CreateOrg,
+  Login,
+  LandingPage,
+} from './views';
+
 import {
   ProtectedRoute,
   LoginRoute,
@@ -17,14 +25,8 @@ import {
   OrganizationRoute,
   CreateOrgRoute,
 } from './routes/index';
-import Navigation from './components/Navigation';
-import styled from 'styled-components';
-import { Layout, Menu, Icon } from 'antd';
-import { subscribeToUserOrganizations } from './actions';
 
-
-const { Sider, Footer, Content } = Layout;
-
+const { Sider, Content } = Layout;
 
 function App() {
   const [state, dispatch] = useStateValue();
@@ -40,16 +42,16 @@ function App() {
       } else {
         signedOut(dispatch);
       }
-    } );
-  }, [] );
-  useEffect( () => {
-    window.addEventListener( 'resize', updateDimensions );
+    });
+  }, []);
+  useEffect(() => {
+    window.addEventListener('resize', updateDimensions);
     updateDimensions();
-  }, [] );
-  
-  useEffect( () => {
-    if( state.auth.googleAuthUser && state.auth.googleAuthUser.uid ){
-      subscribeToUserOrganizations( state.auth.googleAuthUser.uid, dispatch );
+  }, []);
+
+  useEffect(() => {
+    if (state.auth.googleAuthUser && state.auth.googleAuthUser.uid) {
+      subscribeToUserOrganizations(state.auth.googleAuthUser.uid, dispatch);
     }
   }, state.auth.googleAuthUser);
 
@@ -62,31 +64,35 @@ function App() {
   return (
     <StyledApp className="App">
       <Layout>
-        {state.auth.signedIn && <StyledSider
-          breakpoint="md"
-          collapsedWidth="0"
-          theme={'light'}
-          onBreakpoint={broken => {
-            console.log(broken);
-          }}
-          onCollapse={(collapsed, type) => {
-            console.log(collapsed, type);
-          }}
-          trigger={null}
-          collapsed={collapsed}
-          reverseArrow={true}
-        >
-          <Navigation />
-        </StyledSider>}
+        {state.auth.signedIn && (
+          <StyledSider
+            breakpoint="md"
+            collapsedWidth="0"
+            theme={'light'}
+            onBreakpoint={broken => {
+              console.log(broken);
+            }}
+            onCollapse={(collapsed, type) => {
+              console.log(collapsed, type);
+            }}
+            trigger={null}
+            collapsed={collapsed}
+            reverseArrow={true}
+          >
+            <Navigation />
+          </StyledSider>
+        )}
         <Layout>
           <Content>
             <StyledHeader style={{ background: '#fff', padding: 0 }}>
-              {state.auth.signedIn && <StyledMenuButton
-                collapsed={collapsed}
-                className="trigger"
-                type={collapsed ? 'menu-fold' : 'menu-unfold'}
-                onClick={() => setCollapsed(!collapsed)}
-              />}
+              {state.auth.signedIn && (
+                <StyledMenuButton
+                  collapsed={collapsed}
+                  className="trigger"
+                  type={collapsed ? 'menu-fold' : 'menu-unfold'}
+                  onClick={() => setCollapsed(!collapsed)}
+                />
+              )}
             </StyledHeader>
             <Switch>
               <ProtectedRoute path={'/'} component={MainDashboard} exact />
@@ -105,7 +111,7 @@ function App() {
               <Route path={'/landing-page'} component={LandingPage} />
             </Switch>
           </Content>
-          <Footer>Footer</Footer>
+          <FooterDiv />
         </Layout>
       </Layout>
     </StyledApp>

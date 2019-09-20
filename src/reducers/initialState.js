@@ -46,10 +46,6 @@ export const initialState = {
   },
 };
 
-<<<<<<< HEAD
-=======
-
->>>>>>> staging
 /**
  * State
  * @module State
