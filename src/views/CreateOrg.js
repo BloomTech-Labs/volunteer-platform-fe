@@ -17,7 +17,6 @@ const CreateOrg = ( props ) => {
     organizationOwnerUID: '',
     organizationName: '',
     causeAreas: [],
-    missionStatement: '',
     aboutUs: '',
     city: '',
     state: '',
@@ -53,6 +52,8 @@ const CreateOrg = ( props ) => {
       ...localState, causeAreas: e,
     } );
   };
+
+  console.log(state.tags.causeAreas);
   
   const handleSubmit = e => {
     e.preventDefault();
@@ -90,8 +91,8 @@ const CreateOrg = ( props ) => {
         <StyledSelect name={ 'Cause Areas' } value={ localState.causeAreas }
                       mode='multiple' onChange={ changeCauses }
                       tooltipTitle={ 'Choose all that apply' }>
-          { state.tags.causeAreas.map( item => <Option key={ item.id }
-                                                       value={ item.name }>{ item.name }</Option> ) }
+          { state.tags.causeAreas.map( (item, index) => <Option key={ `causeArea${index}` }
+                                                       value={ item }>{ item }</Option> ) }
         </StyledSelect>
         <StyledTextArea name={ 'About Us' }
                         values={ localState }
