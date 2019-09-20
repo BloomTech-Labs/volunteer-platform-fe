@@ -17,8 +17,7 @@ import {
 import Navigation from './components/Navigation';
 import styled from 'styled-components';
 import {
-  getInterestTags, getRequirementTags, getCauseAreas,
-  subscribeToUserOrganizations,
+  getInterestTags, getRequirementTags, subscribeToUserOrganizations,
 } from './actions';
 import { Layout, Menu, Icon } from 'antd';
 
@@ -43,7 +42,6 @@ function App(){
   useEffect( () => {
     getInterestTags( dispatch );
     getRequirementTags( dispatch );
-    getCauseAreas( dispatch );
     window.addEventListener( 'resize', updateDimensions );
     updateDimensions();
   }, [] );
