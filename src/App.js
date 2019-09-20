@@ -64,7 +64,7 @@ function App() {
   return (
     <StyledApp className="App">
       <Layout>
-        {state.auth.loggedIn && (
+        {state.auth.loggedIn && 
           <StyledSider
             breakpoint="md"
             collapsedWidth="0"
@@ -81,19 +81,19 @@ function App() {
           >
             <Navigation />
           </StyledSider>
-        )}
+        }
         <Layout>
           <Content>
-            <StyledHeader style={{ background: '#fff', padding: 0 }}>
-              {state.auth.loggedIn && (
+            <HeaderDiv style={{ background: '#fff', padding: 0 }}>
+              {state.auth.loggedIn && 
                 <StyledMenuButton
                   collapsed={collapsed}
                   className="trigger"
                   type={collapsed ? 'menu-fold' : 'menu-unfold'}
                   onClick={() => setCollapsed(!collapsed)}
                 />
-              )}
-            </StyledHeader>
+              }
+            </HeaderDiv>
             <Switch>
               <Route exact path={'/'} component={LandingPage} />
               <RegisteredAndLoggedInRoute path={'/dashboard'} component={MainDashboard} />
@@ -109,6 +109,7 @@ function App() {
               />
               <SignupRoute path={'/signup'} component={Signup} />
               <Route path={'/upload-image'} component={UploadImage} />
+              <Route path={'/'} component={UploadImage} />
             </Switch>
           </Content>
           <FooterDiv />
@@ -124,13 +125,6 @@ const StyledMenuButton = styled(Icon)`
     font-size: 2rem;
     margin-top: 20px;
     transition: all 0.2s;
-  }
-`;
-
-const StyledHeader = styled(HeaderDiv)`
-  && {
-    display: flex;
-    justify-content: space-between;
   }
 `;
 
