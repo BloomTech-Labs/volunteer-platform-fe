@@ -21,10 +21,12 @@ import {
 import Navigation from './components/Navigation';
 import styled from 'styled-components';
 import {
-  getInterestTags, getRequirementTags, subscribeToUserOrganizations,
+  getInterestTags,
+  getRequirementTags,
+  subscribeToUserOrganizations,
 } from './actions';
 import { Layout, Menu, Icon } from 'antd';
-import { LandingPage } from './views/LandingPage';
+import LandingPage from './views/LandingPage'
 
 const { Sider, Footer, Content, Header } = Layout;
 
@@ -42,12 +44,12 @@ function App() {
       } else {
         signedOut(dispatch);
       }
-    } );
-  }, [] );
-  useEffect( () => {
-    getInterestTags( dispatch );
-    getRequirementTags( dispatch );
-    window.addEventListener( 'resize', updateDimensions );
+    });
+  }, []);
+  useEffect(() => {
+    getInterestTags(dispatch);
+    getRequirementTags(dispatch);
+    window.addEventListener('resize', updateDimensions);
     updateDimensions();
   }, []);
 
@@ -84,54 +86,34 @@ function App() {
           <Navigation />
         </StyledSider>
         <Layout>
-          <StyledSider
-            breakpoint="md"
-            collapsedWidth="0"
-            theme={'light'}
-            onBreakpoint={broken => {
-              console.log(broken);
-            }}
-            onCollapse={(collapsed, type) => {
-              console.log(collapsed, type);
-            }}
-            trigger={null}
-            collapsed={collapsed}
-            reverseArrow={true}
-          >
-            <Navigation />
-          </StyledSider>
-          <Layout>
-            <Content>
-              <StyledHeader
-                style={{ background: '#fff', padding: 0 }}
-                collapsed={collapsed ? 1 : 0}
-              >
-                Header
-                <StyledMenuButton
-                  collapsed={collapsed ? 1 : 0}
-                  className="trigger"
-                  type={collapsed ? 'menu-fold' : 'menu-unfold'}
-                  onClick={() => setCollapsed(!collapsed)}
-                />
-              </StyledHeader>
-              <Switch>
-                <ProtectedRoute path={'/'} component={MainDashboard} exact />
-                <LoginRoute path={'/login'} component={Login} />
-                <CreateOrgRoute path={'/create-org'} component={CreateOrg} />
-                <OrganizationRoute
-                  path={'/org-dashboard/create-event'}
-                  component={CreateEvent}
-                />
-                <OrganizationRoute
-                  path={'/org-dashboard'}
-                  component={OrganizationDashboard}
-                />
-                <SignupRoute path={'/signup'} component={Signup} />
-                <Route path={'/landing-page'} component={LandingPage} />
-              </Switch>
-            </Content>
-            <Footer>Footer</Footer>
-          </Layout>
+          <Content>
+            <StyledHeader style={{ background: '#fff', padding: 0 }}>
+              Header
+              <StyledMenuButton
+                collapsed={collapsed}
+                className="trigger"
+                type={collapsed ? 'menu-fold' : 'menu-unfold'}
+                onClick={() => setCollapsed(!collapsed)}
+              />
+            </StyledHeader>
+            <Switch>
+              <ProtectedRoute path={'/'} component={MainDashboard} exact />
+              <LoginRoute path={'/login'} component={Login} />
+              <CreateOrgRoute path={'/create-org'} component={CreateOrg} />
+              <OrganizationRoute
+                path={'/org-dashboard/create-event'}
+                component={CreateEvent}
+              />
+              <OrganizationRoute
+                path={'/org-dashboard'}
+                component={OrganizationDashboard}
+              />
+              <SignupRoute path={'/signup'} component={Signup} />
+              <Route path={'/upload-image'} component={UploadImage} />
+              <Route path={'/landing-page'} component={LandingPage} />
+            </Switch>
+          </Content>
+          <Footer>Footer</Footer>
         </Layout>
       </Layout>
     </StyledApp>
