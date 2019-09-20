@@ -69,28 +69,4 @@ export const getRequirementTags = dispatch => {
 export const GET_CAUSE_AREAS = 'GET_CAUSE_AREAS';
 export const GOT_CAUSE_AREAS = 'GOT_CAUSE_AREAS';
 
-/**
- * Get all cause areas from DB.
- *
- * @function
- * @param {Dispatch} dispatch
- */
 
-export const getCauseAreas = dispatch => {
-  dispatch( action( GET_CAUSE_AREAS ) );
-  store
-    .collection( 'cause areas' )
-    .get()
-    .then( res => {
-      let causes = [];
-      res.forEach( doc => {
-        let cause = doc.data();
-        cause.id = doc.id;
-        causes.push( cause );
-      } );
-      dispatch( action( GOT_CAUSE_AREAS, causes ) );
-    } )
-    .catch( err => {
-      dispatch( action( GETTING_TAGS_ERROR ) );
-    } );
-};

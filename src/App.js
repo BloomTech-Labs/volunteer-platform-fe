@@ -21,10 +21,7 @@ import {
 import Navigation from './components/Navigation';
 import styled from 'styled-components';
 import {
-  getInterestTags,
-  getRequirementTags,
-  getCauseAreas,
-  subscribeToUserOrganizations,
+  getInterestTags, getRequirementTags, subscribeToUserOrganizations,
 } from './actions';
 import { Layout, Menu, Icon } from 'antd';
 import { LandingPage } from './views/LandingPage';
@@ -45,13 +42,12 @@ function App() {
       } else {
         signedOut(dispatch);
       }
-    });
-  }, []);
-  useEffect(() => {
-    getInterestTags(dispatch);
-    getRequirementTags(dispatch);
-    getCauseAreas(dispatch);
-    window.addEventListener('resize', updateDimensions);
+    } );
+  }, [] );
+  useEffect( () => {
+    getInterestTags( dispatch );
+    getRequirementTags( dispatch );
+    window.addEventListener( 'resize', updateDimensions );
     updateDimensions();
   }, []);
 

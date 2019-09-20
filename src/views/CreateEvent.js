@@ -177,10 +177,10 @@ const CreateEvent = props => {
   return (
     <StyledCreateEvent>
       <StyledCard>
-        <h1>Create An Event</h1>
+        <h1>Let's Create An Event</h1>
         <StyledForm onSubmit={handleSubmit}>
           <StyledInput
-            name={'Title of Event'}
+            name={'Name of Event'}
             values={event}
             onChange={changeValue}
             type="text"
@@ -239,6 +239,7 @@ const CreateEvent = props => {
 
           <StyledSelect
             name={'Volunteer Requirements'}
+            value={event.tags.requirements}
             onChange={handleRequirmentTag}
             placeholder="Please select requirements"
             mode="multiple"
