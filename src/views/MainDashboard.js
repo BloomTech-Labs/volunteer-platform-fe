@@ -6,7 +6,7 @@ import EventList from '../components/EventList';
 import { getAllEventsByState } from '../actions';
 import { stateConversion } from '../utility/stateConversion';
 
-const MainDashboard = () => {
+export const MainDashboard = () => {
   const [ state, dispatch ] = useStateValue();
   const [ localState, setInputState ] = useState( { state: '' } );
   
@@ -40,8 +40,8 @@ const MainDashboard = () => {
   };
   return ( <div>
       <h2>Browse Events</h2>
-      <div style={ { display: 'flex', justifyContent: 'center' } }>
-        <StyledForm>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <StyledForm styled = {{maxWidth:"500px"}}>
           <StyledInput
             values={ localState }
             name={ 'State' }

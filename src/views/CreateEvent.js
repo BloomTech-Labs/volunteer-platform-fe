@@ -11,7 +11,7 @@ import { createEvent } from '../actions';
 
 const { Option } = Select;
 
-const CreateEvent = props => {
+export const CreateEvent = props => {
   const [ localState, setState ] = useState( {
     event: {
       tags: [],

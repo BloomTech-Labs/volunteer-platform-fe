@@ -8,7 +8,7 @@ export const SignupRoute = ( { component: Component, ...rest } ) => {
   return ( <Route
     { ...rest }
     render={ props => {
-      return localStorage.getItem('userRegistered') === "true" ? <Redirect to={ '/' }/> :
+      return localStorage.getItem('userRegistered') === "true" ? <Redirect to={ '/dashboard' }/> :
         <Component { ...props }/>;
     } }
   /> );

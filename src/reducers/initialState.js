@@ -46,7 +46,6 @@ export const initialState = {
   },
 };
 
-
 /**
  * State
  * @module State
