@@ -22,7 +22,8 @@ const Event = ( { event } ) => {
     <h1>{ event.startTime }</h1>
     <h1>{ event.stopTime }</h1>
     <h1>{ event.pointOfContact }</h1>
-    <h1>{ event.tags }</h1>
+    <h1>{ event.tags.interests }</h1>
+    <h1>{ event.tags.requirements }</h1>
     <h1>{ event.description }</h1>
     <h1>{ event.volunteerRequirements }</h1>
     { ableToDelete && <StyledButton type="danger">Delete</StyledButton> }

@@ -242,13 +242,14 @@ const CreateEvent = props => {
             onChange={handleRequirmentTag}
             placeholder="Please select requirements"
             mode="multiple"
+            value={event.tags.requirements}
           >
             {requirementTags}
           </StyledSelect>
 
           <StyledSelect
             name={'Interest'}
-            value={event.tags}
+            value={event.tags.interests}
             onChange={handleInterestTag}
             placeholder="Please select interest"
             mode="multiple"

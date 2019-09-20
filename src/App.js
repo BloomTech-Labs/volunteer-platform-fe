@@ -12,74 +12,64 @@ import CreateEvent from './views/CreateEvent';
 import OrganizationDashboard from './views/OrganizationDashboard';
 import Signup from './views/Signup';
 import {
-  ProtectedRoute, LoginRoute, SignupRoute, OrganizationRoute, CreateOrgRoute,
+  ProtectedRoute,
+  LoginRoute,
+  SignupRoute,
+  OrganizationRoute,
+  CreateOrgRoute,
 } from './routes/index';
 import Navigation from './components/Navigation';
 import styled from 'styled-components';
 import {
-  getInterestTags, getRequirementTags, getCauseAreas,
+  getInterestTags,
+  getRequirementTags,
+  getCauseAreas,
   subscribeToUserOrganizations,
 } from './actions';
 import { Layout, Menu, Icon } from 'antd';
-import {LandingPage} from './views/LandingPage'
+import { LandingPage } from './views/LandingPage';
 
 const { Sider, Footer, Content, Header } = Layout;
 
-function App(){
-  const [ state, dispatch ] = useStateValue();
-  const [ collapsed, setCollapsed ] = useState( false );
-  
+function App() {
+  const [state, dispatch] = useStateValue();
+  const [collapsed, setCollapsed] = useState(false);
+
   /**
    * Set up google auth on change event handler.
    */
-  useEffect( () => {
-    firebase.auth().onAuthStateChanged( user => {
-      if( user ){
-        signedIn( user, dispatch );
-      }else{
-        signedOut( dispatch );
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        signedIn(user, dispatch);
+      } else {
+        signedOut(dispatch);
       }
-    } );
-  }, [] );
-  useEffect( () => {
-    getInterestTags( dispatch );
-    getRequirementTags( dispatch );
-    getCauseAreas( dispatch );
-    window.addEventListener( 'resize', updateDimensions );
+    });
+  }, []);
+  useEffect(() => {
+    getInterestTags(dispatch);
+    getRequirementTags(dispatch);
+    getCauseAreas(dispatch);
+    window.addEventListener('resize', updateDimensions);
     updateDimensions();
-  }, [] );
-  
-  useEffect( () => {
+  }, []);
+
+  useEffect(() => {
     debugger;
-    if( state.auth.googleAuthUser && state.auth.googleAuthUser.uid ){
-      subscribeToUserOrganizations( state.auth.googleAuthUser.uid, dispatch );
+    if (state.auth.googleAuthUser && state.auth.googleAuthUser.uid) {
+      subscribeToUserOrganizations(state.auth.googleAuthUser.uid, dispatch);
     }
-  }, state.auth.googleAuthUser );
-  
+  }, state.auth.googleAuthUser);
+
   const updateDimensions = () => {
-    if( window.innerWidth < 900 ){
-      setCollapsed( true );
+    if (window.innerWidth < 900) {
+      setCollapsed(true);
     }
   };
-  
-  return ( <StyledApp className="App">
-    <Layout>
-      <StyledSider
-        breakpoint="md"
-        collapsedWidth="0"
-        theme={ 'light' }
-        onBreakpoint={ broken => {
-          console.log( broken );
-        } }
-        onCollapse={ ( collapsed, type ) => {
-          console.log( collapsed, type );
-        } }
-        trigger={ null }
-        collapsed={ collapsed }
-        reverseArrow={ true }
-      >
-        <Navigation/>
-      </StyledSider>
+
+  return (
+    <StyledApp className="App">
       <Layout>
         <StyledSider
           breakpoint="md"
@@ -98,59 +88,77 @@ function App(){
           <Navigation />
         </StyledSider>
         <Layout>
-          <Content>
-            <StyledHeader
-              style={{ background: '#fff', padding: 0 }}
-              collapsed={collapsed ? 1 : 0}
-            >
-              Header
-              <StyledMenuButton
+          <StyledSider
+            breakpoint="md"
+            collapsedWidth="0"
+            theme={'light'}
+            onBreakpoint={broken => {
+              console.log(broken);
+            }}
+            onCollapse={(collapsed, type) => {
+              console.log(collapsed, type);
+            }}
+            trigger={null}
+            collapsed={collapsed}
+            reverseArrow={true}
+          >
+            <Navigation />
+          </StyledSider>
+          <Layout>
+            <Content>
+              <StyledHeader
+                style={{ background: '#fff', padding: 0 }}
                 collapsed={collapsed ? 1 : 0}
-                className="trigger"
-                type={collapsed ? 'menu-fold' : 'menu-unfold'}
-                onClick={() => setCollapsed(!collapsed)}
-              />
-            </StyledHeader>
-            <Switch>
-              <ProtectedRoute path={'/'} component={MainDashboard} exact />
-              <LoginRoute path={'/login'} component={Login} />
-              <CreateOrgRoute path={'/create-org'} component={CreateOrg} />
-              <OrganizationRoute
-                path={'/org-dashboard/create-event'}
-                component={CreateEvent}
-              />
-              <OrganizationRoute
-                path={'/org-dashboard'}
-                component={OrganizationDashboard}
-              />
-              <SignupRoute path={'/signup'} component={Signup} />
-              <Route path={'/landing-page'} component={LandingPage} />
-            </Switch>
-          </Content>
-          <Footer>Footer</Footer>
+              >
+                Header
+                <StyledMenuButton
+                  collapsed={collapsed ? 1 : 0}
+                  className="trigger"
+                  type={collapsed ? 'menu-fold' : 'menu-unfold'}
+                  onClick={() => setCollapsed(!collapsed)}
+                />
+              </StyledHeader>
+              <Switch>
+                <ProtectedRoute path={'/'} component={MainDashboard} exact />
+                <LoginRoute path={'/login'} component={Login} />
+                <CreateOrgRoute path={'/create-org'} component={CreateOrg} />
+                <OrganizationRoute
+                  path={'/org-dashboard/create-event'}
+                  component={CreateEvent}
+                />
+                <OrganizationRoute
+                  path={'/org-dashboard'}
+                  component={OrganizationDashboard}
+                />
+                <SignupRoute path={'/signup'} component={Signup} />
+                <Route path={'/landing-page'} component={LandingPage} />
+              </Switch>
+            </Content>
+            <Footer>Footer</Footer>
+          </Layout>
         </Layout>
       </Layout>
-    </Layout>
-  </StyledApp> );
+    </StyledApp>
+  );
 }
 
-const StyledMenuButton = styled( Icon )`
+const StyledMenuButton = styled(Icon)`
   && {
-    margin-right: ${ props => ( props.collapsed ? '30px' : '230px' ) };
+    margin-right: ${props => (props.collapsed ? '30px' : '230px')};
     font-size: 2rem;
     margin-top: 20px;
     transition: all 0.2s;
   }
 `;
 
-const StyledHeader = styled( Header )`
+const StyledHeader = styled(Header)`
   && {
     display: flex;
     justify-content: space-between;
   }
 `;
 
-const StyledSider = styled( Sider )`
+const StyledSider = styled(Sider)`
   position: absolute;
   right: 0;
   z-index: 10;
