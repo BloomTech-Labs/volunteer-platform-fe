@@ -1,6 +1,6 @@
 * {
     box-sizing: border-box;
-    /*color: #262626;*/
+
 }
 
 html {
@@ -13,6 +13,7 @@ body {
     Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
     'Segoe UI Symbol';
     background: #f2f2f2;
+
 }
 
 h1,
@@ -24,6 +25,11 @@ h6 {
     font-family: 'Arvo', serif;
     margin-top: 0.81em;
     margin-bottom: 0.5em;
+    color: #262626;
+}
+
+p {
+    color: #262626;
 }
 
 h1 {
