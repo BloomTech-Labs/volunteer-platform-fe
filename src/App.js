@@ -19,7 +19,7 @@ import {
 } from './views';
 
 import {
-  ProtectedRoute,
+  RegisteredAndLoggedInRoute,
   LoginRoute,
   SignupRoute,
   OrganizationRoute,
@@ -95,9 +95,10 @@ function App() {
               )}
             </StyledHeader>
             <Switch>
-              <ProtectedRoute path={'/'} component={MainDashboard} exact />
+              <Route exact path={'/'} component={LandingPage} />
+              <RegisteredAndLoggedInRoute path={'/dashboard'} component={MainDashboard} />
               <LoginRoute path={'/login'} component={Login} />
-              <CreateOrgRoute path={'/create-org'} component={CreateOrg} />
+              <ProtectedRoute path={'/create-org'} component={CreateOrg} />
               <OrganizationRoute
                 path={'/org-dashboard/create-event'}
                 component={CreateEvent}
@@ -108,7 +109,6 @@ function App() {
               />
               <SignupRoute path={'/signup'} component={Signup} />
               <Route path={'/upload-image'} component={UploadImage} />
-              <Route path={'/landing-page'} component={LandingPage} />
             </Switch>
           </Content>
           <FooterDiv />
