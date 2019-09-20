@@ -15,7 +15,7 @@ export const Event = ({ event }) => {
       ableToDelete = true;
     }
   });
-  console.log(event);
+  event;
   return (
     <StyledCard>
       <h1>{event.volunteerType}</h1>

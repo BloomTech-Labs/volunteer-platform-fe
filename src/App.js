@@ -53,7 +53,7 @@ function App() {
     if (state.auth.googleAuthUser && state.auth.googleAuthUser.uid) {
       subscribeToUserOrganizations(state.auth.googleAuthUser.uid, dispatch);
     }
-  }, state.auth.googleAuthUser);
+  }, [state.auth.googleAuthUser]);
 
   const updateDimensions = () => {
     if (window.innerWidth < 900) {
