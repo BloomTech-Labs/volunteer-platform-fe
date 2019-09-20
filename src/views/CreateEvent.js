@@ -248,7 +248,7 @@ const CreateEvent = props => {
 
           <StyledSelect
             name={'Interest'}
-            // value={event.tags}
+            value={event.tags}
             onChange={handleInterestTag}
             placeholder="Please select interest"
             mode="multiple"
