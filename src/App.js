@@ -7,7 +7,7 @@ import { Layout, Menu, Icon } from 'antd';
 import { useStateValue } from './hooks/useStateValue';
 import { subscribeToUserOrganizations, signedIn, signedOut } from './actions';
 import { UploadImage, HeaderDiv, FooterDiv } from './components';
-import Navigation from './components/Navigation'
+import Navigation from './components/Navigation';
 import {
   MainDashboard,
   OrganizationDashboard,
@@ -64,7 +64,7 @@ function App() {
   return (
     <StyledApp className="App">
       <Layout>
-        {state.auth.loggedIn && 
+        {state.auth.loggedIn && (
           <StyledSider
             breakpoint="md"
             collapsedWidth="0"
@@ -81,22 +81,28 @@ function App() {
           >
             <Navigation />
           </StyledSider>
-        }
+        )}
         <Layout>
           <Content>
-            <HeaderDiv style={{ background: '#fff', padding: 0 }}>
-              {state.auth.loggedIn && 
+            <HeaderDiv
+              loggedIn={state.auth.loggedIn}
+              style={{ background: '#fff', padding: 0 }}
+            >
+              {state.auth.loggedIn && (
                 <StyledMenuButton
                   collapsed={collapsed}
                   className="trigger"
                   type={collapsed ? 'menu-fold' : 'menu-unfold'}
                   onClick={() => setCollapsed(!collapsed)}
                 />
-              }
+              )}
             </HeaderDiv>
             <Switch>
               <Route exact path={'/'} component={LandingPage} />
-              <RegisteredAndLoggedInRoute path={'/dashboard'} component={MainDashboard} />
+              <RegisteredAndLoggedInRoute
+                path={'/dashboard'}
+                component={MainDashboard}
+              />
               <LoginRoute path={'/login'} component={Login} />
               <LoginRoute path={'/signup'} component={Login} />
               <ProtectedRoute path={'/create-org'} component={CreateOrg} />

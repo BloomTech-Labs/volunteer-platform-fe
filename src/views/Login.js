@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { StyledButton, StyledForm, StyledInput } from '../styled';
 import { Form, Icon } from 'antd';
@@ -27,15 +27,16 @@ const Inline = styled.div`
 export const Login = props => {
   const [state, dispatch] = useStateValue();
   const [localState, setState] = useState({});
-
+  const [pathName, setPathName] = useState(props.location.pathname);
   const onChange = e => {
     setState({ ...localState, [e.target.name]: e.target.value });
   };
-
-  props;
+  useEffect(() => {
+    setPathName(props.location.pathname);
+  }, [props.location.pathname]);
   return (
     <StyledLogin>
-      <h1>Login with</h1>
+      <h1>{pathName === `/login` ? 'Login with' : 'Sign Up'}</h1>
       <br></br>
       <Inline>
         <StyledButton
@@ -89,7 +90,7 @@ export const Login = props => {
         </Form.Item>
         <Form.Item>
           <StyledButton type="primary" htmlType="submit">
-            Sign in
+            {pathName === `/login` ? 'Login' : 'Register'}
           </StyledButton>
         </Form.Item>
       </StyledForm>

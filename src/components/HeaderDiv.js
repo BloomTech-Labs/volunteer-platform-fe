@@ -5,12 +5,14 @@ import styled from 'styled-components';
 
 const { Header } = Layout;
 
-export const HeaderDiv = ({ style, children }) => {
+export const HeaderDiv = ({ style, children, loggedIn }) => {
   return (
     <StyledHeader style={style}>
-      VolunTier
-      <Link to="/login">Login</Link>
-      <Link to="/signup">Sign Up</Link>
+      <Link to="/" style={{ marginLeft: '30px' }}>
+        VolunTier
+      </Link>
+      {loggedIn || <Link to="/login">Login</Link>}
+      {loggedIn || <Link to="/signup">Sign Up</Link>}
       {children}
     </StyledHeader>
   );

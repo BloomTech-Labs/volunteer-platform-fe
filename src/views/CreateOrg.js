@@ -58,7 +58,6 @@ export const CreateOrg = props => {
     });
   };
 
-  state.tags.causeAreas;
 
   const handleSubmit = e => {
     e.preventDefault();
