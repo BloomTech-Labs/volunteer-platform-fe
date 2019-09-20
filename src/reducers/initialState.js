@@ -8,6 +8,20 @@ const causeAreas = [
   'Advocacy & Human Rights',
 ];
 
+const requirements = [
+  'Background Check', 'Light Lifting Required', 'Orientation or Training',
+  'Access to Computer', 'Heavy Lifting Required',
+  'Children Require Parent/Guardian', 'Waiver for Youth',
+  'Application Required', 'Basic Computer Skills',
+];
+
+const interests = [
+  'Work with Animals', 'Virtual', 'Group Friendly',
+  'New' + ' Volunteer Friendly', 'Religion', 'Customer Service',
+  'Senior Friendly', 'Helping Homeless', 'Indoor Work', 'Family Friendly',
+  'Tutoring', 'Youth Friendly', 'Wheelchair Accessible', 'Outdoor Work',
+];
+
 export const initialState = {
   auth: {
     loggedIn: true, signedUp: true, googleAuthUser: null, registeredUser: null,
@@ -24,13 +38,14 @@ export const initialState = {
     editEventFailedError: '',
     getEventsFailedError: '',
   }, tags: {
-    interests: [],
-    requirements: [],
+    interests: interests,
+    requirements: requirements,
     causeAreas: causeAreas,
     isGetting: false,
     errorMessage: '',
   },
 };
+
 
 /**
  * State
