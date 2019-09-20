@@ -6,8 +6,8 @@ import { Layout, Menu, Icon } from 'antd';
 
 import { useStateValue } from './hooks/useStateValue';
 import { subscribeToUserOrganizations, signedIn, signedOut } from './actions';
-import { UploadImage, Navigation, HeaderDiv, FooterDiv } from './components';
-
+import { UploadImage, HeaderDiv, FooterDiv } from './components';
+import Navigation from './components/Navigation'
 import {
   MainDashboard,
   OrganizationDashboard,
@@ -60,7 +60,7 @@ function App() {
       setCollapsed(true);
     }
   };
-console.log(state)
+
   return (
     <StyledApp className="App">
       <Layout>
@@ -85,7 +85,7 @@ console.log(state)
         <Layout>
           <Content>
             <StyledHeader style={{ background: '#fff', padding: 0 }}>
-              {state.auth.LoggedIn && (
+              {state.auth.loggedIn && (
                 <StyledMenuButton
                   collapsed={collapsed}
                   className="trigger"
