@@ -41,59 +41,68 @@ function App(){
     getInterestTags( dispatch );
     getRequirementTags( dispatch );
     getCauseAreas( dispatch );
+    window.addEventListener( 'resize', updateDimensions );
+    updateDimensions();
   }, [] );
+  
+  const updateDimensions = () => {
+    if( window.innerWidth < 900 ){
+      setCollapsed( true );
+    }
+  };
+  
   return ( <StyledApp className="App">
+    <Layout>
+      <StyledSider
+        breakpoint="md"
+        collapsedWidth="0"
+        theme={ 'light' }
+        onBreakpoint={ broken => {
+          console.log( broken );
+        } }
+        onCollapse={ ( collapsed, type ) => {
+          console.log( collapsed, type );
+        } }
+        trigger={ null }
+        collapsed={ collapsed }
+        reverseArrow={ true }
+      >
+        <Navigation/>
+      </StyledSider>
       <Layout>
-        <StyledSider
-          breakpoint="md"
-          collapsedWidth="0"
-          theme={ 'light' }
-          onBreakpoint={ broken => {
-            console.log( broken );
-          } }
-          onCollapse={ ( collapsed, type ) => {
-            console.log( collapsed, type );
-          } }
-          trigger={ null }
-          collapsed={ collapsed }
-          reverseArrow={ true }
-        >
-          <Navigation/>
-        </StyledSider>
-        <Layout>
-          <Content>
-            <StyledHeader
-              style={ { background: '#fff', padding: 0 } }
+        <Content>
+          <StyledHeader
+            style={ { background: '#fff', padding: 0 } }
+            collapsed={ collapsed }
+          >
+            Header
+            <StyledMenuButton
               collapsed={ collapsed }
-            >
-              Header
-              <StyledMenuButton
-                collapsed={ collapsed }
-                className="trigger"
-                type={ collapsed ? 'menu-fold' : 'menu-unfold' }
-                onClick={ () => setCollapsed( !collapsed ) }
-              />
-            </StyledHeader>
-            <Switch>
-              <ProtectedRoute path={ '/' } component={ MainDashboard } exact/>
-              <LoginRoute path={ '/login' } component={ Login }/>
-              <CreateOrgRoute path={ '/create-org' } component={ CreateOrg }/>
-              <OrganizationRoute
-                path={ '/org-dashboard/create-event' }
-                component={ CreateEvent }
-              />
-              <OrganizationRoute
-                path={ '/org-dashboard' }
-                component={ OrganizationDashboard }
-              />
-              <SignupRoute path={ '/signup' } component={ Signup }/>
-              <Route path={ '/upload-image' } component={ UploadImage }/>
-            </Switch>
-          </Content>
-          <Footer>Footer</Footer>
-        </Layout>
+              className="trigger"
+              type={ collapsed ? 'menu-fold' : 'menu-unfold' }
+              onClick={ () => setCollapsed( !collapsed ) }
+            />
+          </StyledHeader>
+          <Switch>
+            <ProtectedRoute path={ '/' } component={ MainDashboard } exact/>
+            <LoginRoute path={ '/login' } component={ Login }/>
+            <CreateOrgRoute path={ '/create-org' } component={ CreateOrg }/>
+            <OrganizationRoute
+              path={ '/org-dashboard/create-event' }
+              component={ CreateEvent }
+            />
+            <OrganizationRoute
+              path={ '/org-dashboard' }
+              component={ OrganizationDashboard }
+            />
+            <SignupRoute path={ '/signup' } component={ Signup }/>
+            <Route path={ '/upload-image' } component={ UploadImage }/>
+          </Switch>
+        </Content>
+        <Footer>Footer</Footer>
       </Layout>
-    </StyledApp> );
+    </Layout>
+  </StyledApp> );
 }
 
 const StyledMenuButton = styled( Icon )`
