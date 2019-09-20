@@ -43,7 +43,6 @@ function App(){
   }, [] );
   
   useEffect( () => {
-    debugger;
     if( state.auth.googleAuthUser && state.auth.googleAuthUser.uid ){
       subscribeToUserOrganizations( state.auth.googleAuthUser.uid, dispatch );
     }
