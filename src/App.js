@@ -4,7 +4,7 @@ import { signedIn, signedOut } from './actions/auth';
 import { useStateValue } from './hooks/useStateValue';
 import firebase from './firebase/FirebaseConfig';
 import MainDashboard from './views/MainDashboard';
-import UploadImage from './views/UploadImage';
+import UploadImage from './components/UploadImage';
 import './App.css';
 import Login from './views/Login';
 import CreateOrg from './views/CreateOrg';
@@ -16,7 +16,10 @@ import {
 } from './routes/index';
 import Navigation from './components/Navigation';
 import styled from 'styled-components';
-import { getInterestTags, getRequirementTags, getCauseAreas } from './actions';
+import {
+  getInterestTags, getRequirementTags, getCauseAreas,
+  subscribeToUserOrganizations,
+} from './actions';
 import { Layout, Menu, Icon } from 'antd';
 
 const { Sider, Footer, Content, Header } = Layout;
@@ -44,6 +47,13 @@ function App(){
     window.addEventListener( 'resize', updateDimensions );
     updateDimensions();
   }, [] );
+  
+  useEffect( () => {
+    debugger;
+    if( state.auth.googleAuthUser && state.auth.googleAuthUser.uid ){
+      subscribeToUserOrganizations( state.auth.googleAuthUser.uid, dispatch );
+    }
+  }, state.auth.googleAuthUser );
   
   const updateDimensions = () => {
     if( window.innerWidth < 900 ){
@@ -73,7 +83,6 @@ function App(){
         <Content>
           <StyledHeader
             style={ { background: '#fff', padding: 0 } }
-            collapsed={ collapsed }
           >
             Header
             <StyledMenuButton

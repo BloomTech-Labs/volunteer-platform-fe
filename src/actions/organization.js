@@ -39,31 +39,20 @@ export const USER_HAS_NO_ORGANIZATIONS = 'USER_HAS_NO_ORGANIZATIONS';
  * @param {string} uid User unique id from google auth.
  * @param {Dispatch} dispatch From useStateValue hook
  */
-export const getUsersOrganizations = ( uid, dispatch ) => {
+export const subscribeToUserOrganizations = ( uid, dispatch ) => {
   store
     .collection( 'organizations' )
     .where( 'organizationOwnerUID', '==', uid )
-    .get()
-    .then( res => {
-      if( !res.empty ){
-        const orgs = [];
-        res.forEach( org => {
-          let organization = org.data();
-          organization.orgId = org.id;
-          orgs.push( organization );
-        } );
-        localStorage.setItem( 'createdOrg', 'true' );
-        dispatch( action( GET_USER_ORGANIZATIONS, orgs ) );
-        
-      }else{
-        localStorage.setItem( 'createdOrg', 'false' );
-        dispatch( action( USER_HAS_NO_ORGANIZATIONS ) );
-      }
-    } )
-    .catch( err => {
-      console.log( err );
-      dispatch( action( GET_USER_ORGANIZATIONS_FAILED ) );
+    .onSnapshot( snapShot => {
+      const orgs = [];
+      snapShot.forEach( doc => {
+        const org = doc.data();
+        org.orgId = doc.id;
+        orgs.push( org );
+      } );
+      dispatch( action( GET_USER_ORGANIZATIONS, orgs ) );
     } );
+  
 };
 
 export const GET_ORG_BY_ID = 'GET_ORG_BY_ID';
@@ -115,15 +104,15 @@ export const DELETE_ORG_FAILED = 'DELETE_ORG_FAILED';
  * @param {String} orgId
  * @param {Dispatch} dispatch
  */
-export const deleteOrganization = (orgId, dispatch) => {
+export const deleteOrganization = ( orgId, dispatch ) => {
   store.collection( 'organizations' )
     .doc( orgId )
     .delete()
-    .then(res => {
-      dispatch(action(DELETE_ORG, orgId));
-    })
-    .catch(err => {
-      console.log(err);
-      dispatch(action(DELETE_ORG_FAILED));
-    })
-} 
+    .then( res => {
+      dispatch( action( DELETE_ORG, orgId ) );
+    } )
+    .catch( err => {
+      console.log( err );
+      dispatch( action( DELETE_ORG_FAILED ) );
+    } );
+};
