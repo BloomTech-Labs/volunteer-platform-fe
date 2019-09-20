@@ -12,7 +12,7 @@ margin: 4rem 2rem;
   max-width: 50%;
 `;
 
-const Signup = () => {
+export const Signup = () => {
   
   const [ state, dispatch ] = useStateValue();
   /**

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Upload, Icon, Modal, Alert } from 'antd';
 import { uploadImage } from '../actions/files';
+import PropTypes from 'prop-types';
 
 function getBase64( file ){
   
@@ -12,7 +13,7 @@ function getBase64( file ){
   } );
 }
 
-class UploadImage extends React.Component{
+export class UploadImage extends React.Component{
   state = { loading: false, imageUrl: '' };
   
   handleChange = ( info ) => {
@@ -47,7 +48,9 @@ class UploadImage extends React.Component{
   customUpload = async( { onError, onSuccess, file } ) => {
     uploadImage( file, onError, onSuccess ).then( res => {
       debugger;
-      console.log( res );
+      alert( 'Upload Complete' );
+      this.setState( { loading: false } );
+      this.props.fileUploadComplete( res.ref.fullPath );
     } ).catch( error => {
       debugger;
       console.log( error );
@@ -75,5 +78,9 @@ class UploadImage extends React.Component{
     </div> );
   }
 }
+
+UploadImage.propTypes = {
+  fileUploadComplete: PropTypes.func.isRequired,
+};
 
 export default UploadImage;

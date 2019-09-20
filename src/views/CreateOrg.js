@@ -7,12 +7,12 @@ import {
 import { registerOrganization, updateOrganization } from '../actions';
 import { useStateValue } from '../hooks/useStateValue';
 import { StyledTextArea, StyledTimePicker } from '../styled';
-import { message, Select, Checkbox, Button } from 'antd';
+import { message, Select, Checkbox } from 'antd';
 import styled from 'styled-components';
 import UploadImage from '../components/UploadImage';
 import CreatePOCFormList from '../components/CreatePOCFormList';
 
-const CreateOrg = ( props ) => {
+export const CreateOrg = ( props ) => {
   const { Option } = Select;
   
   const org = {
@@ -135,12 +135,16 @@ const CreateOrg = ( props ) => {
     }
   };
 
+  const onFileUpload = ( path ) => {
+    setState( { ...localState, imagePath: path } );
+  };
+
   const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   
   return ( 
     <StyledCreateOrg>
       <StyledCard>
-        <UploadImage/>
+        <UploadImage fileUploadComplete={ onFileUpload }/>
         <h1>{ props.location.state ? 'Update organization info' :
           'Let\'s set up your organization' }</h1>
         <StyledForm onSubmit={ handleSubmit }>
@@ -202,10 +206,11 @@ const CreateOrg = ( props ) => {
         </StyledForm>
       </StyledCard>
     </StyledCreateOrg> );
-};
+}
 
 const StyledCreateOrg = styled.div`
 display: flex;
 justify-content: center;
 `;
+
 export default withRouter( CreateOrg );
