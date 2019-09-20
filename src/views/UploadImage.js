@@ -1,5 +1,8 @@
 import React from 'react';
-import { Upload, Icon, Modal } from 'antd';
+import { Upload, Icon, Modal, Alert } from 'antd';
+import { uploadImage } from '../actions/files';
+import firebase from '../firebase/FirebaseConfig';
+import uuid4 from 'uuid4';
 
 function getBase64( file ){
   debugger;
@@ -12,48 +15,71 @@ function getBase64( file ){
 }
 
 class PicturesWall extends React.Component{
-  state = {
-    previewVisible: false, previewImage: '', fileList: [],
+  state = { loading: false, imageUrl: '' };
+  
+  handleChange = ( info ) => {
+    debugger;
+    if( info.file.status === 'uploading' ){
+      this.setState( { loading: true } );
+      return;
+    }
+    if( info.file.status === 'done' ){
+      getBase64( info.file.originFileObj, imageUrl => this.setState( {
+        imageUrl, loading: false,
+      } ) );
+    }
   };
   
-  handleCancel = () => this.setState( { previewVisible: false } );
-  
-  handlePreview = async file => {
+  beforeUpload = ( file ) => {
     debugger;
-    if( !file.url && !file.preview ){
-      file.preview = await getBase64( file.originFileObj );
+    const isImage = file.type.indexOf( 'image/' ) === 0;
+    if( !isImage ){
+      Alert.error( 'You can only upload image file!' );
     }
     
-    this.setState( {
-      previewImage: file.url || file.preview, previewVisible: true,
-    } );
+    // You can remove this validation if you want
+    const isLt5M = file.size / 1024 / 1024 < 5;
+    if( !isLt5M ){
+      Alert.error( 'Image must smaller than 5MB!' );
+    }
+    return isImage && isLt5M;
   };
   
-  handleChange = ( { fileList } ) => {
+  customUpload = async( { onError, onSuccess, file } ) => {
     debugger;
-    this.setState( { fileList } );
+    const storage = firebase.storage();
+    const metadata = {
+      contentType: 'image/jpeg',
+    };
+    const storageRef = await storage.ref();
+    const imageName = uuid4(); //a unique name for the image
+    const imgFile = storageRef.child( `Vince Wear/${ imageName }.png` );
+    try{
+      const image = await imgFile.put( file, metadata );
+      onSuccess( null, image );
+    }catch( e ){
+      onError( e );
+    }
   };
   
   render(){
-    const { previewVisible, previewImage, fileList } = this.state;
+    debugger;
+    const { loading, imageUrl } = this.state;
     const uploadButton = ( <div>
-      <Icon type="plus"/>
+      <Icon type={ loading ? 'loading' : 'plus' }/>
       <div className="ant-upload-text">Upload</div>
     </div> );
-    return ( <div className="clearfix">
+    return ( <div>
       <Upload
-        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+        name="avatar"
         listType="picture-card"
-        fileList={ fileList }
-        onPreview={ this.handlePreview }
+        className="avatar-uploader"
+        beforeUpload={ this.beforeUpload }
         onChange={ this.handleChange }
+        customRequest={ this.customUpload }
       >
-        { fileList.length >= 8 ? null : uploadButton }
+        { imageUrl ? <img src={ imageUrl } alt="avatar"/> : uploadButton }
       </Upload>
-      <Modal visible={ previewVisible } footer={ null }
-             onCancel={ this.handleCancel }>
-        <img alt="example" style={ { width: '100%' } } src={ previewImage }/>
-      </Modal>
     </div> );
   }
 }
