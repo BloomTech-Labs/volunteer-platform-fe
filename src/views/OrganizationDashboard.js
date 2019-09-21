@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Select, Avatar } from 'antd';
+import styled from 'styled-components';
+import { Select } from 'antd';
 import { Link } from 'react-router-dom';
-import { getAllEventsByOrg, deleteOrganization, getFileUrl } from '../actions';
+import {
+  getAllEventsByOrg, deleteOrganization, getFileUrl, updateOrganization,
+  deleteOrganizationImage,
+} from '../actions';
 import { useStateValue } from '../hooks/useStateValue';
 import EventList from '../components/EventList';
 import OrganizationInfo from '../components/OrganizationInfo';
+import { StyledUploadImage } from '../components';
+import { StyledButton, StyledAvatar } from '../styled';
 
 export const OrganizationDashboard = () => {
   const [ state, dispatch ] = useStateValue();
@@ -12,7 +18,7 @@ export const OrganizationDashboard = () => {
   const [ imageUrl, setImageUrl ] = useState( null );
   
   useEffect( () => {
-    debugger;
+    
     if( displayOrg.imagePath ){
       getFileUrl( displayOrg.imagePath ).then( res => {
         setImageUrl( res );
@@ -40,7 +46,7 @@ export const OrganizationDashboard = () => {
   }, [ state.org.userOrganizations ] );
   
   useEffect( () => {
-    debugger;
+    
     if( displayOrg ){
       getAllEventsByOrg( displayOrg.orgId, dispatch );
     }
@@ -51,34 +57,66 @@ export const OrganizationDashboard = () => {
     deleteOrganization( displayOrg.orgId, dispatch );
   };
   
-  return ( <div>
+  const onFileUpload = ( path ) => {
+    
+    setImageUrl( getFileUrl( path ) );
+    const updatedDisplayOrg = { ...displayOrg, imagePath: path };
+    
+    updateOrganization( displayOrg.orgId, updatedDisplayOrg, dispatch );
+  };
+  
+  return ( <StyledDashboard>
     <h1>Organization dashboard</h1>
-    { imageUrl ? <Avatar shape="square" size={ 128 } src={ imageUrl }/> :
-      <Avatar shape="square" size={ 128 } icon={ 'user' }/> }
-    <Select defaultValue='select' onChange={ changeHandler }>
-      <Select.Option value='select' disabled>Select one</Select.Option>
-      { state.org.userOrganizations.map(
-        item => ( <Select.Option key={ item.orgId }
-                                 value={ item.orgId }>{ item.organizationName }</Select.Option> ) ) }
-    </Select>
-    { displayOrg ? ( <>
-      <Link to={ {
-        pathname: '/create-org', state: {
-          org: displayOrg,
-        },
-      } }>Edit organization info</Link>
-      <button onClick={ deleteOrg }>Delete Org</button>
-      <OrganizationInfo org={ displayOrg }/>
-    </> ) : <div>You have not created any organization yet</div> }
-    <Link to={ {
-      pathname: '/org-dashboard/create-event', state: {
-        org: displayOrg,
-      },
-    } }>Create event</Link>
+    <div className={ 'row mg-lf-4' }>
+      <div className={ 'column' }>
+        { imageUrl ?
+          <div className={ 'column mg-rt-4' }><StyledAvatar shape="square"
+                                                            size={ 256 }
+                                                            src={ imageUrl }/><StyledButton
+            onClick={ () => deleteOrganizationImage( displayOrg ) }>Delete
+            Image</StyledButton></div> :
+          <StyledUploadImage fileUploadComplete={ onFileUpload }/> }
+      
+      </div>
+      
+      <div>
+        <Select defaultValue='select' onChange={ changeHandler }>
+          <Select.Option value='select' disabled>Select one</Select.Option>
+          { state.org.userOrganizations.map(
+            item => ( <Select.Option key={ item.orgId }
+                                     value={ item.orgId }>{ item.organizationName }</Select.Option> ) ) }
+        </Select>
+        { displayOrg ? ( <>
+          <StyledButton>
+            <Link to={ {
+              pathname: '/create-org', state: {
+                org: displayOrg,
+              },
+            } }>Edit organization info</Link>
+          </StyledButton>
+          
+          <StyledButton onClick={ deleteOrg }>Delete Org</StyledButton>
+          <OrganizationInfo org={ displayOrg }/>
+        </> ) : <div>You have not created any organization yet</div> }
+        <Link to={ {
+          pathname: '/org-dashboard/create-event', state: {
+            org: displayOrg,
+          },
+        } }>Create event</Link>
+      </div>
+    </div>
+    
+    
     { state.events.events.length > 0 ?
       <EventList events={ state.events.events }/> :
       <div>No event has been created</div> }
-  </div> );
+  </StyledDashboard> );
 };
+
+const StyledDashboard = styled.div`
+display: flex;
+flex-direction: column;
+align-items: center;
+`;
 
 export default OrganizationDashboard;

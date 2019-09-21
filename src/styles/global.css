@@ -52,6 +52,24 @@ h4 {
     line-height: 1.4;
 }
 
+.column {
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
+.mg-lf-4 {
+    margin-left: 4rem;
+}
+
+.mg-rt-4 {
+    margin-right: 4rem;
+}
+
 /*li.ant-select-dropdown-menu-item > i {*/
 /*display: none;*/
 /*}*/
