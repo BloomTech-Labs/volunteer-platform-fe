@@ -9,7 +9,7 @@ import {
 import { useStateValue } from '../hooks/useStateValue';
 import EventList from '../components/EventList';
 import OrganizationInfo from '../components/OrganizationInfo';
-import { StyledUploadImage } from '../components';
+import { StyledUploadImage } from '../styled/StyledUploadImage';
 import { StyledButton, StyledAvatar } from '../styled';
 
 export const OrganizationDashboard = () => {
