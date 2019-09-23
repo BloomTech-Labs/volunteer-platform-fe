@@ -21,7 +21,6 @@ import {
 import {
   RegisteredAndLoggedInRoute,
   LoginRoute,
-  SignupRoute,
   OrganizationRoute,
   ProtectedRoute,
   RegisterRoute,
@@ -29,13 +28,14 @@ import {
 
 const { Sider, Content } = Layout;
 
-function App(){
-  const [ state, dispatch ] = useStateValue();
-  const [ collapsed, setCollapsed ] = useState( false );
-  const [ dimensions, setDimensions ] = useState( {
-    width: window.innerWidth, height: document.body.scrollHeight,
-  } );
-  
+function App() {
+  const [state, dispatch] = useStateValue();
+  const [collapsed, setCollapsed] = useState(false);
+  const [dimensions, setDimensions] = useState({
+    width: window.innerWidth,
+    height: document.body.scrollHeight,
+  });
+
   /**
    * Set up google auth on change event handler.
    */
@@ -57,41 +57,45 @@ function App(){
     if (state.auth.googleAuthUser && state.auth.googleAuthUser.uid) {
       subscribeToUserOrganizations(state.auth.googleAuthUser.uid, dispatch);
     }
-  }, [ state.auth.googleAuthUser ] );
-  
+  }, [state.auth.googleAuthUser]);
+
   const updateDimensions = () => {
-    setDimensions( {
-      width: window.innerWidth, height: document.body.scrollHeight,
-    } );
-    if( window.innerWidth < 900 ){
-      setCollapsed( true );
+    setDimensions({
+      width: window.innerWidth,
+      height: document.body.scrollHeight,
+    });
+    if (window.innerWidth < 900) {
+      setCollapsed(true);
     }
   };
-  
-  return ( <StyledApp className="App">
-    <Layout>
-      { state.auth.loggedIn && <StyledSider
-        height={ dimensions.height }
-        breakpoint="md"
-        collapsedWidth="0"
-        theme={ 'light' }
-        onBreakpoint={ broken => {
-          console.log( broken );
-        } }
-        onCollapse={ ( collapsed, type ) => {
-          console.log( collapsed, type );
-        } }
-        trigger={ null }
-        collapsed={ collapsed }
-        reverseArrow={ true }
-      >
-        <Affix>
-          <Navigation/>
-        </Affix>
-      </StyledSider> }
+
+  return (
+    <StyledApp className="App">
       <Layout>
-        <Content>
-        <HeaderDiv
+        {state.auth.loggedIn && (
+          <StyledSider
+            height={dimensions.height}
+            breakpoint="md"
+            collapsedWidth="0"
+            theme={'light'}
+            onBreakpoint={broken => {
+              console.log(broken);
+            }}
+            onCollapse={(collapsed, type) => {
+              console.log(collapsed, type);
+            }}
+            trigger={null}
+            collapsed={collapsed}
+            reverseArrow={true}
+          >
+            <Affix>
+              <Navigation />
+            </Affix>
+          </StyledSider>
+        )}
+        <Layout>
+          <Content>
+            <HeaderDiv
               loggedIn={state.auth.loggedIn}
               style={{ background: '#fff', padding: 0 }}
             >
@@ -142,12 +146,13 @@ const StyledMenuButton = styled(Icon)`
   }
 `;
 
-const StyledSider = styled( Sider )`
-  &&{position: absolute;
-  right: 0;
-  z-index: 10;
-  min-height: 100vh;
-  height: ${ props => props.height ? `${ props.height }px` : '100%' };
+const StyledSider = styled(Sider)`
+  && {
+    position: absolute;
+    right: 0;
+    z-index: 10;
+    min-height: 100vh;
+    height: ${props => (props.height ? `${props.height}px` : '100%')};
   }
 `;
 
@@ -156,11 +161,10 @@ const StyledApp = styled.div`
   flex-direction: column;
 `;
 
-const StyledContent = styled( Content )`
-&& {
-margin-right: ${ props => props.width > 900 ? '15rem' : 0 }
-}
-
+const StyledContent = styled(Content)`
+  && {
+    margin-right: ${props => (props.width > 900 ? '15rem' : 0)};
+  }
 `;
 
 export default App;
