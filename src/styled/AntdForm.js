@@ -12,7 +12,7 @@ class AntdForm extends React.Component{
     this.props.form.validateFieldsAndScroll( ( err, values ) => {
       
       if( !err ){
-        console.log( 'Received values of form: ', values );
+        this.props.onSubmit( values );
       }
     } );
   };
@@ -29,7 +29,9 @@ class AntdForm extends React.Component{
     camelCase = camelCase.join( '' );
     
     return camelCase;
+    
   };
+  
   
   getRules = ( type, required = true ) => {
     const rules = [];
@@ -60,7 +62,7 @@ class AntdForm extends React.Component{
         ( child.type.name === 'AntdInput' || 'AntdSelect' ) ){
         
         const camelCase = this.getCamelCase( child.props.name );
-        const required = child.props.notRequired ? false : true;
+        const required = !child.props.notRequired;
         const rules = this.getRules( child.props.type, required );
         let label = child.props.label ? child.props.label : child.props.name;
         if( child.props.tooltipTitle ){
@@ -81,7 +83,6 @@ class AntdForm extends React.Component{
   };
   
   render(){
-    const { getFieldDecorator } = this.props.form;
     
     const formItemLayout = {
       labelCol: {

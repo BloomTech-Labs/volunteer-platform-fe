@@ -32,6 +32,11 @@ const Form = () => {
     return poc;
   };
   
+  const onSubmit = ( values ) => {
+  
+  
+  };
+  
   const days = [
     'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday',
     'Saturday',
@@ -40,7 +45,7 @@ const Form = () => {
   return ( <div className={ 'flex center' }>
     <StyledCard maxWidth={ '900px' } margin={ '2rem 0 5rem 0' }>
       <h1>Let's Set up your organization!</h1>
-      <WrappedAntdForm layout={ 'vertical' }>
+      <WrappedAntdForm layout={ 'vertical' } onSubmit={ onSubmit }>
         <AntdInput name={ 'Organization Name' }
                    label={ 'Name of Organization' }/>
         <AntdSelect name={ 'Cause Areas' }

@@ -1,8 +1,9 @@
 import React from 'react';
 import { Input } from 'antd';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
-const AntdInput = ( { name, camelCase, children, ...rest } ) => {
+const AntdInput = ( { name, children, ...rest } ) => {
   return ( <StyledInput { ...rest }>
     { children }
   </StyledInput> );
