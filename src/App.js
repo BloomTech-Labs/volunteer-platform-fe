@@ -71,7 +71,7 @@ function App() {
 
   return (
     <StyledApp className="App">
-      <Layout>
+      <Layout style={{background: 'white'}}>
         {state.auth.loggedIn && (
           <StyledSider
             height={dimensions.height}
@@ -93,11 +93,10 @@ function App() {
             </Affix>
           </StyledSider>
         )}
-        <Layout>
+        <Layout style={{background: 'white'}}>
           <Content>
             <HeaderDiv
               loggedIn={state.auth.loggedIn}
-              style={{ background: '#fff', padding: 0 }}
             >
               {state.auth.loggedIn && (
                 <StyledMenuButton

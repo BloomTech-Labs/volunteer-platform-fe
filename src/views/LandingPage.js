@@ -21,9 +21,11 @@ export const LandingPage = () => {
           </button>
         </HeroContent>
       </StyledHeroDiv>
-      <HowItWorks />
-      <TopVolunteers />
-      <TopNonProfits />
+      <ContentDiv>
+        <HowItWorks />
+        <TopVolunteers />
+        <TopNonProfits />
+      </ContentDiv>
     </>
   );
 };
@@ -50,26 +52,24 @@ const StyledHeroDiv = styled.div`
     background-size: cover;
     background-position: 100% 75%;
     filter: brightness(90%);
-    @media ${device.tablet}{
-        background-position: 50% 50%;
+    @media ${device.tablet} {
+      background-position: 50% 50%;
     }
   }
 `;
 
 const HeroContent = styled.div`
+  width: 1305px;
   text-align: left;
-  position: relative;
-  left: -20%;
-  margin-left: 10px;
+  margin: 0 auto;
   color: white;
-  margin: 10px;
+  z-index: 10;
+  padding: 0px 10px;
 
-  @media ${device.laptop}{
-      left: -10%;
+  @media ${device.laptop} {
   }
 
-  @media ${device.tablet}{
-      width: 43%;
+  @media ${device.tablet} {
   }
 
   & h1,
@@ -92,4 +92,9 @@ const HeroContent = styled.div`
       color: white;
     }
   }
+`;
+
+const ContentDiv = styled.div`
+  max-width: 1305px;
+  margin: 0 auto;
 `;

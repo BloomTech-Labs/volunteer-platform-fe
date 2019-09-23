@@ -14,8 +14,13 @@ export const WorksCard = (props) => {
 const StyledDiv = styled.div`
     height: 350px;
     width: 300px;
-    background: ${({theme}) => theme.gray};
+    background: ${({theme}) => theme.gray3};
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 10px;
 
     img{
         width: 50%;
