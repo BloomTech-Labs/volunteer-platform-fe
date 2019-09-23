@@ -8,8 +8,8 @@ import { StyledCard, StyledButton, StyledTimePicker } from '../styled';
 import { useStateValue } from '../hooks/useStateValue';
 import { Icon, Select } from 'antd';
 import CheckboxGroup from 'antd/lib/checkbox/Group';
-import moment from './CreateOrg';
 import AntdTextArea from '../styled/AntdTextArea';
+import { registerOrganization, updateOrganization } from '../actions';
 
 const Form = () => {
   const [ numberOfPOC, setNumberOfPOC ] = useState( 1 );
@@ -23,9 +23,9 @@ const Form = () => {
     ];
     if( numberOfPOC > 1 ){
       poc.push( <StyledLine/> );
-      poc.push( <AntdInput name={ 'First Name 2' } label={ 'First Name' }/> );
-      poc.push( <AntdInput name={ 'Last Name 2' } label={ 'First Name' }/> );
-      poc.push( <AntdInput name={ 'Email 2' } label={ 'Email' }
+      poc.push( <AntdInput name={ 'First Name 2' } label={ 'First Name' } /> );
+      poc.push( <AntdInput name={ 'Last Name 2' } label={ 'First Name' } /> );
+      poc.push( <AntdInput name={ 'Email 2' } label={ 'Email' } 
                            type={ 'email' }/> );
       
     }
@@ -33,9 +33,15 @@ const Form = () => {
   };
   
   const onSubmit = ( values ) => {
-    debugger;
-    const time = values.startTime.format( 'hh:mm a' ).toLocaleString();
+    const org = {
+      ...values,
+      daysOfTheWeek: values.daysOfTheWeek[''],
+      startTime: values.startTime.format('LT'),
+      endTime: values.endTime.format('LT')
+    }
     
+    console.log(org)
+    registerOrganization( org, dispatch )
   };
   
   const days = [
@@ -61,9 +67,9 @@ const Form = () => {
             return <Option key={ cause }>{ cause }</Option>;
           } ) }
         </AntdSelect>
-        <AntdInput name={ 'City' }/>
-        <AntdInput name={ 'State' }/>
-        <AntdInput name={ 'Phone' }/>
+        <AntdInput name={ 'City' } />
+        <AntdInput name={ 'State' } />
+        <AntdInput name={ 'Phone' } />
         <h2>Who is the point of contact?</h2>
         { getPOCInputs() }
         { numberOfPOC === 1 ?
@@ -77,13 +83,15 @@ const Form = () => {
         <AntdTimePicker name={ 'Start Time' }
                         use12Hours
                         format={ 'h:mm a' }
+  
         />
         <AntdTimePicker name={ 'End Time' }
                         use12Hours
                         format={ 'h:mm a' }
+    
         />
-        <AntdTextArea name={ 'About Us' }/>
-        <AntdInput name={ 'Website' } type={ 'url' }/>
+        <AntdTextArea name={ 'About Us' } />
+        <AntdInput name={ 'Website' } type={ 'url' } />
       </WrappedAntdForm>
     </StyledCard>
   </div> );
