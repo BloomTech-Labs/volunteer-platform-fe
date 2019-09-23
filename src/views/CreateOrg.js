@@ -9,8 +9,11 @@ import { useStateValue } from '../hooks/useStateValue';
 import { StyledTextArea, StyledTimePicker } from '../styled';
 import { message, Select, Checkbox } from 'antd';
 import styled from 'styled-components';
+
+import StyledUploadImage from '../styled/StyledUploadImage';
 import UploadImage from '../components/UploadImage';
 import CreatePOCFormList from '../components/CreatePOCFormList';
+
 
 export const CreateOrg = ( props ) => {
   const { Option } = Select;
@@ -141,10 +144,11 @@ export const CreateOrg = ( props ) => {
 
   const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   
+
   return ( 
     <StyledCreateOrg>
       <StyledCard>
-        <UploadImage fileUploadComplete={ onFileUpload }/>
+         <StyledUploadImage fileUploadComplete={ onFileUpload }/>
         <h1>{ props.location.state ? 'Update organization info' :
           'Let\'s set up your organization' }</h1>
         <StyledForm onSubmit={ handleSubmit }>
@@ -207,6 +211,7 @@ export const CreateOrg = ( props ) => {
       </StyledCard>
     </StyledCreateOrg> );
 }
+
 
 const StyledCreateOrg = styled.div`
 display: flex;

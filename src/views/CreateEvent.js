@@ -90,7 +90,7 @@ export const CreateEvent = props => {
   
   //Options for tags
   let requirementTags = [];
-  debugger;
+  
   if( state.tags.requirements ){
     requirementTags = state.tags.requirements.map( tag => {
       return ( <Option key={ tag } value={ tag }>

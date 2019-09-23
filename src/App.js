@@ -6,129 +6,116 @@ import { Layout, Menu, Icon } from 'antd';
 
 import { useStateValue } from './hooks/useStateValue';
 import { subscribeToUserOrganizations, signedIn, signedOut } from './actions';
-import { UploadImage, HeaderDiv, FooterDiv } from './components';
-import Navigation from './components/Navigation'
+import { StyledUploadImage, HeaderDiv, FooterDiv } from './components';
+import Navigation from './components/Navigation';
 import {
-  MainDashboard,
-  OrganizationDashboard,
-  Signup,
-  CreateEvent,
-  CreateOrg,
-  Login,
+  MainDashboard, OrganizationDashboard, Signup, CreateEvent, CreateOrg, Login,
   LandingPage,
 } from './views';
 
 import {
-  RegisteredAndLoggedInRoute,
-  LoginRoute,
-  SignupRoute,
-  OrganizationRoute,
+  RegisteredAndLoggedInRoute, LoginRoute, SignupRoute, OrganizationRoute,
   ProtectedRoute,
 } from './routes/index';
 
 const { Sider, Content } = Layout;
 
-function App() {
-  const [state, dispatch] = useStateValue();
-  const [collapsed, setCollapsed] = useState(false);
-
+function App(){
+  const [ state, dispatch ] = useStateValue();
+  const [ collapsed, setCollapsed ] = useState( false );
+  
   /**
    * Set up google auth on change event handler.
    */
-  useEffect(() => {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        signedIn(user, dispatch);
-      } else {
-        signedOut(dispatch);
+  useEffect( () => {
+    firebase.auth().onAuthStateChanged( user => {
+      if( user ){
+        signedIn( user, dispatch );
+      }else{
+        signedOut( dispatch );
       }
-    });
-  }, []);
-  useEffect(() => {
-    window.addEventListener('resize', updateDimensions);
+    } );
+  }, [] );
+  useEffect( () => {
+    window.addEventListener( 'resize', updateDimensions );
     updateDimensions();
-  }, []);
-
-  useEffect(() => {
-    if (state.auth.googleAuthUser && state.auth.googleAuthUser.uid) {
-      subscribeToUserOrganizations(state.auth.googleAuthUser.uid, dispatch);
+  }, [] );
+  
+  useEffect( () => {
+    if( state.auth.googleAuthUser && state.auth.googleAuthUser.uid ){
+      subscribeToUserOrganizations( state.auth.googleAuthUser.uid, dispatch );
     }
-  }, state.auth.googleAuthUser);
-
+  }, state.auth.googleAuthUser );
+  
   const updateDimensions = () => {
-    if (window.innerWidth < 900) {
-      setCollapsed(true);
+    if( window.innerWidth < 900 ){
+      setCollapsed( true );
     }
   };
-
-  return (
-    <StyledApp className="App">
+  
+  return ( <StyledApp className="App">
       <Layout>
-        {state.auth.loggedIn && 
-          <StyledSider
-            breakpoint="md"
-            collapsedWidth="0"
-            theme={'light'}
-            onBreakpoint={broken => {
-              console.log(broken);
-            }}
-            onCollapse={(collapsed, type) => {
-              console.log(collapsed, type);
-            }}
-            trigger={null}
-            collapsed={collapsed}
-            reverseArrow={true}
-          >
-            <Navigation />
-          </StyledSider>
-        }
+        { state.auth.loggedIn && <StyledSider
+          breakpoint="md"
+          collapsedWidth="0"
+          theme={ 'light' }
+          onBreakpoint={ broken => {
+            console.log( broken );
+          } }
+          onCollapse={ ( collapsed, type ) => {
+            console.log( collapsed, type );
+          } }
+          trigger={ null }
+          collapsed={ collapsed }
+          reverseArrow={ true }
+        >
+          <Navigation/>
+        </StyledSider> }
         <Layout>
           <Content>
-            <HeaderDiv style={{ background: '#fff', padding: 0 }}>
-              {state.auth.loggedIn && 
-                <StyledMenuButton
-                  collapsed={collapsed}
-                  className="trigger"
-                  type={collapsed ? 'menu-fold' : 'menu-unfold'}
-                  onClick={() => setCollapsed(!collapsed)}
-                />
-              }
+            <HeaderDiv style={ { background: '#fff', padding: 0 } }>
+              { state.auth.loggedIn && <StyledMenuButton
+                collapsed={ collapsed }
+                className="trigger"
+                type={ collapsed ? 'menu-fold' : 'menu-unfold' }
+                onClick={ () => setCollapsed( !collapsed ) }
+              /> }
             </HeaderDiv>
             <Switch>
-              <Route exact path={'/'} component={LandingPage} />
-              <RegisteredAndLoggedInRoute path={'/dashboard'} component={MainDashboard} />
-              <LoginRoute path={'/login'} component={Login} />
-              <ProtectedRoute path={'/create-org'} component={CreateOrg} />
+              <Route exact path={ '/' } component={ LandingPage }/>
+              <RegisteredAndLoggedInRoute path={ '/dashboard' }
+                                          component={ MainDashboard }/>
+              <LoginRoute path={ '/login' } component={ Login }/>
+              <ProtectedRoute path={ '/create-org' } component={ CreateOrg }/>
               <OrganizationRoute
-                path={'/org-dashboard/create-event'}
-                component={CreateEvent}
+                path={ '/org-dashboard/create-event' }
+                component={ CreateEvent }
               />
               <OrganizationRoute
-                path={'/org-dashboard'}
-                component={OrganizationDashboard}
+                path={ '/org-dashboard' }
+                component={ OrganizationDashboard }
               />
-              <SignupRoute path={'/signup'} component={Signup} />
-              <Route path={'/upload-image'} component={UploadImage} />
-              <Route path={'/'} component={UploadImage} />
+              <SignupRoute path={ '/signup' } component={ Signup }/>
+              <Route path={ '/upload-image' } component={ StyledUploadImage }/>
+              <Route path={ '/' } component={ StyledUploadImage }/>
             </Switch>
           </Content>
-          <FooterDiv />
+          <FooterDiv/>
         </Layout>
       </Layout>
-    </StyledApp>
-  );
+    </StyledApp> );
 }
 
-const StyledMenuButton = styled(Icon)`
+const StyledMenuButton = styled( Icon )`
   && {
-    margin-right: ${props => (props.collapsed ? '30px' : '230px')};
+    margin-right: ${ props => ( props.collapsed ? '30px' : '230px' ) };
     font-size: 2rem;
     margin-top: 20px;
     transition: all 0.2s;
   }
 `;
 
-const StyledSider = styled(Sider)`
+const StyledSider = styled( Sider )`
   position: absolute;
   right: 0;
   z-index: 10;
