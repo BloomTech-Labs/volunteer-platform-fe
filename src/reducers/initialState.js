@@ -36,6 +36,7 @@ export const initialState = {
     deleteOrgFailedError: '',
   }, events: {
     events: [],
+    recurringEvents: [],
     createEventFailedError: '',
     deleteEventFailedError: '',
     editEventFailedError: '',
@@ -88,6 +89,7 @@ export const initialState = {
  * @typedef events
  * @type {Object}
  * @property {Event[]} events Array of events collected from db.
+ * @property {RecurringEvent[]}
  * @property {String} createEventFailedError Create Event Error Message
  * @property {String} createEventFailedError Create Event Error Message
  * @property {String} editEventFailedError Edit Event Error Message
