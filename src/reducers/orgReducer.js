@@ -12,8 +12,9 @@ export const orgReducer = ( state, action ) => {
         userOrganizations: [ ...state.userOrganizations, action.payload ],
       };
     case GET_USER_ORGANIZATIONS:
+        let orgs = action.payload
       return {
-        ...state, createdOrg: true, userOrganizations: action.payload,
+        ...state, createdOrg: orgs.length>0, userOrganizations: action.payload,
 
       };
     case GET_USER_ORGANIZATIONS_FAILED:

@@ -54,7 +54,7 @@ export const Navigation = props => {
           Create Organization
         </Link>
       </Menu.Item> ) }
-      { state.org.createdOrg && ( <Menu.Item key={ 'Organization Dashboard' }>
+      { localStorage.getItem('createdOrg')==='true' && ( <Menu.Item key={ 'Organization Dashboard' }>
         <Link to={ '/org-dashboard' }>
           <Icon type="dashboard"/>
           Organization Dashboard
