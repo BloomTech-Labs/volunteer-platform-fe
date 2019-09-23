@@ -16,7 +16,7 @@ const formItemLayout = {
   },
 };
 
-export const StyledInput = ( { name, values, onChange, children, ...rest } ) => {
+export const StyledInput = ( { name, values, onChange, children, label, ...rest } ) => {
   let camelCase = '';
   if( name ){
     camelCase = name.split( ' ' );
@@ -30,7 +30,8 @@ export const StyledInput = ( { name, values, onChange, children, ...rest } ) => 
     camelCase = camelCase.join( '' );
   }
   
-  return ( <Form.Item { ...formItemLayout } label={ name }>
+  return ( <Form.Item { ...formItemLayout } 
+    label={ label ? label : name }>
     <InputStyled
       { ...rest }
       name={ camelCase }

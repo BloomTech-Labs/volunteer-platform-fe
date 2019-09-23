@@ -48,6 +48,7 @@
  * @property {String} state State the organization is located.
  * @property {SocialMedia[]} socialMedia Array of social media objects.
  * @property {String} email Organizations email
+ * @property {String} [imagePath] Org image path to be changed into url.
  */
 
 /**
@@ -73,10 +74,6 @@
  *
  */
 
-/**
- * @typedef Tag
- * @type {Object}
- * @property {String} name
- */
+
 
 
