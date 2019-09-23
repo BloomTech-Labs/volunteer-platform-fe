@@ -9,10 +9,8 @@ import { useStateValue } from '../hooks/useStateValue';
 import { StyledTextArea, StyledTimePicker } from '../styled';
 import { message, Select, Checkbox } from 'antd';
 import styled from 'styled-components';
-
-import StyledUploadImage from '../styled/StyledUploadImage';
 import CreatePOCFormList from '../components/CreatePOCFormList';
-
+import uuid4 from 'uuid4';
 
 export const CreateOrg = ( props ) => {
   const { Option } = Select;
@@ -22,13 +20,12 @@ export const CreateOrg = ( props ) => {
     organizationName: '',
     city: '',
     state: '',
+    email: '',
     phone: '',
-    pointOfContact: [],
+    pointOfContact: [ { firstName: '', lastName: '', email: '', id: uuid4() } ],
     causeAreas: [],
     hoursOfOperations: {
-      days: [],
-      startTime: '',
-      endTime: ''
+      days: [], startTime: '', endTime: '',
     },
     aboutUs: '',
     website: '',
@@ -60,57 +57,66 @@ export const CreateOrg = ( props ) => {
       ...localState, causeAreas: e,
     } );
   };
-
-  console.log(localState);
-
-  const changePOC = (value) => {
+  
+  console.log( localState );
+  
+  const changePOC = ( id, e ) => {
+    
+    const pocs = localState.pointOfContact.map( poc => {
+      if( poc.id === id ){
+        poc[ e.target.name ] = e.target.value;
+      }
+      return poc;
+    } );
+    
     setState( {
-      ...localState,
-      pointOfContact: value
-    })
-  }
-
+      ...localState, pointOfContact: pocs,
+    } );
+  };
+  
+  const addPOC = () => {
+    setState( {
+      ...localState, pointOfContact: [
+        ...localState.pointOfContact,
+        { firstName: '', lastName: '', email: '', id: uuid4() },
+      ],
+    } );
+  };
+  
   const changeDays = e => {
-    setState({
-      ...localState, 
-      hoursOfOperations: {
-        ...localState.hoursOfOperations,
-        days: e
-      }
-    })
-  }
-
-  const changeStartTime = (time, timeString) => {
-    setState({
-      ...localState,
-      hoursOfOperations: {
-        ...localState.hoursOfOperations,
-        startTime: timeString
-      }
-    })
-  }
-
-  const changeEndTime = (time, timeString) => {
-    setState({
-      ...localState,
-      hoursOfOperations: {
-        ...localState.hoursOfOperations,
-        endTime: timeString
-      }
-    })
-  }
-
+    setState( {
+      ...localState, hoursOfOperations: {
+        ...localState.hoursOfOperations, days: e,
+      },
+    } );
+  };
+  
+  const changeStartTime = ( time, timeString ) => {
+    setState( {
+      ...localState, hoursOfOperations: {
+        ...localState.hoursOfOperations, startTime: timeString,
+      },
+    } );
+  };
+  
+  const changeEndTime = ( time, timeString ) => {
+    setState( {
+      ...localState, hoursOfOperations: {
+        ...localState.hoursOfOperations, endTime: timeString,
+      },
+    } );
+  };
+  
   const validateForm = () => {
-    if (!localState.organizationName) {
+    debugger;
+    if( !localState.organizationName ){
       return false;
-    } else {
-      return true;
     }
-  }
+  };
   
   const handleSubmit = e => {
     e.preventDefault();
-    if (validateForm()) {
+    if( validateForm() ){
       if( props.location.state ){
         updateOrganization( props.location.state.org.orgId,
           localState,
@@ -122,8 +128,8 @@ export const CreateOrg = ( props ) => {
         props.history.push( '/org-dashboard' );
       }
       setState( org );
-    } else {
-      message.error('Name of organization is required')
+    }else{
+      message.error( 'Name of organization is required' );
     }
   };
   
@@ -136,81 +142,77 @@ export const CreateOrg = ( props ) => {
       props.history.push( '/' );
     }
   };
-
-  const onFileUpload = ( path ) => {
-    setState( { ...localState, imagePath: path } );
-  };
-
-  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   
-
-  return ( 
-    <StyledCreateOrg>
-      <StyledCard>
-         <StyledUploadImage fileUploadComplete={ onFileUpload }/>
-        <h1>{ props.location.state ? 'Update organization info' :
-          'Let\'s set up your organization' }</h1>
-        <StyledForm onSubmit={ handleSubmit }>
-          <StyledInput label={ 'Name of Organization*'} 
-                      name={ 'Organization Name' } 
-                      values={ localState }
-                      onChange={ changeValue }/>
-          <StyledSelect label={ 'Type of Cause'} 
-                        name={ 'Cause Areas' } 
-                        value={ localState.causeAreas }
-                        mode='multiple' onChange={ changeCauses }
-                        tooltipTitle={ 'Choose all that apply' }>
-            { state.tags.causeAreas.map( (item, index) => 
-              <Option key={ `causeArea${index}` }
-                      value={ item }>{ item }</Option> ) }
-          </StyledSelect>
-          <StyledInput name={ 'City' } values={ localState }
-                      onChange={ changeValue }/>
-          <StyledInput name={ 'State' } values={ localState }
-                      onChange={ changeValue }/>
-          <StyledInput name={ 'Phone' } values={ localState }
-                      onChange={ changeValue }/>
-          <h3>Who is the point of contact?</h3>
-          <CreatePOCFormList changePOC={changePOC} pointOfContact={localState.pointOfContact}/>
-
-          <h3>What are your hours of operation?</h3>
-          <h5>Days of the week</h5>
-          <Checkbox.Group options={ days } onChange={ changeDays }/>
-          <h5>What time?</h5>
-          <StyledTimePicker 
-            name={ 'Start Time'} 
-            defaultOpenValue={ moment( '00:00', 'hh:mm' ) }
-            onChange={ changeStartTime }
-            use12Hours
-            format={ 'h:mm a' }
-            type="time"
-          /> to 
-          <StyledTimePicker 
-            name={ 'End Time'} 
-            defaultOpenValue={ moment( '00:00', 'hh:mm' ) }
-            onChange={ changeEndTime }
-            use12Hours
-            format={ 'h:mm a' }
-            type="time"
-          />
-          <StyledTextArea name={ 'About Us' }
-                          values={ localState }
-                          onChange={ changeValue }/>
-
-          <StyledInput name={ 'Website' } values={ localState }
-                      onChange={ changeValue }/>
-          
-          <StyledButton type="primary" htmlType="submit">
-            { props.location.state ? 'Update' : 'Register' }
-          </StyledButton>
-          <StyledButton type="danger" onClick={ cancel }>
-            Cancel
-          </StyledButton>
-        </StyledForm>
-      </StyledCard>
-    </StyledCreateOrg> );
-}
-
+  const days = [
+    'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday',
+    'Saturday',
+  ];
+  
+  return ( <StyledCreateOrg>
+    <StyledCard>
+      <h1>{ props.location.state ? 'Update organization info' :
+        'Let\'s set up your organization' }</h1>
+      <StyledForm onSubmit={ handleSubmit }>
+        <StyledInput label={ 'Name of Organization*' }
+                     name={ 'Organization Name' }
+                     values={ localState }
+                     onChange={ changeValue }/>
+        <StyledSelect label={ 'Type of Cause' }
+                      name={ 'Cause Areas' }
+                      value={ localState.causeAreas }
+                      mode='multiple' onChange={ changeCauses }
+                      tooltipTitle={ 'Choose all that apply' }>
+          { state.tags.causeAreas.map( ( item, index ) => <Option
+            key={ `causeArea${ index }` }
+            value={ item }>{ item }</Option> ) }
+        </StyledSelect>
+        <StyledInput name={ 'City' } values={ localState }
+                     onChange={ changeValue }/>
+        <StyledInput name={ 'State' } values={ localState }
+                     onChange={ changeValue }/>
+        <StyledInput name={ 'Phone' } values={ localState }
+                     onChange={ changeValue }/>
+        <h3>Who is the point of contact?</h3>
+        <CreatePOCFormList changePOC={ changePOC } addPOC={ addPOC }
+                           pointOfContacts={ localState.pointOfContact }/>
+        
+        <h3>What are your hours of operation?</h3>
+        <h5>Days of the week</h5>
+        <Checkbox.Group options={ days } onChange={ changeDays }/>
+        <h5>What time?</h5>
+        <StyledTimePicker
+          name={ 'Start Time' }
+          defaultOpenValue={ moment( '00:00', 'hh:mm' ) }
+          onChange={ changeStartTime }
+          use12Hours
+          format={ 'h:mm a' }
+          type="time"
+        /> to
+        <StyledTimePicker
+          name={ 'End Time' }
+          defaultOpenValue={ moment( '00:00', 'hh:mm' ) }
+          onChange={ changeEndTime }
+          use12Hours
+          format={ 'h:mm a' }
+          type="time"
+        />
+        <StyledTextArea name={ 'About Us' }
+                        values={ localState }
+                        onChange={ changeValue }/>
+        
+        <StyledInput name={ 'Website' } values={ localState }
+                     onChange={ changeValue }/>
+        
+        <StyledButton type="primary" htmlType="submit">
+          { props.location.state ? 'Update' : 'Register' }
+        </StyledButton>
+        <StyledButton type="danger" onClick={ cancel }>
+          Cancel
+        </StyledButton>
+      </StyledForm>
+    </StyledCard>
+  </StyledCreateOrg> );
+};
 
 const StyledCreateOrg = styled.div`
 display: flex;

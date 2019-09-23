@@ -1,29 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Icon, message } from 'antd';
+import React from 'react';
+import { Button, Icon } from 'antd';
+import styled from 'styled-components';
 import CreatePOC from './CreatePOC';
 
-
-const CreatePOCFormList = (props) => {
-  const [id, setId] = useState(1);
-  const [keys, setKeys] = useState([0])
-
-  useEffect(() => {
-    setKeys(Array.from(Array(id).keys()))
-  }, [id])
-
-  const addPocFields = (e) => {
-    e.preventDefault();
-    setId(id + 1);
-  }
-
-  return (
-    <div>
-      {keys.map(item => <CreatePOC key={item} changePOC={props.changePOC} pointOfContact={props.pointOfContact}/>)}
-      <Button type="dashed" onClick={addPocFields} style={{ width: '100%' }}>
-        <Icon type="plus" /> Add field
-      </Button>
-    </div>
-  )
-}
+const CreatePOCFormList = ( props ) => {
+  
+  return ( <div>
+    { props.pointOfContacts.map( ( poc, i ) => <div key={ poc.id }>{ i > 0 &&
+    <StyledLine key={ i }/> }
+      <CreatePOC
+        changePOC={ props.changePOC } key={ poc.id } poc={ poc }/></div> ) }
+    { props.pointOfContacts.length === 1 &&
+    <Button type="dashed" onClick={ props.addPOC }
+            style={ { width: '100%' } }>
+      <Icon type="plus"/> Add point of contact.
+    </Button> }
+  
+  </div> );
+};
+const StyledLine = styled.div`
+border-bottom: 1px solid lightgrey;
+margin-bottom: 1rem;
+`;
 
 export default CreatePOCFormList;
