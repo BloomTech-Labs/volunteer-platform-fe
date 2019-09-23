@@ -9,63 +9,53 @@ import { subscribeToUserOrganizations, signedIn, signedOut } from './actions';
 import { StyledUploadImage, HeaderDiv, FooterDiv } from './components';
 import Navigation from './components/Navigation';
 import {
-  MainDashboard,
-  OrganizationDashboard,
-  Signup,
-  CreateEvent,
-  CreateOrg,
-  Login,
+  MainDashboard, OrganizationDashboard, Signup, CreateEvent, CreateOrg, Login,
   LandingPage,
 } from './views';
 
 import {
-  RegisteredAndLoggedInRoute,
-  LoginRoute,
-  OrganizationRoute,
-  ProtectedRoute,
-  RegisterRoute,
+  RegisteredAndLoggedInRoute, LoginRoute, SignupRoute, OrganizationRoute,
+  ProtectedRoute, RegisterRoute,
 } from './routes/index';
 
 const { Sider, Content } = Layout;
 
-function App() {
-  const [state, dispatch] = useStateValue();
-  const [collapsed, setCollapsed] = useState(false);
-  const [dimensions, setDimensions] = useState({
-    width: window.innerWidth,
-    height: document.body.scrollHeight,
-  });
-
+function App(){
+  const [ state, dispatch ] = useStateValue();
+  const [ collapsed, setCollapsed ] = useState( false );
+  const [ dimensions, setDimensions ] = useState( {
+    width: window.innerWidth, height: document.body.scrollHeight,
+  } );
+  
   /**
    * Set up google auth on change event handler.
    */
-  useEffect(() => {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        signedIn(user, dispatch);
-      } else {
-        signedOut(dispatch);
+  useEffect( () => {
+    firebase.auth().onAuthStateChanged( user => {
+      if( user ){
+        signedIn( user, dispatch );
+      }else{
+        signedOut( dispatch );
       }
-    });
-  }, []);
-  useEffect(() => {
-    window.addEventListener('resize', updateDimensions);
+    } );
+  }, [] );
+  useEffect( () => {
+    window.addEventListener( 'resize', updateDimensions );
     updateDimensions();
-  }, []);
-
-  useEffect(() => {
-    if (state.auth.googleAuthUser && state.auth.googleAuthUser.uid) {
-      subscribeToUserOrganizations(state.auth.googleAuthUser.uid, dispatch);
+  }, [] );
+  
+  useEffect( () => {
+    if( state.auth.googleAuthUser && state.auth.googleAuthUser.uid ){
+      subscribeToUserOrganizations( state.auth.googleAuthUser.uid, dispatch );
     }
-  }, [state.auth.googleAuthUser]);
-
+  }, [ state.auth.googleAuthUser ] );
+  
   const updateDimensions = () => {
-    setDimensions({
-      width: window.innerWidth,
-      height: document.body.scrollHeight,
-    });
-    if (window.innerWidth < 900) {
-      setCollapsed(true);
+    setDimensions( {
+      width: window.innerWidth, height: document.body.scrollHeight,
+    } );
+    if( window.innerWidth < 900 ){
+      setCollapsed( true );
     }
   };
 
@@ -132,26 +122,26 @@ function App() {
           <FooterDiv />
         </Layout>
       </Layout>
-    </StyledApp>
-  );
+    </Layout>
+  </StyledApp> );
 }
 
-const StyledMenuButton = styled(Icon)`
+const StyledMenuButton = styled( Icon )`
   && {
-    margin-right: ${props => (props.collapsed ? '30px' : '230px')};
+    margin-right: ${ props => ( props.collapsed ? '30px' : '230px' ) };
     font-size: 2rem;
     margin-top: 20px;
     transition: all 0.2s;
   }
 `;
 
-const StyledSider = styled(Sider)`
-  && {
+const StyledSider = styled( Sider )`
+  &&& {
     position: absolute;
     right: 0;
     z-index: 10;
     min-height: 100vh;
-    height: ${props => (props.height ? `${props.height}px` : '100%')};
+    height: ${ props => ( props.height ? `${ props.height }px` : '100%' ) };
   }
 `;
 
@@ -160,9 +150,9 @@ const StyledApp = styled.div`
   flex-direction: column;
 `;
 
-const StyledContent = styled(Content)`
+const StyledContent = styled( Content )`
   && {
-    margin-right: ${props => (props.width > 900 ? '15rem' : 0)};
+    margin-right: ${ props => ( props.width > 900 ? '15rem' : 0 ) };
   }
 `;
 

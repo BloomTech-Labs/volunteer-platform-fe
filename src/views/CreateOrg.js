@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router';
-import moment from 'moment';
 import {
   StyledButton,
   StyledCard,
@@ -10,8 +9,8 @@ import {
 } from '../styled';
 import { registerOrganization, updateOrganization } from '../actions';
 import { useStateValue } from '../hooks/useStateValue';
-import { StyledTextArea, StyledTimePicker } from '../styled';
-import { message, Select, Checkbox } from 'antd';
+import { StyledTextArea } from '../styled/StyledTextArea';
+import { Select } from 'antd';
 import styled from 'styled-components';
 import CreatePOCFormList from '../components/CreatePOCFormList';
 import uuid4 from 'uuid4';
@@ -22,6 +21,8 @@ export const CreateOrg = props => {
   const org = {
     organizationOwnerUID: '',
     organizationName: '',
+    causeAreas: [],
+    aboutUs: '',
     city: '',
     state: '',
     email: '',
