@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Switch, Route } from 'react-router';
 import styled from 'styled-components';
 import firebase from './firebase/FirebaseConfig';
-import { Layout, Menu, Icon } from 'antd';
+import { Layout, Icon, Affix } from 'antd';
 
 import { useStateValue } from './hooks/useStateValue';
 import { subscribeToUserOrganizations, signedIn, signedOut } from './actions';
 import { StyledUploadImage, HeaderDiv, FooterDiv } from './components';
 import Navigation from './components/Navigation';
+import Form from './views/Form';
 import {
   MainDashboard, OrganizationDashboard, Signup, CreateEvent, CreateOrg, Login,
   LandingPage,
@@ -23,6 +24,9 @@ const { Sider, Content } = Layout;
 function App(){
   const [ state, dispatch ] = useStateValue();
   const [ collapsed, setCollapsed ] = useState( false );
+  const [ dimensions, setDimensions ] = useState( {
+    width: window.innerWidth, height: document.body.scrollHeight,
+  } );
   
   /**
    * Set up google auth on change event handler.
@@ -48,39 +52,47 @@ function App(){
   }, state.auth.googleAuthUser );
   
   const updateDimensions = () => {
+    setDimensions( {
+      width: window.innerWidth, height: document.body.scrollHeight,
+    } );
     if( window.innerWidth < 900 ){
       setCollapsed( true );
     }
   };
   
   return ( <StyledApp className="App">
-      <Layout>
-        { state.auth.loggedIn && <StyledSider
-          breakpoint="md"
-          collapsedWidth="0"
-          theme={ 'light' }
-          onBreakpoint={ broken => {
-            console.log( broken );
-          } }
-          onCollapse={ ( collapsed, type ) => {
-            console.log( collapsed, type );
-          } }
-          trigger={ null }
-          collapsed={ collapsed }
-          reverseArrow={ true }
-        >
+    <Layout>
+      { state.auth.loggedIn && <StyledSider
+        height={ dimensions.height }
+        breakpoint="md"
+        collapsedWidth="0"
+        theme={ 'light' }
+        onBreakpoint={ broken => {
+          console.log( broken );
+        } }
+        onCollapse={ ( collapsed, type ) => {
+          console.log( collapsed, type );
+        } }
+        trigger={ null }
+        collapsed={ collapsed }
+        reverseArrow={ true }
+      >
+        <Affix>
           <Navigation/>
-        </StyledSider> }
-        <Layout>
-          <Content>
-            <HeaderDiv style={ { background: '#fff', padding: 0 } }>
-              { state.auth.loggedIn && <StyledMenuButton
-                collapsed={ collapsed }
-                className="trigger"
-                type={ collapsed ? 'menu-fold' : 'menu-unfold' }
-                onClick={ () => setCollapsed( !collapsed ) }
-              /> }
-            </HeaderDiv>
+        </Affix>
+      </StyledSider> }
+      <Layout>
+        <Content>
+          <HeaderDiv style={ { background: '#fff', padding: 0 } }>
+            { state.auth.loggedIn && <StyledMenuButton
+              collapsed={ collapsed }
+              className="trigger"
+              type={ collapsed ? 'menu-fold' : 'menu-unfold' }
+              onClick={ () => setCollapsed( !collapsed ) }
+            /> }
+          </HeaderDiv>
+          <StyledContent width={ dimensions.width }
+                         height={ dimensions.height }>
             <Switch>
               <Route exact path={ '/' } component={ LandingPage }/>
               <RegisteredAndLoggedInRoute path={ '/dashboard' }
@@ -96,14 +108,15 @@ function App(){
                 component={ OrganizationDashboard }
               />
               <SignupRoute path={ '/signup' } component={ Signup }/>
-              <Route path={ '/upload-image' } component={ StyledUploadImage }/>
+              <Route path={ '/form' } component={ Form }/>
               <Route path={ '/' } component={ StyledUploadImage }/>
             </Switch>
-          </Content>
-          <FooterDiv/>
-        </Layout>
+          </StyledContent>
+        </Content>
+        <FooterDiv/>
       </Layout>
-    </StyledApp> );
+    </Layout>
+  </StyledApp> );
 }
 
 const StyledMenuButton = styled( Icon )`
@@ -116,16 +129,24 @@ const StyledMenuButton = styled( Icon )`
 `;
 
 const StyledSider = styled( Sider )`
-  position: absolute;
+  &&{position: absolute;
   right: 0;
   z-index: 10;
-  min-height: 100%;
-  height: 100%;
+  min-height: 100vh;
+  height: ${ props => props.height ? `${ props.height }px` : '100%' };
+  }
 `;
 
 const StyledApp = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+const StyledContent = styled( Content )`
+&& {
+margin-right: ${ props => props.width > 900 ? '15rem' : 0 }
+}
+
 `;
 
 export default App;
