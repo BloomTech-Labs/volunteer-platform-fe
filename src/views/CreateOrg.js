@@ -11,7 +11,6 @@ import { message, Select, Checkbox } from 'antd';
 import styled from 'styled-components';
 
 import StyledUploadImage from '../styled/StyledUploadImage';
-import UploadImage from '../components/UploadImage';
 import CreatePOCFormList from '../components/CreatePOCFormList';
 
 
