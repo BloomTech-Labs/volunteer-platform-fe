@@ -27,10 +27,10 @@ export const OrganizationDashboard = () => {
     }else{
       setImageUrl( null );
     }
-  }, [ displayOrg ] );
-  
-  useEffect( () => {
-    if( state.auth.googleAuthUser ){
+  }, [displayOrg]);
+
+  useEffect(() => {
+    if (state.auth.googleAuthUser) {
       const uid = state.auth.googleAuthUser.uid;
     }
   }, []);

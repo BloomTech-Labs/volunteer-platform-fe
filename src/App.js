@@ -9,13 +9,22 @@ import { subscribeToUserOrganizations, signedIn, signedOut } from './actions';
 import { StyledUploadImage, HeaderDiv, FooterDiv } from './components';
 import Navigation from './components/Navigation';
 import {
-  MainDashboard, OrganizationDashboard, Signup, CreateEvent, CreateOrg, Login,
+  MainDashboard,
+  OrganizationDashboard,
+  Signup,
+  CreateEvent,
+  CreateOrg,
+  Login,
   LandingPage,
 } from './views';
 
 import {
-  RegisteredAndLoggedInRoute, LoginRoute, SignupRoute, OrganizationRoute,
+  RegisteredAndLoggedInRoute,
+  LoginRoute,
+  SignupRoute,
+  OrganizationRoute,
   ProtectedRoute,
+  RegisterRoute,
 } from './routes/index';
 
 const { Sider, Content } = Layout;
@@ -30,23 +39,23 @@ function App(){
   /**
    * Set up google auth on change event handler.
    */
-  useEffect( () => {
-    firebase.auth().onAuthStateChanged( user => {
-      if( user ){
-        signedIn( user, dispatch );
-      }else{
-        signedOut( dispatch );
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        signedIn(user, dispatch);
+      } else {
+        signedOut(dispatch);
       }
-    } );
-  }, [] );
-  useEffect( () => {
-    window.addEventListener( 'resize', updateDimensions );
+    });
+  }, []);
+  useEffect(() => {
+    window.addEventListener('resize', updateDimensions);
     updateDimensions();
-  }, [] );
-  
-  useEffect( () => {
-    if( state.auth.googleAuthUser && state.auth.googleAuthUser.uid ){
-      subscribeToUserOrganizations( state.auth.googleAuthUser.uid, dispatch );
+  }, []);
+
+  useEffect(() => {
+    if (state.auth.googleAuthUser && state.auth.googleAuthUser.uid) {
+      subscribeToUserOrganizations(state.auth.googleAuthUser.uid, dispatch);
     }
   }, [ state.auth.googleAuthUser ] );
   
@@ -82,47 +91,51 @@ function App(){
       </StyledSider> }
       <Layout>
         <Content>
-          <HeaderDiv style={ { background: '#fff', padding: 0 } }>
-            { state.auth.loggedIn && <StyledMenuButton
-              collapsed={ collapsed }
-              className="trigger"
-              type={ collapsed ? 'menu-fold' : 'menu-unfold' }
-              onClick={ () => setCollapsed( !collapsed ) }
-            /> }
-          </HeaderDiv>
-          <StyledContent width={ dimensions.width }
-                         height={ dimensions.height }>
+        <HeaderDiv
+              loggedIn={state.auth.loggedIn}
+              style={{ background: '#fff', padding: 0 }}
+            >
+              {state.auth.loggedIn && (
+                <StyledMenuButton
+                  collapsed={collapsed}
+                  className="trigger"
+                  type={collapsed ? 'menu-fold' : 'menu-unfold'}
+                  onClick={() => setCollapsed(!collapsed)}
+                />
+              )}
+            </HeaderDiv>
             <Switch>
-              <Route exact path={ '/' } component={ LandingPage }/>
+              <Route exact path={'/'} component={LandingPage} />
               <RegisteredAndLoggedInRoute
-                path={ '/dashboard' }
-                component={ MainDashboard }
+                path={'/dashboard'}
+                component={MainDashboard}
               />
-              <LoginRoute path={ '/login' } component={ Login }/>
-              <ProtectedRoute path={ '/create-org' } component={ CreateOrg }/>
+              <LoginRoute path={'/login'} component={Login} />
+              <LoginRoute path={'/signup'} component={Login} />
+              <ProtectedRoute path={'/create-org'} component={CreateOrg} />
               <OrganizationRoute
-                path={ '/org-dashboard/create-event' }
-                component={ CreateEvent }
+                path={'/org-dashboard/create-event'}
+                component={CreateEvent}
               />
               <OrganizationRoute
-                path={ '/org-dashboard' }
-                component={ OrganizationDashboard }
+                path={'/org-dashboard'}
+                component={OrganizationDashboard}
               />
-              <SignupRoute path={ '/signup' } component={ Signup }/>
-              <Route path={ '/form' } component={ Form }/>
-              <Route path={ '/' } component={ StyledUploadImage }/>
+              <RegisterRoute path={'/register'} component={Signup} />
+              <Route path={'/upload-image'} component={StyledUploadImage} />
+              <Route path={'/'} component={StyledUploadImage} />
             </Switch>
-          </StyledContent>
-        </Content>
-        <FooterDiv/>
+          </Content>
+          <FooterDiv />
+        </Layout>
       </Layout>
-    </Layout>
-  </StyledApp> );
+    </StyledApp>
+  );
 }
 
-const StyledMenuButton = styled( Icon )`
+const StyledMenuButton = styled(Icon)`
   && {
-    margin-right: ${ props => ( props.collapsed ? '30px' : '230px' ) };
+    margin-right: ${props => (props.collapsed ? '30px' : '230px')};
     font-size: 2rem;
     margin-top: 20px;
     transition: all 0.2s;

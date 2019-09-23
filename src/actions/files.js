@@ -1,7 +1,7 @@
 import firebase from '../firebase/FirebaseConfig';
 import uuid4 from 'uuid4';
 
-export async function uploadImage( file, onError, onSuccess ){
+export async function uploadImage(file, onError, onSuccess) {
   const storage = firebase.storage();
   
   const storageRef = await storage.ref();
@@ -11,8 +11,8 @@ export async function uploadImage( file, onError, onSuccess ){
     const image = await imgFile.put( file );
     onSuccess( null, image );
     return image;
-  }catch( e ){
-    onError( e );
+  } catch (e) {
+    onError(e);
     return e;
   }
 }
