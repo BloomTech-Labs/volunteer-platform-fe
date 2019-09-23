@@ -130,12 +130,13 @@ const StyledMenuButton = styled( Icon )`
   }
 `;
 
-const StyledSider = styled( Sider )`
-  &&{position: absolute;
-  right: 0;
-  z-index: 10;
-  min-height: 100vh;
-  height: ${ props => props.height ? `${ props.height }px` : '100%' };
+const StyledSider = styled(Sider)`
+  && {
+    position: absolute;
+    right: 0;
+    z-index: 10;
+    min-height: 100vh;
+    height: ${props => (props.height ? `${props.height}px` : '100%')};
   }
 `;
 
@@ -144,11 +145,10 @@ const StyledApp = styled.div`
   flex-direction: column;
 `;
 
-const StyledContent = styled( Content )`
-&& {
-margin-right: ${ props => props.width > 900 ? '15rem' : 0 }
-}
-
+const StyledContent = styled(Content)`
+  && {
+    margin-right: ${props => (props.width > 900 ? '15rem' : 0)};
+  }
 `;
 
 export default App;
