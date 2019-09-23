@@ -1,12 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import heroImage from '../assets/hero.jpg';
+
 export const LandingPage = () => {
   return (
     <StyledHeroDiv image={heroImage}>
-      outerDiv
       <HeroContent>
-        <h1>Test Title</h1>
         <h3>Meet new friends, give back to the community.</h3>
         <h3>Win-win.</h3>
         <button>Get Started</button>

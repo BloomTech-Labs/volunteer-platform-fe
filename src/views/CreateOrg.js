@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router';
 import {
-  StyledButton, StyledCard, StyledForm, StyledInput, StyledSelect,
+  StyledButton,
+  StyledCard,
+  StyledForm,
+  StyledInput,
+  StyledSelect,
 } from '../styled';
 import { registerOrganization, updateOrganization } from '../actions';
 import { useStateValue } from '../hooks/useStateValue';
@@ -11,9 +15,9 @@ import styled from 'styled-components';
 import CreatePOCFormList from '../components/CreatePOCFormList';
 import uuid4 from 'uuid4';
 
-export const CreateOrg = ( props ) => {
+export const CreateOrg = props => {
   const { Option } = Select;
-  
+
   const org = {
     organizationOwnerUID: '',
     organizationName: '',
@@ -31,32 +35,33 @@ export const CreateOrg = ( props ) => {
     aboutUs: '',
     website: '',
   };
-  const [ localState, setState ] = useState( org );
-  const [ state, dispatch ] = useStateValue();
-  
-  useEffect( () => {
-    if( state.auth.googleAuthUser ){
-      setState( {
-        ...localState, organizationOwnerUID: state.auth.googleAuthUser.uid,
-      } );
+  const [localState, setState] = useState(org);
+  const [state, dispatch] = useStateValue();
+
+  useEffect(() => {
+    if (state.auth.googleAuthUser) {
+      setState({
+        ...localState,
+        organizationOwnerUID: state.auth.googleAuthUser.uid,
+      });
     }
-  }, [ state ] );
-  
-  useEffect( () => {
-    if( props.location.state ){
-      setState( props.location.state.org );
+  }, [state]);
+
+  useEffect(() => {
+    if (props.location.state) {
+      setState(props.location.state.org);
     }
-    
-  }, [ props.location.state ] );
-  
+  }, [props.location.state]);
+
   const changeValue = e => {
-    setState( { ...localState, [ e.target.name ]: e.target.value } );
+    setState({ ...localState, [e.target.name]: e.target.value });
   };
-  
+
   const changeCauses = e => {
-    setState( {
-      ...localState, causeAreas: e,
-    } );
+    setState({
+      ...localState,
+      causeAreas: e,
+    });
   };
   
   console.log( localState );
@@ -133,14 +138,14 @@ export const CreateOrg = ( props ) => {
       message.error( 'Name of organization is required' );
     }
   };
-  
+
   const cancel = e => {
     e.preventDefault();
-    setState( org );
-    if( props.location.state ){
-      props.history.push( '/org-dashboard' );
-    }else{
-      props.history.push( '/' );
+    setState(org);
+    if (props.location.state) {
+      props.history.push('/org-dashboard');
+    } else {
+      props.history.push('/');
     }
   };
   
@@ -216,8 +221,8 @@ export const CreateOrg = ( props ) => {
 };
 
 const StyledCreateOrg = styled.div`
-display: flex;
-justify-content: center;
+  display: flex;
+  justify-content: center;
 `;
 
 export default withRouter( CreateOrg );

@@ -27,7 +27,6 @@ export const CreateEvent = props => {
     },
   });
 
-  console.log(localState);
   const [state, dispatch] = useStateValue();
 
   //Destructuring
@@ -134,7 +133,6 @@ export const CreateEvent = props => {
   });
 
   let requirementTags = [];
-
   if (state.tags.requirements) {
     requirementTags = state.tags.requirements.map(tag => {
       return (
