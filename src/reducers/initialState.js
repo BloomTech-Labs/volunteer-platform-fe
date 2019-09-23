@@ -1,31 +1,49 @@
+const causeAreas = [
+  'Animal Care', 'Health & Medicine',
+  'Computers & Technology', 'Immigrants & Refugees', 'Seniors', 'Faith-Based',
+  'Crisis Support', 'Hunger', 'Sports & Recreation', 'Disaster Relief',
+  'Education & Literacy', 'Justice & Legal', 'Women', 'Media & Broadcasting',
+  'Emergency & Safety', 'Children & Youth', 'Politics', 'Homeless & Housing',
+  'People with Disabilities', 'Environment', 'Veterans & Military Families',
+  'Advocacy & Human Rights',
+];
+
+const requirements = [
+  'Background Check', 'Light Lifting Required', 'Orientation or Training',
+  'Access to Computer', 'Heavy Lifting Required',
+  'Children Require Parent/Guardian', 'Waiver for Youth',
+  'Application Required', 'Basic Computer Skills',
+];
+
+const interests = [
+  'Work with Animals', 'Virtual', 'Group Friendly',
+  'New' + ' Volunteer Friendly', 'Religion', 'Customer Service',
+  'Senior Friendly', 'Helping Homeless', 'Indoor Work', 'Family Friendly',
+  'Tutoring', 'Youth Friendly', 'Wheelchair Accessible', 'Outdoor Work',
+];
+
 export const initialState = {
   auth: {
-    loggedIn: true,
-    signedUp: true,
-    googleAuthUser: null,
-    registeredUser: null,
-  },
-  org: {
+    loggedIn: true, signedUp: true, googleAuthUser: null, registeredUser: null,
+  }, org: {
     createdOrg: false,
     userOrganizations: [],
     getOrganizationFailedError: '',
     organization: {},
-    deleteOrgFailedError: ''
-  },
-  events: {
+    deleteOrgFailedError: '',
+  }, events: {
     events: [],
     createEventFailedError: '',
     deleteEventFailedError: '',
     editEventFailedError: '',
     getEventsFailedError: '',
+  }, tags: {
+    interests: interests,
+    requirements: requirements,
+    causeAreas: causeAreas,
+    isGetting: false,
+    errorMessage: '',
   },
-  tags: {
-      interests: [],
-      requirements: [],
-      causeAreas: [],
-      isGetting: false,
-      errorMessage: ''
-  }
 };
 
 /**

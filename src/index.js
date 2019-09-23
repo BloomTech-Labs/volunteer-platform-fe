@@ -5,7 +5,6 @@ import { StateProvider } from './contexts/StateProvider';
 import * as Sentry from '@sentry/browser';
 import * as reset from './styles/reset.css';
 import 'antd/dist/antd.css';
-import './index.css';
 import App from './App';
 import { BrowserRouter as Router } from 'react-router-dom';
 import * as global from './styles/global.css';

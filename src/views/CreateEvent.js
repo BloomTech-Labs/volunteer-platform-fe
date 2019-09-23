@@ -12,19 +12,22 @@ import {
   StyledTimePicker,
   StyledTextArea,
   StyledCard,
+  StyledSwitch,
 } from '../styled';
 import { useStateValue } from '../hooks/useStateValue';
 import { createEvent } from '../actions';
+import ReccurringEvent from '../components/ReccurringEvent';
 
 const { Option } = Select;
 
-const CreateEvent = props => {
+export const CreateEvent = props => {
   const [localState, setState] = useState({
     event: {
       tags: [],
     },
   });
 
+  console.log(localState);
   const [state, dispatch] = useStateValue();
 
   //Destructuring
@@ -87,11 +90,25 @@ const CreateEvent = props => {
     });
   };
 
+  const handlePointOfContact = e => {
+    setState({
+      ...localState,
+      event: {
+        ...event,
+        pointOfContact: {
+          ...event.pointOfContact,
+          [e.target.name]: e.target.value,
+        },
+      },
+    });
+  };
+
   //Handle Submit for Form
   const handleSubmit = e => {
     e.preventDefault();
     if (isFormValid()) {
       localState.event.date = localState.event.date.unix();
+      localState.event.reccurringEndDate = localState.event.reccurringEndDate.unix();
       createEvent(localState.event, dispatch);
     }
   };
@@ -108,7 +125,7 @@ const CreateEvent = props => {
   };
 
   //Options for tags
-  const requirementTags = state.tags.requirements.map(tag => {
+  const causeAreaTags = state.tags.causeAreas.map(tag => {
     return (
       <Option key={tag.id} value={tag.name}>
         {tag.name}
@@ -116,15 +133,49 @@ const CreateEvent = props => {
     );
   });
 
+  let requirementTags = [];
+
+  if (state.tags.requirements) {
+    requirementTags = state.tags.requirements.map(tag => {
+      return (
+        <Option key={tag} value={tag}>
+          {tag}
+        </Option>
+      );
+    });
+  }
+
+  if (state.tags.requirements) {
+    requirementTags = state.tags.requirements.map(tag => {
+      return (
+        <Option key={tag} value={tag}>
+          {tag}
+        </Option>
+      );
+    });
+  }
+
   const interestTags = state.tags.interests.map(tag => {
     return (
-      <Option key={tag.id} value={tag.name}>
-        {tag.name}
+      <Option key={tag} value={tag}>
+        {tag}
       </Option>
     );
   });
 
   //Handle Tags
+  const handleCauseAreasTag = tag => {
+    setState({
+      ...localState,
+      event: {
+        ...event,
+        tags: {
+          ...event.tags,
+          causeAreas: tag,
+        },
+      },
+    });
+  };
   const handleRequirmentTag = tag => {
     setState({
       ...localState,
@@ -150,6 +201,13 @@ const CreateEvent = props => {
       },
     });
   };
+
+  ///Cancel Form
+
+  const cancelForm = () => {
+    props.history.push('/org-dashboard');
+  };
+
   //Error Handling
 
   const isFormValid = () => {
@@ -177,89 +235,136 @@ const CreateEvent = props => {
   return (
     <StyledCreateEvent>
       <StyledCard>
-        <h1>Create An Event</h1>
+        <h1>Let's Create An Event</h1>
         <StyledForm onSubmit={handleSubmit}>
           <StyledInput
-            name={'Title of Event'}
+            name={'Name of Event'}
             values={event}
             onChange={changeValue}
             type="text"
           />
-          <StyledInput
-            name={'Volunteer Type'}
-            values={event}
-            onChange={changeValue}
-            type="text"
-          />
+          <StyledSelect
+            name={'Types of Causes'}
+            value={event.tags.causeAreas}
+            onChange={handleCauseAreasTag}
+            placeholder="Please select causes"
+            mode="multiple"
+          >
+            {causeAreaTags}
+          </StyledSelect>
+          <label>When is the event?</label>
+          <StyledRecurringEvent>
+            <StyledDatePicker
+              name={'Date'}
+              values={event}
+              onChange={handleDatePicker}
+              defaultValue={moment(moment(), dateFormat)}
+              format={dateFormat}
+            />
 
+            <ReccurringEvent
+              localState={localState}
+              setState={setState}
+              dateFormat={dateFormat}
+            />
+
+            <StyledTimePicker
+              name={'Start Time'}
+              defaultOpenValue={moment('00:00', 'hh:mm')}
+              onChange={handleStartTime}
+              use12Hours
+              format={'h:mm a'}
+              type="time"
+            />
+            <p>to</p>
+
+            <StyledTimePicker
+              name={'End Time'}
+              defaultOpenValue={moment('00:00', 'hh:mm')}
+              onChange={handleEndTime}
+              use12Hours
+              format={'h:mm a'}
+              type="time"
+            />
+          </StyledRecurringEvent>
           <StyledInputNumber
             name={'Number of People'}
             onChange={handleNumber}
             type="number"
+            min={0}
           />
-
-          <StyledTimePicker
-            name={'Start Time'}
-            defaultOpenValue={moment('00:00', 'hh:mm')}
-            onChange={handleStartTime}
-            use12Hours
-            format={'h:mm a'}
-            type="time"
-          />
-
-          <StyledTimePicker
-            name={'End Time'}
-            defaultOpenValue={moment('00:00', 'hh:mm')}
-            onChange={handleEndTime}
-            use12Hours
-            format={'h:mm a'}
-            type="time"
-          />
-
-          <StyledDatePicker
-            name={'Date'}
-            values={event}
-            onChange={handleDatePicker}
-            defaultValue={moment(moment(), dateFormat)}
-            format={dateFormat}
-          />
+          <StyledSelect
+            name={'Location'}
+            placeholder="Select location"
+          ></StyledSelect>
 
           <StyledInput
-            name={'Point of Contact'}
-            values={event}
             onChange={changeValue}
+            name={'Phone Number'}
+            values={event}
+            placeholder={'000-000-0000'}
+            type="number"
+          />
+          <label>Who is the point of Contact?</label>
+          <StyledInput
+            name={'First Name'}
+            values={event.pointOfContact}
+            onChange={handlePointOfContact}
             type="text"
           />
+          <StyledInput
+            name={'Last Name'}
+            values={event.pointOfContact}
+            onChange={handlePointOfContact}
+            type="text"
+          />
+          <StyledInput
+            name={'Email'}
+            values={event.pointOfContact}
+            onChange={handlePointOfContact}
+            type="email"
+          />
+
           <StyledTextArea
             name={'Description'}
             values={event}
             onChange={changeValue}
             type="text"
           />
+          <label>What are the requirements?</label>
+          <StyledRecurringEvent>
+            <StyledSelect
+              name={'Volunteer Requirements'}
+              value={event.tags.requirements}
+              onChange={handleRequirmentTag}
+              placeholder="Please select requirements"
+              mode="multiple"
+            >
+              {requirementTags}
+            </StyledSelect>
 
-          <StyledSelect
-            name={'Volunteer Requirements'}
-            onChange={handleRequirmentTag}
-            placeholder="Please select requirements"
-            mode="multiple"
-          >
-            {requirementTags}
-          </StyledSelect>
-
-          <StyledSelect
-            name={'Interest'}
-            value={event.tags}
-            onChange={handleInterestTag}
-            placeholder="Please select interest"
-            mode="multiple"
-          >
-            {interestTags}
-          </StyledSelect>
-          <StyledInput onChange={changeValue} name={'State'} values={event} />
-          <StyledInput onChange={changeValue} name={'City'} values={event} />
-
+            <StyledSelect
+              name={'Interest'}
+              value={event.tags.interests}
+              onChange={handleInterestTag}
+              placeholder="Please select interest"
+              mode="multiple"
+            >
+              {interestTags}
+            </StyledSelect>
+          </StyledRecurringEvent>
+          <StyledInput onChange={changeValue} name={'Website'} values={event} />
+          <StyledTextArea
+            onChange={changeValue}
+            name={'Other Notes'}
+            values={event}
+            placeholder={'Any additional helpful tips for the event go here.'}
+          />
+          <StyledButton type="secondary" htmlType="submit" onClick={cancelForm}>
+            Cancel
+          </StyledButton>
           <StyledButton type="primary" htmlType="submit">
-            Create Event
+            Create
           </StyledButton>
         </StyledForm>
       </StyledCard>
@@ -270,5 +375,9 @@ const CreateEvent = props => {
 const StyledCreateEvent = styled.div`
   display: flex;
   justify-content: center;
+`;
+
+const StyledRecurringEvent = styled.div`
+  border: 1px solid black;
 `;
 export default CreateEvent;

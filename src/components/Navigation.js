@@ -7,7 +7,7 @@ import { useStateValue } from '../hooks/useStateValue';
 
 const { SubMenu } = Menu;
 
-const Navigation = props => {
+export const Navigation = props => {
   const [ state, dispatch ] = useStateValue();
   const [ current, setCurrent ] = useState( 'Home' );
   
@@ -54,7 +54,7 @@ const Navigation = props => {
           Create Organization
         </Link>
       </Menu.Item> ) }
-      { state.org.createdOrg && ( <Menu.Item key={ 'Organization Dashboard' }>
+      { localStorage.getItem('createdOrg')==='true' && ( <Menu.Item key={ 'Organization Dashboard' }>
         <Link to={ '/org-dashboard' }>
           <Icon type="dashboard"/>
           Organization Dashboard

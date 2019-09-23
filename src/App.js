@@ -1,32 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { Switch, Route } from 'react-router';
-import { signedIn, signedOut } from './actions/auth';
-import { useStateValue } from './hooks/useStateValue';
-import firebase from './firebase/FirebaseConfig';
-import MainDashboard from './views/MainDashboard';
-import UploadImage from './components/UploadImage';
-import './App.css';
-import Login from './views/Login';
-import CreateOrg from './views/CreateOrg';
-import CreateEvent from './views/CreateEvent';
-import OrganizationDashboard from './views/OrganizationDashboard';
-import Signup from './views/Signup';
-import {
-  ProtectedRoute, LoginRoute, SignupRoute, OrganizationRoute, CreateOrgRoute,
-} from './routes/index';
-import Navigation from './components/Navigation';
 import styled from 'styled-components';
+import firebase from './firebase/FirebaseConfig';
+import { Layout, Icon, Affix } from 'antd';
+import Form from './views/Form';
+import { useStateValue } from './hooks/useStateValue';
+import { subscribeToUserOrganizations, signedIn, signedOut } from './actions';
+import { StyledUploadImage, HeaderDiv, FooterDiv } from './components';
+import Navigation from './components/Navigation';
 import {
-  getInterestTags, getRequirementTags, getCauseAreas,
-  subscribeToUserOrganizations,
-} from './actions';
-import { Layout, Menu, Icon } from 'antd';
+  MainDashboard, OrganizationDashboard, Signup, CreateEvent, CreateOrg, Login,
+  LandingPage,
+} from './views';
 
-const { Sider, Footer, Content, Header } = Layout;
+import {
+  RegisteredAndLoggedInRoute, LoginRoute, SignupRoute, OrganizationRoute,
+  ProtectedRoute,
+} from './routes/index';
+
+const { Sider, Content } = Layout;
 
 function App(){
   const [ state, dispatch ] = useStateValue();
   const [ collapsed, setCollapsed ] = useState( false );
+  const [ dimensions, setDimensions ] = useState( {
+    width: window.innerWidth, height: document.body.scrollHeight,
+  } );
   
   /**
    * Set up google auth on change event handler.
@@ -41,21 +40,20 @@ function App(){
     } );
   }, [] );
   useEffect( () => {
-    getInterestTags( dispatch );
-    getRequirementTags( dispatch );
-    getCauseAreas( dispatch );
     window.addEventListener( 'resize', updateDimensions );
     updateDimensions();
   }, [] );
   
   useEffect( () => {
-    debugger;
     if( state.auth.googleAuthUser && state.auth.googleAuthUser.uid ){
       subscribeToUserOrganizations( state.auth.googleAuthUser.uid, dispatch );
     }
-  }, state.auth.googleAuthUser );
+  }, [ state.auth.googleAuthUser ] );
   
   const updateDimensions = () => {
+    setDimensions( {
+      width: window.innerWidth, height: document.body.scrollHeight,
+    } );
     if( window.innerWidth < 900 ){
       setCollapsed( true );
     }
@@ -63,7 +61,8 @@ function App(){
   
   return ( <StyledApp className="App">
     <Layout>
-      <StyledSider
+      { state.auth.loggedIn && <StyledSider
+        height={ dimensions.height }
         breakpoint="md"
         collapsedWidth="0"
         theme={ 'light' }
@@ -77,38 +76,45 @@ function App(){
         collapsed={ collapsed }
         reverseArrow={ true }
       >
-        <Navigation/>
-      </StyledSider>
+        <Affix>
+          <Navigation/>
+        </Affix>
+      </StyledSider> }
       <Layout>
         <Content>
-          <StyledHeader
-            style={ { background: '#fff', padding: 0 } }
-          >
-            Header
-            <StyledMenuButton
+          <HeaderDiv style={ { background: '#fff', padding: 0 } }>
+            { state.auth.loggedIn && <StyledMenuButton
               collapsed={ collapsed }
               className="trigger"
               type={ collapsed ? 'menu-fold' : 'menu-unfold' }
               onClick={ () => setCollapsed( !collapsed ) }
-            />
-          </StyledHeader>
-          <Switch>
-            <ProtectedRoute path={ '/' } component={ MainDashboard } exact/>
-            <LoginRoute path={ '/login' } component={ Login }/>
-            <CreateOrgRoute path={ '/create-org' } component={ CreateOrg }/>
-            <OrganizationRoute
-              path={ '/org-dashboard/create-event' }
-              component={ CreateEvent }
-            />
-            <OrganizationRoute
-              path={ '/org-dashboard' }
-              component={ OrganizationDashboard }
-            />
-            <SignupRoute path={ '/signup' } component={ Signup }/>
-            <Route path={ '/upload-image' } component={ UploadImage }/>
-          </Switch>
+            /> }
+          </HeaderDiv>
+          <StyledContent width={ dimensions.width }
+                         height={ dimensions.height }>
+            <Switch>
+              <Route exact path={ '/' } component={ LandingPage }/>
+              <RegisteredAndLoggedInRoute
+                path={ '/dashboard' }
+                component={ MainDashboard }
+              />
+              <LoginRoute path={ '/login' } component={ Login }/>
+              <ProtectedRoute path={ '/create-org' } component={ CreateOrg }/>
+              <OrganizationRoute
+                path={ '/org-dashboard/create-event' }
+                component={ CreateEvent }
+              />
+              <OrganizationRoute
+                path={ '/org-dashboard' }
+                component={ OrganizationDashboard }
+              />
+              <SignupRoute path={ '/signup' } component={ Signup }/>
+              <Route path={ '/form' } component={ Form }/>
+              <Route path={ '/' } component={ StyledUploadImage }/>
+            </Switch>
+          </StyledContent>
         </Content>
-        <Footer>Footer</Footer>
+        <FooterDiv/>
       </Layout>
     </Layout>
   </StyledApp> );
@@ -123,24 +129,25 @@ const StyledMenuButton = styled( Icon )`
   }
 `;
 
-const StyledHeader = styled( Header )`
-  && {
-    display: flex;
-    justify-content: space-between;
-  }
-`;
-
 const StyledSider = styled( Sider )`
-  position: absolute;
+  &&{position: absolute;
   right: 0;
   z-index: 10;
-  min-height: 100%;
-  height: 100%;
+  min-height: 100vh;
+  height: ${ props => props.height ? `${ props.height }px` : '100%' };
+  }
 `;
 
 const StyledApp = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+const StyledContent = styled( Content )`
+&& {
+margin-right: ${ props => props.width > 900 ? '15rem' : 0 }
+}
+
 `;
 
 export default App;

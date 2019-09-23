@@ -1,4 +1,5 @@
 import { action } from './action';
+import { deleteFile } from './files';
 import firebase, { store } from '../firebase/FirebaseConfig';
 
 /**
@@ -45,6 +46,11 @@ export const subscribeToUserOrganizations = ( uid, dispatch ) => {
     .where( 'organizationOwnerUID', '==', uid )
     .onSnapshot( snapShot => {
       const orgs = [];
+      if( !snapShot.empty ){
+        localStorage.setItem( 'createdOrg', 'true' );
+      }else{
+        localStorage.setItem( 'createdOrg', 'false' );
+      }
       snapShot.forEach( doc => {
         const org = doc.data();
         org.orgId = doc.id;
@@ -115,4 +121,18 @@ export const deleteOrganization = ( orgId, dispatch ) => {
       console.log( err );
       dispatch( action( DELETE_ORG_FAILED ) );
     } );
+};
+
+export const deleteOrganizationImage = ( organization ) => {
+  
+  deleteFile( organization.imagePath );
+  delete organization.imagePath;
+  
+  store.collection( 'organizations' )
+    .doc( organization.orgId )
+    .set( organization ).then( res => {
+    
+  } ).catch( err => {
+    console.log( err );
+  } );
 };

@@ -8,9 +8,10 @@ import { useStateValue } from '../hooks/useStateValue';
 import { StyledTextArea } from '../styled/StyledTextArea';
 import { Select } from 'antd';
 import styled from 'styled-components';
-import UploadImage from '../components/UploadImage';
+import CreatePOCFormList from '../components/CreatePOCFormList';
+import uuid4 from 'uuid4';
 
-const CreateOrg = ( props ) => {
+export const CreateOrg = ( props ) => {
   const { Option } = Select;
   
   const org = {
@@ -22,7 +23,12 @@ const CreateOrg = ( props ) => {
     state: '',
     email: '',
     phone: '',
-    socialMedia: [],
+    pointOfContact: [ { firstName: '', lastName: '', email: '', id: uuid4() } ],
+    causeAreas: [],
+    hoursOfOperations: {
+      days: [], startTime: '', endTime: '',
+    },
+    aboutUs: '',
     website: '',
   };
   const [ localState, setState ] = useState( org );
@@ -53,19 +59,79 @@ const CreateOrg = ( props ) => {
     } );
   };
   
+  console.log( localState );
+  
+  const changePOC = ( id, e ) => {
+    
+    const pocs = localState.pointOfContact.map( poc => {
+      if( poc.id === id ){
+        poc[ e.target.name ] = e.target.value;
+      }
+      return poc;
+    } );
+    
+    setState( {
+      ...localState, pointOfContact: pocs,
+    } );
+  };
+  
+  const addPOC = () => {
+    setState( {
+      ...localState, pointOfContact: [
+        ...localState.pointOfContact,
+        { firstName: '', lastName: '', email: '', id: uuid4() },
+      ],
+    } );
+  };
+  
+  const changeDays = e => {
+    setState( {
+      ...localState, hoursOfOperations: {
+        ...localState.hoursOfOperations, days: e,
+      },
+    } );
+  };
+  
+  const changeStartTime = ( time, timeString ) => {
+    setState( {
+      ...localState, hoursOfOperations: {
+        ...localState.hoursOfOperations, startTime: timeString,
+      },
+    } );
+  };
+  
+  const changeEndTime = ( time, timeString ) => {
+    setState( {
+      ...localState, hoursOfOperations: {
+        ...localState.hoursOfOperations, endTime: timeString,
+      },
+    } );
+  };
+  
+  const validateForm = () => {
+    debugger;
+    if( !localState.organizationName ){
+      return false;
+    }
+  };
+  
   const handleSubmit = e => {
     e.preventDefault();
-    if( props.location.state ){
-      updateOrganization( props.location.state.org.orgId,
-        localState,
-        dispatch,
-      );
-      props.history.push( '/org-dashboard' );
+    if( validateForm() ){
+      if( props.location.state ){
+        updateOrganization( props.location.state.org.orgId,
+          localState,
+          dispatch,
+        );
+        props.history.push( '/org-dashboard' );
+      }else{
+        registerOrganization( localState, dispatch );
+        props.history.push( '/org-dashboard' );
+      }
+      setState( org );
     }else{
-      registerOrganization( localState, dispatch );
-      props.history.push( '/org-dashboard' );
+      message.error( 'Name of organization is required' );
     }
-    setState( org );
   };
   
   const cancel = e => {
@@ -78,31 +144,63 @@ const CreateOrg = ( props ) => {
     }
   };
   
+  const days = [
+    'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday',
+    'Saturday',
+  ];
+  
   return ( <StyledCreateOrg>
     <StyledCard>
-      <UploadImage/>
       <h1>{ props.location.state ? 'Update organization info' :
-        'Create new organization!!' }</h1>
+        'Let\'s set up your organization' }</h1>
       <StyledForm onSubmit={ handleSubmit }>
-        <StyledInput name={ 'Organization Name' } values={ localState }
+        <StyledInput label={ 'Name of Organization*' }
+                     name={ 'Organization Name' }
+                     values={ localState }
                      onChange={ changeValue }/>
-        <StyledSelect name={ 'Cause Areas' } value={ localState.causeAreas }
+        <StyledSelect label={ 'Type of Cause' }
+                      name={ 'Cause Areas' }
+                      value={ localState.causeAreas }
                       mode='multiple' onChange={ changeCauses }
                       tooltipTitle={ 'Choose all that apply' }>
-          { state.tags.causeAreas.map( item => <Option key={ item.id }
-                                                       value={ item.name }>{ item.name }</Option> ) }
+          { state.tags.causeAreas.map( ( item, index ) => <Option
+            key={ `causeArea${ index }` }
+            value={ item }>{ item }</Option> ) }
         </StyledSelect>
-        <StyledTextArea name={ 'About Us' }
-                        values={ localState }
-                        onChange={ changeValue }/>
         <StyledInput name={ 'City' } values={ localState }
                      onChange={ changeValue }/>
         <StyledInput name={ 'State' } values={ localState }
                      onChange={ changeValue }/>
-        <StyledInput name={ 'Email' } values={ localState }
-                     onChange={ changeValue }/>
         <StyledInput name={ 'Phone' } values={ localState }
                      onChange={ changeValue }/>
+        <h3>Who is the point of contact?</h3>
+        <CreatePOCFormList changePOC={ changePOC } addPOC={ addPOC }
+                           pointOfContacts={ localState.pointOfContact }/>
+        
+        <h3>What are your hours of operation?</h3>
+        <h5>Days of the week</h5>
+        <Checkbox.Group options={ days } onChange={ changeDays }/>
+        <h5>What time?</h5>
+        <StyledTimePicker
+          name={ 'Start Time' }
+          defaultOpenValue={ moment( '00:00', 'hh:mm' ) }
+          onChange={ changeStartTime }
+          use12Hours
+          format={ 'h:mm a' }
+          type="time"
+        /> to
+        <StyledTimePicker
+          name={ 'End Time' }
+          defaultOpenValue={ moment( '00:00', 'hh:mm' ) }
+          onChange={ changeEndTime }
+          use12Hours
+          format={ 'h:mm a' }
+          type="time"
+        />
+        <StyledTextArea name={ 'About Us' }
+                        values={ localState }
+                        onChange={ changeValue }/>
+        
         <StyledInput name={ 'Website' } values={ localState }
                      onChange={ changeValue }/>
         
@@ -121,4 +219,5 @@ const StyledCreateOrg = styled.div`
 display: flex;
 justify-content: center;
 `;
+
 export default withRouter( CreateOrg );
