@@ -18,15 +18,19 @@ export const Event = ({ event }) => {
   console.log(event);
   return (
     <StyledCard>
-      <h1>{event.volunteerType}</h1>
-      <h1>{event.numberOfPeople}</h1>
+      <h1>{event.nameOfEvent}</h1>
+      <h1>{event.date}</h1>
       <h1>{event.startTime}</h1>
       <h1>{event.stopTime}</h1>
-      <h1>{event.pointOfContact}</h1>
+      <h1>{event.numberOfPeople}</h1>
+      <h1>{event.pointOfContact.firstName}</h1>
+      <h1>{event.pointOfContact.lastName}</h1>
+      <h1>{event.pointOfContact.email}</h1>
+      <h1>{event.website}</h1>
       <h1>{event.tags.interests}</h1>
       <h1>{event.tags.requirments}</h1>
-      <h1>{event.description}</h1>
       <h1>{event.volunteerRequirements}</h1>
+      <h1>{event.otherNotes}</h1>
       {ableToDelete && <StyledButton type="danger">Delete</StyledButton>}
     </StyledCard>
   );
