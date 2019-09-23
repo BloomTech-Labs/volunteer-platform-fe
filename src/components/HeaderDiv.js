@@ -25,6 +25,7 @@ const StyledHeader = styled(Header)`
   && {
     display: flex;
     justify-content: space-between;
+    background: ${({theme}) => theme.gray3};
 
     h2 {
       margin-left: 40px;

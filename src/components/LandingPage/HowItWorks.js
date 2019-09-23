@@ -2,43 +2,52 @@ import React from 'react';
 import styled from 'styled-components';
 import { WorksCard as Card } from './WorksCard';
 import { Icon } from 'antd';
-import testImage from '../../assets/404.jpg';
+import directions from '../../assets/directions.svg';
+import searching from '../../assets/searching.svg';
+import selfie from '../../assets/selfie.svg';
 
 export const HowItWorks = () => {
+    
   return (
     <StyledDiv>
       <h2>How it Works</h2>
       <div className="how-it-works-cards">
         <Card
           title="Find a Volunteer Event"
-          image={testImage}
+          image={searching}
           info="Search by key terms, interests, cause areas, location -- and more! Sign up, compete with friends, do more good in the world."
         />
-        <Icon type="right" />
+        <StyledIcon type="right" />
         <Card
-          title="Sign Up for the Event"
-          image={testImage}
+          title="Sign Up for Event"
+          image={directions}
           info="Once you find what you want to do, sign ups are made simple -- expectations are communicated on the sign up. All you need is an account and we will guide you the rest of the way!"
         />
-        <Icon type="right" />
+        <StyledIcon type="right" />
         <Card
-          title="Show up, have fun."
-          image={testImage}
-          info="Something something something..."
+          title="Show up, Have fun, Compete"
+          image={selfie}
+          info="When you have found an event, you can set reminders, and invite friends to join or compete on most hours earned. "
         />
       </div>
     </StyledDiv>
   );
 };
 
+const StyledIcon = styled(Icon)`
+    font-size: 24px;
+    color: ${({theme}) => theme.primary}
+`
+
 const StyledDiv = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 80px 60px 80px 60px;
-
+  margin: 40px auto;
+  padding: 0px 10px;
   h2 {
     font-size: 24px;
     color: ${({ theme }) => theme.primary};
+    margin-bottom: 25px;
   }
 
   .how-it-works-cards {

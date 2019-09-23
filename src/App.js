@@ -58,67 +58,70 @@ function App(){
       setCollapsed( true );
     }
   };
-  
-  return ( <StyledApp className="App">
-    <Layout>
-      { state.auth.loggedIn && <StyledSider
-        height={ dimensions.height }
-        breakpoint="md"
-        collapsedWidth="0"
-        theme={ 'light' }
-        onBreakpoint={ broken => {
-          console.log( broken );
-        } }
-        onCollapse={ ( collapsed, type ) => {
-          console.log( collapsed, type );
-        } }
-        trigger={ null }
-        collapsed={ collapsed }
-        reverseArrow={ true }
-        style={ { maxWidth: '400px', width: '400px' } }
-      >
-        <Affix>
-          <Navigation/>
-        </Affix>
-      </StyledSider> }
-      <Layout>
-        <Content>
-          <HeaderDiv
-            loggedIn={ state.auth.loggedIn }
-            style={ { background: '#fff', padding: 0 } }
+
+  return (
+    <StyledApp className="App">
+      <Layout style={{background: 'white'}}>
+        {state.auth.loggedIn && (
+          <StyledSider
+            height={dimensions.height}
+            breakpoint="md"
+            collapsedWidth="0"
+            theme={'light'}
+            onBreakpoint={broken => {
+              console.log(broken);
+            }}
+            onCollapse={(collapsed, type) => {
+              console.log(collapsed, type);
+            }}
+            trigger={null}
+            collapsed={collapsed}
+            reverseArrow={true}
           >
-            { state.auth.loggedIn && ( <StyledMenuButton
-              collapsed={ collapsed }
-              className="trigger"
-              type={ collapsed ? 'menu-fold' : 'menu-unfold' }
-              onClick={ () => setCollapsed( !collapsed ) }
-            /> ) }
-          </HeaderDiv>
-          <Switch>
-            <Route exact path={ '/' } component={ LandingPage }/>
-            <RegisteredAndLoggedInRoute
-              path={ '/dashboard' }
-              component={ MainDashboard }
-            />
-            <LoginRoute path={ '/login' } component={ Login }/>
-            <LoginRoute path={ '/signup' } component={ Login }/>
-            <ProtectedRoute path={ '/create-org' } component={ CreateOrg }/>
-            <OrganizationRoute
-              path={ '/org-dashboard/create-event' }
-              component={ CreateEvent }
-            />
-            <OrganizationRoute
-              path={ '/org-dashboard' }
-              component={ OrganizationDashboard }
-            />
-            <RegisterRoute path={ '/register' } component={ Signup }/>
-            <Route path={ '/form' } component={ Form }/>
-            <Route path={ '/' } component={ StyledUploadImage }/>
-          </Switch>
-        </Content>
-        <FooterDiv/>
+            <Affix>
+              <Navigation />
+            </Affix>
+          </StyledSider>
+        )}
+        <Layout style={{background: 'white'}}>
+          <Content>
+            <HeaderDiv
+              loggedIn={state.auth.loggedIn}
+            >
+              {state.auth.loggedIn && (
+                <StyledMenuButton
+                  collapsed={collapsed}
+                  className="trigger"
+                  type={collapsed ? 'menu-fold' : 'menu-unfold'}
+                  onClick={() => setCollapsed(!collapsed)}
+                />
+              )}
+            </HeaderDiv>
+            <Switch>
+              <Route exact path={'/'} component={LandingPage} />
+              <RegisteredAndLoggedInRoute
+                path={'/dashboard'}
+                component={MainDashboard}
+              />
+              <LoginRoute path={'/login'} component={Login} />
+              <LoginRoute path={'/signup'} component={Login} />
+              <ProtectedRoute path={'/create-org'} component={CreateOrg} />
+              <OrganizationRoute
+                path={'/org-dashboard/create-event'}
+                component={CreateEvent}
+              />
+              <OrganizationRoute
+                path={'/org-dashboard'}
+                component={OrganizationDashboard}
+              />
+              <RegisterRoute path={'/register'} component={Signup} />
+              <Route path={'/upload-image'} component={StyledUploadImage} />
+              <Route path={'/'} component={StyledUploadImage} />
+            </Switch>
+          </Content>
+          <FooterDiv />
+        </Layout>
       </Layout>
-    </Layout>
   </StyledApp> );
 }
 
