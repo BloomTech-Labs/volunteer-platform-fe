@@ -3,12 +3,11 @@ import { Switch, Route } from 'react-router';
 import styled from 'styled-components';
 import firebase from './firebase/FirebaseConfig';
 import { Layout, Icon, Affix } from 'antd';
-
+import Form from './views/Form';
 import { useStateValue } from './hooks/useStateValue';
 import { subscribeToUserOrganizations, signedIn, signedOut } from './actions';
 import { StyledUploadImage, HeaderDiv, FooterDiv } from './components';
 import Navigation from './components/Navigation';
-import Form from './views/Form';
 import {
   MainDashboard, OrganizationDashboard, Signup, CreateEvent, CreateOrg, Login,
   LandingPage,
@@ -49,7 +48,7 @@ function App(){
     if( state.auth.googleAuthUser && state.auth.googleAuthUser.uid ){
       subscribeToUserOrganizations( state.auth.googleAuthUser.uid, dispatch );
     }
-  }, state.auth.googleAuthUser );
+  }, [ state.auth.googleAuthUser ] );
   
   const updateDimensions = () => {
     setDimensions( {
@@ -95,8 +94,10 @@ function App(){
                          height={ dimensions.height }>
             <Switch>
               <Route exact path={ '/' } component={ LandingPage }/>
-              <RegisteredAndLoggedInRoute path={ '/dashboard' }
-                                          component={ MainDashboard }/>
+              <RegisteredAndLoggedInRoute
+                path={ '/dashboard' }
+                component={ MainDashboard }
+              />
               <LoginRoute path={ '/login' } component={ Login }/>
               <ProtectedRoute path={ '/create-org' } component={ CreateOrg }/>
               <OrganizationRoute

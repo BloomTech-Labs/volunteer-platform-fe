@@ -20,6 +20,7 @@ export const CreateOrg = ( props ) => {
     organizationName: '',
     city: '',
     state: '',
+    email: '',
     phone: '',
     pointOfContact: [ { firstName: '', lastName: '', email: '', id: uuid4() } ],
     causeAreas: [],

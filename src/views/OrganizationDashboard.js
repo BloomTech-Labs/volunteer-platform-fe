@@ -12,6 +12,7 @@ import OrganizationInfo from '../components/OrganizationInfo';
 import { StyledUploadImage } from '../styled/StyledUploadImage';
 import { StyledButton, StyledAvatar } from '../styled';
 
+
 export const OrganizationDashboard = () => {
   const [ state, dispatch ] = useStateValue();
   const [ displayOrg, setDisplayOrg ] = useState( '' );
@@ -32,30 +33,34 @@ export const OrganizationDashboard = () => {
     if( state.auth.googleAuthUser ){
       const uid = state.auth.googleAuthUser.uid;
     }
-  }, [] );
-  
+  }, []);
+
   const changeHandler = value => {
-    setDisplayOrg( state.org.userOrganizations.find(
-      item => item.orgId === value ) );
+    setDisplayOrg(
+      state.org.userOrganizations.find(item => item.orgId === value)
+    );
   };
-  
-  useEffect( () => {
-    if( state.org.userOrganizations.length > 0 ){
-      setDisplayOrg( state.org.userOrganizations[ 0 ] );
+
+  useEffect(() => {
+    if (state.org.userOrganizations.length > 0) {
+      setDisplayOrg(state.org.userOrganizations[0]);
     }
+
   }, [ state.org.userOrganizations ] );
   
   useEffect( () => {
     
     if( displayOrg ){
       getAllEventsByOrg( displayOrg.orgId, dispatch );
+
     }
-  }, [ displayOrg ] );
-  
+  }, [displayOrg]);
+
   const deleteOrg = e => {
     e.preventDefault();
-    deleteOrganization( displayOrg.orgId, dispatch );
+    deleteOrganization(displayOrg.orgId, dispatch);
   };
+
   
   const onFileUpload = ( path ) => {
     
@@ -120,3 +125,4 @@ align-items: center;
 `;
 
 export default OrganizationDashboard;
+
