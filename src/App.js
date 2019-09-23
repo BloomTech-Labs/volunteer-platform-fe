@@ -1,25 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { Switch, Route } from 'react-router';
-import { signedIn, signedOut } from './actions/auth';
-import { useStateValue } from './hooks/useStateValue';
-import firebase from './firebase/FirebaseConfig';
-import MainDashboard from './views/MainDashboard';
-import UploadImage from './components/UploadImage';
-import './App.css';
-import Login from './views/Login';
-import CreateOrg from './views/CreateOrg';
-import CreateEvent from './views/CreateEvent';
-import OrganizationDashboard from './views/OrganizationDashboard';
-import Signup from './views/Signup';
-import {
-  ProtectedRoute, LoginRoute, SignupRoute, OrganizationRoute, CreateOrgRoute,
-} from './routes/index';
-import Navigation from './components/Navigation';
 import styled from 'styled-components';
+import firebase from './firebase/FirebaseConfig';
 import { Layout, Menu, Icon } from 'antd';
-import { subscribeToUserOrganizations } from './actions';
 
-const { Sider, Footer, Content, Header } = Layout;
+import { useStateValue } from './hooks/useStateValue';
+import { subscribeToUserOrganizations, signedIn, signedOut } from './actions';
+import { StyledUploadImage, HeaderDiv, FooterDiv } from './components';
+import Navigation from './components/Navigation';
+import {
+  MainDashboard, OrganizationDashboard, Signup, CreateEvent, CreateOrg, Login,
+  LandingPage,
+} from './views';
+
+import {
+  RegisteredAndLoggedInRoute, LoginRoute, SignupRoute, OrganizationRoute,
+  ProtectedRoute,
+} from './routes/index';
+
+const { Sider, Content } = Layout;
 
 function App(){
   const [ state, dispatch ] = useStateValue();
@@ -55,56 +54,56 @@ function App(){
   };
   
   return ( <StyledApp className="App">
-    <Layout>
-      <StyledSider
-        breakpoint="md"
-        collapsedWidth="0"
-        theme={ 'light' }
-        onBreakpoint={ broken => {
-          console.log( broken );
-        } }
-        onCollapse={ ( collapsed, type ) => {
-          console.log( collapsed, type );
-        } }
-        trigger={ null }
-        collapsed={ collapsed }
-        reverseArrow={ true }
-      >
-        <Navigation/>
-      </StyledSider>
       <Layout>
-        <Content>
-          <StyledHeader
-            style={ { background: '#fff', padding: 0 } }
-          >
-            Header
-            <StyledMenuButton
-              collapsed={ collapsed }
-              className="trigger"
-              type={ collapsed ? 'menu-fold' : 'menu-unfold' }
-              onClick={ () => setCollapsed( !collapsed ) }
-            />
-          </StyledHeader>
-          <Switch>
-            <ProtectedRoute path={ '/' } component={ MainDashboard } exact/>
-            <LoginRoute path={ '/login' } component={ Login }/>
-            <CreateOrgRoute path={ '/create-org' } component={ CreateOrg }/>
-            <OrganizationRoute
-              path={ '/org-dashboard/create-event' }
-              component={ CreateEvent }
-            />
-            <OrganizationRoute
-              path={ '/org-dashboard' }
-              component={ OrganizationDashboard }
-            />
-            <SignupRoute path={ '/signup' } component={ Signup }/>
-            <Route path={ '/upload-image' } component={ UploadImage }/>
-          </Switch>
-        </Content>
-        <Footer>Footer</Footer>
+        { state.auth.loggedIn && <StyledSider
+          breakpoint="md"
+          collapsedWidth="0"
+          theme={ 'light' }
+          onBreakpoint={ broken => {
+            console.log( broken );
+          } }
+          onCollapse={ ( collapsed, type ) => {
+            console.log( collapsed, type );
+          } }
+          trigger={ null }
+          collapsed={ collapsed }
+          reverseArrow={ true }
+        >
+          <Navigation/>
+        </StyledSider> }
+        <Layout>
+          <Content>
+            <HeaderDiv style={ { background: '#fff', padding: 0 } }>
+              { state.auth.loggedIn && <StyledMenuButton
+                collapsed={ collapsed }
+                className="trigger"
+                type={ collapsed ? 'menu-fold' : 'menu-unfold' }
+                onClick={ () => setCollapsed( !collapsed ) }
+              /> }
+            </HeaderDiv>
+            <Switch>
+              <Route exact path={ '/' } component={ LandingPage }/>
+              <RegisteredAndLoggedInRoute path={ '/dashboard' }
+                                          component={ MainDashboard }/>
+              <LoginRoute path={ '/login' } component={ Login }/>
+              <ProtectedRoute path={ '/create-org' } component={ CreateOrg }/>
+              <OrganizationRoute
+                path={ '/org-dashboard/create-event' }
+                component={ CreateEvent }
+              />
+              <OrganizationRoute
+                path={ '/org-dashboard' }
+                component={ OrganizationDashboard }
+              />
+              <SignupRoute path={ '/signup' } component={ Signup }/>
+              <Route path={ '/upload-image' } component={ StyledUploadImage }/>
+              <Route path={ '/' } component={ StyledUploadImage }/>
+            </Switch>
+          </Content>
+          <FooterDiv/>
+        </Layout>
       </Layout>
-    </Layout>
-  </StyledApp> );
+    </StyledApp> );
 }
 
 const StyledMenuButton = styled( Icon )`
@@ -113,13 +112,6 @@ const StyledMenuButton = styled( Icon )`
     font-size: 2rem;
     margin-top: 20px;
     transition: all 0.2s;
-  }
-`;
-
-const StyledHeader = styled( Header )`
-  && {
-    display: flex;
-    justify-content: space-between;
   }
 `;
 

@@ -4,7 +4,7 @@ import { Button } from 'antd';
 
 import { useStateValue } from '../hooks/useStateValue';
 
-const Event = ({ event }) => {
+export const Event = ({ event }) => {
   //logic
   const [{ org, events }, dispatch] = useStateValue();
 

@@ -20,8 +20,9 @@ import ReccurringEvent from '../components/ReccurringEvent';
 
 const { Option } = Select;
 
-const CreateEvent = props => {
-  const [localState, setState] = useState({
+
+export const CreateEvent = props => {
+  const [ localState, setState ] = useState( {
     event: {
       tags: [],
     },
@@ -143,6 +144,14 @@ const CreateEvent = props => {
         </Option>
       );
     });
+
+  
+  if( state.tags.requirements ){
+    requirementTags = state.tags.requirements.map( tag => {
+      return ( <Option key={ tag } value={ tag }>
+        { tag }
+      </Option> );
+    } );
   }
 
   const interestTags = state.tags.interests.map(tag => {

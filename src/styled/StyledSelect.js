@@ -17,7 +17,7 @@ const formItemLayout = {
   },
 };
 
-export const StyledSelect = ( { name, value, onChange, children, tooltipTitle, ...rest } ) => {
+export const StyledSelect = ( { name, value, onChange, children, tooltipTitle, label, ...rest } ) => {
   
   let camelCase = '';
   if( name ){
@@ -33,7 +33,7 @@ export const StyledSelect = ( { name, value, onChange, children, tooltipTitle, .
   }
   
   return ( <Form.Item { ...formItemLayout } label={ <span>
-        { name }
+        { label ? label : name }
     { tooltipTitle && ( <Tooltip title={ tooltipTitle }>
       <Icon type="question-circle-o"/>
     </Tooltip> ) }

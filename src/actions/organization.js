@@ -1,4 +1,5 @@
 import { action } from './action';
+import { deleteFile } from './files';
 import firebase, { store } from '../firebase/FirebaseConfig';
 
 /**
@@ -120,4 +121,18 @@ export const deleteOrganization = ( orgId, dispatch ) => {
       console.log( err );
       dispatch( action( DELETE_ORG_FAILED ) );
     } );
+};
+
+export const deleteOrganizationImage = ( organization ) => {
+  
+  deleteFile( organization.imagePath );
+  delete organization.imagePath;
+  
+  store.collection( 'organizations' )
+    .doc( organization.orgId )
+    .set( organization ).then( res => {
+    
+  } ).catch( err => {
+    console.log( err );
+  } );
 };

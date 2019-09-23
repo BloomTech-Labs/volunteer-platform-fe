@@ -8,7 +8,7 @@ export const LoginRoute = ( { component: Component, ...rest } ) => {
   return ( <Route
     { ...rest }
     render={ props => {
-      return localStorage.getItem("loggedIn") === "true" ? <Redirect to={ "/" }/> :
+      return localStorage.getItem("loggedIn") === "true" ? <Redirect to={ "/dashboard" }/> :
         <Component { ...props }/>;
     } }
   /> );
