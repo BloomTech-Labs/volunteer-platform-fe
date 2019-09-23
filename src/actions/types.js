@@ -74,6 +74,34 @@
  *
  */
 
+/**
+ * @typedef RecurringEvent
+ * @type {Object}
+ * @property {String} [eventId] Id of the event in the db.
+ * @property {String} orgId Id of the organization that created the event.
+ * @property {String} volunteerType The volunteer event type
+ * @property {String} numberOfPeople The number of people needed at event.
+ * @property {number} startTime Start time timestamp
+ * @property {number} stopTime Timestamp when the event is supposed to end.
+ * @property {String} pointOfContact Contact information for people to contact.
+ * @property {String[]} tags Array of string values
+ * @property {String} description Description of the event.
+ * @property {String} volunteerRequirements Requirements volunteers must meet.
+ * @property {EventAttendees} Object where the keys are dates and userId array
+ *
+ */
 
+/**
+ * @typedef EventAttendees
+ * @type {Object}
+ * @property {Attendees}
+ */
 
+/**
+ * @typedef Attendees
+ * @type {Date[]} userUIDs Attending user ids.
+ */
 
+/**
+ * @type {String} Date
+ */
