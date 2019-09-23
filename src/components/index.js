@@ -6,3 +6,4 @@ export * from './Navigation';
 export * from './OrganizationInfo';
 export * from './UploadImage';
 export * from './FilteredComponent';
+export * from './FilterTopbar';
