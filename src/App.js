@@ -60,65 +60,66 @@ function App(){
   };
   
   return ( <StyledApp className="App">
+    <Layout>
+      { state.auth.loggedIn && <StyledSider
+        height={ dimensions.height }
+        breakpoint="md"
+        collapsedWidth="0"
+        theme={ 'light' }
+        onBreakpoint={ broken => {
+          console.log( broken );
+        } }
+        onCollapse={ ( collapsed, type ) => {
+          console.log( collapsed, type );
+        } }
+        trigger={ null }
+        collapsed={ collapsed }
+        reverseArrow={ true }
+        style={ { maxWidth: '400px', width: '400px' } }
+      >
+        <Affix>
+          <Navigation/>
+        </Affix>
+      </StyledSider> }
       <Layout>
-        { state.auth.loggedIn && <StyledSider
-          height={ dimensions.height }
-          breakpoint="md"
-          collapsedWidth="0"
-          theme={ 'light' }
-          onBreakpoint={ broken => {
-            console.log( broken );
-          } }
-          onCollapse={ ( collapsed, type ) => {
-            console.log( collapsed, type );
-          } }
-          trigger={ null }
-          collapsed={ collapsed }
-          reverseArrow={ true }
-        >
-          <Affix>
-            <Navigation/>
-          </Affix>
-        </StyledSider> }
-        <Layout>
-          <Content>
-            <HeaderDiv
-              loggedIn={ state.auth.loggedIn }
-              style={ { background: '#fff', padding: 0 } }
-            >
-              { state.auth.loggedIn && ( <StyledMenuButton
-                  collapsed={ collapsed }
-                  className="trigger"
-                  type={ collapsed ? 'menu-fold' : 'menu-unfold' }
-                  onClick={ () => setCollapsed( !collapsed ) }
-                /> ) }
-            </HeaderDiv>
-            <Switch>
-              <Route exact path={ '/' } component={ LandingPage }/>
-              <RegisteredAndLoggedInRoute
-                path={ '/dashboard' }
-                component={ MainDashboard }
-              />
-              <LoginRoute path={ '/login' } component={ Login }/>
-              <LoginRoute path={ '/signup' } component={ Login }/>
-              <ProtectedRoute path={ '/create-org' } component={ CreateOrg }/>
-              <OrganizationRoute
-                path={ '/org-dashboard/create-event' }
-                component={ CreateEvent }
-              />
-              <OrganizationRoute
-                path={ '/org-dashboard' }
-                component={ OrganizationDashboard }
-              />
-              <RegisterRoute path={ '/register' } component={ Signup }/>
-              <Route path={ '/form' } component={ Form }/>
-              <Route path={ '/' } component={ StyledUploadImage }/>
-            </Switch>
-          </Content>
-          <FooterDiv/>
-        </Layout>
+        <Content>
+          <HeaderDiv
+            loggedIn={ state.auth.loggedIn }
+            style={ { background: '#fff', padding: 0 } }
+          >
+            { state.auth.loggedIn && ( <StyledMenuButton
+              collapsed={ collapsed }
+              className="trigger"
+              type={ collapsed ? 'menu-fold' : 'menu-unfold' }
+              onClick={ () => setCollapsed( !collapsed ) }
+            /> ) }
+          </HeaderDiv>
+          <Switch>
+            <Route exact path={ '/' } component={ LandingPage }/>
+            <RegisteredAndLoggedInRoute
+              path={ '/dashboard' }
+              component={ MainDashboard }
+            />
+            <LoginRoute path={ '/login' } component={ Login }/>
+            <LoginRoute path={ '/signup' } component={ Login }/>
+            <ProtectedRoute path={ '/create-org' } component={ CreateOrg }/>
+            <OrganizationRoute
+              path={ '/org-dashboard/create-event' }
+              component={ CreateEvent }
+            />
+            <OrganizationRoute
+              path={ '/org-dashboard' }
+              component={ OrganizationDashboard }
+            />
+            <RegisterRoute path={ '/register' } component={ Signup }/>
+            <Route path={ '/form' } component={ Form }/>
+            <Route path={ '/' } component={ StyledUploadImage }/>
+          </Switch>
+        </Content>
+        <FooterDiv/>
       </Layout>
-    </StyledApp> );
+    </Layout>
+  </StyledApp> );
 }
 
 const StyledMenuButton = styled( Icon )`
@@ -130,13 +131,13 @@ const StyledMenuButton = styled( Icon )`
   }
 `;
 
-const StyledSider = styled(Sider)`
-  && {
+const StyledSider = styled( Sider )`
+  &&& {
     position: absolute;
     right: 0;
     z-index: 10;
     min-height: 100vh;
-    height: ${props => (props.height ? `${props.height}px` : '100%')};
+    height: ${ props => ( props.height ? `${ props.height }px` : '100%' ) };
   }
 `;
 
@@ -145,9 +146,9 @@ const StyledApp = styled.div`
   flex-direction: column;
 `;
 
-const StyledContent = styled(Content)`
+const StyledContent = styled( Content )`
   && {
-    margin-right: ${props => (props.width > 900 ? '15rem' : 0)};
+    margin-right: ${ props => ( props.width > 900 ? '15rem' : 0 ) };
   }
 `;
 
