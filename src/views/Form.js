@@ -42,7 +42,6 @@ const Form = () => {
     
     console.log(org)
     registerOrganization( org, dispatch )
-    
   };
   
   const days = [
@@ -64,7 +63,6 @@ const Form = () => {
                     tooltipTitle={ 'Select all cause areas that your' +
                     ' organization helps.' }
         >
-          
           { state.tags.causeAreas.map( cause => {
             return <Option key={ cause }>{ cause }</Option>;
           } ) }
