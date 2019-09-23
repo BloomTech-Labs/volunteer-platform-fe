@@ -122,7 +122,6 @@ function App(){
           <FooterDiv />
         </Layout>
       </Layout>
-    </Layout>
   </StyledApp> );
 }
 
