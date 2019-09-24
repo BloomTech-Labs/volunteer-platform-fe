@@ -92,6 +92,9 @@ export const CreateOrg = props => {
     } else {
       registerOrganization(org, dispatch);
     }
+    
+    props.history.push( '/org-dashboard' );
+    
   };
 
   const days = [
