@@ -1,5 +1,6 @@
 import { action } from './action';
 import firebase, { store } from '../firebase/FirebaseConfig';
+import { debug } from 'util';
 
 /**
  * Auth Actions

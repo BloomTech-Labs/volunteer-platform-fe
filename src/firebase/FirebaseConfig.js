@@ -4,20 +4,17 @@ import * as firebase from 'firebase';
 
 const firebaseConfig = {
   apiKey:
-    process.env.REACT_APP_apiKey || 'AIzaSyCak5UocLSUJaNkssFNXgEmLJBy-DLfeiw',
+    process.env.REACT_APP_apiKey,
   authDomain:
-    process.env.REACT_APP_authDomain ||
-    'volunteer-platform-staging.firebaseapp.com',
+    process.env.REACT_APP_authDomain,
   databaseURL:
-    process.env.REACT_APP_databaseURL ||
-    'https://volunteer-platform-staging.firebaseio.com',
-  projectId: process.env.REACT_APP_projectId || 'volunteer-platform-staging',
+    process.env.REACT_APP_databaseURL ,
+  projectId: process.env.REACT_APP_projectId,
   storageBucket:
-    process.env.REACT_APP_storageBucket ||
-    'volunteer-platform-staging.appspot.com',
-  messagingSenderId: process.env.REACT_APP_messagingSenderId || '826760951967',
+    process.env.REACT_APP_storageBucket,
+  messagingSenderId: process.env.REACT_APP_messagingSenderId,
   appId:
-    process.env.REACT_APP_appId || '1:826760951967:web:225a210952c9df46df4aaa',
+    process.env.REACT_APP_appId,
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);

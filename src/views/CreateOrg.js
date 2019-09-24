@@ -19,11 +19,13 @@ export const CreateOrg = props => {
   const Option = Select.Option;
 
   useEffect(() => {
-    if (props.location.state) setOrgToEdit(props.location.state.org);
+    if (props.location.state) {
+      setOrgToEdit(props.location.state.org);
+      if (props.location.state.org.firstName2) {
+        setNumberOfPOC(2);
+      }
+    }
   }, []);
-
-  console.log(orgToEdit);
-
   const getPOCInputs = () => {
     const poc = [
       <AntdInput name={'First Name'} key={'firstName'} />,
@@ -79,15 +81,20 @@ export const CreateOrg = props => {
       ...values,
       POC,
       organizationOwnerUID: state.auth.googleAuthUser.uid,
-      startTime: values.startTime.format('LT'),
-      endTime: values.endTime.format('LT'),
+      startTime: values.startTime.unix(),
+      endTime: values.endTime.unix(),
     };
-
+    for (let key in org) {
+      if (org[key] === undefined) delete org[key];
+    }
     if (orgToEdit.orgId) {
       updateOrganization(orgToEdit.orgId, org, dispatch);
     } else {
       registerOrganization(org, dispatch);
     }
+    
+    props.history.push( '/org-dashboard' );
+    
   };
 
   const days = [
@@ -152,8 +159,8 @@ export const CreateOrg = props => {
             options={days}
             style={{ width: '100%' }}
           />
-          {/* <AntdTimePicker name={'Start Time'} use12Hours format={'h:mm a'} />
-          <AntdTimePicker name={'End Time'} use12Hours format={'h:mm a'} /> */}
+          <AntdTimePicker name={'Start Time'} use12Hours format={'h:mm a'} />
+          <AntdTimePicker name={'End Time'} use12Hours format={'h:mm a'} />
           <AntdTextArea name={'About Us'} notrequired={'false'} />
           <AntdInput name={'Website'} type={'url'} notrequired={'false'} />
         </StyledWrappedAntdForm>
