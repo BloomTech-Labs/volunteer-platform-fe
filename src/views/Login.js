@@ -61,13 +61,12 @@ export const Login = props => {
       <StyledCenter>
         <h4>Or</h4>
         <WrappedAntdForm
-          onSubmit={e => {
-            e.preventDefault();
+          onSubmit={values => {
             signIn(
               EMAIL_PROVIDER,
               dispatch,
-              localState.email,
-              localState.password
+              values.email,
+              values.password
             );
           }}
           useButton={false}
