@@ -2,8 +2,11 @@ import React from 'react';
 import { Form, Icon, Tooltip } from 'antd';
 import { StyledButton } from '../styled';
 import moment from 'moment';
+
 class AntdForm extends React.Component {
   componentDidUpdate(prevProps) {
+    debugger;
+    const fields = this.props.form.getFieldInstance();
     if (prevProps.editInfo !== this.props.editInfo) {
       for (let key in this.props.editInfo) {
         this.props.form.setFieldsValue({ [key]: this.props.editInfo[key] });
