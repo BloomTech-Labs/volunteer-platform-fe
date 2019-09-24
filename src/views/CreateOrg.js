@@ -89,35 +89,38 @@ export const CreateOrg = () => {
 
   return (
     <StyledDiv className={'flex center'}>
-      <CustomStyledCard style={{ maxWidth: '900px', margin: '2rem 0 5rem 0' }}>
+      <CustomStyledCard style={{ maxWidth: '1067px', margin: '2rem 0 5rem 0' }}>
         <h1>Let's Set up your organization!</h1>
         <StyledImg src={createOrgImg} alt="undraw unexpected friends" />
         <StyledWrappedAntdForm layout={'vertical'} onSubmit={onSubmit}>
-          <AntdInput
-            name={'Organization Name'}
-            label={'Name of Organization'}
-          />
-          <AntdSelect
-            name={'Cause Areas'}
-            label={
-              <>
-                Types of causes <Icon type="question-circle-o" />
-              </>
-            }
-            mode={'multiple'}
-            style={{ width: '100%' }}
-            placeholder={'Please select all that apply.'}
-            tooltipTitle={
-              'Select all cause areas that your' + ' organization helps.'
-            }
-          >
-            {state.tags.causeAreas.map(cause => {
-              return <Option key={cause}>{cause}</Option>;
-            })}
-          </AntdSelect>
-          <AntdInput name={'City'} notrequired={'false'} />
-          <AntdInput name={'State'} notrequired={'false'} />
-          <AntdInput name={'Phone'} notrequired={'false'} />
+          <BasicStyledDiv>
+            <AntdInput
+              name={'Organization Name'}
+              label={'Name of Organization'}
+            />
+            <AntdSelect
+              name={'Cause Areas'}
+              label={
+                <>
+                  Types of causes <Icon type="question-circle-o" />
+                </>
+              }
+              mode={'multiple'}
+              style={{ width: '100%' }}
+              placeholder={'Please select all that apply.'}
+              tooltipTitle={
+                'Select all cause areas that your' + ' organization helps.'
+              }
+            >
+              {state.tags.causeAreas.map(cause => {
+                return <Option key={cause}>{cause}</Option>;
+              })}
+            </AntdSelect>
+            <AntdInput name={'City'} notrequired={'false'} />
+            <AntdInput name={'State'} notrequired={'false'} />
+            <AntdInput name={'Phone'} notrequired={'false'} />
+          </BasicStyledDiv>
+
           <h2>Who is the point of contact?</h2>
           {getPOCInputs()}
           {numberOfPOC === 1 ? (
@@ -147,7 +150,18 @@ export const CreateOrg = () => {
 
 const StyledDiv = styled.div`
   background: white;
+
 `;
+
+const BasicStyledDiv = styled.div`
+background: #E8E8E8;
+display: flex;
+width: 80%;
+margin: 2rem auto;
+padding: 2rem;
+
+
+`
 
 const CustomStyledCard = styled(StyledCard)`
   background: #d9d9d9;
@@ -160,10 +174,12 @@ const StyledLine = styled.div`
 `;
 
 const StyledImg = styled.img`
-  width: 25%;
-  margin: 0 auto;
+  width: 211px;
+  margin: 2rem auto;
 `;
 
-const StyledWrappedAntdForm = styled(WrappedAntdForm)``;
+const StyledWrappedAntdForm = styled(WrappedAntdForm)`
+
+`;
 
 export default CreateOrg;
