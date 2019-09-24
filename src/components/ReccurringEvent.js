@@ -6,12 +6,11 @@ import {
   StyledSwitch,
   StyledSelect,
   WrappedAntdForm,
+  AntdCheckbox,
+  AntdInputNumber,
+  AntdSelect,
+  AntdRadio,
 } from '../styled';
-import AntdCheckbox from '../styled/AntdCheckbox';
-import AntdInputNumber from '../styled/AntdInputNumber';
-import AntdSelect from '../styled/AntdSelect';
-import AntdRadio from '../styled/AntdRadio';
-
 import moment from 'moment';
 
 const { Option } = Select;

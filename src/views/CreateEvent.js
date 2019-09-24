@@ -2,14 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { Select, DatePicker } from 'antd';
 import styled from 'styled-components';
 import moment from 'moment';
-import { StyledButton, WrappedAntdForm, StyledCard } from '../styled';
-import AntdInput from '../styled/AntdInput';
-import AntdSelect from '../styled/AntdSelect';
-import AntdTextArea from '../styled/AntdTextArea';
-import AntdTimePicker from '../styled/AntdTimePicker';
-import AntdInputNumber from '../styled/AntdInputNumber';
-import AntdDatePicker from '../styled/AntdDatePicker';
-import AntdCheckbox from '../styled/AntdCheckbox';
+import {
+  AntdInput,
+  AntdSelect,
+  AntdTextArea,
+  AntdTimePicker,
+  AntdInputNumber,
+  AntdDatePicker,
+  AntdCheckbox,
+  WrappedAntdForm,
+  StyledButton,
+  StyledCard
+} from '../styled';
 import { useStateValue } from '../hooks/useStateValue';
 import { createEvent } from '../actions';
 import ReccurringEvent from '../components/ReccurringEvent';

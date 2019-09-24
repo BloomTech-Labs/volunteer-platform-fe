@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import {
-  StyledButton, StyledForm, StyledInput, StyledLine, StyledLink,
+  StyledButton, StyledForm, AntdInput, StyledLine, StyledLink,
 } from '../styled';
 import { Form, Icon } from 'antd';
 import {
@@ -104,7 +104,7 @@ export const Login = props => {
           );
         } }
       >
-        <StyledInput
+        <AntdInput
           values={ localState }
           name={ 'Email' }
           onChange={ onChange }
@@ -112,7 +112,7 @@ export const Login = props => {
           placeholder="Email"
         />
         <Form.Item>
-          <StyledInput
+          <AntdInput
             values={ localState }
             name={ 'Password' }
             onChange={ onChange }

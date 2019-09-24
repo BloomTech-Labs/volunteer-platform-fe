@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { StyledForm, StyledInput } from '../styled';
+import { StyledForm, AntdInput } from '../styled';
 import { useStateValue } from '../hooks/useStateValue';
 import EventList from '../components/EventList';
 import { getAllEventsByState } from '../actions';
@@ -44,7 +44,7 @@ export const MainDashboard = () => {
       <h2>Browse Events</h2>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <StyledForm styled={{ maxWidth: '500px' }}>
-          <StyledInput
+          <AntdInput
             values={localState}
             name={'State'}
             onChange={onChange}

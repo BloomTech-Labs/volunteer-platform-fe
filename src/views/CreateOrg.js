@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { WrappedAntdForm } from '../styled/AntdForm';
-import AntdInput from '../styled/AntdInput';
-import AntdSelect from '../styled/AntdSelect';
-import AntdTimePicker from '../styled/AntdTimePicker';
-import { StyledCard, StyledButton } from '../styled';
+import {
+  WrappedAntdForm,
+  AntdInput,
+  AntdSelect,
+  AntdTextArea,
+  AntdTimePicker,
+  StyledCard,
+  StyledButton,
+} from '../styled';
 import { useStateValue } from '../hooks/useStateValue';
 import { Icon, Select } from 'antd';
 import CheckboxGroup from 'antd/lib/checkbox/Group';
-import AntdTextArea from '../styled/AntdTextArea';
 import { registerOrganization, updateOrganization } from '../actions';
 import createOrgImg from '../assets/undraw_unexpected_friends.svg';
 
@@ -92,9 +95,8 @@ export const CreateOrg = props => {
     } else {
       registerOrganization(org, dispatch);
     }
-    
-    props.history.push( '/org-dashboard' );
-    
+
+    props.history.push('/org-dashboard');
   };
 
   const days = [
