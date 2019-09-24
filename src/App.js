@@ -3,65 +3,75 @@ import { Switch, Route } from 'react-router';
 import styled from 'styled-components';
 import firebase from './firebase/FirebaseConfig';
 import { Layout, Icon, Affix } from 'antd';
-import Form from './views/Form';
 import { useStateValue } from './hooks/useStateValue';
 import { subscribeToUserOrganizations, signedIn, signedOut } from './actions';
 import { StyledUploadImage, HeaderDiv, FooterDiv } from './components';
-import Navigation from './components/Navigation';
+import Navigation from './components/Navigation'
 import {
-  MainDashboard, OrganizationDashboard, Signup, CreateEvent, CreateOrg, Login,
+  MainDashboard,
+  OrganizationDashboard,
+  Signup,
+  CreateEvent,
+  CreateOrg,
+  Login,
   LandingPage,
 } from './views';
 
 import {
-  RegisteredAndLoggedInRoute, LoginRoute, SignupRoute, OrganizationRoute,
-  ProtectedRoute, RegisterRoute,
+  RegisteredAndLoggedInRoute,
+  LoginRoute,
+  SignupRoute,
+  OrganizationRoute,
+  ProtectedRoute,
+  RegisterRoute,
 } from './routes/index';
 
 const { Sider, Content } = Layout;
 
-function App(){
-  const [ state, dispatch ] = useStateValue();
-  const [ collapsed, setCollapsed ] = useState( false );
-  const [ dimensions, setDimensions ] = useState( {
-    width: window.innerWidth, height: document.body.scrollHeight,
-  } );
-  
+function App() {
+  const [state, dispatch] = useStateValue();
+  const [collapsed, setCollapsed] = useState(false);
+  const [dimensions, setDimensions] = useState({
+    width: window.innerWidth,
+    height: document.body.scrollHeight,
+  });
+
   /**
    * Set up google auth on change event handler.
    */
-  useEffect( () => {
-    firebase.auth().onAuthStateChanged( user => {
-      if( user ){
-        signedIn( user, dispatch );
-      }else{
-        signedOut( dispatch );
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        signedIn(user, dispatch);
+      } else {
+        signedOut(dispatch);
       }
-    } );
-  }, [] );
-  useEffect( () => {
-    window.addEventListener( 'resize', updateDimensions );
+    });
+  }, []);
+  useEffect(() => {
+    window.addEventListener('resize', updateDimensions);
     updateDimensions();
-  }, [] );
-  
-  useEffect( () => {
-    if( state.auth.googleAuthUser && state.auth.googleAuthUser.uid ){
-      subscribeToUserOrganizations( state.auth.googleAuthUser.uid, dispatch );
+  }, []);
+
+  useEffect(() => {
+    if (state.auth.googleAuthUser && state.auth.googleAuthUser.uid) {
+      subscribeToUserOrganizations(state.auth.googleAuthUser.uid, dispatch);
     }
-  }, [ state.auth.googleAuthUser ] );
-  
+  }, [state.auth.googleAuthUser]);
+
   const updateDimensions = () => {
-    setDimensions( {
-      width: window.innerWidth, height: document.body.scrollHeight,
-    } );
-    if( window.innerWidth < 900 ){
-      setCollapsed( true );
+    setDimensions({
+      width: window.innerWidth,
+      height: document.body.scrollHeight,
+    });
+    if (window.innerWidth < 900) {
+      setCollapsed(true);
     }
   };
 
   return (
     <StyledApp className="App">
-      <Layout style={{background: 'white'}}>
+      <Layout style={{ background: 'white' }}>
         {state.auth.loggedIn && (
           <StyledSider
             height={dimensions.height}
@@ -69,13 +79,13 @@ function App(){
             collapsedWidth="0"
             theme={'light'}
             onBreakpoint={broken => {
-              console.log(broken);
+              //console.log(broken);
             }}
             onCollapse={(collapsed, type) => {
-              console.log(collapsed, type);
+              //console.log(collapsed, type);
             }}
             trigger={null}
-            collapsed={collapsed}
+            collapsed={collapsed ? 1 : 0}
             reverseArrow={true}
           >
             <Affix>
@@ -83,14 +93,12 @@ function App(){
             </Affix>
           </StyledSider>
         )}
-        <Layout style={{background: 'white'}}>
+        <Layout style={{ background: 'white' }}>
           <Content>
-            <HeaderDiv
-              loggedIn={state.auth.loggedIn}
-            >
+            <HeaderDiv loggedIn={state.auth.loggedIn}>
               {state.auth.loggedIn && (
                 <StyledMenuButton
-                  collapsed={collapsed}
+                  collapsed={collapsed ? 1 : 0}
                   className="trigger"
                   type={collapsed ? 'menu-fold' : 'menu-unfold'}
                   onClick={() => setCollapsed(!collapsed)}
@@ -105,7 +113,7 @@ function App(){
               />
               <LoginRoute path={'/login'} component={Login} />
               <LoginRoute path={'/signup'} component={Login} />
-              <ProtectedRoute path={'/create-org'} component={Form} />
+              <ProtectedRoute path={'/create-org'} component={CreateOrg} />
               <OrganizationRoute
                 path={'/org-dashboard/create-event'}
                 component={CreateEvent}
@@ -122,25 +130,26 @@ function App(){
           <FooterDiv />
         </Layout>
       </Layout>
-  </StyledApp> );
+    </StyledApp>
+  );
 }
 
-const StyledMenuButton = styled( Icon )`
+const StyledMenuButton = styled(Icon)`
   && {
-    margin-right: ${ props => ( props.collapsed ? '30px' : '230px' ) };
+    margin-right: ${props => (props.collapsed ? '30px' : '230px')};
     font-size: 2rem;
     margin-top: 20px;
     transition: all 0.2s;
   }
 `;
 
-const StyledSider = styled( Sider )`
+const StyledSider = styled(Sider)`
   &&& {
     position: absolute;
     right: 0;
     z-index: 10;
     min-height: 100vh;
-    height: ${ props => ( props.height ? `${ props.height }px` : '100%' ) };
+    height: ${props => (props.height ? `${props.height}px` : '100%')};
   }
 `;
 
@@ -149,9 +158,9 @@ const StyledApp = styled.div`
   flex-direction: column;
 `;
 
-const StyledContent = styled( Content )`
+const StyledContent = styled(Content)`
   && {
-    margin-right: ${ props => ( props.width > 900 ? '15rem' : 0 ) };
+    margin-right: ${props => (props.width > 900 ? '15rem' : 0)};
   }
 `;
 

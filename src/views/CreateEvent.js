@@ -126,8 +126,8 @@ export const CreateEvent = props => {
   //Options for tags
   const causeAreaTags = state.tags.causeAreas.map(tag => {
     return (
-      <Option key={tag.id} value={tag.name}>
-        {tag.name}
+      <Option key={tag} value={tag}>
+        {tag}
       </Option>
     );
   });
