@@ -277,7 +277,18 @@ i{
 
 const StyledDiv = styled.div`
   background: white;
+
 `;
+
+const BasicStyledDiv = styled.div`
+background: #E8E8E8;
+display: flex;
+width: 80%;
+margin: 2rem auto;
+padding: 2rem;
+
+
+`
 
 const CustomStyledCard = styled( StyledCard )`
   background: #d9d9d9;
@@ -290,8 +301,8 @@ const StyledLine = styled.div`
 `;
 
 const StyledImg = styled.img`
-  width: 25%;
-  margin: 0 auto;
+  width: 211px;
+  margin: 2rem auto;
 `;
 
 const StyledWrappedAntdForm = styled( WrappedAntdForm )``;
