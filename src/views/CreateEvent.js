@@ -60,11 +60,11 @@ export const CreateEvent = props => {
       startTime: values.startTime.format('LT'),
       endTime: values.endTime.format('LT'),
       reccurringInfo: {
-        repeatNumber: localState.formState.repeatNumber,
-        repeatTimePeriod: localState.formState.repeatTimePeriod,
-        reccurringEventDays: localState.formState.reccurringEventDays,
-        ocurrences: localState.formStart.ocurrences,
-        reccurringEndDate: localState.formStart.reccurringEndDate.unix(),
+        // repeatNumber: localState.formState.repeatNumber,
+        repeatTimePeriod: localState.repeatTimePeriod,
+        // reccurringEventDays: localState.formState.reccurringEventDays,
+        // ocurrences: localState.formStart.ocurrences,
+        // reccurringEndDate: localState.formStart.reccurringEndDate.unix(),
       },
       location: values.location,
       phoneNumber: values.phoneNumber,
@@ -127,6 +127,7 @@ export const CreateEvent = props => {
             localState={localState}
             setState={setState}
             dateFormat={dateFormat}
+            notRequired
           />
 
           <AntdTimePicker name={'Start Time'} use12Hours format={'h:mm a'} />
