@@ -16,76 +16,74 @@ import { registerOrganization, updateOrganization } from '../actions';
 import createOrgImg from '../assets/undraw_unexpected_friends.svg';
 
 export const CreateOrg = props => {
-  const [numberOfPOC, setNumberOfPOC] = useState(1);
-  const [state, dispatch] = useStateValue();
-  const [orgToEdit, setOrgToEdit] = useState({});
+  const [ numberOfPOC, setNumberOfPOC ] = useState( 1 );
+  const [ state, dispatch ] = useStateValue();
+  const [ orgToEdit, setOrgToEdit ] = useState( {} );
   const Option = Select.Option;
-
-  useEffect(() => {
-    if (props.location.state) {
-      setOrgToEdit(props.location.state.org);
-      if (props.location.state.org.firstName2) {
-        setNumberOfPOC(2);
+  
+  useEffect( () => {
+    if( props.location.state ){
+      setOrgToEdit( props.location.state.org );
+      if( props.location.state.org.firstName2 ){
+        setNumberOfPOC( 2 );
       }
     }
-  }, []);
+  }, [] );
+  
+  console.log( orgToEdit );
+  
   const getPOCInputs = () => {
     const poc = [
-      <AntdInput name={'First Name'} key={'firstName'} />,
-      <AntdInput name={'Last name'} key={'lastName'} />,
-      <AntdInput name={'Email'} type={'email'} key={'email'} />,
+      <AntdInput name={ 'First Name' } key={ 'firstName' }/>,
+      <AntdInput name={ 'Last name' } key={ 'lastName' }/>,
+      <AntdInput name={ 'Email' } type={ 'email' } key={ 'email' }/>,
     ];
-    if (numberOfPOC > 1) {
-      poc.push(<StyledLine key={Math.random()} />);
-      poc.push(
-        <AntdInput
-          name={'First Name 2'}
-          label={'First Name'}
-          notrequired={'false'}
-          key={'firstName2'}
-        />
-      );
-      poc.push(
-        <AntdInput
-          name={'Last Name 2'}
-          label={'First Name'}
-          notrequired={'false'}
-          key={'lastName2'}
-        />
-      );
-      poc.push(
-        <AntdInput
-          name={'Email 2'}
-          label={'Email'}
-          type={'email'}
-          notrequired={'false'}
-          key={'email2'}
-        />
-      );
+    if( numberOfPOC > 1 ){
+      poc.push( <StyledLine key={ Math.random() }/> );
+      poc.push( <AntdInput
+        name={ 'First Name 2' }
+        label={ 'First Name' }
+        notrequired={ 'false' }
+        key={ 'firstName2' }
+      /> );
+      poc.push( <AntdInput
+        name={ 'Last Name 2' }
+        label={ 'First Name' }
+        notrequired={ 'false' }
+        key={ 'lastName2' }
+      /> );
+      poc.push( <AntdInput
+        name={ 'Email 2' }
+        label={ 'Email' }
+        type={ 'email' }
+        notrequired={ 'false' }
+        key={ 'email2' }
+      /> );
     }
     return poc;
   };
-
+  
   const onSubmit = values => {
     let POC = [];
-    POC.push({
+    debugger;
+    POC.push( {
       email: values.email,
       firstName: values.firstName,
       lastName: values.lastName,
-    });
-    if (values.email2) {
-      POC.push({
+    } );
+    if( values.email2 ){
+      POC.push( {
         email: values.email2,
         firstName: values.firstName2,
         lastName: values.lastName2,
-      });
+      } );
     }
     const org = {
       ...values,
       POC,
       organizationOwnerUID: state.auth.googleAuthUser.uid,
-      startTime: values.startTime.unix(),
-      endTime: values.endTime.unix(),
+      startTime: values.startTime.format( 'HH:MM A' ),
+      endTime: values.endTime.format( 'HH:MM A' ),
     };
     for (let key in org) {
       if (org[key] === undefined) delete org[key];
@@ -111,7 +109,7 @@ export const CreateOrg = props => {
 
   return (
     <StyledDiv className={'flex center'}>
-      <CustomStyledCard style={{ maxWidth: '900px', margin: '2rem 0 5rem 0' }}>
+      <CustomStyledCard style={{ maxWidth: '1067px', margin: '2rem 0 5rem 0' }}>
         <h1>Let's Set up your organization!</h1>
         <StyledImg src={createOrgImg} alt="undraw unexpected friends" />
         <StyledWrappedAntdForm
@@ -173,7 +171,18 @@ export const CreateOrg = props => {
 
 const StyledDiv = styled.div`
   background: white;
+
 `;
+
+const BasicStyledDiv = styled.div`
+background: #E8E8E8;
+display: flex;
+width: 80%;
+margin: 2rem auto;
+padding: 2rem;
+
+
+`
 
 const CustomStyledCard = styled(StyledCard)`
   background: #d9d9d9;
@@ -186,10 +195,12 @@ const StyledLine = styled.div`
 `;
 
 const StyledImg = styled.img`
-  width: 25%;
-  margin: 0 auto;
+  width: 211px;
+  margin: 2rem auto;
 `;
 
-const StyledWrappedAntdForm = styled(WrappedAntdForm)``;
+const StyledWrappedAntdForm = styled(WrappedAntdForm)`
+
+`;
 
 export default CreateOrg;
