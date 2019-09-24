@@ -6,10 +6,9 @@ import {
   StyledSwitch,
   StyledSelect,
   WrappedAntdForm,
-  AntdCheckbox,
   AntdInputNumber,
+  AntdDatePicker,
   AntdSelect,
-  AntdRadio,
 } from '../styled';
 import moment from 'moment';
 
@@ -141,21 +140,21 @@ const ReccurringEvent = props => {
           >
             {periodOfTime}
           </AntdSelect>
-          {/* <AntdCheckbox.Group
+          <Checkbox.Group
             name={'Days'}
             options={dayOptions}
             // onChange={handleDays}
             // value={formState.reccurringEventDays}
-          /> */}
+          />
           <label>Ends</label>
-          {/* <AntdRadio.Group name={'Occurrences'}>
+          <Radio.Group name={'Occurrences'}>
             <Radio value={'Never'}>Never</Radio>
             <Radio value={'On'}>On</Radio>
-            <DatePicker
+            <AntdDatePicker
               name={'Reccurring End Date'}
               defaultValue={moment(moment(), dateFormat)}
               format={dateFormat}
-              disabled={formState.ocurrences === 'On' ? false : true}
+              //disabled={formState.ocurrences === 'On' ? false : true}
             />
             <Radio value={'After'}>After</Radio>
             <InputNumber
@@ -164,7 +163,7 @@ const ReccurringEvent = props => {
               min={0}
               // disabled={formSat.ocurrences === 'After' ? false : true}
             />
-          </AntdRadio.Group> */}
+          </Radio.Group>
 
           <StyledButton type="secondary" onClick={closeDrawer}>
             Back

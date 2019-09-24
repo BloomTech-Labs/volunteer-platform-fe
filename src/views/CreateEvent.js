@@ -12,7 +12,7 @@ import {
   AntdCheckbox,
   WrappedAntdForm,
   StyledButton,
-  StyledCard
+  StyledCard,
 } from '../styled';
 import { useStateValue } from '../hooks/useStateValue';
 import { createEvent } from '../actions';
@@ -37,8 +37,6 @@ export const CreateEvent = props => {
     otherNotes: '',
   };
   const [localState, setState] = useState(initialEvent);
-
-  console.log(localState);
 
   const [state, dispatch] = useStateValue();
 

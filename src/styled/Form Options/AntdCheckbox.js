@@ -13,7 +13,6 @@ export class AntdCheckbox extends Component {
         )
     }
 }
-
 const StyledCheckbox = styled(Checkbox)``;
 
 export default AntdCheckbox;
