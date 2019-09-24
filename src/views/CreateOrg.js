@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { WrappedAntdForm } from '../styled/AntdForm';
 import AntdInput from '../styled/AntdInput';
@@ -12,10 +12,17 @@ import AntdTextArea from '../styled/AntdTextArea';
 import { registerOrganization, updateOrganization } from '../actions';
 import createOrgImg from '../assets/undraw_unexpected_friends.svg';
 
-export const CreateOrg = () => {
+export const CreateOrg = props => {
   const [numberOfPOC, setNumberOfPOC] = useState(1);
   const [state, dispatch] = useStateValue();
+  const [orgToEdit, setOrgToEdit] = useState({});
   const Option = Select.Option;
+
+  useEffect(() => {
+    if (props.location.state) setOrgToEdit(props.location.state.org);
+  }, []);
+
+  console.log(orgToEdit);
 
   const getPOCInputs = () => {
     const poc = [
@@ -71,10 +78,16 @@ export const CreateOrg = () => {
     const org = {
       ...values,
       POC,
+      organizationOwnerUID: state.auth.googleAuthUser.uid,
       startTime: values.startTime.format('LT'),
       endTime: values.endTime.format('LT'),
     };
-    registerOrganization(org, dispatch);
+
+    if (orgToEdit.orgId) {
+      updateOrganization(orgToEdit.orgId, org, dispatch);
+    } else {
+      registerOrganization(org, dispatch);
+    }
   };
 
   const days = [
@@ -92,35 +105,36 @@ export const CreateOrg = () => {
       <CustomStyledCard style={{ maxWidth: '1067px', margin: '2rem 0 5rem 0' }}>
         <h1>Let's Set up your organization!</h1>
         <StyledImg src={createOrgImg} alt="undraw unexpected friends" />
-        <StyledWrappedAntdForm layout={'vertical'} onSubmit={onSubmit}>
-          <BasicStyledDiv>
-            <AntdInput
-              name={'Organization Name'}
-              label={'Name of Organization'}
-            />
-            <AntdSelect
-              name={'Cause Areas'}
-              label={
-                <>
-                  Types of causes <Icon type="question-circle-o" />
-                </>
-              }
-              mode={'multiple'}
-              style={{ width: '100%' }}
-              placeholder={'Please select all that apply.'}
-              tooltipTitle={
-                'Select all cause areas that your' + ' organization helps.'
-              }
-            >
-              {state.tags.causeAreas.map(cause => {
-                return <Option key={cause}>{cause}</Option>;
-              })}
-            </AntdSelect>
-            <AntdInput name={'City'} notrequired={'false'} />
-            <AntdInput name={'State'} notrequired={'false'} />
-            <AntdInput name={'Phone'} notrequired={'false'} />
-          </BasicStyledDiv>
-
+        <StyledWrappedAntdForm
+          layout={'vertical'}
+          onSubmit={onSubmit}
+          editInfo={orgToEdit}
+        >
+          <AntdInput
+            name={'Organization Name'}
+            label={'Name of Organization'}
+          />
+          <AntdSelect
+            name={'Cause Areas'}
+            label={
+              <>
+                Types of causes <Icon type="question-circle-o" />
+              </>
+            }
+            mode={'multiple'}
+            style={{ width: '100%' }}
+            placeholder={'Please select all that apply.'}
+            tooltipTitle={
+              'Select all cause areas that your' + ' organization helps.'
+            }
+          >
+            {state.tags.causeAreas.map(cause => {
+              return <Option key={cause}>{cause}</Option>;
+            })}
+          </AntdSelect>
+          <AntdInput name={'City'} notrequired={'false'} />
+          <AntdInput name={'State'} notrequired={'false'} />
+          <AntdInput name={'Phone'} notrequired={'false'} />
           <h2>Who is the point of contact?</h2>
           {getPOCInputs()}
           {numberOfPOC === 1 ? (
@@ -138,8 +152,8 @@ export const CreateOrg = () => {
             options={days}
             style={{ width: '100%' }}
           />
-          <AntdTimePicker name={'Start Time'} use12Hours format={'h:mm a'} />
-          <AntdTimePicker name={'End Time'} use12Hours format={'h:mm a'} />
+          {/* <AntdTimePicker name={'Start Time'} use12Hours format={'h:mm a'} />
+          <AntdTimePicker name={'End Time'} use12Hours format={'h:mm a'} /> */}
           <AntdTextArea name={'About Us'} notrequired={'false'} />
           <AntdInput name={'Website'} type={'url'} notrequired={'false'} />
         </StyledWrappedAntdForm>
