@@ -4,8 +4,8 @@ import TextArea from 'antd/lib/input/TextArea';
 
 export default class AntdTextArea extends Component {
   render() {
-    let { ...rest } = this.props;
-    return <StyledTextArea></StyledTextArea>;
+    let { children, ...rest } = this.props;
+    return <StyledTextArea {...rest}>{children}</StyledTextArea>;
   }
 }
 

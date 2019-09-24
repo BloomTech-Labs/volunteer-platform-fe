@@ -44,6 +44,7 @@ class AntdForm extends React.Component {
 
   renderChildren = children => {
     const childrenToReturn = children.map(child => {
+        console.log(child)
       if (child.type === 'div') {
         return (
           <div
