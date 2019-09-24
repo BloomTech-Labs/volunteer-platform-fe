@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Icon, Tooltip } from 'antd';
-import { StyledButton } from '.';
+import { StyledButton } from '../styled';
 
 class AntdForm extends React.Component {
   handleSubmit = e => {
@@ -47,16 +47,11 @@ class AntdForm extends React.Component {
       if (Array.isArray(child)) {
         return this.renderChildren(child);
       }
-      // if (child.type && child.type === 'div') {
-      //   return this.renderChildren(child.children);
-      // }
-      // // debugger;
+
       if (
         child.type &&
         child.type.name &&
-        (child.type.name === 'AntdInput' ||
-          child.type.name === 'AntdSelect' ||
-          child.type.name === 'AntdTextArea')
+        (child.type.name === 'AntdInput' || 'AntdSelect')
       ) {
         const camelCase = this.getCamelCase(child.props.name);
         const required = !child.props.notRequired;

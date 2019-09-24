@@ -112,6 +112,7 @@ const ReccurringEvent = props => {
       occurrenceNumber: number,
     });
   };
+
   const periodOfTime = timePeriodOptions.map(period => {
     return (
       <Option key={period} value={period}>

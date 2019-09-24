@@ -49,9 +49,10 @@ export const CreateEvent = props => {
 
   //Date Format
   const dateFormat = 'MM/DD/YYYY';
-
+  console.log(localState);
   //Handle Submit for Form
   const handleSubmit = values => {
+    console.log(values);
     const event = {
       nameOfEvent: values.nameOfEvent,
       typeOfCauses: values.typesOfCauses,
@@ -78,7 +79,7 @@ export const CreateEvent = props => {
       otherNotes: values.otherNotes,
     };
     console.log(event);
-    createEvent(event, dispatch);
+    // createEvent(event, dispatch);
   };
 
   //Options for tags
@@ -122,27 +123,16 @@ export const CreateEvent = props => {
           <AntdDatePicker name={'Date'} format={dateFormat} />
 
           <ReccurringEvent
+            name={'ReccuringEvent'}
             localState={localState}
             setState={setState}
             dateFormat={dateFormat}
           />
 
-          <AntdTimePicker
-            name={'Start Time'}
-            defaultOpenValue={moment('00:00', 'hh:mm')}
-            use12Hours
-            format={'h:mm a'}
-            type="time"
-          />
+          <AntdTimePicker name={'Start Time'} use12Hours format={'h:mm a'} />
           <p>to</p>
 
-          <AntdTimePicker
-            name={'End Time'}
-            defaultOpenValue={moment('00:00', 'hh:mm')}
-            use12Hours
-            format={'h:mm a'}
-            type="time"
-          />
+          <AntdTimePicker name={'End Time'} use12Hours format={'h:mm a'} />
 
           <AntdInputNumber name={'Number of People'} type="number" min={0} />
 
