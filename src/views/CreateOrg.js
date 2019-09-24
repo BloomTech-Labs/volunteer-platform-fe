@@ -1,34 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { WrappedAntdForm } from '../styled/AntdForm';
-import AntdInput from '../styled/AntdInput';
-import AntdSelect from '../styled/AntdSelect';
-import AntdTimePicker from '../styled/AntdTimePicker';
-import { StyledCard, StyledButton } from '../styled';
+import {
+  WrappedAntdForm,
+  AntdInput,
+  AntdSelect,
+  AntdTextArea,
+  AntdTimePicker,
+  StyledCard,
+  StyledButton,
+} from '../styled';
 import { useStateValue } from '../hooks/useStateValue';
 import { Icon, Select } from 'antd';
 import CheckboxGroup from 'antd/lib/checkbox/Group';
-import AntdTextArea from '../styled/AntdTextArea';
 import { registerOrganization, updateOrganization } from '../actions';
 import createOrgImg from '../assets/undraw_unexpected_friends.svg';
 
 export const CreateOrg = props => {
-  const [ numberOfPOC, setNumberOfPOC ] = useState( 1 );
-  const [ state, dispatch ] = useStateValue();
-  const [ orgToEdit, setOrgToEdit ] = useState( {} );
+  const [numberOfPOC, setNumberOfPOC] = useState(1);
+  const [state, dispatch] = useStateValue();
+  const [orgToEdit, setOrgToEdit] = useState({});
   const Option = Select.Option;
-  
-  useEffect( () => {
-    if( props.location.state ){
-      setOrgToEdit( props.location.state.org );
-      if( props.location.state.org.firstName2 ){
-        setNumberOfPOC( 2 );
+
+  useEffect(() => {
+    if (props.location.state) {
+      setOrgToEdit(props.location.state.org);
+      if (props.location.state.org.firstName2) {
+        setNumberOfPOC(2);
       }
     }
-  }, [] );
-  
-  console.log( orgToEdit );
-  
+  }, []);
+
   const getPOCInputs = () => {
     const poc = [
       <div className={ 'flex' }>
@@ -75,7 +76,7 @@ export const CreateOrg = props => {
     }
     return poc;
   };
-  
+
   const onSubmit = values => {
     let POC = [];
     debugger;
@@ -108,13 +109,17 @@ export const CreateOrg = props => {
     }else{
       registerOrganization( org, dispatch );
     }
-    
-    props.history.push( '/org-dashboard' );
-    
+
+    props.history.push('/org-dashboard');
   };
   
   const days = [
-    'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday',
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
     'Saturday',
   ];
   
@@ -149,9 +154,10 @@ export const CreateOrg = props => {
       <StyledImg src={ createOrgImg } alt="undraw unexpected friends"/>
       <StyledCreateOrgForm>
         <StyledWrappedAntdForm
-          layout={ 'vertical' }
-          onSubmit={ onSubmit }
-          editInfo={ orgToEdit }
+          layout={'vertical'}
+          onSubmit={onSubmit}
+          autofill={orgToEdit}
+          useButton={true}
         >
           <div className={ 'styledGroup' }>
             <div className={ 'flex' }>
@@ -277,20 +283,17 @@ i{
 
 const StyledDiv = styled.div`
   background: white;
-
 `;
 
 const BasicStyledDiv = styled.div`
-background: #E8E8E8;
-display: flex;
-width: 80%;
-margin: 2rem auto;
-padding: 2rem;
+  background: #e8e8e8;
+  display: flex;
+  width: 80%;
+  margin: 2rem auto;
+  padding: 2rem;
+`;
 
-
-`
-
-const CustomStyledCard = styled( StyledCard )`
+const CustomStyledCard = styled(StyledCard)`
   background: #d9d9d9;
   text-align: center;
 `;

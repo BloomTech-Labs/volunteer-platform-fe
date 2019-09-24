@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { StyledForm, StyledInput } from '../styled';
+import { WrappedAntdForm, AntdInput } from '../styled';
 import { useStateValue } from '../hooks/useStateValue';
 import EventList from '../components/EventList';
 import { getAllEventsByState } from '../actions';
@@ -8,7 +8,7 @@ import { stateConversion } from '../utility/stateConversion';
 
 export const MainDashboard = () => {
   const [state, dispatch] = useStateValue();
-  const [localState, setInputState] = useState({ state: '' });
+  const [inputState, setInputState] = useState({state: ''});
 
   //fetching user's location by IP
   useEffect(() => {
@@ -19,10 +19,7 @@ export const MainDashboard = () => {
           key => stateConversion[key] === res.data.state
         );
         if (stateAbbrev) {
-          setInputState({
-            ...localState,
-            state: stateAbbrev,
-          });
+          setInputState({state: stateAbbrev});
         }
       })
       .catch(err => {
@@ -31,26 +28,21 @@ export const MainDashboard = () => {
   }, []);
 
   useEffect(() => {
-    if (localState.state.length === 2) {
-      getAllEventsByState(localState.state, dispatch);
+    if (inputState.state.length >2) {
+      getAllEventsByState(inputState.state, dispatch);
     }
-  }, [localState]);
+  }, [inputState]);
 
-  const onChange = e => {
-    setInputState({ ...localState, [e.target.name]: e.target.value });
-  };
   return (
     <div>
-      <h2>Browse Events</h2>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <StyledForm styled={{ maxWidth: '500px' }}>
-          <StyledInput
-            values={localState}
+        <WrappedAntdForm styled={{ maxWidth: '500px' }} autofill={inputState}>
+          <h2>Browse Events</h2>
+          <AntdInput
             name={'State'}
-            onChange={onChange}
             placeholder="Enter State Initials"
           />
-        </StyledForm>
+        </WrappedAntdForm>
       </div>
       <EventList events={state.events.events} />
     </div>

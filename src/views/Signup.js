@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyledForm, StyledButton, StyledInput } from "../styled";
+import { StyledForm, StyledButton, AntdInput } from "../styled";
 import {
   Form, Avatar
 } from "antd";
@@ -70,23 +70,23 @@ export const Signup = () => {
     <Avatar src={ localState.photoURL } shape="square" size={ 64 }
             icon="user"/> }
     <StyledForm onSubmit={ handleSubmit }>
-      <StyledInput name={ "First Name" } values={ localState }
+      <AntdInput name={ "First Name" } values={ localState }
                    onChange={ changeValue }/>
-      <StyledInput name={ "Last Name" } values={ localState }
+      <AntdInput name={ "Last Name" } values={ localState }
                    onChange={ changeValue }/>
-      <StyledInput name={ "Phone Number" }
+      <AntdInput name={ "Phone Number" }
                    values={ localState }
                    onChange={ changeValue }/>
-      <StyledInput name={ "Age" }
+      <AntdInput name={ "Age" }
                    values={ localState }
                    onChange={ changeValue }/>
-      <StyledInput name={ "Email" } values={ localState }
+      <AntdInput name={ "Email" } values={ localState }
                    onChange={ changeValue }/>
-      <StyledInput name={ "City" } values={ localState }
+      <AntdInput name={ "City" } values={ localState }
                    onChange={ changeValue }/>
-      <StyledInput name={ "State" } values={ localState }
+      <AntdInput name={ "State" } values={ localState }
                    onChange={ changeValue }/>
-      <StyledInput name={ "Zip Code" } values={ localState }
+      <AntdInput name={ "Zip Code" } values={ localState }
                    onChange={ changeValue }/>
       
       <StyledButton type="primary" htmlType="submit">

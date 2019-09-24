@@ -3,7 +3,7 @@ import { Input } from 'antd';
 import styled from 'styled-components';
 import PropTypes from 'prop-types'
 
-export default class AntdInput extends Component {
+export class AntdInput extends Component {
 
     render() {
         let {children, ...rest} = this.props
