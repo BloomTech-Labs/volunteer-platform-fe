@@ -16,6 +16,7 @@ export class AntdForm extends React.Component {
             this.props.form.setFieldsValue({ [key]: this.props.autofill[key] });
           }
         }
+        
       }
     }
   }
@@ -41,6 +42,7 @@ export class AntdForm extends React.Component {
     camelCase = camelCase.join('');
 
     return camelCase;
+    
   };
 
   getRules = (type, required = true) => {
@@ -55,53 +57,67 @@ export class AntdForm extends React.Component {
     if (required) {
       rules.push({ required: true, message: 'This field is required.' });
     }
-
+    
     return rules;
+    
   };
-
-  renderChildren = children => {
-    const childrenToReturn = children.map(child => {
-      if (child.type === 'div') {
-        return (
-          <div
-            key={child.props.className}
-            className={child.props.className}
-            style={child.props.style}
-          >
-            {this.renderChildren(child.props.children)}
-          </div>
-        );
-      }
-      if (Array.isArray(child)) {
-        return this.renderChildren(child);
-      }
-
-      if (child.type && child.type.name) {
-        const camelCase = this.getCamelCase(child.props.name);
-        const required = !child.props.notrequired;
-        const rules = this.getRules(child.props.type, required);
-        let label = child.props.label ? child.props.label : child.props.name;
-        if (child.props.tooltipTitle) {
-          label = (
-            <Tooltip title={child.props.tooltipTitle}>
+  
+  getDecorator = ( child ) => {
+    if( child.type && child.type.name ){
+      const camelCase = this.getCamelCase( child.props.name );
+      const required = !child.props.notrequired;
+      const rules = this.getRules( child.props.type, required );
+      let label = child.props.label ? child.props.label : child.props.name;
+      if( child.props.tooltipTitle ){
+        label = ( <Tooltip title={ child.props.tooltipTitle }>
               <span>
-                {child.props.label ? child.props.label : child.props.name}
+                { child.props.label ? child.props.label : child.props.name }
               </span>
-            </Tooltip>
-          );
-        }
-        return (
-          <Form.Item label={label} key={camelCase}>
-            {this.props.form.getFieldDecorator(camelCase, { rules })(child)}
-          </Form.Item>
-        );
+        </Tooltip> );
       }
-      return child;
-    });
+      return ( <Form.Item label={ label }
+                          key={ camelCase } { ...child.props.layout }>
+        { this.props.form.getFieldDecorator( camelCase, { rules } )( child ) }
+      </Form.Item> );
+    }
+    return child;
+  };
+  
+  renderChildren = children => {
+    if( !Array.isArray( children ) ){
+      
+      if( children.type === 'div' ){
+        return ( <div
+          key={ children.props.className }
+          className={ children.props.className }
+          style={ children.props.style }
+        >
+          { this.renderChildren( children.props.children ) }
+        </div> );
+      }
+      
+      return this.getDecorator( children );
+    }
+    const childrenToReturn = children.map( child => {
+      if( child.type === 'div' ){
+        return ( <div
+          key={ child.props.className }
+          className={ child.props.className }
+          style={ child.props.style }
+        >
+          { this.renderChildren( child.props.children ) }
+        </div> );
+      }
+      if( Array.isArray( child ) ){
+        return this.renderChildren( child );
+      }
+      
+      return this.getDecorator( child );
+    } );
     return childrenToReturn;
   };
-
-  render() {
+  
+  render(){
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
