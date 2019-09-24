@@ -79,10 +79,10 @@ export const CreateOrg = props => {
       ...values,
       POC,
       organizationOwnerUID: state.auth.googleAuthUser.uid,
-      startTime: values.startTime.unix(),
-      endTime: values.endTime.unix(),
+      startTime: values.startTime.format( 'HH:MM A' ),
+      endTime: values.endTime.format( 'HH:MM A' ),
     };
-    
+    debugger;
     if( orgToEdit.orgId ){
       updateOrganization( orgToEdit.orgId, org, dispatch );
     }else{

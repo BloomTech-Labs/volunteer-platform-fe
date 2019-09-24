@@ -10,8 +10,9 @@ class AntdForm extends React.Component{
         const field = this.props.form.getFieldInstance( key );
         if( field ){
           if( key === 'startTime' || key === 'endTime' ){
-            const newTime = moment( this.props.editInfo[ key ] );
-            this.props.form.setFieldsValue( { [ key ]: moment( this.props.editInfo[ key ] ) } );
+            const time = moment( this.props.editInfo[ key ], 'HH:MM A' );
+            this.props.form.setFieldsValue( { [ key ]: time } );
+            
           }else{
             this.props.form.setFieldsValue( { [ key ]: this.props.editInfo[ key ] } );
           }
@@ -47,17 +48,17 @@ class AntdForm extends React.Component{
   
   getRules = ( type, required = true ) => {
     const rules = [];
-
-    if (type === 'email') {
-      rules.push({ type: 'email', message: 'Please enter a valid E-mail.' });
-    } else if (type === 'url') {
-      rules.push({ type: 'url', message: 'Please enter a valid url.' });
+    
+    if( type === 'email' ){
+      rules.push( { type: 'email', message: 'Please enter a valid E-mail.' } );
+    }else if( type === 'url' ){
+      rules.push( { type: 'url', message: 'Please enter a valid url.' } );
     }
-
-    if (required) {
-      rules.push({ required: true, message: 'This field is required.' });
+    
+    if( required ){
+      rules.push( { required: true, message: 'This field is required.' } );
     }
-
+    
     return rules;
     
   };
@@ -104,12 +105,9 @@ class AntdForm extends React.Component{
   render(){
     const formItemLayout = {
       labelCol: {
-        xs: { span: 24 },
-        sm: { span: 5 },
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 12 },
+        xs: { span: 24 }, sm: { span: 5 },
+      }, wrapperCol: {
+        xs: { span: 24 }, sm: { span: 12 },
       },
     };
     
