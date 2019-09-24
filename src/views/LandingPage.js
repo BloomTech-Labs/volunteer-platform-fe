@@ -11,8 +11,8 @@ export const LandingPage = () => {
   return ( <>
       <StyledHeroDiv image={ heroImage }>
         <HeroContent>
-          <h3>Meet new friends, give back to the community.</h3>
-          <h3>Win-win.</h3>
+          <p>Meet new friends, give back to the community.</p>
+          <p>Win-win.</p>
           <button>
             <Link to="/dashboard">Get Started</Link>
           </button>
@@ -69,8 +69,10 @@ const HeroContent = styled.div`
   }
 
   & h1,
-  h3 {
+  p {
     color: white;
+    margin: 0;
+    font-size: 24px;
   }
 
   button {
@@ -79,9 +81,14 @@ const HeroContent = styled.div`
     padding: 10px 20px;
     border: 0;
     cursor: pointer;
+    font-family: 'Arvo', serif;
+    width: 165px;
+    font-size: 20px;
+    margin-top: 30px;
 
     &:hover {
       text-decoration: underline;
+      background: ${ ( { theme } ) => theme.accent7 };
     }
 
     a {
