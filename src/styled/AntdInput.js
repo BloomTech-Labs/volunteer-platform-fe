@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { Component } from 'react'
 import { Input } from 'antd';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 
-const AntdInput = ( { name, children, ...rest } ) => {
-  return ( <StyledInput { ...rest }>
-    { children }
-  </StyledInput> );
-};
+export default class AntdInput extends Component {
 
-const StyledInput = styled( Input )`
+    render() {
+        let {children, ...rest} = this.props
+        return (
+            <StyledInput {...rest} >
+                {children}
+            </StyledInput>
+        )
+    }
+}
 
-`;
+const StyledInput = styled(Input)``;
 
-export default AntdInput;
+
