@@ -57,14 +57,12 @@ const Form = () => {
         lastName: values.lastName2,
       });
     }
-    console.log(values);
     const org = {
       ...values,
       POC,
       startTime: values.startTime.format('LT'),
       endTime: values.endTime.format('LT'),
     };
-    console.log(org);
     registerOrganization(org, dispatch);
   };
 
