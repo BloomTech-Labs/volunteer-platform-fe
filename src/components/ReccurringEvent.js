@@ -17,7 +17,8 @@ import moment from 'moment';
 const { Option } = Select;
 
 const ReccurringEvent = props => {
-  const { dateFormat, setState, localState } = props;
+  const { setState, localState } = props;
+  console.log(localState);
   const [formState, setFormState] = useState({});
 
   const dayOptions = [
@@ -30,11 +31,12 @@ const ReccurringEvent = props => {
     'Sunday',
   ];
 
-  const timePeriodOptions = ['Week', 'Month', 'Annual'];
+  const timePeriodOptions = ['Weekly', 'Month', 'Annual'];
+
   const repeatTimePeriodOptions = [
     'Does not repeat',
     'Daily',
-    'Weekly on insert day',
+    `Weekly on ${localState.dyanmicDay}`,
     'Monthly on date',
     'Annually on date',
     'Everyone Weekday',

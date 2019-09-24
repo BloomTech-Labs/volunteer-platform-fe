@@ -34,8 +34,6 @@ export const CreateEvent = props => {
   };
   const [localState, setState] = useState(initialEvent);
 
-  console.log(localState);
-
   const [state, dispatch] = useStateValue();
 
   useEffect(() => {
@@ -49,8 +47,21 @@ export const CreateEvent = props => {
 
   //Date Format
   const dateFormat = 'MM/DD/YYYY';
-  console.log(localState);
+
   //Handle Submit for Form
+
+  const handleDate = date => {
+    console.log(date._d);
+    const dyanmicDay = date._d.toString().split(' ')[0];
+    const dyanmicDate = date._d.toString().split(' ');
+    console.log(dyanmicDate);
+    setState({
+      ...localState,
+      dyanmicDay: dyanmicDay,
+      dyanmicDate: dyanmicDate,
+    });
+  };
+
   const handleSubmit = values => {
     console.log(values);
     const event = {
@@ -120,7 +131,11 @@ export const CreateEvent = props => {
           </AntdSelect>
           <label>When is the event?</label>
 
-          <AntdDatePicker name={'Date'} format={dateFormat} />
+          <AntdDatePicker
+            name={'Date'}
+            format={dateFormat}
+            onChange={handleDate}
+          />
 
           <ReccurringEvent
             name={'ReccuringEvent'}
