@@ -21,9 +21,6 @@ if (process.env.NODE_ENV === 'production') {
 const GlobalStyle = createGlobalStyle`
     ${reset}
     ${global}
-    body{
-        /* font-family: ${({ theme }) => theme.loraFont} */
-    }
 `;
 
 const theme = {

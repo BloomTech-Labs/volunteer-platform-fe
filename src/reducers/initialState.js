@@ -22,9 +22,12 @@ const interests = [
   'Tutoring', 'Youth Friendly', 'Wheelchair Accessible', 'Outdoor Work',
 ];
 
+const checkLoggedIn = localStorage.getItem('loggedIn') === 'true'
+const checkRegistered = localStorage.getItem('userRegistered') === 'true'
+
 export const initialState = {
   auth: {
-    loggedIn: true, signedUp: true, googleAuthUser: null, registeredUser: null,
+    loggedIn: checkLoggedIn || false, signedUp: checkRegistered || false, googleAuthUser: null, registeredUser: null,
   }, org: {
     createdOrg: false,
     userOrganizations: [],
@@ -33,6 +36,7 @@ export const initialState = {
     deleteOrgFailedError: '',
   }, events: {
     events: [],
+    recurringEvents: [],
     createEventFailedError: '',
     deleteEventFailedError: '',
     editEventFailedError: '',
@@ -85,6 +89,7 @@ export const initialState = {
  * @typedef events
  * @type {Object}
  * @property {Event[]} events Array of events collected from db.
+ * @property {RecurringEvent[]}
  * @property {String} createEventFailedError Create Event Error Message
  * @property {String} createEventFailedError Create Event Error Message
  * @property {String} editEventFailedError Edit Event Error Message
