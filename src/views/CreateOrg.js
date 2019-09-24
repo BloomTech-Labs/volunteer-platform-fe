@@ -13,76 +13,74 @@ import { registerOrganization, updateOrganization } from '../actions';
 import createOrgImg from '../assets/undraw_unexpected_friends.svg';
 
 export const CreateOrg = props => {
-  const [numberOfPOC, setNumberOfPOC] = useState(1);
-  const [state, dispatch] = useStateValue();
-  const [orgToEdit, setOrgToEdit] = useState({});
+  const [ numberOfPOC, setNumberOfPOC ] = useState( 1 );
+  const [ state, dispatch ] = useStateValue();
+  const [ orgToEdit, setOrgToEdit ] = useState( {} );
   const Option = Select.Option;
-
-  useEffect(() => {
-    if (props.location.state) {
-      setOrgToEdit(props.location.state.org);
-      if (props.location.state.org.firstName2) {
-        setNumberOfPOC(2);
+  
+  useEffect( () => {
+    if( props.location.state ){
+      setOrgToEdit( props.location.state.org );
+      if( props.location.state.org.firstName2 ){
+        setNumberOfPOC( 2 );
       }
     }
-  }, []);
+  }, [] );
+  
+  console.log( orgToEdit );
+  
   const getPOCInputs = () => {
     const poc = [
-      <AntdInput name={'First Name'} key={'firstName'} />,
-      <AntdInput name={'Last name'} key={'lastName'} />,
-      <AntdInput name={'Email'} type={'email'} key={'email'} />,
+      <AntdInput name={ 'First Name' } key={ 'firstName' }/>,
+      <AntdInput name={ 'Last name' } key={ 'lastName' }/>,
+      <AntdInput name={ 'Email' } type={ 'email' } key={ 'email' }/>,
     ];
-    if (numberOfPOC > 1) {
-      poc.push(<StyledLine key={Math.random()} />);
-      poc.push(
-        <AntdInput
-          name={'First Name 2'}
-          label={'First Name'}
-          notrequired={'false'}
-          key={'firstName2'}
-        />
-      );
-      poc.push(
-        <AntdInput
-          name={'Last Name 2'}
-          label={'First Name'}
-          notrequired={'false'}
-          key={'lastName2'}
-        />
-      );
-      poc.push(
-        <AntdInput
-          name={'Email 2'}
-          label={'Email'}
-          type={'email'}
-          notrequired={'false'}
-          key={'email2'}
-        />
-      );
+    if( numberOfPOC > 1 ){
+      poc.push( <StyledLine key={ Math.random() }/> );
+      poc.push( <AntdInput
+        name={ 'First Name 2' }
+        label={ 'First Name' }
+        notrequired={ 'false' }
+        key={ 'firstName2' }
+      /> );
+      poc.push( <AntdInput
+        name={ 'Last Name 2' }
+        label={ 'First Name' }
+        notrequired={ 'false' }
+        key={ 'lastName2' }
+      /> );
+      poc.push( <AntdInput
+        name={ 'Email 2' }
+        label={ 'Email' }
+        type={ 'email' }
+        notrequired={ 'false' }
+        key={ 'email2' }
+      /> );
     }
     return poc;
   };
-
+  
   const onSubmit = values => {
     let POC = [];
-    POC.push({
+    debugger;
+    POC.push( {
       email: values.email,
       firstName: values.firstName,
       lastName: values.lastName,
-    });
-    if (values.email2) {
-      POC.push({
+    } );
+    if( values.email2 ){
+      POC.push( {
         email: values.email2,
         firstName: values.firstName2,
         lastName: values.lastName2,
-      });
+      } );
     }
     const org = {
       ...values,
       POC,
       organizationOwnerUID: state.auth.googleAuthUser.uid,
-      startTime: values.startTime.unix(),
-      endTime: values.endTime.unix(),
+      startTime: values.startTime.format( 'HH:MM A' ),
+      endTime: values.endTime.format( 'HH:MM A' ),
     };
     for (let key in org) {
       if (org[key] === undefined) delete org[key];

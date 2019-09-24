@@ -14,6 +14,10 @@ export const OrganizationInfo = ( props ) => {
           label='Mission Statement'>{ props.org.missionStatement }</Descriptions.Item>
         <Descriptions.Item
           label='About us'>{ props.org.aboutUs }</Descriptions.Item>
+        <Descriptions.Item
+          label={ 'Start Time' }>{ props.org.startTime }</Descriptions.Item>
+        <Descriptions.Item
+          label={ 'End Time' }>{ props.org.endTime }</Descriptions.Item>
         <Descriptions.Item label='City'>{ props.org.city }</Descriptions.Item>
         <Descriptions.Item label='State'>{ props.org.state }</Descriptions.Item>
         <Descriptions.Item label='Email'>{ props.org.email }</Descriptions.Item>
