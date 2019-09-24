@@ -55,5 +55,4 @@ export const StyledInputNumber = ({
 
 InputNumberStyled.propTypes = {
   name: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
 };

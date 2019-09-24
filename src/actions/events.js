@@ -1,5 +1,6 @@
 import { action } from './action';
 import firebase, { store } from '../firebase/FirebaseConfig';
+import { debug } from 'util';
 
 /**
  * Auth Actions
@@ -17,6 +18,7 @@ export const CREATE_EVENT_FAILED = 'CREATE_EVENT_FAILED';
  * @param {Dispatch} dispatch
  */
 export const createEvent = (event, dispatch) => {
+  console.log(event);
   store
     .collection('events')
     .add(event)
@@ -123,7 +125,6 @@ export const NO_EVENTS_FOR_THAT_STATE = 'NO_EVENTS_FOR_THAT_STATE';
  * @param {Dispatch} dispatch
  */
 export const getAllEventsByState = (state, dispatch) => {
-  
   store
     .collection('events')
     .where('state', '==', state)
