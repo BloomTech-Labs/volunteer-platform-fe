@@ -105,7 +105,7 @@ function App(){
               />
               <LoginRoute path={'/login'} component={Login} />
               <LoginRoute path={'/signup'} component={Login} />
-              <ProtectedRoute path={'/create-org'} component={CreateOrg} />
+              <ProtectedRoute path={'/create-org'} component={Form} />
               <OrganizationRoute
                 path={'/org-dashboard/create-event'}
                 component={CreateEvent}
