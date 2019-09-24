@@ -11,7 +11,7 @@ export const FilteredComponent = Component => {
     for (let key in interests) interests[key] && filterCount++;
     for (let key in requirements) requirements[key] && filterCount++;
     for (let key in causeAreas) causeAreas[key] && filterCount++;
-    
+
     events.forEach(event => {
       event.nextDate = event.startTimeStamp || event.date;
     });
@@ -57,9 +57,17 @@ export const FilteredComponent = Component => {
         }
       });
     }
+    if (causeAreas) {
+      filteredEvents.forEach(event => {
+        event.causeAreas.forEach(causeArea => {
+          if (tagFilter.causeAreas[causeArea])
+            event.sortRank = event.sortRank + 1;
+        });
+      });
+    }
     if (interests) {
       filteredEvents.forEach(event => {
-        event.interest.forEach(interest => {
+        event.interests.forEach(interest => {
           if (tagFilter.interests[interest])
             event.sortRank = event.sortRank + 1;
         });
