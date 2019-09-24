@@ -75,7 +75,7 @@ function App(){
               console.log(collapsed, type);
             }}
             trigger={null}
-            collapsed={collapsed}
+            collapsed={collapsed ? 1 : 0}
             reverseArrow={true}
           >
             <Affix>
@@ -90,7 +90,7 @@ function App(){
             >
               {state.auth.loggedIn && (
                 <StyledMenuButton
-                  collapsed={collapsed}
+                  collapsed={collapsed ? 1 : 0}
                   className="trigger"
                   type={collapsed ? 'menu-fold' : 'menu-unfold'}
                   onClick={() => setCollapsed(!collapsed)}
@@ -105,7 +105,7 @@ function App(){
               />
               <LoginRoute path={'/login'} component={Login} />
               <LoginRoute path={'/signup'} component={Login} />
-              <ProtectedRoute path={'/create-org'} component={CreateOrg} />
+              <ProtectedRoute path={'/create-org'} component={Form} />
               <OrganizationRoute
                 path={'/org-dashboard/create-event'}
                 component={CreateEvent}

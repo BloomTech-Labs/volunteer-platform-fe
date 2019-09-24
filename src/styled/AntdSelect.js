@@ -1,21 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Icon, Select, Tooltip } from 'antd';
+import { Select } from 'antd';
 
-const AntdSelect = ( { children, tooltipTitle, ...rest } ) => {
-  return ( <div className={ 'inline' }>
-    
-    <StyledSelect { ...rest }>
-      
-      { children }
-    </StyledSelect>
-  </div> );
+const AntdSelect = ({ children, ...rest }) => {
+  return <StyledSelect {...rest}>{children}</StyledSelect>;
 };
 
-const StyledToolTip = styled( Tooltip )`
-display: flex;
-`;
-
-const StyledSelect = styled( Select )``;
+const StyledSelect = styled(Select)``;
 
 export default AntdSelect;
