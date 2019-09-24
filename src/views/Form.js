@@ -19,17 +19,27 @@ const Form = () => {
 
   const getPOCInputs = () => {
     const poc = [
-      <AntdInput name={'First Name'} key={'firstName'}/>,
-      <AntdInput name={'Last name'} key={'lastName'}/>,
-      <AntdInput name={'Email'} type={'email'} key={'email'}/>,
+      <AntdInput name={'First Name'} key={'firstName'} />,
+      <AntdInput name={'Last name'} key={'lastName'} />,
+      <AntdInput name={'Email'} type={'email'} key={'email'} />,
     ];
     if (numberOfPOC > 1) {
-      poc.push(<StyledLine />);
+      poc.push(<StyledLine key={Math.random()} />);
       poc.push(
-        <AntdInput name={'First Name 2'} label={'First Name'} notrequired={'false'} />
+        <AntdInput
+          name={'First Name 2'}
+          label={'First Name'}
+          notrequired={'false'}
+          key={'firstName2'}
+        />
       );
       poc.push(
-        <AntdInput name={'Last Name 2'} label={'First Name'} notrequired={'false'} />
+        <AntdInput
+          name={'Last Name 2'}
+          label={'First Name'}
+          notrequired={'false'}
+          key={'lastName2'}
+        />
       );
       poc.push(
         <AntdInput
@@ -37,6 +47,7 @@ const Form = () => {
           label={'Email'}
           type={'email'}
           notrequired={'false'}
+          key={'email2'}
         />
       );
     }
@@ -78,7 +89,7 @@ const Form = () => {
 
   return (
     <StyledDiv className={'flex center'}>
-      <CustomStyledCard style={{maxWidth:'900px', margin:'2rem 0 5rem 0'}}>
+      <CustomStyledCard style={{ maxWidth: '900px', margin: '2rem 0 5rem 0' }}>
         <h1>Let's Set up your organization!</h1>
         <StyledImg src={createOrgImg} alt="undraw unexpected friends" />
         <StyledWrappedAntdForm layout={'vertical'} onSubmit={onSubmit}>

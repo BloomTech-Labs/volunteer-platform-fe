@@ -74,7 +74,7 @@ class AntdForm extends React.Component {
           );
         }
         return (
-          <Form.Item label={label} key={label}>
+          <Form.Item label={label} key={camelCase}>
             {this.props.form.getFieldDecorator(camelCase, { rules })(child)}
           </Form.Item>
         );
