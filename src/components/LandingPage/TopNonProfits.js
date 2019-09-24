@@ -11,7 +11,7 @@ export const TopNonProfits = () => {
 
   return (
     <StyledDiv>
-      <h2>Our Featured Organizations<Icon type="thunderbolt" theme='filled' style={{ color: '#FA8C16' }}/></h2>
+      <h2>Our Featured Organizations<Icon type="thunderbolt" theme='twoTone' twoToneColor='#FA8C16'/></h2>
       <div className='nonprofits-cards'>
         <StyledCard
           cover={<img src={orgPic1} alt='nonprofit-org1'/>}
@@ -44,10 +44,11 @@ export default TopNonProfits
 const StyledDiv = styled.div`
   display: flex;
   flex-direction: column;
+  margin-left: 10px;
 
   h2 {
     font-size: 24px;
-    color: ${({ theme }) => theme.primary};
+    color: ${({ theme }) => theme.primary8};
     margin: 60px 0 40px 0;
   }
 

@@ -11,7 +11,7 @@ export const TopVolunteers = () => {
   
   return (
     <StyledDiv>
-      <h2>Leading Volunteers<Icon type="fire" theme='filled' style={{ color: '#FA8C16' }}/></h2>
+      <h2>Leading Volunteers<Icon type="fire" theme='twoTone' twoToneColor='#FA8C16' /></h2>
       <div className='volunteer-cards'>
         <StyledCard
           cover={<img src={volunteerPic1} alt='volunteer1'/>}
@@ -44,10 +44,11 @@ export default TopVolunteers
 const StyledDiv = styled.div`
   display: flex;
   flex-direction: column;
+  margin-left: 10px;
 
   h2 {
     font-size: 24px;
-    color: ${({ theme }) => theme.primary};
+    color: ${({ theme }) => theme.primary8};
     margin: 60px 0 40px 0;
   }
 

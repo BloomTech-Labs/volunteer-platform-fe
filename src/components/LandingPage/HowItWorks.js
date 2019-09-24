@@ -46,7 +46,7 @@ const StyledDiv = styled.div`
   padding: 0px 10px;
   h2 {
     font-size: 24px;
-    color: ${({ theme }) => theme.primary};
+    color: ${({ theme }) => theme.primary8};
     margin-bottom: 25px;
   }
 
