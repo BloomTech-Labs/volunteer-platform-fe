@@ -7,7 +7,6 @@ import { StyledButton } from '../styled';
 class AntdForm extends React.Component{
   
   handleSubmit = e => {
-    debugger;
     e.preventDefault();
     this.props.form.validateFieldsAndScroll( ( err, values ) => {
       
@@ -72,7 +71,8 @@ class AntdForm extends React.Component{
           </Tooltip>;
         }
         return ( <Form.Item
-          label={ label }>
+          label={ label }
+          >
           { this.props.form.getFieldDecorator( camelCase, { rules } )( child ) }
         </Form.Item> );
       }

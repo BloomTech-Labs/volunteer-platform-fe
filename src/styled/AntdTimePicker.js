@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { TimePicker } from 'antd';
 
 const AntdTimePicker = ( { ...rest } ) => {
-  return ( <StyledTimePicker { ...rest }>
+  return ( <StyledTimePicker { ...rest } >
   
   </StyledTimePicker> );
 };
