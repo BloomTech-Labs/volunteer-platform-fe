@@ -1,19 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { message, Select } from 'antd';
+import { Select, DatePicker } from 'antd';
 import styled from 'styled-components';
 import moment from 'moment';
-import {
-  StyledButton,
-  StyledForm,
-  StyledInput,
-  StyledSelect,
-  StyledDatePicker,
-  StyledInputNumber,
-  StyledTimePicker,
-  StyledTextArea,
-  StyledCard,
-  StyledSwitch,
-} from '../styled';
+import { StyledButton, WrappedAntdForm, StyledCard } from '../styled';
+import AntdInput from '../styled/AntdInput';
+import AntdSelect from '../styled/AntdSelect';
+import AntdTextArea from '../styled/AntdTextArea';
+import AntdTimePicker from '../styled/AntdTimePicker';
+import AntdInputNumber from '../styled/AntdInputNumber';
+import AntdDatePicker from '../styled/AntdDatePicker';
+import AntdCheckbox from '../styled/AntdCheckbox';
 import { useStateValue } from '../hooks/useStateValue';
 import { createEvent } from '../actions';
 import ReccurringEvent from '../components/ReccurringEvent';
@@ -21,11 +17,24 @@ import ReccurringEvent from '../components/ReccurringEvent';
 const { Option } = Select;
 
 export const CreateEvent = props => {
-  const [localState, setState] = useState({
-    event: {
-      tags: [],
-    },
-  });
+  const initialEvent = {
+    nameOfEvent: '',
+    typeOfCause: [],
+    date: '',
+    startTime: '',
+    endTime: '',
+    numberOfVolunteers: '',
+    phoneNumber: '',
+    pointOfcontact: [{ firstName: '', lastName: '', email: '' }],
+    description: '',
+    volunteerRequirements: [],
+    interest: [],
+    website: '',
+    otherNotes: '',
+  };
+  const [localState, setState] = useState(initialEvent);
+
+  console.log(localState);
 
   const [state, dispatch] = useStateValue();
 
@@ -36,91 +45,44 @@ export const CreateEvent = props => {
     if (props.location.state.org) {
       setState({
         ...localState,
-        event: {
-          ...event,
-          orgId: props.location.state.org.orgId,
-        },
+        orgId: props.location.state.org.orgId,
       });
     }
   }, [props.location.state.org]);
 
   //Date Format
   const dateFormat = 'MM/DD/YYYY';
-
-  const changeValue = e => {
-    setState({
-      ...localState,
-      event: {
-        ...event,
-        [e.target.name]: e.target.value,
-      },
-    });
-  };
-
-  //Handle DatePicker
-  const handleDatePicker = datestring => {
-    setState({
-      ...localState,
-      event: {
-        ...event,
-        date: datestring,
-      },
-    });
-  };
-
-  //Handle Time
-  const handleStartTime = (_time, timeObject) => {
-    setState({
-      ...localState,
-      event: {
-        ...event,
-        startTime: timeObject,
-      },
-    });
-  };
-
-  const handleEndTime = (_time, timeObject) => {
-    setState({
-      ...localState,
-      event: {
-        ...event,
-        endTime: timeObject,
-      },
-    });
-  };
-
-  const handlePointOfContact = e => {
-    setState({
-      ...localState,
-      event: {
-        ...event,
-        pointOfContact: {
-          ...event.pointOfContact,
-          [e.target.name]: e.target.value,
-        },
-      },
-    });
-  };
-
+  console.log(localState);
   //Handle Submit for Form
-  const handleSubmit = e => {
-    e.preventDefault();
-    if (isFormValid()) {
-      localState.event.date = localState.event.date.unix();
-      localState.event.reccurringEndDate = localState.event.reccurringEndDate.unix();
-      createEvent(localState.event, dispatch);
-    }
-  };
-
-  //Handles Numbers
-  const handleNumber = value => {
-    setState({
-      ...localState,
-      event: {
-        ...event,
-        numberOfPeople: value,
+  const handleSubmit = values => {
+    console.log(values);
+    const event = {
+      nameOfEvent: values.nameOfEvent,
+      typeOfCauses: values.typesOfCauses,
+      date: values.date.unix(),
+      startTime: values.startTime.format('LT'),
+      endTime: values.endTime.format('LT'),
+      reccurringInfo: {
+        // repeatNumber: localState.formState.repeatNumber,
+        repeatTimePeriod: localState.repeatTimePeriod,
+        // reccurringEventDays: localState.formState.reccurringEventDays,
+        // ocurrences: localState.formStart.ocurrences,
+        // reccurringEndDate: localState.formStart.reccurringEndDate.unix(),
       },
-    });
+      location: values.location,
+      phoneNumber: values.phoneNumber,
+      pointOfcontact: {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        email: values.email,
+      },
+      volunteerRequirements: values.volunteerRequirments,
+      interest: values.interest,
+      website: values.website,
+      otherNotes: values.otherNotes,
+    };
+    console.log(event);
+    // createEvent(event, dispatch);
   };
 
   //Options for tags
@@ -133,72 +95,16 @@ export const CreateEvent = props => {
   });
 
   let requirementTags = [];
-  if (state.tags.requirements) {
-    requirementTags = state.tags.requirements.map(tag => {
-      return (
-        <Option key={tag} value={tag}>
-          {tag}
-        </Option>
-      );
-    });
-  }
 
   if (state.tags.requirements) {
     requirementTags = state.tags.requirements.map(tag => {
-      return (
-        <Option key={tag} value={tag}>
-          {tag}
-        </Option>
-      );
+      return <Option key={tag}>{tag}</Option>;
     });
   }
 
   const interestTags = state.tags.interests.map(tag => {
-    return (
-      <Option key={tag} value={tag}>
-        {tag}
-      </Option>
-    );
+    return <Option key={tag}>{tag}</Option>;
   });
-
-  //Handle Tags
-  const handleCauseAreasTag = tag => {
-    setState({
-      ...localState,
-      event: {
-        ...event,
-        tags: {
-          ...event.tags,
-          causeAreas: tag,
-        },
-      },
-    });
-  };
-  const handleRequirmentTag = tag => {
-    setState({
-      ...localState,
-      event: {
-        ...event,
-        tags: {
-          ...event.tags,
-          requirements: tag,
-        },
-      },
-    });
-  };
-
-  const handleInterestTag = tag => {
-    setState({
-      ...localState,
-      event: {
-        ...event,
-        tags: {
-          ...event.tags,
-          interests: tag,
-        },
-      },
-    });
-  };
 
   ///Cancel Form
 
@@ -206,156 +112,74 @@ export const CreateEvent = props => {
     props.history.push('/org-dashboard');
   };
 
-  //Error Handling
-
-  const isFormValid = () => {
-    if (isFormEmpty()) {
-      message.error('Please fill out all fields...');
-      return false;
-    } else {
-      return true;
-    }
-  };
-  const isFormEmpty = () => {
-    if (
-      !event.volunteerType ||
-      !event.numberOfPeople ||
-      !event.startTime ||
-      !event.endTime ||
-      !event.date ||
-      !event.pointOfContact ||
-      !event.description
-    ) {
-      return true;
-    }
-  };
-
   return (
     <StyledCreateEvent>
       <StyledCard>
         <h1>Let's Create An Event</h1>
-        <StyledForm onSubmit={handleSubmit}>
-          <StyledInput
-            name={'Name of Event'}
-            values={event}
-            onChange={changeValue}
-            type="text"
-          />
-          <StyledSelect
+        <WrappedAntdForm onSubmit={handleSubmit}>
+          <AntdInput name={'Name of Event'} type="text" />
+          <AntdSelect
             name={'Types of Causes'}
-            value={event.tags.causeAreas}
-            onChange={handleCauseAreasTag}
             placeholder="Please select causes"
             mode="multiple"
           >
             {causeAreaTags}
-          </StyledSelect>
+          </AntdSelect>
           <label>When is the event?</label>
-          <StyledRecurringEvent>
-            <StyledDatePicker
-              name={'Date'}
-              values={event}
-              onChange={handleDatePicker}
-              defaultValue={moment(moment(), dateFormat)}
-              format={dateFormat}
-            />
 
-            <ReccurringEvent
-              localState={localState}
-              setState={setState}
-              dateFormat={dateFormat}
-            />
+          <AntdDatePicker name={'Date'} format={dateFormat} />
 
-            <StyledTimePicker
-              name={'Start Time'}
-              defaultOpenValue={moment('00:00', 'hh:mm')}
-              onChange={handleStartTime}
-              use12Hours
-              format={'h:mm a'}
-              type="time"
-            />
-            <p>to</p>
-
-            <StyledTimePicker
-              name={'End Time'}
-              defaultOpenValue={moment('00:00', 'hh:mm')}
-              onChange={handleEndTime}
-              use12Hours
-              format={'h:mm a'}
-              type="time"
-            />
-          </StyledRecurringEvent>
-          <StyledInputNumber
-            name={'Number of People'}
-            onChange={handleNumber}
-            type="number"
-            min={0}
+          <ReccurringEvent
+            name={'ReccuringEvent'}
+            localState={localState}
+            setState={setState}
+            dateFormat={dateFormat}
+            notRequired
           />
-          <StyledSelect
+
+          <AntdTimePicker name={'Start Time'} use12Hours format={'h:mm a'} />
+          <p>to</p>
+
+          <AntdTimePicker name={'End Time'} use12Hours format={'h:mm a'} />
+
+          <AntdInputNumber name={'Number of People'} type="number" min={0} />
+
+          <AntdInput
             name={'Location'}
             placeholder="Select location"
-          ></StyledSelect>
+          ></AntdInput>
 
-          <StyledInput
-            onChange={changeValue}
+          <AntdInput
             name={'Phone Number'}
-            values={event}
+            type="tel"
+            pattern={'[0-9]{3}-[0-9]{3}-[0-9]{4}'}
             placeholder={'000-000-0000'}
-            type="number"
           />
           <label>Who is the point of Contact?</label>
-          <StyledInput
-            name={'First Name'}
-            values={event.pointOfContact}
-            onChange={handlePointOfContact}
-            type="text"
-          />
-          <StyledInput
-            name={'Last Name'}
-            values={event.pointOfContact}
-            onChange={handlePointOfContact}
-            type="text"
-          />
-          <StyledInput
-            name={'Email'}
-            values={event.pointOfContact}
-            onChange={handlePointOfContact}
-            type="email"
-          />
 
-          <StyledTextArea
-            name={'Description'}
-            values={event}
-            onChange={changeValue}
-            type="text"
-          />
+          <AntdInput name={'First Name'} type="text" />
+          <AntdInput name={'Last Name'} type="text" />
+          <AntdInput name={'Email'} type="email" />
+          <AntdTextArea name={'Description'} type="text" />
           <label>What are the requirements?</label>
-          <StyledRecurringEvent>
-            <StyledSelect
-              name={'Volunteer Requirements'}
-              value={event.tags.requirements}
-              onChange={handleRequirmentTag}
-              placeholder="Please select requirements"
-              mode="multiple"
-            >
-              {requirementTags}
-            </StyledSelect>
+          <AntdSelect
+            name={'Volunteer Requirments'}
+            placeholder="Please select requirments"
+            mode="multiple"
+          >
+            {requirementTags}
+          </AntdSelect>
+          <AntdSelect
+            name={'Interest'}
+            placeholder="Please select interest"
+            mode="multiple"
+          >
+            {interestTags}
+          </AntdSelect>
 
-            <StyledSelect
-              name={'Interest'}
-              value={event.tags.interests}
-              onChange={handleInterestTag}
-              placeholder="Please select interest"
-              mode="multiple"
-            >
-              {interestTags}
-            </StyledSelect>
-          </StyledRecurringEvent>
-          <StyledInput onChange={changeValue} name={'Website'} values={event} />
-          <StyledTextArea
-            onChange={changeValue}
+          <AntdInput name={'Website'} />
+          <AntdTextArea
             name={'Other Notes'}
-            values={event}
             placeholder={'Any additional helpful tips for the event go here.'}
           />
           <StyledButton type="secondary" htmlType="submit" onClick={cancelForm}>
@@ -364,7 +188,7 @@ export const CreateEvent = props => {
           <StyledButton type="primary" htmlType="submit">
             Create
           </StyledButton>
-        </StyledForm>
+        </WrappedAntdForm>
       </StyledCard>
     </StyledCreateEvent>
   );
@@ -375,7 +199,7 @@ const StyledCreateEvent = styled.div`
   justify-content: center;
 `;
 
-const StyledRecurringEvent = styled.div`
+const StyledEvent = styled.div`
   border: 1px solid black;
 `;
 export default CreateEvent;

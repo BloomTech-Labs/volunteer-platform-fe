@@ -3,7 +3,10 @@ import styled from 'styled-components';
 import { Select } from 'antd';
 import { Link } from 'react-router-dom';
 import {
-  getAllEventsByOrg, deleteOrganization, getFileUrl, updateOrganization,
+  getAllEventsByOrg,
+  deleteOrganization,
+  getFileUrl,
+  updateOrganization,
   deleteOrganizationImage,
 } from '../actions';
 import { useStateValue } from '../hooks/useStateValue';
@@ -128,3 +131,4 @@ const StyledDashboard = styled.div`
 `;
 
 export default OrganizationDashboard;
+

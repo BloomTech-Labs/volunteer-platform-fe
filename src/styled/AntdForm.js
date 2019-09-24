@@ -42,22 +42,24 @@ class AntdForm extends React.Component{
     camelCase = camelCase.join( '' );
     
     return camelCase;
+    
   };
   
   getRules = ( type, required = true ) => {
     const rules = [];
-    
-    if( type === 'email' ){
-      rules.push( { type: 'email', message: 'Please enter a valid E-mail.' } );
-    }else if( type === 'url' ){
-      rules.push( { type: 'url', message: 'Please enter a valid url.' } );
+
+    if (type === 'email') {
+      rules.push({ type: 'email', message: 'Please enter a valid E-mail.' });
+    } else if (type === 'url') {
+      rules.push({ type: 'url', message: 'Please enter a valid url.' });
     }
-    
-    if( required ){
-      rules.push( { required: true, message: 'This field is required.' } );
+
+    if (required) {
+      rules.push({ required: true, message: 'This field is required.' });
     }
-    
+
     return rules;
+    
   };
   
   renderChildren = children => {
@@ -102,9 +104,12 @@ class AntdForm extends React.Component{
   render(){
     const formItemLayout = {
       labelCol: {
-        xs: { span: 24 }, sm: { span: 5 },
-      }, wrapperCol: {
-        xs: { span: 24 }, sm: { span: 12 },
+        xs: { span: 24 },
+        sm: { span: 5 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 12 },
       },
     };
     

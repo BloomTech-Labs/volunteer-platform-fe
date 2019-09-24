@@ -13,4 +13,5 @@ export * from './StyledEventList';
 export * from './StyledSwitch';
 export * from './StyledAvatar';
 export * from './StyledLine';
+export * from './AntdForm';
 
