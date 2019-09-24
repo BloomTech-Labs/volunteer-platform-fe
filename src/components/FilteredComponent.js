@@ -1,37 +1,54 @@
 import React from 'react';
 
 export const FilteredComponent = Component => {
-  return ({ events, filter }, ...props) => {
-    const { location, tags } = filter;
+  return ({ events, filter, tagFilter }, ...props) => {
+    const { location } = filter;
+    const { interests, requirements } = tagFilter;
     const { state, city } = location;
-    const { interests, requirements } = tags;
+
+    if (!events) return <Component events={events} {...props} />;
 
     let filteredEvents = events;
+    filteredEvents.forEach(event => (event.sortRank = 0));
+
+    /* This is a crude way to sort events. For each filter match, sortRank
+     * is incremented. At the end, we sort the results by sortRank. Any
+     * events with a sortRank of zero are removed.
+     *
+     * I'm sure a more elegant, modularized solution is possible.
+     */
 
     if (state) {
-      filteredEvents = filteredEvents.filter(event =>
-        event.state.toLowerCase().includes(state.toLowerCase())
-      );
+      filteredEvents.forEach(event => {
+        if (event.state.toLowerCase().includes(state.toLowerCase()))
+          event.sortRank = event.sortRank + 1;
+      });
     }
     if (city) {
-      filteredEvents = filteredEvents.filter(event =>
-        event.city.toLowerCase().includes(city.toLowerCase())
-      );
+      filteredEvents.forEach(event => {
+        if (event.city.toLowerCase().includes(city.toLowerCase()))
+          event.sortRank = event.sortRank + 1;
+      });
     }
     if (interests) {
-      filteredEvents = filteredEvents.filter(event =>
-        event.tags.interests.filter(interest => interests.includes(interest))
-      );
+      filteredEvents.forEach(event => {
+        event.tags.interests.forEach(interest => {
+          if (tagFilter.interests[interest])
+            event.sortRank = event.sortRank + 1;
+        });
+      });
     }
     if (requirements) {
-      filteredEvents = filteredEvents.filter(event =>
-        event.tags.requirements.filter(requirement =>
-          requirements.includes(requirement)
-        )
-      );
+      filteredEvents.forEach(event => {
+        event.tags.requirements.forEach(requirement => {
+          if (tagFilter.requirements[requirement])
+            event.sortRank = event.sortRank + 1;
+        });
+      });
     }
 
-    console.log(filteredEvents);
+    filteredEvents.sort((a, b) => (a.sortRank < b.sortRank ? 1 : -1));
+    filteredEvents = filteredEvents.filter(event => event.sortRank > 0);
 
     return <Component events={filteredEvents} {...props} />;
   };

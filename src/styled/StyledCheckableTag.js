@@ -6,10 +6,18 @@ const { CheckableTag } = Tag;
 
 const CheckableTagStyled = styled(CheckableTag)`
   && {
+    cursor: pointer;
+    margin-bottom: 8px;
   }
 `;
 
-export const StyledCheckableTag = ({ checked, ...rest }) => {
+export const StyledCheckableTag = ({
+  checked,
+  onChange,
+  name,
+  collection,
+  ...rest
+}) => {
   const [localState, setLocalState] = useState({ checked: false });
 
   useEffect(() => {
@@ -17,12 +25,14 @@ export const StyledCheckableTag = ({ checked, ...rest }) => {
   }, [checked]);
 
   const handleChange = checked => {
-    setLocalState({ checked: checked });
+    setLocalState({ ...localState, checked: checked });
+    onChange(checked, name, collection);
   };
 
   return (
     <CheckableTagStyled
       checked={localState.checked}
+      name={name}
       onChange={handleChange}
       {...rest}
     />
