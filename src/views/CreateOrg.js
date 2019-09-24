@@ -1,86 +1,93 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { WrappedAntdForm } from '../styled/AntdForm';
-import AntdInput from '../styled/AntdInput';
-import AntdSelect from '../styled/AntdSelect';
-import AntdTimePicker from '../styled/AntdTimePicker';
-import { StyledCard, StyledButton } from '../styled';
+import {
+  WrappedAntdForm,
+  AntdInput,
+  AntdSelect,
+  AntdTextArea,
+  AntdTimePicker,
+  StyledCard,
+  StyledButton,
+} from '../styled';
 import { useStateValue } from '../hooks/useStateValue';
 import { Icon, Select } from 'antd';
 import CheckboxGroup from 'antd/lib/checkbox/Group';
-import AntdTextArea from '../styled/AntdTextArea';
 import { registerOrganization, updateOrganization } from '../actions';
 import createOrgImg from '../assets/undraw_unexpected_friends.svg';
 
 export const CreateOrg = props => {
-  const [ numberOfPOC, setNumberOfPOC ] = useState( 1 );
-  const [ state, dispatch ] = useStateValue();
-  const [ orgToEdit, setOrgToEdit ] = useState( {} );
+  const [numberOfPOC, setNumberOfPOC] = useState(1);
+  const [state, dispatch] = useStateValue();
+  const [orgToEdit, setOrgToEdit] = useState({});
   const Option = Select.Option;
-  
-  useEffect( () => {
-    if( props.location.state ){
-      setOrgToEdit( props.location.state.org );
-      if( props.location.state.org.firstName2 ){
-        setNumberOfPOC( 2 );
+
+  useEffect(() => {
+    if (props.location.state) {
+      setOrgToEdit(props.location.state.org);
+      if (props.location.state.org.firstName2) {
+        setNumberOfPOC(2);
       }
     }
-  }, [] );
-  
-  console.log( orgToEdit );
-  
+  }, []);
+
   const getPOCInputs = () => {
     const poc = [
-      <AntdInput name={ 'First Name' } key={ 'firstName' }/>,
-      <AntdInput name={ 'Last name' } key={ 'lastName' }/>,
-      <AntdInput name={ 'Email' } type={ 'email' } key={ 'email' }/>,
+      <AntdInput name={'First Name'} key={'firstName'} />,
+      <AntdInput name={'Last name'} key={'lastName'} />,
+      <AntdInput name={'Email'} type={'email'} key={'email'} />,
     ];
-    if( numberOfPOC > 1 ){
-      poc.push( <StyledLine key={ Math.random() }/> );
-      poc.push( <AntdInput
-        name={ 'First Name 2' }
-        label={ 'First Name' }
-        notrequired={ 'false' }
-        key={ 'firstName2' }
-      /> );
-      poc.push( <AntdInput
-        name={ 'Last Name 2' }
-        label={ 'First Name' }
-        notrequired={ 'false' }
-        key={ 'lastName2' }
-      /> );
-      poc.push( <AntdInput
-        name={ 'Email 2' }
-        label={ 'Email' }
-        type={ 'email' }
-        notrequired={ 'false' }
-        key={ 'email2' }
-      /> );
+    if (numberOfPOC > 1) {
+      poc.push(<StyledLine key={Math.random()} />);
+      poc.push(
+        <AntdInput
+          name={'First Name 2'}
+          label={'First Name'}
+          notrequired={'false'}
+          key={'firstName2'}
+        />
+      );
+      poc.push(
+        <AntdInput
+          name={'Last Name 2'}
+          label={'First Name'}
+          notrequired={'false'}
+          key={'lastName2'}
+        />
+      );
+      poc.push(
+        <AntdInput
+          name={'Email 2'}
+          label={'Email'}
+          type={'email'}
+          notrequired={'false'}
+          key={'email2'}
+        />
+      );
     }
     return poc;
   };
-  
+
   const onSubmit = values => {
     let POC = [];
     debugger;
-    POC.push( {
+    POC.push({
       email: values.email,
       firstName: values.firstName,
       lastName: values.lastName,
-    } );
-    if( values.email2 ){
-      POC.push( {
+    });
+    if (values.email2) {
+      POC.push({
         email: values.email2,
         firstName: values.firstName2,
         lastName: values.lastName2,
-      } );
+      });
     }
     const org = {
       ...values,
       POC,
       organizationOwnerUID: state.auth.googleAuthUser.uid,
-      startTime: values.startTime.format( 'HH:MM A' ),
-      endTime: values.endTime.format( 'HH:MM A' ),
+      startTime: values.startTime.format('HH:MM A'),
+      endTime: values.endTime.format('HH:MM A'),
     };
     for (let key in org) {
       if (org[key] === undefined) delete org[key];
@@ -90,9 +97,8 @@ export const CreateOrg = props => {
     } else {
       registerOrganization(org, dispatch);
     }
-    
-    props.history.push( '/org-dashboard' );
-    
+
+    props.history.push('/org-dashboard');
   };
 
   const days = [
@@ -113,7 +119,8 @@ export const CreateOrg = props => {
         <StyledWrappedAntdForm
           layout={'vertical'}
           onSubmit={onSubmit}
-          editInfo={orgToEdit}
+          autofill={orgToEdit}
+          useButton={true}
         >
           <AntdInput
             name={'Organization Name'}
@@ -169,18 +176,15 @@ export const CreateOrg = props => {
 
 const StyledDiv = styled.div`
   background: white;
-
 `;
 
 const BasicStyledDiv = styled.div`
-background: #E8E8E8;
-display: flex;
-width: 80%;
-margin: 2rem auto;
-padding: 2rem;
-
-
-`
+  background: #e8e8e8;
+  display: flex;
+  width: 80%;
+  margin: 2rem auto;
+  padding: 2rem;
+`;
 
 const CustomStyledCard = styled(StyledCard)`
   background: #d9d9d9;
@@ -197,8 +201,6 @@ const StyledImg = styled.img`
   margin: 2rem auto;
 `;
 
-const StyledWrappedAntdForm = styled(WrappedAntdForm)`
-
-`;
+const StyledWrappedAntdForm = styled(WrappedAntdForm)``;
 
 export default CreateOrg;
