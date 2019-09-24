@@ -52,10 +52,11 @@ const Form = () => {
   
   return ( 
   <StyledDiv className={ 'flex center' }>
-    <CustomStyledCard maxWidth={ '900px' } margin={ '2rem 0 5rem 0' }>
+    <CustomStyledCard maxWidth={ '1067px' } margin={ '2rem 0 5rem 0' }>
       <h1>Let's Set up your organization!</h1>
       <StyledImg src={ createOrgImg } alt='undraw unexpected friends'/>
-      <StyledWrappedAntdForm layout={ 'vertical' } onSubmit={ onSubmit }>
+      <StyledWrappedAntdForm layout={ 'horizontal' } 
+                             onSubmit={ onSubmit }>
         <AntdInput name={ 'Organization Name' }
                    label={ 'Name of Organization' }/>
         <AntdSelect name={ 'Cause Areas' }
@@ -106,7 +107,7 @@ background: white;
 `
 
 const CustomStyledCard = styled(StyledCard)`
-background: #D9D9D9;
+background: #BFBFBF;
 text-align: center;
 `
 
@@ -118,6 +119,7 @@ margin-bottom: 1rem;
 const StyledImg = styled.img`
 width: 25%;
 margin: 0 auto;
+margin: 2rem 0 5rem 0;
 `
 
 const StyledWrappedAntdForm = styled(WrappedAntdForm)`

@@ -83,7 +83,7 @@ class AntdForm extends React.Component{
   };
   
   render(){
-    
+    /*
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 }, sm: { span: 5 },
@@ -91,8 +91,9 @@ class AntdForm extends React.Component{
         xs: { span: 24 }, sm: { span: 12 },
       },
     };
-    
-    return ( <Form { ...formItemLayout }
+    */
+   
+    return ( <Form 
                    onSubmit={ this.handleSubmit }
                    hideRequiredMark>
       { this.renderChildren( this.props.children ) }
