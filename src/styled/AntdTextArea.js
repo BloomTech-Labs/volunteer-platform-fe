@@ -1,13 +1,12 @@
-import React from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import TextArea from 'antd/lib/input/TextArea';
 
-const AntdTextArea = ( { ...rest } ) => {
-  return ( <StyledTextArea { ...rest }>
-  
-  </StyledTextArea> );
-};
+export default class AntdTextArea extends Component {
+  render() {
+    let { ...rest } = this.props;
+    return <StyledTextArea></StyledTextArea>;
+  }
+}
 
-const StyledTextArea = styled( TextArea )``;
-
-export default AntdTextArea;
+const StyledTextArea = styled(TextArea)``;

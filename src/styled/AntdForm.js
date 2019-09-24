@@ -61,7 +61,7 @@ class AntdForm extends React.Component {
 
       if (child.type && child.type.name) {
         const camelCase = this.getCamelCase(child.props.name);
-        const required = !child.props.notRequired;
+        const required = !child.props.notrequired;
         const rules = this.getRules(child.props.type, required);
         let label = child.props.label ? child.props.label : child.props.name;
         if (child.props.tooltipTitle) {
@@ -74,7 +74,7 @@ class AntdForm extends React.Component {
           );
         }
         return (
-          <Form.Item label={label}>
+          <Form.Item label={label} key={label}>
             {this.props.form.getFieldDecorator(camelCase, { rules })(child)}
           </Form.Item>
         );

@@ -19,24 +19,24 @@ const Form = () => {
 
   const getPOCInputs = () => {
     const poc = [
-      <AntdInput name={'First Name'} />,
-      <AntdInput name={'Last name'} />,
-      <AntdInput name={'Email'} type={'email'} />,
+      <AntdInput name={'First Name'} key={'firstName'}/>,
+      <AntdInput name={'Last name'} key={'lastName'}/>,
+      <AntdInput name={'Email'} type={'email'} key={'email'}/>,
     ];
     if (numberOfPOC > 1) {
       poc.push(<StyledLine />);
       poc.push(
-        <AntdInput name={'First Name 2'} label={'First Name'} notRequired />
+        <AntdInput name={'First Name 2'} label={'First Name'} notrequired={'false'} />
       );
       poc.push(
-        <AntdInput name={'Last Name 2'} label={'First Name'} notRequired />
+        <AntdInput name={'Last Name 2'} label={'First Name'} notrequired={'false'} />
       );
       poc.push(
         <AntdInput
           name={'Email 2'}
           label={'Email'}
           type={'email'}
-          notRequired
+          notrequired={'false'}
         />
       );
     }
@@ -106,9 +106,9 @@ const Form = () => {
               return <Option key={cause}>{cause}</Option>;
             })}
           </AntdSelect>
-          <AntdInput name={'City'} notRequired />
-          <AntdInput name={'State'} notRequired />
-          <AntdInput name={'Phone'} notRequired />
+          <AntdInput name={'City'} notrequired={'false'} />
+          <AntdInput name={'State'} notrequired={'false'} />
+          <AntdInput name={'Phone'} notrequired={'false'} />
           <h2>Who is the point of contact?</h2>
           {getPOCInputs()}
           {numberOfPOC === 1 ? (
@@ -128,8 +128,8 @@ const Form = () => {
           />
           <AntdTimePicker name={'Start Time'} use12Hours format={'h:mm a'} />
           <AntdTimePicker name={'End Time'} use12Hours format={'h:mm a'} />
-          <AntdTextArea name={'About Us'} notRequired />
-          <AntdInput name={'Website'} type={'url'} notRequired />
+          <AntdTextArea name={'About Us'} notrequired={'false'} />
+          <AntdInput name={'Website'} type={'url'} notrequired={'false'} />
         </StyledWrappedAntdForm>
       </CustomStyledCard>
     </StyledDiv>

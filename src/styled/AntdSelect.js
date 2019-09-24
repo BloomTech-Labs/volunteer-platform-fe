@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { Component } from 'react'
 import styled from 'styled-components';
 import { Select } from 'antd';
 
-const AntdSelect = ({ children, ...rest }) => {
-  return <StyledSelect {...rest}>{children}</StyledSelect>;
-};
+export default class AntdSelect extends Component {
+    render() {
+        let {children, ...rest} = this.props;
+        return (
+            <StyledSelect {...rest}>
+                {children}
+            </StyledSelect>
+        )
+    }
+}
 
 const StyledSelect = styled(Select)``;
-
-export default AntdSelect;
