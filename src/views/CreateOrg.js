@@ -31,31 +31,47 @@ export const CreateOrg = props => {
   
   const getPOCInputs = () => {
     const poc = [
-      <AntdInput name={ 'First Name' } key={ 'firstName' }/>,
-      <AntdInput name={ 'Last name' } key={ 'lastName' }/>,
-      <AntdInput name={ 'Email' } type={ 'email' } key={ 'email' }/>,
+      <div className={ 'flex' }>
+        <div className={ 'inline' }><AntdInput name={ 'First Name' }
+                                               layout={ formItemLayoutInline }
+                                               key={ 'firstName' }/></div>
+        
+        <div className={ 'inline' }><AntdInput name={ 'Last name' }
+                                               layout={ formItemLayoutInline }
+                                               key={ 'lastName' }/></div>
+        <div className={ 'inline' }><AntdInput name={ 'Email' } type={ 'email' }
+                                               layout={ formItemLayoutInline }
+                                               key={ 'email' }/></div>
+      </div>,
     ];
     if( numberOfPOC > 1 ){
-      poc.push( <StyledLine key={ Math.random() }/> );
-      poc.push( <AntdInput
-        name={ 'First Name 2' }
-        label={ 'First Name' }
-        notrequired={ 'false' }
-        key={ 'firstName2' }
-      /> );
-      poc.push( <AntdInput
-        name={ 'Last Name 2' }
-        label={ 'First Name' }
-        notrequired={ 'false' }
-        key={ 'lastName2' }
-      /> );
-      poc.push( <AntdInput
-        name={ 'Email 2' }
-        label={ 'Email' }
-        type={ 'email' }
-        notrequired={ 'false' }
-        key={ 'email2' }
-      /> );
+      poc.push( <div className={ 'flex' }><StyledLine key={ Math.random() }/>
+        <div className={ 'inline' }>
+          <AntdInput
+            name={ 'First Name 2' }
+            label={ 'First Name' }
+            notrequired={ 'false' }
+            key={ 'firstName2' }
+            layout={ formItemLayoutInline }
+          /></div>
+        <div className={ 'inline' }>
+          <AntdInput
+            name={ 'Last Name 2' }
+            label={ 'First Name' }
+            notrequired={ 'false' }
+            key={ 'lastName2' }
+            layout={ formItemLayoutInline }
+          /></div>
+        <div className={ 'inline' }>
+          <AntdInput
+            name={ 'Email 2' }
+            label={ 'Email' }
+            type={ 'email' }
+            notrequired={ 'false' }
+            key={ 'email2' }
+            layout={ formItemLayoutInline }
+          /></div>
+      </div> );
     }
     return poc;
   };
@@ -82,96 +98,188 @@ export const CreateOrg = props => {
       startTime: values.startTime.format( 'HH:MM A' ),
       endTime: values.endTime.format( 'HH:MM A' ),
     };
-    for (let key in org) {
-      if (org[key] === undefined) delete org[key];
+    for( let key in org ){
+      if( org[ key ] === undefined ){
+        delete org[ key ];
+      }
     }
-    if (orgToEdit.orgId) {
-      updateOrganization(orgToEdit.orgId, org, dispatch);
-    } else {
-      registerOrganization(org, dispatch);
+    if( orgToEdit.orgId ){
+      updateOrganization( orgToEdit.orgId, org, dispatch );
+    }else{
+      registerOrganization( org, dispatch );
     }
     
     props.history.push( '/org-dashboard' );
     
   };
-
+  
   const days = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
+    'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday',
     'Saturday',
   ];
-
-  return (
-    <StyledDiv className={'flex center'}>
-      <CustomStyledCard style={{ maxWidth: '900px', margin: '2rem 0 5rem 0' }}>
-        <h1>Let's Set up your organization!</h1>
-        <StyledImg src={createOrgImg} alt="undraw unexpected friends" />
+  
+  const formItemLayout = {
+    labelCol: {
+      xs: { span: 24 }, sm: { span: 10 },
+    }, wrapperCol: {
+      xs: { span: 24 }, sm: { span: 14 },
+    },
+  };
+  
+  const formItemLayoutInline = {
+    labelCol: {
+      xs: { span: 24 }, sm: { span: 7 },
+    }, wrapperCol: {
+      xs: { span: 24 }, sm: { span: 24 },
+    },
+  };
+  
+  const formItemLayoutFullLength = {
+    labelCol: {
+      xs: { span: 24 }, sm: { span: 5 },
+    }, wrapperCol: {
+      xs: { span: 24 }, sm: { span: 19 },
+    },
+  };
+  
+  return ( <StyledDiv className={ 'flex center' }>
+    <CustomStyledCard
+      style={ { maxWidth: '900px', margin: '2rem 0 5rem 0' } }>
+      <h1>Let's Set up your organization!</h1>
+      <StyledImg src={ createOrgImg } alt="undraw unexpected friends"/>
+      <StyledCreateOrgForm>
         <StyledWrappedAntdForm
-          layout={'vertical'}
-          onSubmit={onSubmit}
-          editInfo={orgToEdit}
+          layout={ 'vertical' }
+          onSubmit={ onSubmit }
+          editInfo={ orgToEdit }
         >
-          <AntdInput
-            name={'Organization Name'}
-            label={'Name of Organization'}
-          />
-          <AntdSelect
-            name={'Cause Areas'}
-            label={
-              <>
-                Types of causes <Icon type="question-circle-o" />
-              </>
-            }
-            mode={'multiple'}
-            style={{ width: '100%' }}
-            placeholder={'Please select all that apply.'}
-            tooltipTitle={
-              'Select all cause areas that your' + ' organization helps.'
-            }
-          >
-            {state.tags.causeAreas.map(cause => {
-              return <Option key={cause}>{cause}</Option>;
-            })}
-          </AntdSelect>
-          <AntdInput name={'City'} notrequired={'false'} />
-          <AntdInput name={'State'} notrequired={'false'} />
-          <AntdInput name={'Phone'} notrequired={'false'} />
-          <h2>Who is the point of contact?</h2>
-          {getPOCInputs()}
-          {numberOfPOC === 1 ? (
-            <StyledButton onClick={() => setNumberOfPOC(2)}>
-              Add another point of contact.
-            </StyledButton>
-          ) : (
-            <StyledButton onClick={() => setNumberOfPOC(1)}>
-              Remove Point of Contact
-            </StyledButton>
-          )}
-          <h2>What are your hours of operation?</h2>
-          <CheckboxGroup
-            name={'Days of the week'}
-            options={days}
-            style={{ width: '100%' }}
-          />
-          <AntdTimePicker name={'Start Time'} use12Hours format={'h:mm a'} />
-          <AntdTimePicker name={'End Time'} use12Hours format={'h:mm a'} />
-          <AntdTextArea name={'About Us'} notrequired={'false'} />
-          <AntdInput name={'Website'} type={'url'} notrequired={'false'} />
+          <div className={ 'styledGroup' }>
+            <div className={ 'flex' }>
+              <div className={ 'inline' }>
+                <AntdInput
+                  name={ 'Organization Name' }
+                  label={ 'Name of Organization' }
+                  layout={ formItemLayout }
+                />
+              </div>
+              <div className={ 'inline' }>
+                <AntdSelect
+                  labelCol={ { span: 3, offset: 0 } }
+                  layout={ formItemLayout }
+                  name={ 'Cause Areas' }
+                  label={ <>
+                    Types of causes <Icon type="question-circle-o"/>
+                  </> }
+                  mode={ 'multiple' }
+                  style={ { width: '100%' } }
+                  placeholder={ 'Please select all that apply.' }
+                  tooltipTitle={ 'Select all cause areas that your' +
+                  ' organization helps.' }
+                >
+                  { state.tags.causeAreas.map( cause => {
+                    return <Option key={ cause }>{ cause }</Option>;
+                  } ) }
+                
+                </AntdSelect>
+              </div>
+            </div>
+            
+            <div className={ 'flex' }>
+              <div className={ 'inline' }>
+                <AntdInput name={ 'City' } notrequired={ 'false' }
+                           layout={ formItemLayout }
+                />
+              </div>
+              <div className={ 'inline' }>
+                <AntdInput name={ 'State' } notrequired={ 'false' }
+                           layout={ formItemLayout }
+                />
+              </div>
+            </div>
+            <div className={ 'flex' }>
+              <div className={ 'inline' }>
+                <AntdInput name={ 'Phone' } notrequired={ 'false' }
+                           layout={ formItemLayout }/>
+              </div>
+            </div>
+          </div>
+          
+          <div className={ 'mg-tp-lg' }>
+            <h4>Who is the point of contact?</h4>
+          </div>
+          
+          { getPOCInputs() }
+          { numberOfPOC === 1 ? ( <><Icon type="plus-circle"
+                                          style={ { fontSize: '1.6rem' } }
+                                          onClick={ () => setNumberOfPOC( 2 ) }/><span>
+              Add another point of contact.</span></> ) :
+            ( <><Icon type="minus-circle"
+                      style={ { fontSize: '1.6rem' } }
+                      onClick={ () => setNumberOfPOC( 1 ) }/><span>
+             Remove extra point of contact.</span></> ) }
+          <div className={ 'mg-tp-lg' }>
+            <h4>What are your hours of operation?</h4>
+          </div>
+          
+          <div className={ 'styledGroup' }>
+            <CheckboxGroup
+              name={ 'Days of the week' }
+              options={ days }
+              style={ { width: '100%' } }
+            />
+            <div className={ 'flex' }>
+              
+              <div className={ 'inline' }>
+                <AntdTimePicker name={ 'Start Time' } label={ 'What Time?' }
+                                use12Hours
+                                format={ 'h:mm a' }/>
+              </div>
+              <div className={ 'inline' }>
+                <AntdTimePicker name={ 'End Time' } use12Hours label={ 'To' }
+                                format={ 'h:mm a' }/>
+              </div>
+            </div>
+            
+            
+            <AntdTextArea name={ 'About Us' } notrequired={ 'false' }
+                          layout={ formItemLayoutFullLength }
+                          autosize={ { minRows: 4, maxRows: 120 } }/>
+            <AntdInput name={ 'Website' } type={ 'url' }
+                       notrequired={ 'false' }/>
+          </div>
         </StyledWrappedAntdForm>
-      </CustomStyledCard>
-    </StyledDiv>
-  );
+      </StyledCreateOrgForm>
+    </CustomStyledCard>
+  </StyledDiv> );
 };
+
+const StyledCreateOrgForm = styled.div`
+margin-top: 2rem;
+width: 100%;
+.inline{
+  width: 50%;
+}
+
+.styledGroup {
+  background-color: #E8E8E8;
+  border-radius: 30px;
+  padding: 1rem;
+}
+
+i{
+  margin-right: 1rem;
+}
+
+.mg-tp-lg {
+  margin-top: 4rem;
+}
+`;
 
 const StyledDiv = styled.div`
   background: white;
 `;
 
-const CustomStyledCard = styled(StyledCard)`
+const CustomStyledCard = styled( StyledCard )`
   background: #d9d9d9;
   text-align: center;
 `;
@@ -186,6 +294,6 @@ const StyledImg = styled.img`
   margin: 0 auto;
 `;
 
-const StyledWrappedAntdForm = styled(WrappedAntdForm)``;
+const StyledWrappedAntdForm = styled( WrappedAntdForm )``;
 
 export default CreateOrg;
