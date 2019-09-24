@@ -11,12 +11,12 @@ export const TopVolunteers = () => {
   
   return (
     <StyledDiv>
-      <h2>Leading volunteers<Icon type="fire" theme='filled' style={{ color: '#FA8C16' }}/></h2>
+      <h2>Leading Volunteers<Icon type="fire" theme='filled' style={{ color: '#FA8C16' }}/></h2>
       <div className='volunteer-cards'>
         <StyledCard
           cover={<img src={volunteerPic1} alt='volunteer1'/>}
         >
-          <Meta style={{width: '100%'}}title='Samira L.' description='10.25 hours/mo.'></Meta>
+          <Meta title='Samira L.' description='10.25 hours/mo.'></Meta>
         </StyledCard>
         <StyledCard
           cover={<img src={volunteerPic2} alt='volunteer2'/>}
@@ -33,9 +33,7 @@ export const TopVolunteers = () => {
         >
           <Meta title='Shawn B.' description='9.5 hours/mo.'></Meta>
         </StyledCard>
-        <div className='volunteer-additional'>
-          <Icon type="reconciliation" /><h6>More Volunteers</h6>
-        </div>
+        <h6><Icon type="reconciliation" />More Volunteers</h6>
       </div>
     </StyledDiv>
   )
@@ -50,12 +48,15 @@ const StyledDiv = styled.div`
   h2 {
     font-size: 24px;
     color: ${({ theme }) => theme.primary};
-    margin-bottom: 25px;
+    margin: 60px 0 40px 0;
   }
 
   .volunteer-cards {
     display: flex;
     align-items: flex-end;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 40px;
 
     .ant-card-body {
       padding: 4px;
@@ -65,32 +66,30 @@ const StyledDiv = styled.div`
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 5px 0;
 
       .ant-card-meta-title {
         margin: 0;
-        font-size: 1.5rem;
+        font-size: 1.4rem;
       }
   
       .ant-card-meta-description {
-        color: #FA8C16;
-        font-size: 1rem;
+        color: ${({ theme }) => theme.accent6};
+        font-size: 0.9rem;
         font-style: italic;
       }
     }
 
-    .volunteer-additional {
-      display: flex;
-      align-items: center;
-
-      h6 {
-        margin: 0;
-      }
+    h6 {
+      margin: 0;
+      color: ${({ theme }) => theme.gray7};
+      font-size: 0.9rem;
+      width: 150px;
     }
   }
 `
 
 const StyledCard = styled(Card)`
-  margin: 0 1.6rem;
+  margin: 0 1rem;
   background: #FFF7E6;
-  width: 19%;
 `
