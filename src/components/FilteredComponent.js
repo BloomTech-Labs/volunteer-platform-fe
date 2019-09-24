@@ -59,7 +59,8 @@ export const FilteredComponent = Component => {
     }
     if (causeAreas) {
       filteredEvents.forEach(event => {
-        event.causeAreas.forEach(causeArea => {
+        console.log(event);
+        event.typesOfCauses.forEach(causeArea => {
           if (tagFilter.causeAreas[causeArea])
             event.sortRank = event.sortRank + 1;
         });
@@ -67,7 +68,7 @@ export const FilteredComponent = Component => {
     }
     if (interests) {
       filteredEvents.forEach(event => {
-        event.interests.forEach(interest => {
+        event.interest.forEach(interest => {
           if (tagFilter.interests[interest])
             event.sortRank = event.sortRank + 1;
         });
