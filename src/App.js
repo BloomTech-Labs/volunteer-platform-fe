@@ -3,11 +3,10 @@ import { Switch, Route } from 'react-router';
 import styled from 'styled-components';
 import firebase from './firebase/FirebaseConfig';
 import { Layout, Icon, Affix } from 'antd';
-import Form from './views/Form';
 import { useStateValue } from './hooks/useStateValue';
 import { subscribeToUserOrganizations, signedIn, signedOut } from './actions';
 import { StyledUploadImage, HeaderDiv, FooterDiv } from './components';
-import Navigation from './components/Navigation';
+import Navigation from './components/Navigation'
 import {
   MainDashboard,
   OrganizationDashboard,
@@ -114,7 +113,7 @@ function App() {
               />
               <LoginRoute path={'/login'} component={Login} />
               <LoginRoute path={'/signup'} component={Login} />
-              <ProtectedRoute path={'/create-org'} component={Form} />
+              <ProtectedRoute path={'/create-org'} component={CreateOrg} />
               <OrganizationRoute
                 path={'/org-dashboard/create-event'}
                 component={CreateEvent}

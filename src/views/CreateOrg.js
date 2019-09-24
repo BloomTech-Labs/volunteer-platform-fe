@@ -4,7 +4,7 @@ import { WrappedAntdForm } from '../styled/AntdForm';
 import AntdInput from '../styled/AntdInput';
 import AntdSelect from '../styled/AntdSelect';
 import AntdTimePicker from '../styled/AntdTimePicker';
-import { StyledCard, StyledButton, StyledTimePicker } from '../styled';
+import { StyledCard, StyledButton } from '../styled';
 import { useStateValue } from '../hooks/useStateValue';
 import { Icon, Select } from 'antd';
 import CheckboxGroup from 'antd/lib/checkbox/Group';
@@ -12,7 +12,7 @@ import AntdTextArea from '../styled/AntdTextArea';
 import { registerOrganization, updateOrganization } from '../actions';
 import createOrgImg from '../assets/undraw_unexpected_friends.svg';
 
-const Form = () => {
+export const CreateOrg = () => {
   const [numberOfPOC, setNumberOfPOC] = useState(1);
   const [state, dispatch] = useStateValue();
   const Option = Select.Option;
@@ -166,4 +166,4 @@ const StyledImg = styled.img`
 
 const StyledWrappedAntdForm = styled(WrappedAntdForm)``;
 
-export default Form;
+export default CreateOrg;
