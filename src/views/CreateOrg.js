@@ -14,7 +14,8 @@ import { Icon, Select } from 'antd';
 import CheckboxGroup from 'antd/lib/checkbox/Group';
 import { registerOrganization, updateOrganization } from '../actions';
 import createOrgImg from '../assets/undraw_unexpected_friends.svg';
-import {formLayouts} from '../utility/formLayouts'
+import {formLayouts} from '../utility/formLayouts';
+
 
 export const CreateOrg = props => {
   const [numberOfPOC, setNumberOfPOC] = useState(1);
@@ -41,7 +42,6 @@ export const CreateOrg = props => {
             key={'firstName'}
           />
         </div>
-
         <div className={'inline'}>
           <AntInput
             name={'Last name'}
@@ -59,10 +59,10 @@ export const CreateOrg = props => {
         </div>
       </div>,
     ];
-    if (numberOfPOC > 1) {
+    if (numberOfPOC > 1){
       poc.push(
         <div className={'flex'} key={'poc2'}>
-          <StyledLine key={Math.random()} />
+          <StyledLine key={Math.random()}/>
           <div className={'inline'}>
             <AntInput
               name={'First Name 2'}
@@ -91,7 +91,7 @@ export const CreateOrg = props => {
               layout={formLayouts.formItemLayoutInline}
             />
           </div>
-        </div>
+        </div>,
       );
     }
     return poc;
@@ -141,12 +141,11 @@ export const CreateOrg = props => {
     'Friday',
     'Saturday',
   ];
-
   return (
     <StyledDiv className={'flex center'}>
-      <CustomStyledCard style={{ maxWidth: '900px', margin: '2rem 0 5rem 0' }}>
+      <CustomStyledCard style={{maxWidth: '900px', margin: '2rem 0 5rem 0'}}>
         <h1>Let's Set up your organization!</h1>
-        <StyledImg src={createOrgImg} alt="undraw unexpected friends" />
+        <StyledImg src={createOrgImg} alt="undraw unexpected friends"/>
         <StyledCreateOrgForm>
           <StyledWrappedAntdForm
             layout={'vertical'}
@@ -166,16 +165,16 @@ export const CreateOrg = props => {
                 </div>
                 <div className={'inline'}>
                   <AntSelect
-                    labelCol={{ span: 3, offset: 0 }}
+                    labelCol={{span: 3, offset: 0}}
                     layout={formLayouts.formItemLayout}
                     name={'Cause Areas'}
                     label={
                       <>
-                        Types of causes <Icon type="question-circle-o" />
+                        Types of causes <Icon type="question-circle-o"/>
                       </>
                     }
                     mode={'multiple'}
-                    style={{ width: '100%' }}
+                    style={{width: '100%'}}
                     placeholder={'Please select all that apply.'}
                     tooltipTitle={
                       'Select all cause areas that your' +
@@ -214,21 +213,34 @@ export const CreateOrg = props => {
                   />
                 </div>
               </div>
+              <div className={'flex'}>
+                <div className={'inline'}>
+                  <AntInput
+                    name={'Phone'}
+                    notRequired={'false'}
+                    layout={formLayouts.formItemLayout}
+                  />
+                </div>
+              </div>
             </div>
-
+            
             <div className={'mg-tp-lg'}>
               <h4>Who is the point of contact?</h4>
             </div>
-
             {getPOCInputs()}
             {numberOfPOC === 1 ? (
               <>
                 <Icon
                   type="plus-circle"
-                  style={{ fontSize: '1.6rem', marginRight: '1rem' }}
+                  style={{
+                    fontSize: '1.6rem',
+                    marginRight: '1rem',
+                    color: '#005A87',
+                  }}
                   onClick={() => setNumberOfPOC(2)}
                 />
-                <span onClick={() => setNumberOfPOC(2)}>
+                <span style={{color: '#005A87'}}
+                      onClick={() => setNumberOfPOC(2)}>
                   Add another point of contact.
                 </span>
               </>
@@ -236,7 +248,7 @@ export const CreateOrg = props => {
               <>
                 <Icon
                   type="minus-circle"
-                  style={{ fontSize: '1.6rem', marginRight: '1rem' }}
+                  style={{fontSize: '1.6rem', marginRight: '1rem'}}
                   onClick={() => setNumberOfPOC(1)}
                 />
                 <span onClick={() => setNumberOfPOC(1)}>
@@ -247,12 +259,12 @@ export const CreateOrg = props => {
             <div className={'mg-tp-lg'}>
               <h4>What are your hours of operation?</h4>
             </div>
-
             <div className={'styledGroup'}>
               <CheckboxGroup
                 name={'Days of the week'}
                 options={days}
-                style={{ width: '100%' }}
+                style={{width: '100%'}}
+                layout={formLayouts.formItemLayoutFullLength}
               />
               <div className={'flex'}>
                 <div className={'inline'}>
@@ -261,6 +273,7 @@ export const CreateOrg = props => {
                     label={'What Time?'}
                     use12Hours
                     format={'h:mm a'}
+                    layout={formLayouts.formItemLayoutInline}
                   />
                 </div>
                 <div className={'inline'}>
@@ -269,17 +282,21 @@ export const CreateOrg = props => {
                     use12Hours
                     label={'To'}
                     format={'h:mm a'}
+                    layout={formLayouts.formItemLayoutInline}
                   />
                 </div>
               </div>
-
+              
               <AntTextArea
                 name={'About Us'}
                 notRequired={'false'}
                 layout={formLayouts.formItemLayoutFullLength}
-                autosize={{ minRows: 4, maxRows: 120 }}
+                autosize={{minRows: 4, maxRows: 120}}
+                placeholder={'A short paragraph such as mission, vision, and values of your non profit would go here...'}
               />
-              <AntInput name={'Website'} type={'url'} notRequired={'false'} />
+              <AntInput name={'Website'} type={'url'} notRequired={'false'}
+                        placeholder={'https://nonprofit.org'}
+                        layout={formLayouts.formItemLayoutFullLength}/>
             </div>
           </StyledWrappedAntdForm>
         </StyledCreateOrgForm>
@@ -291,23 +308,36 @@ export const CreateOrg = props => {
 const StyledCreateOrgForm = styled.div`
   margin-top: 2rem;
   width: 100%;
+  font-weight: bold;
   .inline {
     width: 50%;
   }
 
   .styledGroup {
+    margin: 3rem;
     background-color: #e8e8e8;
-    border-radius: 30px;
-    padding: 1rem;
+    border-radius: 3px;
+    padding: 3rem;
   }
 
   .mg-tp-lg {
     margin-top: 4rem;
+  }  
+  label {
+  color: ${props => props.theme.primary8}
   }
 `;
 
 const StyledDiv = styled.div`
   background: white;
+  h1 {
+    color: ${props => props.theme.primary8}
+  }
+  
+  h4 {
+    color: ${props => props.theme.primary8}
+  }
+  
 `;
 
 const BasicStyledDiv = styled.div`
