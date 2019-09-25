@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useStateValue } from '../hooks/useStateValue';
 import { EventList, FilteredComponent, FilterTopbar } from '../components';
-import { getAllEventsByState } from '../actions';
+import { getAllEventsByState, getAllRecurringEventsByState } from '../actions';
 import { stateConversion } from '../utility/stateConversion';
 
 export const MainDashboard = () => {
@@ -56,9 +56,9 @@ export const MainDashboard = () => {
   }, []);
 
   useEffect(() => {
-    console.log(inputState.location.state);
     if (inputState.location.state.length === 2) {
       getAllEventsByState(inputState.location.state, dispatch);
+      getAllRecurringEventsByState(inputState.location.state, dispatch)
     }
   }, [inputState.location.state]);
 
@@ -103,6 +103,7 @@ export const MainDashboard = () => {
       />
       <FilteredEventList
         events={state.events.events}
+        recurringEvents={state.events.recurringEvents}
         filter={inputState}
         tagFilter={tagFilterState}
       />
