@@ -2,15 +2,10 @@ import React from 'react';
 import {Form, Icon, Tooltip} from 'antd';
 import {StyledButton} from '../styled';
 import moment from 'moment';
-import ProptTypes from 'prop-types';
-import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 export class AntForm extends React.Component{
-  
-  PropTypes = {
-    useButton: ProptTypes.bool,
-  };
-  
+    
   componentDidUpdate(prevProps){
     if (prevProps.autofill !== this.props.autofill){
       for (let key in this.props.autofill){
@@ -126,22 +121,24 @@ export class AntForm extends React.Component{
       },
     };
     
-    return (<StyledForm {...formItemLayout} onSubmit={this.handleSubmit}
+    return (<Form {...formItemLayout} onSubmit={this.handleSubmit}
                         hideRequiredMark
                         layout={this.props.layout ? this.props.layout :
                           'horizontal'}>
       {this.renderChildren(this.props.children)}
-      <StyledButton onClick={this.handleSubmit} type={this.props.buttonType}>
+      {!this.props.noButton && <StyledButton onClick={this.handleSubmit} type={this.props.buttonType}>
         {this.props.buttonText}
-      </StyledButton>
-    </StyledForm>);
+      </StyledButton>}
+    </Form>);
   }
 }
 
-const StyledForm = styled(Form)`
-label {
-  align-text: left;
+AntForm.propTypes = {
+    buttonText: PropTypes.string.isRequired,
+    buttonType: PropTypes.string,
+    autofill: PropTypes.object,
+    onSubmit: PropTypes.func.isRequired,
+    noButton: PropTypes.bool
 }
-`;
 
 export const WrappedAntForm = Form.create({name: 'register'})(AntForm);

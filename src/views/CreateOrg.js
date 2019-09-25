@@ -184,7 +184,8 @@ export const CreateOrg = props => {
             layout={'vertical'}
             onSubmit={onSubmit}
             autofill={orgToEdit}
-            useButton={true}
+            buttonText={'Submit'}
+            buttonType={'primary'}
           >
             <div className={'styledGroup'}>
               <div className={'flex'}>

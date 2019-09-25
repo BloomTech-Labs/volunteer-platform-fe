@@ -94,7 +94,7 @@ export const OrganizationDashboard = () => {
           </Select>
           {displayOrg ? (
             <>
-              <StyledButton>
+              <StyledButton standard={true}>
                 <Link
                   to={{
                     pathname: '/create-org',
@@ -107,7 +107,7 @@ export const OrganizationDashboard = () => {
                 </Link>
               </StyledButton>
 
-              <StyledButton onClick={deleteOrg}>Delete Org</StyledButton>
+              <StyledButton standard={true} onClick={deleteOrg}>Delete Org</StyledButton>
               <OrganizationInfo org={displayOrg} />
             </>
           ) : (
