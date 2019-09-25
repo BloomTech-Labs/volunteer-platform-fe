@@ -14,13 +14,12 @@ import { Icon, Select } from 'antd';
 import CheckboxGroup from 'antd/lib/checkbox/Group';
 import { registerOrganization, updateOrganization } from '../actions';
 import createOrgImg from '../assets/undraw_unexpected_friends.svg';
-import {formLayouts} from '../utility/formLayouts';
-
+import { formLayouts } from '../utility/formLayouts';
 
 export const CreateOrg = props => {
   const [numberOfPOC, setNumberOfPOC] = useState(1);
   const [state, dispatch] = useStateValue();
-  const [orgToEdit, setOrgToEdit] = useState({});
+  const [orgToEdit, setOrgToEdit] = useState();
   const Option = Select.Option;
 
   useEffect(() => {
@@ -59,10 +58,10 @@ export const CreateOrg = props => {
         </div>
       </div>,
     ];
-    if (numberOfPOC > 1){
+    if (numberOfPOC > 1) {
       poc.push(
         <div className={'flex'} key={'poc2'}>
-          <StyledLine key={Math.random()}/>
+          <StyledLine key={Math.random()} />
           <div className={'inline'}>
             <AntInput
               name={'First Name 2'}
@@ -91,7 +90,7 @@ export const CreateOrg = props => {
               layout={formLayouts.formItemLayoutInline}
             />
           </div>
-        </div>,
+        </div>
       );
     }
     return poc;
@@ -143,11 +142,11 @@ export const CreateOrg = props => {
   ];
   return (
     <StyledDiv className={'flex center'}>
-      <CustomStyledCard style={{maxWidth: '900px', margin: '2rem 0 5rem 0'}}>
-        <h1>Let's Set up your organization!</h1>
-        <StyledImg src={createOrgImg} alt="undraw unexpected friends"/>
+      <CustomStyledCard style={{ maxWidth: '900px', margin: '2rem 0 5rem 0' }}>
+        <h1>{orgToEdit ? 'Update your organization!' : 'Let\'s set up your organization!'}</h1>
+        <StyledImg src={createOrgImg} alt="undraw unexpected friends" />
         <StyledCreateOrgForm>
-          <StyledWrappedAntdForm
+          <WrappedAntForm
             layout={'vertical'}
             onSubmit={onSubmit}
             autofill={orgToEdit}
@@ -165,16 +164,16 @@ export const CreateOrg = props => {
                 </div>
                 <div className={'inline'}>
                   <AntSelect
-                    labelCol={{span: 3, offset: 0}}
+                    labelCol={{ span: 3, offset: 0 }}
                     layout={formLayouts.formItemLayout}
                     name={'Cause Areas'}
                     label={
                       <>
-                        Types of causes <Icon type="question-circle-o"/>
+                        Types of causes <Icon type="question-circle-o" />
                       </>
                     }
                     mode={'multiple'}
-                    style={{width: '100%'}}
+                    style={{ width: '100%' }}
                     placeholder={'Please select all that apply.'}
                     tooltipTitle={
                       'Select all cause areas that your' +
@@ -214,7 +213,7 @@ export const CreateOrg = props => {
                 </div>
               </div>
             </div>
-            
+
             <div className={'mg-tp-lg'}>
               <h4>Who is the point of contact?</h4>
             </div>
@@ -230,8 +229,10 @@ export const CreateOrg = props => {
                   }}
                   onClick={() => setNumberOfPOC(2)}
                 />
-                <span style={{color: '#005A87'}}
-                      onClick={() => setNumberOfPOC(2)}>
+                <span
+                  style={{ color: '#005A87' }}
+                  onClick={() => setNumberOfPOC(2)}
+                >
                   Add another point of contact.
                 </span>
               </>
@@ -239,7 +240,7 @@ export const CreateOrg = props => {
               <>
                 <Icon
                   type="minus-circle"
-                  style={{fontSize: '1.6rem', marginRight: '1rem'}}
+                  style={{ fontSize: '1.6rem', marginRight: '1rem' }}
                   onClick={() => setNumberOfPOC(1)}
                 />
                 <span onClick={() => setNumberOfPOC(1)}>
@@ -254,7 +255,7 @@ export const CreateOrg = props => {
               <CheckboxGroup
                 name={'Days of the week'}
                 options={days}
-                style={{width: '100%'}}
+                style={{ width: '100%' }}
                 layout={formLayouts.formItemLayoutFullLength}
               />
               <div className={'flex'}>
@@ -277,19 +278,25 @@ export const CreateOrg = props => {
                   />
                 </div>
               </div>
-              
+
               <AntTextArea
                 name={'About Us'}
                 notRequired={'false'}
                 layout={formLayouts.formItemLayoutFullLength}
-                autosize={{minRows: 4, maxRows: 120}}
-                placeholder={'A short paragraph such as mission, vision, and values of your non profit would go here...'}
+                autosize={{ minRows: 4, maxRows: 120 }}
+                placeholder={
+                  'A short paragraph such as mission, vision, and values of your non profit would go here...'
+                }
               />
-              <AntInput name={'Website'} type={'url'} notRequired={'false'}
-                        placeholder={'https://nonprofit.org'}
-                        layout={formLayouts.formItemLayoutFullLength}/>
+              <AntInput
+                name={'Website'}
+                type={'url'}
+                notRequired={'false'}
+                placeholder={'https://nonprofit.org'}
+                layout={formLayouts.formItemLayoutFullLength}
+              />
             </div>
-          </StyledWrappedAntdForm>
+          </WrappedAntForm>
         </StyledCreateOrgForm>
       </CustomStyledCard>
     </StyledDiv>
@@ -313,35 +320,34 @@ const StyledCreateOrgForm = styled.div`
 
   .mg-tp-lg {
     margin-top: 4rem;
-  }  
+  }
   label {
-  color: ${props => props.theme.primary8}
+    color: ${props => props.theme.primary8};
   }
 `;
 
 const StyledDiv = styled.div`
   background: white;
   h1 {
-    color: ${props => props.theme.primary8}
+    color: ${props => props.theme.primary8};
   }
-  
-  h4 {
-    color: ${props => props.theme.primary8}
-  }
-  
-`;
 
-const BasicStyledDiv = styled.div`
-  background: #e8e8e8;
-  display: flex;
-  width: 80%;
-  margin: 2rem auto;
-  padding: 2rem;
+  h4 {
+    color: ${props => props.theme.primary8};
+  }
 `;
 
 const CustomStyledCard = styled(StyledCard)`
-  background: #d9d9d9;
-  text-align: center;
+  &&& {
+    background: #d9d9d9;
+    text-align: center;
+    cursor: default;
+    transition: none;
+
+    &:hover {
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    }
+  }
 `;
 
 const StyledLine = styled.div`
@@ -354,6 +360,5 @@ const StyledImg = styled.img`
   margin: 2rem auto;
 `;
 
-const StyledWrappedAntdForm = styled(WrappedAntForm)``;
 
 export default CreateOrg;

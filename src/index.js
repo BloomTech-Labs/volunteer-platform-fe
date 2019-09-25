@@ -10,6 +10,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import * as global from './styles/global.css';
 import { initialState } from './reducers/initialState';
 import { mainReducer } from './reducers/mainReducer';
+import ScrollToTop from './components/ScrollToTop';
 
 //enable Sentry only for production builds
 if (process.env.NODE_ENV === 'production') {
@@ -73,7 +74,9 @@ ReactDOM.render(
       <GlobalStyle />
       <StateProvider initialState={initialState} reducer={mainReducer}>
         <Router>
-          <App />
+          <ScrollToTop>
+            <App />
+          </ScrollToTop>
         </Router>
       </StateProvider>
     </>
