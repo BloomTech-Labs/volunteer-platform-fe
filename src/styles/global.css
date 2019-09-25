@@ -66,12 +66,20 @@ h4 {
     flex-direction: row;
 }
 
+.row-wrap {
+    flex-wrap: wrap;
+}
+
 .mg-lf-4 {
     margin-left: 4rem;
 }
 
 .mg-rt-4 {
     margin-right: 4rem;
+}
+
+.mg-tp-4 {
+    margin-top: 4rem;
 }
 
 .center {

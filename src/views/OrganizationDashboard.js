@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
-import { Select } from 'antd';
-import { Link } from 'react-router-dom';
+import {Select} from 'antd';
+import {Link} from 'react-router-dom';
 import {
   getAllEventsByOrg,
   deleteOrganization,
@@ -9,108 +9,115 @@ import {
   updateOrganization,
   deleteOrganizationImage,
 } from '../actions';
-import { useStateValue } from '../hooks/useStateValue';
+import {useStateValue} from '../hooks/useStateValue';
 import EventList from '../components/EventList';
 import OrganizationInfo from '../components/OrganizationInfo';
-import { StyledButton, StyledAvatar, StyledUploadImage } from '../styled';
+import {StyledButton, StyledAvatar, StyledUploadImage} from '../styled';
 
 export const OrganizationDashboard = () => {
   const [state, dispatch] = useStateValue();
   const [displayOrg, setDisplayOrg] = useState('');
   const [imageUrl, setImageUrl] = useState(null);
-
+  
   useEffect(() => {
-    if (displayOrg.imagePath) {
+    if (displayOrg.imagePath){
       getFileUrl(displayOrg.imagePath).then(res => {
         setImageUrl(res);
       });
-    } else {
+    }else{
       setImageUrl(null);
     }
   }, [displayOrg]);
-
+  
   useEffect(() => {
-    if (state.auth.googleAuthUser) {
+    if (state.auth.googleAuthUser){
       const uid = state.auth.googleAuthUser.uid;
     }
   }, []);
-
+  
   const changeHandler = value => {
     setDisplayOrg(
-      state.org.userOrganizations.find(item => item.orgId === value)
+      state.org.userOrganizations.find(item => item.orgId === value),
     );
   };
-
+  
   useEffect(() => {
-    if (state.org.userOrganizations.length > 0) {
-      setDisplayOrg(state.org.userOrganizations[0]);
+    if (state.org.userOrganizations.length > 0){
+      setDisplayOrg(state.org.userOrganizations[ 0 ]);
     }
   }, [state.org.userOrganizations]);
-
+  
   useEffect(() => {
-    if (displayOrg) {
+    if (displayOrg){
       getAllEventsByOrg(displayOrg.orgId, dispatch);
     }
   }, [displayOrg]);
-
+  
   const deleteOrg = e => {
     e.preventDefault();
     deleteOrganization(displayOrg.orgId, dispatch);
   };
-
+  
   const onFileUpload = path => {
     setImageUrl(getFileUrl(path));
-    const updatedDisplayOrg = { ...displayOrg, imagePath: path };
-
+    const updatedDisplayOrg = {...displayOrg, imagePath: path};
+    
     updateOrganization(displayOrg.orgId, updatedDisplayOrg, dispatch);
   };
   return (
     <StyledDashboard>
-      <h1>Organization dashboard</h1>
-      <div className={'row mg-lf-4'}>
+      <div className={'row mg-lf-4 row-wrap'}>
         <div className={'column'}>
           {imageUrl ? (
             <div className={'column mg-rt-4'}>
-              <StyledAvatar shape="square" size={256} src={imageUrl} />
+              <StyledAvatar shape="square" size={256} src={imageUrl}/>
               <StyledButton onClick={() => deleteOrganizationImage(displayOrg)}>
                 Delete Image
               </StyledButton>
             </div>
           ) : (
-            <StyledUploadImage fileUploadComplete={onFileUpload} />
+            <StyledUploadImage fileUploadComplete={onFileUpload}/>
           )}
         </div>
-
         <div>
-          <Select defaultValue="select" onChange={changeHandler}>
-            <Select.Option value="select" disabled>
-              Select one
-            </Select.Option>
-            {state.org.userOrganizations.map(item => (
-              <Select.Option key={item.orgId} value={item.orgId}>
-                {item.organizationName}
+          <div className={'org-top'}>
+            <Select defaultValue="select" onChange={changeHandler}>
+              <Select.Option value="select" disabled>
+                Select one
               </Select.Option>
-            ))}
-          </Select>
+              {state.org.userOrganizations.map(item => (
+                <Select.Option key={item.orgId} value={item.orgId}>
+                  {item.organizationName}
+                </Select.Option>
+              ))}
+            </Select>
+            <StyledButton standard={true} type={'danger'} onClick={deleteOrg}>
+              Delete Org
+            </StyledButton>
+          </div>
+          
+          <h1>Welcome Back {displayOrg.organizationName}</h1>
+          <StyledButton type={'secondary'}>
+            <Link
+              to={{
+                pathname: '/create-org',
+                state: {
+                  org: displayOrg,
+                },
+              }}
+            >
+              Edit organization info
+            </Link>
+          </StyledButton>
+        
+        </div>
+        
+        <div>
+          
           {displayOrg ? (
             <>
-              <StyledButton standard={true}>
-                <Link
-                  to={{
-                    pathname: '/create-org',
-                    state: {
-                      org: displayOrg,
-                    },
-                  }}
-                >
-                  Edit organization info
-                </Link>
-              </StyledButton>
-
-              <StyledButton standard={true} onClick={deleteOrg}>
-                Delete Org
-              </StyledButton>
-              <OrganizationInfo org={displayOrg} />
+              
+              <OrganizationInfo org={displayOrg}/>
             </>
           ) : (
             <div>You have not created any organization yet</div>
@@ -127,9 +134,9 @@ export const OrganizationDashboard = () => {
           </Link>
         </div>
       </div>
-
+      
       {state.events.events.length > 0 ? (
-        <EventList events={state.events.events} />
+        <EventList events={state.events.events}/>
       ) : (
         <div>No event has been created</div>
       )}
@@ -142,6 +149,15 @@ const StyledDashboard = styled.div`
   flex-direction: column;
   align-items: center;
   max-height: 100%;
+  margin-top: 4rem;
+  .org-top {
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .row {
+    justify-content: space-around;
+  }
 `;
 
 export default OrganizationDashboard;

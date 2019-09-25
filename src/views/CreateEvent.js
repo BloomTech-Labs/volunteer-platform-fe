@@ -15,6 +15,7 @@ import {
 import {useStateValue} from '../hooks/useStateValue';
 import {createEvent, createRecurringEvent} from '../actions';
 import RecurringEvent from '../components/RecurringEvent';
+import moment from 'moment';
 
 const {Option} = Select;
 
@@ -31,81 +32,82 @@ export const CreateEvent = props => {
     description: '',
     volunteerRequirements: [],
     website: '',
-    repeatTimePeriod: '',
   };
   const [localState, setState] = useState(initialEvent);
   
   const [state, dispatch] = useStateValue();
   
   //Destructuring
-  const {recurringInfo, recurringEvent} = localState;
-  
+  const { recurringInfo, recurringEvent } = localState;
+
   useEffect(() => {
-    if (props.location.state.org){
+    if (props.location.state.org) {
       setState({
         ...localState,
         orgId: props.location.state.org.orgId,
       });
     }
   }, [props.location.state.org]);
-  
+
   //Date Format
   const dateFormat = 'MM/DD/YYYY';
-  
+
+  const removeUndefinied = event => {
+    Object.keys(event).forEach(key => {
+      if (event[key] === undefined) {
+        delete event[key];
+      }
+      return event;
+    });
+  };
+
   //Handle Submit for Form
   const handleSubmit = values => {
-    debugger;
     console.log(values);
     const event = {
-      nameOfEvent: values.nameOfEvent,
-      typeOfCauses: values.typesOfCauses,
-      date: values.date.format('HH:AA A'),
+      ...values,
+      orgName: props.location.state.org.organizationName,
+      orgImagePath: props.location.state.org.imagePath,
+      orgPage: '',
+      date: values.date.unix(),
       startTime: values.startTime.format('LT'),
       endTime: values.endTime.format('LT'),
-      numberOfVolunteers: values.numberOfVolunteers,
-      location: values.location,
-      phoneNumber: values.phoneNumber,
       pointOfcontact: {
         firstName: values.firstName,
         lastName: values.lastName,
         email: values.email,
       },
-      reccurringInfo: {
-        reccurringEvent: localState.reccurringEvent,
+      recurringInfo: {
+        recurringEvent: localState.recurringEvent,
       },
-      description: values.description,
-      volunteerRequirements: values.volunteerRequirments,
-      interest: values.interest,
-      website: values.website,
-      otherNotes: values.otherNotes,
     };
-    
-    if (recurringEvent === 'Yes'){
+
+    if (recurringEvent === 'Yes') {
       event.recurringInfo = recurringInfo;
       if (
         event.recurringInfo.repeatTimePeriod === 'Custom' &&
         event.recurringInfo.occurrenceEnds === 'On'
-      ){
-        event.recurringInfo.occurrenceEndDate = event.recurringInfo.occurrenceEndDate.format(
-          'HH:MM A',
-        );
+      ) {
+        event.recurringInfo.occurrenceEndDate = event.recurringInfo.occurrenceEndDate.unix();
         event.recurringInfo.occurrenceEndsAfter = '';
       }
       if (
         event.recurringInfo.repeatTimePeriod === 'Custom' &&
         event.recurringInfo.occurrenceEnds === 'After'
-      ){
+      ) {
         event.recurringInfo.occurrenceEndDate = '';
       }
+      removeUndefinied(event);
       createRecurringEvent(event, dispatch);
     }
-    
+    removeUndefinied(event);
+    console.log('event before on submit', event);
     createEvent(event, dispatch);
     props.history.push('/org-dashboard');
   };
 
   const handleDynmaicDate = date => {
-    const dynamicDay = date._d.toString().split(' ')[ 0 ];
+    const dynamicDay = date._d.toString().split(' ')[0];
     const dynamicYear = date._d
       .toString()
       .split(' ')
@@ -135,7 +137,7 @@ export const CreateEvent = props => {
       </Option>
     );
   });
-  
+
   let requirementTags = [];
   
   if (state.tags.requirements){
@@ -177,6 +179,7 @@ export const CreateEvent = props => {
             name={'Date'}
             format={dateFormat}
             onChange={handleDynmaicDate}
+            disabledDate={current => current && current < moment().endOf('day')}
           />
           
           <RecurringEvent
@@ -189,15 +192,14 @@ export const CreateEvent = props => {
           
           <AntTimePicker name={'Start Time'} use12Hours format={'h:mm a'}/>
           <p>to</p>
-          
-          <AntTimePicker name={'End Time'} use12Hours format={'h:mm a'}/>
-          
-          <AntInputNumber name={'Number of Volunteers'} type="number" min={0}/>
-          
-          <AntInput name={'City'} placeholder="City"/>
-          <AntInput name={'State'} placeholder="State"/>
-          <AntInput name={'Address'} placeholder="Address"/>
-          
+
+          <AntTimePicker name={'End Time'} use12Hours format={'h:mm a'} />
+
+          <AntInputNumber name={'Number of Volunteers'} type="number" min={0} />
+
+          <AntInput name={'City'} placeholder="City"></AntInput>
+          <AntInput name={'State'} placeholder="State"></AntInput>
+
           <AntInput
             name={'Phone Number'}
             type="tel"
@@ -230,6 +232,7 @@ export const CreateEvent = props => {
           <AntTextArea
             name={'Other Notes'}
             placeholder={'Any additional helpful tips for the event go here.'}
+            notRequired
           />
           <StyledButton type="secondary" htmlType="submit" onClick={cancelForm}>
             Cancel
