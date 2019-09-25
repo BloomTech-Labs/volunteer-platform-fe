@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { WrappedAntdForm, StyledButton, AntdInput } from '../styled';
+import { WrappedAntForm, StyledButton, AntInput } from '../styled';
 import { Avatar } from 'antd';
 import styled from 'styled-components';
 import { useStateValue } from '../hooks/useStateValue';
@@ -66,20 +66,20 @@ export const Signup = () => {
           icon="user"
         />
       )}
-      <WrappedAntdForm onSubmit={handleSubmit}>
-        <AntdInput name={'First Name'} />
-        <AntdInput name={'Last Name'} />
-        <AntdInput name={'Phone Number'} />
-        <AntdInput name={'Age'} />
-        <AntdInput name={'Email'} />
-        <AntdInput name={'City'} />
-        <AntdInput name={'State'} />
-        <AntdInput name={'Zip Code'} />
+      <WrappedAntForm onSubmit={handleSubmit}>
+        <AntInput name={'First Name'} />
+        <AntInput name={'Last Name'} />
+        <AntInput name={'Phone Number'} />
+        <AntInput name={'Age'} />
+        <AntInput name={'Email'} />
+        <AntInput name={'City'} />
+        <AntInput name={'State'} />
+        <AntInput name={'Zip Code'} />
 
         <StyledButton type="primary" htmlType="submit">
           Register
         </StyledButton>
-      </WrappedAntdForm>
+      </WrappedAntForm>
     </SignUpForm>
   );
 };
