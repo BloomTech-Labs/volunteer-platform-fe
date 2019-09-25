@@ -11,7 +11,7 @@ import {
 
 const { Option } = Select;
 
-const ReccurringEvent = props => {
+export const ReccurringEvent = props => {
   const { setState, localState, dateFormat, dynamicDay, dynamicYear } = props;
   const [formState, setFormState] = useState({});
 
@@ -180,4 +180,4 @@ const ReccurringEvent = props => {
   );
 };
 
-export default ReccurringEvent;
+export default RecurringEvent;

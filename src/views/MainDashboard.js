@@ -8,7 +8,7 @@ import { stateConversion } from '../utility/stateConversion';
 
 export const MainDashboard = () => {
   const [state, dispatch] = useStateValue();
-  const [inputState, setInputState] = useState({state: ''});
+  const [inputState, setInputState] = useState({ state: '' });
 
   //fetching user's location by IP
   useEffect(() => {
@@ -19,7 +19,7 @@ export const MainDashboard = () => {
           key => stateConversion[key] === res.data.state
         );
         if (stateAbbrev) {
-          setInputState({state: stateAbbrev});
+          setInputState({ state: stateAbbrev });
         }
       })
       .catch(err => {
@@ -28,7 +28,7 @@ export const MainDashboard = () => {
   }, []);
 
   useEffect(() => {
-    if (inputState.state.length >2) {
+    if (inputState.state.length > 2) {
       getAllEventsByState(inputState.state, dispatch);
     }
   }, [inputState]);
@@ -36,12 +36,13 @@ export const MainDashboard = () => {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <WrappedAntForm styled={{ maxWidth: '500px' }} autofill={inputState}>
+        <WrappedAntForm
+          styled={{ maxWidth: '500px' }}
+          autofill={inputState}
+          noButton={true}
+        >
           <h2>Browse Events</h2>
-          <AntInput
-            name={'State'}
-            placeholder="Enter State Initials"
-          />
+          <AntInput name={'State'} placeholder="Enter State Initials" />
         </WrappedAntForm>
       </div>
       <EventList events={state.events.events} />

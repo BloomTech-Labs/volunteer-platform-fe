@@ -1,7 +1,7 @@
 import React from 'react';
-import { Layout } from 'antd';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { Layout } from 'antd';
 
 const { Header } = Layout;
 

@@ -14,7 +14,7 @@ import {
 } from '../styled';
 import { useStateValue } from '../hooks/useStateValue';
 import { createEvent } from '../actions';
-import ReccurringEvent from '../components/ReccurringEvent';
+import RecurringEvent from '../components/RecurringEvent';
 
 const { Option } = Select;
 
@@ -61,6 +61,13 @@ export const CreateEvent = props => {
       startTime: values.startTime.format('LT'),
       endTime: values.endTime.format('LT'),
       numberOfVolunteers: values.numberOfVolunteers,
+      reccurringInfo: {
+        // repeatNumber: localState.formState.repeatNumber,
+        repeatTimePeriod: localState.repeatTimePeriod,
+        // recurringEventDays: localState.formState.recurringEventDays,
+        // ocurrences: localState.formStart.ocurrences,
+        // reccurringEndDate: localState.formStart.reccurringEndDate.unix(),
+      },
       location: values.location,
       phoneNumber: values.phoneNumber,
       pointOfcontact: {
@@ -145,7 +152,11 @@ export const CreateEvent = props => {
     <StyledCreateEvent>
       <StyledCard>
         <h1>Let's Create An Event</h1>
-        <WrappedAntForm onSubmit={handleSubmit}>
+        <WrappedAntForm
+          onSubmit={handleSubmit}
+          buttonType={'primary'}
+          buttonText={'Submit'}
+        >
           <AntInput name={'Name of Event'} type="text" />
           <AntSelect
             name={'Types of Causes'}
@@ -162,7 +173,7 @@ export const CreateEvent = props => {
             onChange={handleDynmaicDate}
           />
 
-          <ReccurringEvent
+          <RecurringEvent
             name={'ReccuringEvent'}
             localState={localState}
             setState={setState}
