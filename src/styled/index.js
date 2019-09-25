@@ -6,7 +6,7 @@ export * from './StyledAvatar';
 export * from './StyledLine';
 export * from './StyledSelect';
 export * from './StyledForm';
-export * from './StyledUploadImage'
+export * from './StyledUploadImage';
 
 //Exports for form building
 export * from './Form Options/AntCheckbox';
@@ -18,3 +18,4 @@ export * from './Form Options/AntRadio';
 export * from './Form Options/AntSelect';
 export * from './Form Options/AntTextArea';
 export * from './Form Options/AntTimePicker';
+export * from './StyledCheckableTag';
