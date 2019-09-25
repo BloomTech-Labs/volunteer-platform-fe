@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Select } from 'antd';
+import React, {useState, useEffect} from 'react';
+import {Select} from 'antd';
 import styled from 'styled-components';
 import {
   AntInput,
@@ -12,11 +12,11 @@ import {
   StyledButton,
   StyledCard,
 } from '../styled';
-import { useStateValue } from '../hooks/useStateValue';
-import { createEvent, createRecurringEvent } from '../actions';
+import {useStateValue} from '../hooks/useStateValue';
+import {createEvent, createRecurringEvent} from '../actions';
 import RecurringEvent from '../components/RecurringEvent';
 
-const { Option } = Select;
+const {Option} = Select;
 
 export const CreateEvent = props => {
   const initialEvent = {
@@ -31,28 +31,30 @@ export const CreateEvent = props => {
     description: '',
     volunteerRequirements: [],
     website: '',
+    repeatTimePeriod: '',
   };
   const [localState, setState] = useState(initialEvent);
-
+  
   const [state, dispatch] = useStateValue();
-
+  
   //Destructuring
-  const { reccurringInfo, reccurringEvent } = localState;
-
+  const {recurringInfo, recurringEvent} = localState;
+  
   useEffect(() => {
-    if (props.location.state.org) {
+    if (props.location.state.org){
       setState({
         ...localState,
         orgId: props.location.state.org.orgId,
       });
     }
   }, [props.location.state.org]);
-
+  
   //Date Format
   const dateFormat = 'MM/DD/YYYY';
-
+  
   //Handle Submit for Form
   const handleSubmit = values => {
+    debugger;
     console.log(values);
     const event = {
       nameOfEvent: values.nameOfEvent,
@@ -61,18 +63,17 @@ export const CreateEvent = props => {
       startTime: values.startTime.format('LT'),
       endTime: values.endTime.format('LT'),
       numberOfVolunteers: values.numberOfVolunteers,
-      reccurringInfo: {
+      recurringInfo: {
         repeatTimePeriod: localState.repeatTimePeriod,
       },
-      location: values.location,
+      city: values.city,
+      state: values.state,
+      address: values.address,
       phoneNumber: values.phoneNumber,
       pointOfcontact: {
         firstName: values.firstName,
         lastName: values.lastName,
         email: values.email,
-      },
-      reccurringInfo: {
-        reccurringEvent: localState.reccurringEvent,
       },
       description: values.description,
       volunteerRequirements: values.volunteerRequirments,
@@ -80,54 +81,54 @@ export const CreateEvent = props => {
       website: values.website,
       otherNotes: values.otherNotes,
     };
-
-    if (reccurringEvent === 'Yes') {
-      event.reccurringInfo = reccurringInfo;
+    
+    if (recurringEvent === 'Yes'){
+      event.recurringInfo = recurringInfo;
       if (
-        event.reccurringInfo.repeatTimePeriod === 'Custom' &&
-        event.reccurringInfo.occurrenceEnds === 'On'
-      ) {
-        event.reccurringInfo.occurrenceEndDate = event.reccurringInfo.occurrenceEndDate.format(
-          'HH:MM A'
+        event.recurringInfo.repeatTimePeriod === 'Custom' &&
+        event.recurringInfo.occurrenceEnds === 'On'
+      ){
+        event.recurringInfo.occurrenceEndDate = event.recurringInfo.occurrenceEndDate.format(
+          'HH:MM A',
         );
-        event.reccurringInfo.occurrenceEndsAfter = '';
+        event.recurringInfo.occurrenceEndsAfter = '';
       }
       if (
-        event.reccurringInfo.repeatTimePeriod === 'Custom' &&
-        event.reccurringInfo.occurrenceEnds === 'After'
-      ) {
-        event.reccurringInfo.occurrenceEndDate = '';
+        event.recurringInfo.repeatTimePeriod === 'Custom' &&
+        event.recurringInfo.occurrenceEnds === 'After'
+      ){
+        event.recurringInfo.occurrenceEndDate = '';
       }
       createRecurringEvent(event, dispatch);
     }
-
+    
     createEvent(event, dispatch);
     props.history.push('/org-dashboard');
   };
-
+  
   const handleDynmaicDate = date => {
-    const dynamicDay = date._d.toString().split(' ')[0];
+    const dynamicDay = date._d.toString().split(' ')[ 0 ];
     const dynamicYear = date._d
       .toString()
       .split(' ')
       .slice(1, 3)
       .join(' ');
-    let dayAsNum = date._d.toString().split(' ')[2];
+    let dayAsNum = date._d.toString().split(' ')[ 2 ];
     let count = 1;
-    while (dayAsNum > 7) {
+    while (dayAsNum > 7){
       dayAsNum -= 7;
       count++;
     }
-    let nth = { 1: 'First', 2: 'Second', 3: 'Third', 4: 'Fourth', 5: 'Fifth' };
-
+    let nth = {1: 'First', 2: 'Second', 3: 'Third', 4: 'Fourth', 5: 'Fifth'};
+    
     setState({
       ...localState,
       dynamicDay: dynamicDay,
       dynamicYear: dynamicYear,
-      dynamicNth: nth[count],
+      dynamicNth: nth[ count ],
     });
   };
-
+  
   //Options for tags
   const causeAreaTags = state.tags.causeAreas.map(tag => {
     return (
@@ -136,25 +137,25 @@ export const CreateEvent = props => {
       </Option>
     );
   });
-
+  
   let requirementTags = [];
-
-  if (state.tags.requirements) {
+  
+  if (state.tags.requirements){
     requirementTags = state.tags.requirements.map(tag => {
       return <Option key={tag}>{tag}</Option>;
     });
   }
-
+  
   const interestTags = state.tags.interests.map(tag => {
     return <Option key={tag}>{tag}</Option>;
   });
-
+  
   ///Cancel Form
-
+  
   const cancelForm = () => {
     props.history.push('/org-dashboard');
   };
-
+  
   return (
     <StyledCreateEvent>
       <StyledCard>
@@ -164,7 +165,7 @@ export const CreateEvent = props => {
           buttonType={'primary'}
           buttonText={'Submit'}
         >
-          <AntInput name={'Name of Event'} type="text" />
+          <AntInput name={'Name of Event'} type="text"/>
           <AntSelect
             name={'Types of Causes'}
             placeholder="Please select causes"
@@ -173,30 +174,32 @@ export const CreateEvent = props => {
             {causeAreaTags}
           </AntSelect>
           <label>When is the event?</label>
-
+          
           <AntDatePicker
             name={'Date'}
             format={dateFormat}
             onChange={handleDynmaicDate}
           />
-
+          
           <RecurringEvent
-            name={'ReccuringEvent'}
+            name={'RecurringEvent'}
             localState={localState}
             setState={setState}
             dateFormat={dateFormat}
             notRequired
           />
-
-          <AntTimePicker name={'Start Time'} use12Hours format={'h:mm a'} />
+          
+          <AntTimePicker name={'Start Time'} use12Hours format={'h:mm a'}/>
           <p>to</p>
-
-          <AntTimePicker name={'End Time'} use12Hours format={'h:mm a'} />
-
-          <AntInputNumber name={'Number of Volunteers'} type="number" min={0} />
-
-          <AntInput name={'Location'} placeholder="Select location"></AntInput>
-
+          
+          <AntTimePicker name={'End Time'} use12Hours format={'h:mm a'}/>
+          
+          <AntInputNumber name={'Number of Volunteers'} type="number" min={0}/>
+          
+          <AntInput name={'City'} placeholder="City"/>
+          <AntInput name={'State'} placeholder="State"/>
+          <AntInput name={'Address'} placeholder="Address"/>
+          
           <AntInput
             name={'Phone Number'}
             type="tel"
@@ -204,11 +207,11 @@ export const CreateEvent = props => {
             placeholder={'000-000-0000'}
           />
           <label>Who is the point of Contact?</label>
-
-          <AntInput name={'First Name'} type="text" />
-          <AntInput name={'Last Name'} type="text" />
-          <AntInput name={'Email'} type="email" />
-          <AntTextArea name={'Description'} type="text" />
+          
+          <AntInput name={'First Name'} type="text"/>
+          <AntInput name={'Last Name'} type="text"/>
+          <AntInput name={'Email'} type="email"/>
+          <AntTextArea name={'Description'} type="text"/>
           <label>What are the requirements?</label>
           <AntSelect
             name={'Volunteer Requirments'}
@@ -224,8 +227,8 @@ export const CreateEvent = props => {
           >
             {interestTags}
           </AntSelect>
-
-          <AntInput name={'Website'} />
+          
+          <AntInput name={'Website'}/>
           <AntTextArea
             name={'Other Notes'}
             placeholder={'Any additional helpful tips for the event go here.'}
