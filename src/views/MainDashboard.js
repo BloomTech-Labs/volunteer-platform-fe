@@ -46,7 +46,7 @@ export const MainDashboard = () => {
         if (stateAbbrev) {
           setInputState({
             ...inputState,
-            state: stateAbbrev,
+            location: { ...inputState.location, state: stateAbbrev },
           });
         }
       })
