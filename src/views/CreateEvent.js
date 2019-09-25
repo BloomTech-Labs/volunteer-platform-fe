@@ -113,11 +113,19 @@ export const CreateEvent = props => {
       .split(' ')
       .slice(1, 3)
       .join(' ');
+    let dayAsNum = date._d.toString().split(' ')[2]
+    let count = 1
+    while(dayAsNum>7){
+        dayAsNum-=7
+        count++
+    }
+    let nth ={1: 'First', 2: 'Second', 3: 'Third', 4: 'Fourth', 5: 'Fifth'}
 
     setState({
       ...localState,
       dynamicDay: dynamicDay,
       dynamicYear: dynamicYear,
+      dynamicNth: nth[count]
     });
   };
 
@@ -178,8 +186,6 @@ export const CreateEvent = props => {
             localState={localState}
             setState={setState}
             dateFormat={dateFormat}
-            dynamicDay={localState.dynamicDay}
-            dynamicYear={localState.dynamicYear}
             notRequired
           />
 
