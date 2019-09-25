@@ -2,7 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import Event from './Event';
 
-export const EventList = ({ events }) => {
+export const EventList = ({ events, recurringEvents }) => {
+    console.log(events, recurringEvents)
   return (
     <StyledEventList>
       {events.map(event => (
