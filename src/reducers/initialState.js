@@ -67,9 +67,11 @@ export const initialState = {
   org: {
     createdOrg: false,
     userOrganizations: [],
+    topOrganizations: [],
     getOrganizationFailedError: '',
     organization: {},
     deleteOrgFailedError: '',
+    error: '',
   },
   events: {
     events: [],
