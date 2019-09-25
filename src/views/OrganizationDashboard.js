@@ -107,7 +107,9 @@ export const OrganizationDashboard = () => {
                 </Link>
               </StyledButton>
 
-              <StyledButton standard={true} onClick={deleteOrg}>Delete Org</StyledButton>
+              <StyledButton standard={true} onClick={deleteOrg}>
+                Delete Org
+              </StyledButton>
               <OrganizationInfo org={displayOrg} />
             </>
           ) : (

@@ -117,7 +117,11 @@ export const CreateEvent = props => {
     <StyledCreateEvent>
       <StyledCard>
         <h1>Let's Create An Event</h1>
-        <WrappedAntForm onSubmit={handleSubmit} buttonType={"primary"} buttonText={'Submit'}>
+        <WrappedAntForm
+          onSubmit={handleSubmit}
+          buttonType={'primary'}
+          buttonText={'Submit'}
+        >
           <AntInput name={'Name of Event'} type="text" />
           <AntSelect
             name={'Types of Causes'}
@@ -145,10 +149,7 @@ export const CreateEvent = props => {
 
           <AntInputNumber name={'Number of People'} type="number" min={0} />
 
-          <AntInput
-            name={'Location'}
-            placeholder="Select location"
-          ></AntInput>
+          <AntInput name={'Location'} placeholder="Select location"></AntInput>
 
           <AntInput
             name={'Phone Number'}

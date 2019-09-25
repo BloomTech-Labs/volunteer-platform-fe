@@ -14,6 +14,7 @@ import { Icon, Select } from 'antd';
 import CheckboxGroup from 'antd/lib/checkbox/Group';
 import { registerOrganization, updateOrganization } from '../actions';
 import createOrgImg from '../assets/undraw_unexpected_friends.svg';
+import {formLayouts} from '../utility/formLayouts'
 
 export const CreateOrg = props => {
   const [numberOfPOC, setNumberOfPOC] = useState(1);
@@ -36,7 +37,7 @@ export const CreateOrg = props => {
         <div className={'inline'}>
           <AntInput
             name={'First Name'}
-            layout={formItemLayoutInline}
+            layout={formLayouts.formItemLayoutInline}
             key={'firstName'}
           />
         </div>
@@ -44,7 +45,7 @@ export const CreateOrg = props => {
         <div className={'inline'}>
           <AntInput
             name={'Last name'}
-            layout={formItemLayoutInline}
+            layout={formLayouts.formItemLayoutInline}
             key={'lastName'}
           />
         </div>
@@ -52,7 +53,7 @@ export const CreateOrg = props => {
           <AntInput
             name={'Email'}
             type={'email'}
-            layout={formItemLayoutInline}
+            layout={formLayouts.formItemLayoutInline}
             key={'email'}
           />
         </div>
@@ -68,7 +69,7 @@ export const CreateOrg = props => {
               label={'First Name'}
               notRequired={'false'}
               key={'firstName2'}
-              layout={formItemLayoutInline}
+              layout={formLayouts.formItemLayoutInline}
             />
           </div>
           <div className={'inline'}>
@@ -77,7 +78,7 @@ export const CreateOrg = props => {
               label={'First Name'}
               notRequired={'false'}
               key={'lastName2'}
-              layout={formItemLayoutInline}
+              layout={formLayouts.formItemLayoutInline}
             />
           </div>
           <div className={'inline'}>
@@ -87,7 +88,7 @@ export const CreateOrg = props => {
               type={'email'}
               notRequired={'false'}
               key={'email2'}
-              layout={formItemLayoutInline}
+              layout={formLayouts.formItemLayoutInline}
             />
           </div>
         </div>
@@ -141,39 +142,6 @@ export const CreateOrg = props => {
     'Saturday',
   ];
 
-  const formItemLayout = {
-    labelCol: {
-      xs: { span: 24 },
-      sm: { span: 24, offset: 0 },
-    },
-    wrapperCol: {
-      xs: { span: 24 },
-      sm: { span: 20 },
-    },
-  };
-
-  const formItemLayoutInline = {
-    labelCol: {
-      xs: { span: 24 },
-      sm: { span: 7 },
-    },
-    wrapperCol: {
-      xs: { span: 24 },
-      sm: { span: 24 },
-    },
-  };
-
-  const formItemLayoutFullLength = {
-    labelCol: {
-      xs: { span: 24 },
-      sm: { span: 24 },
-    },
-    wrapperCol: {
-      xs: { span: 24 },
-      sm: { span: 15 },
-    },
-  };
-
   return (
     <StyledDiv className={'flex center'}>
       <CustomStyledCard style={{ maxWidth: '900px', margin: '2rem 0 5rem 0' }}>
@@ -193,13 +161,13 @@ export const CreateOrg = props => {
                   <AntInput
                     name={'Organization Name'}
                     label={'Name of Organization'}
-                    layout={formItemLayout}
+                    layout={formLayouts.formItemLayout}
                   />
                 </div>
                 <div className={'inline'}>
                   <AntSelect
                     labelCol={{ span: 3, offset: 0 }}
-                    layout={formItemLayout}
+                    layout={formLayouts.formItemLayout}
                     name={'Cause Areas'}
                     label={
                       <>
@@ -226,14 +194,14 @@ export const CreateOrg = props => {
                   <AntInput
                     name={'City'}
                     notRequired={'false'}
-                    layout={formItemLayout}
+                    layout={formLayouts.formItemLayout}
                   />
                 </div>
                 <div className={'inline'}>
                   <AntInput
                     name={'State'}
                     notRequired={'false'}
-                    layout={formItemLayout}
+                    layout={formLayouts.formItemLayout}
                   />
                 </div>
               </div>
@@ -242,7 +210,7 @@ export const CreateOrg = props => {
                   <AntInput
                     name={'Phone'}
                     notRequired={'false'}
-                    layout={formItemLayout}
+                    layout={formLayouts.formItemLayout}
                   />
                 </div>
               </div>
@@ -308,7 +276,7 @@ export const CreateOrg = props => {
               <AntTextArea
                 name={'About Us'}
                 notRequired={'false'}
-                layout={formItemLayoutFullLength}
+                layout={formLayouts.formItemLayoutFullLength}
                 autosize={{ minRows: 4, maxRows: 120 }}
               />
               <AntInput name={'Website'} type={'url'} notRequired={'false'} />
