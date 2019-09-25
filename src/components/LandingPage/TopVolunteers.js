@@ -54,8 +54,9 @@ const StyledDiv = styled.div`
 
   .volunteer-cards {
     display: flex;
+    flex-wrap: wrap;
     align-items: flex-end;
-    justify-content: space-between;
+    justify-content: flex-start;
     width: 100%;
     margin-bottom: 40px;
 
@@ -63,26 +64,8 @@ const StyledDiv = styled.div`
       padding: 4px;
     }
 
-    .ant-card-meta-detail {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 5px 0;
-
-      .ant-card-meta-title {
-        margin: 0;
-        font-size: 1.4rem;
-      }
-  
-      .ant-card-meta-description {
-        color: ${({ theme }) => theme.accent6};
-        font-size: 0.9rem;
-        font-style: italic;
-      }
-    }
-
     h6 {
-      margin: 0;
+      margin: 1rem;
       color: ${({ theme }) => theme.gray7};
       font-size: 0.9rem;
       width: 150px;
@@ -91,6 +74,24 @@ const StyledDiv = styled.div`
 `
 
 const StyledCard = styled(Card)`
-  margin: 0 1rem;
   background: #FFF7E6;
+  width: 210px;
+  margin: 1rem 0.9rem;
+
+  .ant-card-meta-detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+
+    .ant-card-meta-title {
+      margin: 0;
+    }
+
+    .ant-card-meta-description {
+      color: ${({ theme }) => theme.accent6};
+      font-size: 0.8rem;
+      font-style: italic;
+    }
+  }
 `
