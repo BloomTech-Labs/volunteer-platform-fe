@@ -14,7 +14,7 @@ import moment from 'moment';
 
 const { Option } = Select;
 
-const ReccurringEvent = props => {
+export const RecurringEvent = props => {
   const { dateFormat, setState, localState } = props;
   const [formState, setFormState] = useState({});
 
@@ -174,4 +174,4 @@ const ReccurringEvent = props => {
   );
 };
 
-export default ReccurringEvent;
+export default RecurringEvent;

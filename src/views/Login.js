@@ -62,14 +62,10 @@ export const Login = props => {
         <h4>Or</h4>
         <WrappedAntForm
           onSubmit={values => {
-            signIn(
-              EMAIL_PROVIDER,
-              dispatch,
-              values.email,
-              values.password
-            );
+            signIn(EMAIL_PROVIDER, dispatch, values.email, values.password);
           }}
-          useButton={false}
+          buttonType="primary"
+          buttonText={pathName === `/login` ? 'Login' : 'Register'}
         >
           <AntInput
             name={'Email'}
@@ -84,12 +80,6 @@ export const Login = props => {
           />
         </WrappedAntForm>
         <StyledCenter>
-          <Form.Item>
-            <StyledButton type="primary" htmlType="submit">
-              {pathName === `/login` ? 'Login' : 'Register'}
-            </StyledButton>
-          </Form.Item>
-
           <h4>
             {pathName === '/login'
               ? 'Dont have an account?'
@@ -111,6 +101,16 @@ const StyledLogin = styled.div`
   min-height: 100vh;
   margin-bottom: 4rem;
 
+  form{
+      display: flex;
+      flex-direction: column;
+  }
+  
+  button {
+    align-self: center;
+    align-items: center;
+    margin: 0 auto;
+  }
   h3 {
     margin-top: 3.9rem;
     margin-bottom: 2.3rem;

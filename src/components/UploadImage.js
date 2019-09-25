@@ -1,5 +1,5 @@
 import React from 'react';
-import { Upload, Icon, Modal, Alert } from 'antd';
+import { Upload, Icon, Alert } from 'antd';
 import { uploadImage } from '../actions/files';
 import PropTypes from 'prop-types';
 
