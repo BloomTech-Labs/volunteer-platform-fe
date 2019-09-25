@@ -12,7 +12,7 @@ body {
     'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue',
     Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
     'Segoe UI Symbol';
-    background: #f2f2f2;
+    background: #fff;
 
 }
 
@@ -52,15 +52,41 @@ h4 {
     line-height: 1.4;
 }
 
-/*li.ant-select-dropdown-menu-item > i {*/
-/*display: none;*/
-/*}*/
+.flex {
+    display: flex;
+}
 
-/*li.ant-select-dropdown-menu-item.ant-select-dropdown-menu-item-selected > i {*/
-/*display: block;*/
-/*color: green;*/
-/*}*/
+.column {
+    display: flex;
+    flex-direction: column;
+}
 
-/*li.ant-select-dropdown-menu-item.ant-select-dropdown-menu-item-active > i {*/
-/*display: block;*/
-/*}*/
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
+.mg-lf-4 {
+    margin-left: 4rem;
+}
+
+.mg-rt-4 {
+    margin-right: 4rem;
+}
+
+.center {
+    justify-content: center;
+    align-items: center;
+}
+
+.spaceBetween {
+    display: flex;
+    justify-content: space-between;
+}
+
+.spaceAround {
+    display: flex;
+    justify-content: space-around;
+}
+
+

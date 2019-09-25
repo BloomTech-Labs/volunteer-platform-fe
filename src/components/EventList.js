@@ -1,6 +1,7 @@
 import React from 'react';
+import styled from 'styled-components';
 import Event from './Event';
-import { StyledEventList } from '../styled';
+
 export const EventList = ({ events }) => {
   return (
     <StyledEventList>
@@ -10,5 +11,13 @@ export const EventList = ({ events }) => {
     </StyledEventList>
   );
 };
+
+const StyledEventList = styled.div`
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+`
 
 export default EventList;

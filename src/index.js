@@ -21,13 +21,10 @@ if (process.env.NODE_ENV === 'production') {
 const GlobalStyle = createGlobalStyle`
     ${reset}
     ${global}
-    body{
-        /* font-family: ${({ theme }) => theme.loraFont} */
-    }
 `;
 
 const theme = {
-  primary: '#12a0d3',
+  primary: '#003d61',
   primary1: '#e6fcff',
   primary2: '#baf6ff',
   primary3: '#8ee8fa',

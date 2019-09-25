@@ -1,43 +1,83 @@
 const causeAreas = [
-  'Animal Care', 'Health & Medicine', 'Computers &' + ' Technology',
-  'Computers & Technology', 'mmigrants & Refugees', 'Seniors', 'Faith-Based',
-  'Crisis Support', 'Hunger', 'Sports & Recreation', 'Disaster Relief',
-  'Education & Literacy', 'Justice & Legal', 'Women', 'Media & Broadcasting',
-  'Emergency & Safety', 'Children & Youth', 'Politics', 'Homeless & Housing',
-  'People with Disabilities', 'Environment', 'Veterans & Military Families',
+  'Animal Care',
+  'Health & Medicine',
+  'Computers & Technology',
+  'Immigrants & Refugees',
+  'Seniors',
+  'Faith-Based',
+  'Crisis Support',
+  'Hunger',
+  'Sports & Recreation',
+  'Disaster Relief',
+  'Education & Literacy',
+  'Justice & Legal',
+  'Women',
+  'Media & Broadcasting',
+  'Emergency & Safety',
+  'Children & Youth',
+  'Politics',
+  'Homeless & Housing',
+  'People with Disabilities',
+  'Environment',
+  'Veterans & Military Families',
   'Advocacy & Human Rights',
 ];
 
 const requirements = [
-  'Background Check', 'Light Lifting Required', 'Orientation or Training',
-  'Access to Computer', 'Heavy Lifting Required',
-  'Children Require Parent/Guardian', 'Waiver for Youth',
-  'Application Required', 'Basic Computer Skills',
+  'Background Check',
+  'Light Lifting Required',
+  'Orientation or Training',
+  'Access to Computer',
+  'Heavy Lifting Required',
+  'Children Require Parent/Guardian',
+  'Waiver for Youth',
+  'Application Required',
+  'Basic Computer Skills',
 ];
 
 const interests = [
-  'Work with Animals', 'Virtual', 'Group Friendly',
-  'New' + ' Volunteer Friendly', 'Religion', 'Customer Service',
-  'Senior Friendly', 'Helping Homeless', 'Indoor Work', 'Family Friendly',
-  'Tutoring', 'Youth Friendly', 'Wheelchair Accessible', 'Outdoor Work',
+  'Work with Animals',
+  'Virtual',
+  'Group Friendly',
+  'New' + ' Volunteer Friendly',
+  'Religion',
+  'Customer Service',
+  'Senior Friendly',
+  'Helping Homeless',
+  'Indoor Work',
+  'Family Friendly',
+  'Tutoring',
+  'Youth Friendly',
+  'Wheelchair Accessible',
+  'Outdoor Work',
 ];
+
+const checkLoggedIn = localStorage.getItem('loggedIn') === 'true';
+const checkRegistered = localStorage.getItem('userRegistered') === 'true';
 
 export const initialState = {
   auth: {
-    loggedIn: true, signedUp: true, googleAuthUser: null, registeredUser: null,
-  }, org: {
+    loggedIn: checkLoggedIn || false,
+    signedUp: checkRegistered || false,
+    googleAuthUser: null,
+    registeredUser: null,
+  },
+  org: {
     createdOrg: false,
     userOrganizations: [],
     getOrganizationFailedError: '',
     organization: {},
     deleteOrgFailedError: '',
-  }, events: {
+  },
+  events: {
     events: [],
+    recurringEvents: [],
     createEventFailedError: '',
     deleteEventFailedError: '',
     editEventFailedError: '',
     getEventsFailedError: '',
-  }, tags: {
+  },
+  tags: {
     interests: interests,
     requirements: requirements,
     causeAreas: causeAreas,
@@ -85,6 +125,7 @@ export const initialState = {
  * @typedef events
  * @type {Object}
  * @property {Event[]} events Array of events collected from db.
+ * @property {RecurringEvent[]}
  * @property {String} createEventFailedError Create Event Error Message
  * @property {String} createEventFailedError Create Event Error Message
  * @property {String} editEventFailedError Edit Event Error Message

@@ -1,13 +1,21 @@
+//Exports for reusable styled Antd components
 export * from './StyledButton';
-export * from './StyledForm';
-export * from './StyledInput';
 export * from './StyledCard';
 export * from './StyledLink';
-export * from './StyledTag';
-export * from './StyledDatePicker';
-export * from './StyledInputNumber';
-export * from './StyledTimePicker';
-export * from './StyledTextArea';
+export * from './StyledAvatar';
+export * from './StyledLine';
 export * from './StyledSelect';
-export * from './StyledEventList';
+export * from './StyledForm';
+export * from './StyledUploadImage';
+
+//Exports for form building
+export * from './Form Options/AntCheckbox';
+export * from './Form Options/AntDatePicker';
+export * from './AntForm';
+export * from './Form Options/AntInput';
+export * from './Form Options/AntInputNumber';
+export * from './Form Options/AntRadio';
+export * from './Form Options/AntSelect';
+export * from './Form Options/AntTextArea';
+export * from './Form Options/AntTimePicker';
 export * from './StyledCheckableTag';
