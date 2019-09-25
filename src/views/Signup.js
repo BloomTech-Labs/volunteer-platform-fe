@@ -71,6 +71,7 @@ export const Signup = (props) => {
           autofill={localState}
           buttonType="primary"
           buttonText="Register"
+          buttonLoading={state.auth.isLoading}
         >
           <div className='inputGroup'>
             <div className='top'>
