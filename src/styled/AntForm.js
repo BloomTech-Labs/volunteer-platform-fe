@@ -140,6 +140,8 @@ export class AntForm extends React.Component {
           <StyledButton
             onClick={this.handleSubmit}
             type={this.props.buttonType}
+            loading={this.props.buttonLoading}
+            disabled={this.props.buttonLoading}
           >
             {this.props.buttonText}
           </StyledButton>
