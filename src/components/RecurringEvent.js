@@ -9,6 +9,8 @@ import {
   AntSelect,
 } from '../styled';
 
+import moment from 'moment';
+
 const { Option } = Select;
 
 export const RecurringEvent = props => {
@@ -41,7 +43,7 @@ export const RecurringEvent = props => {
   const handleCheckBox = checked => {
     setState({
       ...localState,
-      reccurringEvent: checked.target.value,
+      recurringEvent: checked.target.value,
     });
   };
 
@@ -49,13 +51,13 @@ export const RecurringEvent = props => {
     if (period === 'Custom') {
       setFormState({
         ...formState,
-        reccurringBoolean: true,
+        recurringBoolean: true,
       });
     }
     setState({
       ...localState,
-      reccurringInfo: {
-        ...localState.reccurringInfo,
+      recurringInfo: {
+        ...localState.recurringInfo,
         repeatTimePeriod: period,
       },
     });
@@ -65,13 +67,13 @@ export const RecurringEvent = props => {
     console.log(values);
     setState({
       ...localState,
-      reccurringInfo: {
-        ...localState.reccurringInfo,
+      recurringInfo: {
+        ...localState.recurringInfo,
         ...values,
       },
     });
     setFormState({
-      reccurringBoolean: false,
+      recurringBoolean: false,
     });
   };
 
@@ -85,7 +87,7 @@ export const RecurringEvent = props => {
   const closeDrawer = () => {
     setFormState({
       ...formState,
-      reccurringBoolean: false,
+      recurringBoolean: false,
     });
   };
 
@@ -111,7 +113,7 @@ export const RecurringEvent = props => {
         <Radio value={'Yes'}>Yes</Radio>
         <Radio value={'No'}>No</Radio>
       </Radio.Group>
-      {localState.reccurringEvent === 'Yes' && (
+      {localState.recurringEvent === 'Yes' && (
         <StyledSelect
           style={{ width: 200 }}
           defaultValue="Does not Repeat"
@@ -123,14 +125,18 @@ export const RecurringEvent = props => {
       )}
 
       <Drawer
-        title="Add a reccurring event"
+        title="Add a recurring event"
         width={720}
         closable={false}
         placement="left"
         onClose={closeDrawer}
-        visible={formState.reccurringBoolean}
+        visible={formState.recurringBoolean}
       >
-        <WrappedAntForm onSubmit={handleSubmit}>
+        <WrappedAntForm
+          buttonText="Submit"
+          buttonType="primary"
+          onSubmit={handleSubmit}
+        >
           <AntInputNumber
             name={'Repeat every'}
             style={{ width: 100 }}
@@ -158,6 +164,7 @@ export const RecurringEvent = props => {
           <AntDatePicker
             name={'Occurrence End Date'}
             format={dateFormat}
+            disabledDate={current => current && current < moment().endOf('day')}
             disabled={formState.occurrence === 'On' ? false : true}
             notRequired
           />
@@ -171,9 +178,6 @@ export const RecurringEvent = props => {
 
           <StyledButton type="secondary" onClick={closeDrawer}>
             Back
-          </StyledButton>
-          <StyledButton type="primary" htmlType="submit" onClick={closeDrawer}>
-            Submit
           </StyledButton>
         </WrappedAntForm>
       </Drawer>
