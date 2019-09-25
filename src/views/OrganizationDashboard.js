@@ -8,6 +8,7 @@ import {
   getFileUrl,
   updateOrganization,
   deleteOrganizationImage,
+  getAllRecurringEventsByOrg,
 } from '../actions';
 import {useStateValue} from '../hooks/useStateValue';
 import EventList from '../components/EventList';
@@ -50,6 +51,7 @@ export const OrganizationDashboard = () => {
   useEffect(() => {
     if (displayOrg){
       getAllEventsByOrg(displayOrg.orgId, dispatch);
+      getAllRecurringEventsByOrg(displayOrg.orgId, dispatch);
     }
   }, [displayOrg]);
   
@@ -64,6 +66,7 @@ export const OrganizationDashboard = () => {
     
     updateOrganization(displayOrg.orgId, updatedDisplayOrg, dispatch);
   };
+
   return (
     <StyledDashboard>
       <div className={'row mg-lf-4 row-wrap'}>
@@ -134,9 +137,13 @@ export const OrganizationDashboard = () => {
           </Link>
         </div>
       </div>
-      
-      {state.events.events.length > 0 ? (
-        <EventList events={state.events.events}/>
+
+      {state.events.events.length > 0 ||
+      state.events.recurringEvents.length > 0 ? (
+        <EventList
+          events={state.events.events}
+          recurringEvents={state.events.recurringEvents}
+        />
       ) : (
         <div>No event has been created</div>
       )}

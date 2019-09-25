@@ -64,7 +64,6 @@ export const RecurringEvent = props => {
   };
 
   const handleSubmit = values => {
-    console.log(values);
     setState({
       ...localState,
       recurringInfo: {
