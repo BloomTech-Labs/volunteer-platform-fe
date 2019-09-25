@@ -15,7 +15,7 @@ import {
 import { useStateValue } from '../hooks/useStateValue';
 import { createEvent, createRecurringEvent } from '../actions';
 import RecurringEvent from '../components/RecurringEvent';
-import { object } from 'prop-types';
+import moment from 'moment';
 
 const { Option } = Select;
 
@@ -38,7 +38,7 @@ export const CreateEvent = props => {
   const [state, dispatch] = useStateValue();
 
   //Destructuring
-  const { reccurringInfo, reccurringEvent } = localState;
+  const { recurringInfo, recurringEvent } = localState;
 
   useEffect(() => {
     if (props.location.state.org) {
@@ -52,12 +52,24 @@ export const CreateEvent = props => {
   //Date Format
   const dateFormat = 'MM/DD/YYYY';
 
+  const removeUndefinied = event => {
+    Object.keys(event).forEach(key => {
+      if (event[key] === undefined) {
+        delete event[key];
+      }
+      return event;
+    });
+  };
+
   //Handle Submit for Form
   const handleSubmit = values => {
     console.log(values);
     const event = {
       ...values,
-      date: values.date.format('HH:AA A'),
+      orgName: props.location.state.org.organizationName,
+      orgImagePath: props.location.state.org.imagePath,
+      orgPage: '',
+      date: values.date.unix(),
       startTime: values.startTime.format('LT'),
       endTime: values.endTime.format('LT'),
       pointOfcontact: {
@@ -65,36 +77,31 @@ export const CreateEvent = props => {
         lastName: values.lastName,
         email: values.email,
       },
-      reccurringInfo: {
-        reccurringEvent: localState.reccurringEvent,
+      recurringInfo: {
+        recurringEvent: localState.recurringEvent,
       },
     };
 
-    if (reccurringEvent === 'Yes') {
-      event.reccurringInfo = reccurringInfo;
+    if (recurringEvent === 'Yes') {
+      event.recurringInfo = recurringInfo;
       if (
-        event.reccurringInfo.repeatTimePeriod === 'Custom' &&
-        event.reccurringInfo.occurrenceEnds === 'On'
+        event.recurringInfo.repeatTimePeriod === 'Custom' &&
+        event.recurringInfo.occurrenceEnds === 'On'
       ) {
-        event.reccurringInfo.occurrenceEndDate = event.reccurringInfo.occurrenceEndDate.format(
-          'HH:MM A'
-        );
-        event.reccurringInfo.occurrenceEndsAfter = '';
+        event.recurringInfo.occurrenceEndDate = event.recurringInfo.occurrenceEndDate.unix();
+        event.recurringInfo.occurrenceEndsAfter = '';
       }
       if (
-        event.reccurringInfo.repeatTimePeriod === 'Custom' &&
-        event.reccurringInfo.occurrenceEnds === 'After'
+        event.recurringInfo.repeatTimePeriod === 'Custom' &&
+        event.recurringInfo.occurrenceEnds === 'After'
       ) {
-        event.reccurringInfo.occurrenceEndDate = '';
+        event.recurringInfo.occurrenceEndDate = '';
       }
+      removeUndefinied(event);
       createRecurringEvent(event, dispatch);
     }
-    Object.keys(event).forEach(key => {
-      if (event[key] === undefined) {
-        delete event[key];
-      }
-    });
-    console.log(event);
+    removeUndefinied(event);
+    console.log('event before on submit', event);
     createEvent(event, dispatch);
     props.history.push('/org-dashboard');
   };
@@ -172,10 +179,11 @@ export const CreateEvent = props => {
             name={'Date'}
             format={dateFormat}
             onChange={handleDynmaicDate}
+            disabledDate={current => current && current < moment().endOf('day')}
           />
 
           <RecurringEvent
-            name={'ReccuringEvent'}
+            name={'RecurringEvent'}
             localState={localState}
             setState={setState}
             dateFormat={dateFormat}
