@@ -242,7 +242,7 @@ export const CreateOrg = props => {
                          layout={formItemLayoutFullLength}
                          autosize={{minRows: 4, maxRows: 120}}/>
             <AntInput name={'Website'} type={'url'}
-                      notRequired={'false'}/>
+                      notRequired={'false'} layout={formItemLayoutFullLength}/>
           </div>
         </StyledWrappedAntdForm>
       </StyledCreateOrgForm>
@@ -253,6 +253,7 @@ export const CreateOrg = props => {
 const StyledCreateOrgForm = styled.div`
 margin-top: 2rem;
 width: 100%;
+
 .inline{
   width: 50%;
 }
@@ -260,7 +261,8 @@ width: 100%;
 .styledGroup {
   background-color: #E8E8E8;
   border-radius: 30px;
-  padding: 1rem;
+  padding: 2rem;
+  margin: 2rem;
 }
 
 i{
