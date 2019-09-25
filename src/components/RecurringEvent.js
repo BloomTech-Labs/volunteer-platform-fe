@@ -33,12 +33,16 @@ export const RecurringEvent = props => {
   const repeatTimePeriodOptions = [
     'Does not repeat',
     'Daily',
-    `Weekly on ${dynamicDay}`,
-    `Monthly on the ${dynamicNth} ${dynamicDay} `,
-    `Annually on ${dynamicYear}`,
     'Every Weekday',
-    'Custom',
+    `Weekly on ${dynamicDay}`,
   ];
+
+  if (dynamicNth !== 'Fifth') {
+    repeatTimePeriodOptions.push(`Monthly on the ${dynamicNth} ${dynamicDay} `);
+  }
+
+  repeatTimePeriodOptions.push(`Annually on ${dynamicYear}`);
+  repeatTimePeriodOptions.push('Custom');
 
   const handleCheckBox = checked => {
     setState({
