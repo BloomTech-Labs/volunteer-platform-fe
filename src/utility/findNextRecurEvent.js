@@ -7,7 +7,6 @@ export const findNext = (date, info) => {
     case 'Daily':
         return moment().add(1, 'days').format('LL')
     case 'Weekly':
-        return moment.
     case 'Monthly':
     case 'Annually':
     case 'Every':

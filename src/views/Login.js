@@ -20,7 +20,7 @@ import { device } from '../styled/deviceBreakpoints';
 
 export const Login = props => {
   const [state, dispatch] = useStateValue();
-  const [localState, setState] = useState({});
+  //const [localState, setState] = useState({});
   const [pathName, setPathName] = useState(props.location.pathname);
 
   useEffect(() => {
@@ -67,6 +67,7 @@ export const Login = props => {
           layout={'vertical'}
           buttonType="primary"
           buttonText={pathName === `/login` ? 'Login' : 'Register'}
+          buttonLoading={state.auth.isLoading}
         >
           <AntInput
             name={'Email'}
