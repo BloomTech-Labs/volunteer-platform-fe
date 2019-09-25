@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
-import { Drawer, Select, Checkbox, Radio, DatePicker, InputNumber } from 'antd';
+import { Drawer, Select, Checkbox, Radio } from 'antd';
 import {
   StyledButton,
-  StyledInputNumber,
-  StyledSwitch,
   StyledSelect,
   WrappedAntForm,
   AntInputNumber,
   AntDatePicker,
   AntSelect,
 } from '../styled';
-import moment from 'moment';
 
 const { Option } = Select;
 
@@ -56,7 +53,10 @@ const ReccurringEvent = props => {
     }
     setState({
       ...localState,
-      repeatTimePeriod: period,
+      reccurringInfo: {
+        ...localState.reccurringInfo,
+        repeatTimePeriod: period,
+      },
     });
   };
 
@@ -64,7 +64,10 @@ const ReccurringEvent = props => {
     console.log(values);
     setState({
       ...localState,
-      values,
+      reccurringInfo: {
+        ...localState.reccurringInfo,
+        ...values,
+      },
     });
     setFormState({
       reccurringBoolean: false,
@@ -112,7 +115,6 @@ const ReccurringEvent = props => {
           style={{ width: 200 }}
           defaultValue="Does not Repeat"
           name={'Repeat Time Period'}
-          value={localState.repeatTimePeriod}
           onChange={handleRepeatPeriod}
         >
           {repeatTimePeriod}
@@ -136,7 +138,7 @@ const ReccurringEvent = props => {
           />
           <AntSelect
             style={{ width: 100 }}
-            name={'Repeat Time Period'}
+            name={'Repeat every value'}
             notRequired
           >
             {periodOfTime}
