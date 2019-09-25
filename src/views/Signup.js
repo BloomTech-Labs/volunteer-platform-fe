@@ -53,6 +53,7 @@ export const Signup = () => {
   }, [state]);
 
   const handleSubmit = values => {
+    values.uid = localState.uid;
     register(values, dispatch);
   };
 
@@ -66,7 +67,12 @@ export const Signup = () => {
           icon="user"
         />
       )}
-      <WrappedAntForm onSubmit={handleSubmit} autofill={localState}>
+      <WrappedAntForm
+        onSubmit={handleSubmit}
+        autofill={localState}
+        buttonType="primary"
+        buttonText="Register"
+      >
         <AntInput name={'First Name'} />
         <AntInput name={'Last Name'} />
         <AntInput name={'Phone Number'} />
@@ -75,10 +81,6 @@ export const Signup = () => {
         <AntInput name={'City'} />
         <AntInput name={'State'} />
         <AntInput name={'Zip Code'} />
-
-        <StyledButton type="primary" htmlType="submit">
-          Register
-        </StyledButton>
       </WrappedAntForm>
     </SignUpForm>
   );

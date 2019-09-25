@@ -131,10 +131,9 @@ export class AntForm extends React.Component{
                         layout={this.props.layout ? this.props.layout :
                           'horizontal'}>
       {this.renderChildren(this.props.children)}
-      {this.props.useButton &&
-      (<StyledButton onClick={this.handleSubmit} type={'submit'}>
-        Submit
-      </StyledButton>)}
+      <StyledButton onClick={this.handleSubmit} type={this.props.buttonType}>
+        {this.props.buttonText}
+      </StyledButton>
     </StyledForm>);
   }
 }
