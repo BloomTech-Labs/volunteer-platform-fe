@@ -100,8 +100,10 @@ export const CreateEvent = props => {
       removeUndefinied(event);
       createRecurringEvent(event, dispatch);
     }
-    removeUndefinied(event);
-    createEvent(event, dispatch);
+    else{
+        removeUndefinied(event);
+        createEvent(event, dispatch);
+    }
     props.history.push('/org-dashboard');
   };
 

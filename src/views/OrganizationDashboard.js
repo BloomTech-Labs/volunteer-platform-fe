@@ -67,6 +67,7 @@ export const OrganizationDashboard = () => {
 
     updateOrganization(displayOrg.orgId, updatedDisplayOrg, dispatch);
   };
+
   return (
     <StyledDashboard>
       <h1>Organization dashboard</h1>
