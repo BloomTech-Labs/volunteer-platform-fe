@@ -15,7 +15,7 @@ import moment from 'moment';
 const { Option } = Select;
 
 const ReccurringEvent = props => {
-  const { dateFormat, setState, localState } = props;
+  const { setState, localState, dateFormat, dynamicDay, dynamicYear } = props;
   const [formState, setFormState] = useState({});
 
   const dayOptions = [
@@ -29,20 +29,21 @@ const ReccurringEvent = props => {
   ];
 
   const timePeriodOptions = ['Week', 'Month', 'Annual'];
+
   const repeatTimePeriodOptions = [
     'Does not repeat',
     'Daily',
-    'Weekly on insert day',
-    'Monthly on date',
-    'Annually on date',
-    'Everyone Weekday',
+    `Weekly on ${dynamicDay}`,
+    `Monthly on 1st/2nd/3rd/4th ${dynamicDay} `,
+    `Annually on ${dynamicYear}`,
+    'Every Weekday',
     'Custom',
   ];
 
   const handleCheckBox = checked => {
     setState({
       ...localState,
-      reccurringCheckbox: checked.target.value,
+      reccurringEvent: checked.target.value,
     });
   };
 
@@ -59,13 +60,21 @@ const ReccurringEvent = props => {
     });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = values => {
+    console.log(values);
     setState({
       ...localState,
-      formState,
+      values,
     });
     setFormState({
       reccurringBoolean: false,
+    });
+  };
+
+  const handleOccurrences = occurrence => {
+    setFormState({
+      ...formState,
+      occurrence: occurrence.target.value,
     });
   };
 
@@ -98,7 +107,7 @@ const ReccurringEvent = props => {
         <Radio value={'Yes'}>Yes</Radio>
         <Radio value={'No'}>No</Radio>
       </Radio.Group>
-      {localState.reccurringCheckbox === 'Yes' && (
+      {localState.reccurringEvent === 'Yes' && (
         <StyledSelect
           style={{ width: 200 }}
           defaultValue="Does not Repeat"
@@ -123,50 +132,45 @@ const ReccurringEvent = props => {
             name={'Repeat every'}
             style={{ width: 100 }}
             min={0}
-            max={
-              formState.repeatTimePeriod === 'Week'
-                ? 7
-                : 'Month'
-                ? 31
-                : 'Annual'
-                ? 365
-                : 365
-            }
+            notRequired
           />
           <AntSelect
             style={{ width: 100 }}
-            defaultValue="Week"
             name={'Repeat Time Period'}
+            notRequired
           >
             {periodOfTime}
           </AntSelect>
-          <Checkbox.Group
-            name={'Days'}
-            options={dayOptions}
-            // onChange={handleDays}
-            // value={formState.reccurringEventDays}
-          />
+          <Checkbox.Group name={'Days'} options={dayOptions} notRequired />
           <label>Ends</label>
-          <Radio.Group name={'Occurrences'}>
+          <Radio.Group
+            name={'Occurrence Ends'}
+            onChange={handleOccurrences}
+            notRequired
+          >
             <Radio value={'Never'}>Never</Radio>
             <Radio value={'On'}>On</Radio>
-            <AntDatePicker
-              name={'Reccurring End Date'}
-              defaultValue={moment(moment(), dateFormat)}
-              format={dateFormat}
-              //disabled={formState.ocurrences === 'On' ? false : true}
-            />
             <Radio value={'After'}>After</Radio>
-            <InputNumber
-              style={{ width: 50 }}
-              name={'Occurrence Number'}
-              min={0}
-              // disabled={formSat.ocurrences === 'After' ? false : true}
-            />
           </Radio.Group>
+          <AntDatePicker
+            name={'Occurrence End Date'}
+            format={dateFormat}
+            disabled={formState.occurrence === 'On' ? false : true}
+            notRequired
+          />
+          <AntInputNumber
+            style={{ width: 50 }}
+            name={'Occurrence Ends After'}
+            min={0}
+            disabled={formState.occurrence === 'After' ? false : true}
+            notRequired
+          />
 
           <StyledButton type="secondary" onClick={closeDrawer}>
             Back
+          </StyledButton>
+          <StyledButton type="primary" htmlType="submit" onClick={closeDrawer}>
+            Submit
           </StyledButton>
         </WrappedAntForm>
       </Drawer>

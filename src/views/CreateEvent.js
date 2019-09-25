@@ -41,7 +41,7 @@ export const CreateEvent = props => {
   const [state, dispatch] = useStateValue();
 
   //Destructuring
-  let { event } = localState;
+  console.log(localState);
 
   useEffect(() => {
     if (props.location.state.org) {
@@ -65,8 +65,10 @@ export const CreateEvent = props => {
       startTime: values.startTime.format('LT'),
       endTime: values.endTime.format('LT'),
       reccurringInfo: {
-        // repeatNumber: localState.formState.repeatNumber,
         repeatTimePeriod: localState.repeatTimePeriod,
+        dynmaicDay: localState.dynmaicDay,
+        // repeatNumber: localState.formState.repeatNumber,
+
         // reccurringEventDays: localState.formState.reccurringEventDays,
         // ocurrences: localState.formStart.ocurrences,
         // reccurringEndDate: localState.formStart.reccurringEndDate.unix(),
@@ -85,6 +87,22 @@ export const CreateEvent = props => {
     };
     console.log(event);
     // createEvent(event, dispatch);
+  };
+
+  const handleDynmaicDate = date => {
+    const dynamicDay = date._d.toString().split(' ')[0];
+    const dynamicYear = date._d
+      .toString()
+      .split(' ')
+      .slice(1, 3)
+      .join(' ');
+    console.log(date._d.toString());
+
+    setState({
+      ...localState,
+      dynamicDay: dynamicDay,
+      dynamicYear: dynamicYear,
+    });
   };
 
   //Options for tags
@@ -129,13 +147,19 @@ export const CreateEvent = props => {
           </AntSelect>
           <label>When is the event?</label>
 
-          <AntDatePicker name={'Date'} format={dateFormat} />
+          <AntDatePicker
+            name={'Date'}
+            format={dateFormat}
+            onChange={handleDynmaicDate}
+          />
 
           <ReccurringEvent
             name={'ReccuringEvent'}
             localState={localState}
             setState={setState}
             dateFormat={dateFormat}
+            dynamicDay={localState.dynamicDay}
+            dynamicYear={localState.dynamicYear}
             notRequired
           />
 
@@ -146,10 +170,7 @@ export const CreateEvent = props => {
 
           <AntInputNumber name={'Number of People'} type="number" min={0} />
 
-          <AntInput
-            name={'Location'}
-            placeholder="Select location"
-          ></AntInput>
+          <AntInput name={'Location'} placeholder="Select location"></AntInput>
 
           <AntInput
             name={'Phone Number'}
