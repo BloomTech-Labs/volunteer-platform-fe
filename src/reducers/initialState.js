@@ -62,7 +62,8 @@ export const initialState = {
     googleAuthUser: null,
     registeredUser: null,
     signInError: null,
-    signUpError: null
+    signUpError: null, 
+    isLoading: false
   },
   org: {
     createdOrg: false,
@@ -72,6 +73,7 @@ export const initialState = {
     organization: {},
     deleteOrgFailedError: '',
     error: '',
+    isLoading: false
   },
   events: {
     events: [],
@@ -80,6 +82,7 @@ export const initialState = {
     deleteEventFailedError: '',
     editEventFailedError: '',
     getEventsFailedError: '',
+    isLoading: false
   },
   tags: {
     interests: interests,

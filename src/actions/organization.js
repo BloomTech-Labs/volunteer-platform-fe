@@ -17,6 +17,7 @@ export const CREATED_ORGANIZATION = 'CREATED_ORGANIZATION';
  * @param {Dispatch} dispatch
  */
 export const registerOrganization = (org, dispatch) => {
+    debugger;
   store
     .collection('organizations')
     .add(org)
