@@ -13,7 +13,7 @@ import {
   StyledCard,
 } from '../styled';
 import { useStateValue } from '../hooks/useStateValue';
-import { createEvent } from '../actions';
+import { createEvent, createRecurringEvent } from '../actions';
 import RecurringEvent from '../components/RecurringEvent';
 
 const { Option } = Select;
@@ -57,16 +57,12 @@ export const CreateEvent = props => {
     const event = {
       nameOfEvent: values.nameOfEvent,
       typeOfCauses: values.typesOfCauses,
-      date: values.date.unix(),
+      date: values.date.format('HH:AA A'),
       startTime: values.startTime.format('LT'),
       endTime: values.endTime.format('LT'),
       numberOfVolunteers: values.numberOfVolunteers,
       reccurringInfo: {
-        // repeatNumber: localState.formState.repeatNumber,
         repeatTimePeriod: localState.repeatTimePeriod,
-        // recurringEventDays: localState.formState.recurringEventDays,
-        // ocurrences: localState.formStart.ocurrences,
-        // reccurringEndDate: localState.formStart.reccurringEndDate.unix(),
       },
       location: values.location,
       phoneNumber: values.phoneNumber,
@@ -91,7 +87,9 @@ export const CreateEvent = props => {
         event.reccurringInfo.repeatTimePeriod === 'Custom' &&
         event.reccurringInfo.occurrenceEnds === 'On'
       ) {
-        event.reccurringInfo.occurrenceEndDate = event.reccurringInfo.occurrenceEndDate.unix();
+        event.reccurringInfo.occurrenceEndDate = event.reccurringInfo.occurrenceEndDate.format(
+          'HH:MM A'
+        );
         event.reccurringInfo.occurrenceEndsAfter = '';
       }
       if (
@@ -100,9 +98,10 @@ export const CreateEvent = props => {
       ) {
         event.reccurringInfo.occurrenceEndDate = '';
       }
+      createRecurringEvent(event, dispatch);
     }
-    console.log(event);
-    // createEvent(event, dispatch);
+
+    createEvent(event, dispatch);
     props.history.push('/org-dashboard');
   };
 
@@ -113,19 +112,19 @@ export const CreateEvent = props => {
       .split(' ')
       .slice(1, 3)
       .join(' ');
-    let dayAsNum = date._d.toString().split(' ')[2]
-    let count = 1
-    while(dayAsNum>7){
-        dayAsNum-=7
-        count++
+    let dayAsNum = date._d.toString().split(' ')[2];
+    let count = 1;
+    while (dayAsNum > 7) {
+      dayAsNum -= 7;
+      count++;
     }
-    let nth ={1: 'First', 2: 'Second', 3: 'Third', 4: 'Fourth', 5: 'Fifth'}
+    let nth = { 1: 'First', 2: 'Second', 3: 'Third', 4: 'Fourth', 5: 'Fifth' };
 
     setState({
       ...localState,
       dynamicDay: dynamicDay,
       dynamicYear: dynamicYear,
-      dynamicNth: nth[count]
+      dynamicNth: nth[count],
     });
   };
 
@@ -233,9 +232,6 @@ export const CreateEvent = props => {
           />
           <StyledButton type="secondary" htmlType="submit" onClick={cancelForm}>
             Cancel
-          </StyledButton>
-          <StyledButton type="primary" htmlType="submit">
-            Create
           </StyledButton>
         </WrappedAntForm>
       </StyledCard>
