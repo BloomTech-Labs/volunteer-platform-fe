@@ -101,12 +101,11 @@ export const signIn = ( authType, dispatch, email, password ) => {
       if( result.user ){
         signedIn( result.user, dispatch );
       }else{
-        dispatch( action( SIGNIN_FAILED ) );
+        dispatch( action( SIGNIN_FAILED, 'Unable to find user' ) );
       }
     } )
     .catch( function( error ){
-      console.log( error );
-      dispatch( action( SIGNIN_FAILED ) );
+      dispatch( action( SIGNIN_FAILED, error.message ) );
     } );
 };
 

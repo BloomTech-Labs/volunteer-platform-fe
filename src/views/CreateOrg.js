@@ -122,7 +122,7 @@ export const CreateOrg = props => {
         delete org[key];
       }
     }
-    if (orgToEdit.orgId) {
+    if (orgToEdit) {
       updateOrganization(orgToEdit.orgId, org, dispatch);
     } else {
       registerOrganization(org, dispatch);

@@ -1,12 +1,20 @@
 import React from 'react';
 
 export const FilteredComponent = Component => {
-  return ({ events, filter, tagFilter }, ...props) => {
+  return ({ events, filter, tagFilter, recurringEvents }, ...props) => {
     const { location } = filter;
     const { interests, requirements } = tagFilter;
     const { state, city } = location;
 
-    if (!events) return <Component events={events} {...props} />;
+    if (!events) {
+      return (
+        <Component
+          events={events}
+          recurringEvents={recurringEvents}
+          {...props}
+        />
+      );
+    }
 
     let filteredEvents = events;
     filteredEvents.forEach(event => (event.sortRank = 0));
@@ -20,14 +28,16 @@ export const FilteredComponent = Component => {
 
     if (state) {
       filteredEvents.forEach(event => {
-        if (event.state.toLowerCase().includes(state.toLowerCase()))
+        if (event.state.toLowerCase().includes(state.toLowerCase())) {
           event.sortRank = event.sortRank + 1;
+        }
       });
     }
     if (city) {
       filteredEvents.forEach(event => {
-        if (event.city.toLowerCase().includes(city.toLowerCase()))
+        if (event.city.toLowerCase().includes(city.toLowerCase())) {
           event.sortRank = event.sortRank + 1;
+        }
       });
     }
     if (interests) {
@@ -50,6 +60,12 @@ export const FilteredComponent = Component => {
     filteredEvents.sort((a, b) => (a.sortRank < b.sortRank ? 1 : -1));
     filteredEvents = filteredEvents.filter(event => event.sortRank > 0);
 
-    return <Component events={filteredEvents} {...props} />;
+    return (
+      <Component
+        events={filteredEvents}
+        recurringEvents={recurringEvents}
+        {...props}
+      />
+    );
   };
 };
