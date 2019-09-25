@@ -3,9 +3,9 @@ import { InputNumber } from 'antd';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-export class AntdInputNumber extends Component {
+export class AntInputNumber extends Component {
     render() {
-        let {children, ...rest} = this.props
+        let { children, notRequired, ...rest } = this.props
         return (
             <StyledInputNumber {...rest}>
                 {children}
@@ -13,7 +13,10 @@ export class AntdInputNumber extends Component {
         )
     }
 }
-
+AntInputNumber.propTypes = {
+  notRequired: PropTypes.bool,
+  tooltipTitle: PropTypes.string,
+};
 const StyledInputNumber = styled(InputNumber)``;
 
-export default AntdInputNumber;
+export default AntInputNumber;

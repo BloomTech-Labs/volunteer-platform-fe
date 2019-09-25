@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { WrappedAntdForm, AntdInput } from '../styled';
+import { WrappedAntForm, AntInput } from '../styled';
 import { useStateValue } from '../hooks/useStateValue';
 import EventList from '../components/EventList';
 import { getAllEventsByState } from '../actions';
@@ -36,13 +36,13 @@ export const MainDashboard = () => {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <WrappedAntdForm styled={{ maxWidth: '500px' }} autofill={inputState}>
+        <WrappedAntForm styled={{ maxWidth: '500px' }} autofill={inputState}>
           <h2>Browse Events</h2>
-          <AntdInput
+          <AntInput
             name={'State'}
             placeholder="Enter State Initials"
           />
-        </WrappedAntdForm>
+        </WrappedAntForm>
       </div>
       <EventList events={state.events.events} />
     </div>

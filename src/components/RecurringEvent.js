@@ -5,10 +5,10 @@ import {
   StyledInputNumber,
   StyledSwitch,
   StyledSelect,
-  WrappedAntdForm,
-  AntdInputNumber,
-  AntdDatePicker,
-  AntdSelect,
+  WrappedAntForm,
+  AntInputNumber,
+  AntDatePicker,
+  AntSelect,
 } from '../styled';
 import moment from 'moment';
 
@@ -118,8 +118,8 @@ export const RecurringEvent = props => {
         onClose={closeDrawer}
         visible={formState.reccurringBoolean}
       >
-        <WrappedAntdForm onSubmit={handleSubmit}>
-          <AntdInputNumber
+        <WrappedAntForm onSubmit={handleSubmit}>
+          <AntInputNumber
             name={'Repeat every'}
             style={{ width: 100 }}
             min={0}
@@ -133,13 +133,13 @@ export const RecurringEvent = props => {
                 : 365
             }
           />
-          <AntdSelect
+          <AntSelect
             style={{ width: 100 }}
             defaultValue="Week"
             name={'Repeat Time Period'}
           >
             {periodOfTime}
-          </AntdSelect>
+          </AntSelect>
           <Checkbox.Group
             name={'Days'}
             options={dayOptions}
@@ -150,7 +150,7 @@ export const RecurringEvent = props => {
           <Radio.Group name={'Occurrences'}>
             <Radio value={'Never'}>Never</Radio>
             <Radio value={'On'}>On</Radio>
-            <AntdDatePicker
+            <AntDatePicker
               name={'Reccurring End Date'}
               defaultValue={moment(moment(), dateFormat)}
               format={dateFormat}
@@ -168,7 +168,7 @@ export const RecurringEvent = props => {
           <StyledButton type="secondary" onClick={closeDrawer}>
             Back
           </StyledButton>
-        </WrappedAntdForm>
+        </WrappedAntForm>
       </Drawer>
     </div>
   );

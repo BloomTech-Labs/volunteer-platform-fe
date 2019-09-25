@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Select } from 'antd';
 import styled from 'styled-components';
 import {
-  AntdInput,
-  AntdSelect,
-  AntdTextArea,
-  AntdTimePicker,
-  AntdInputNumber,
-  AntdDatePicker,
-  WrappedAntdForm,
+  AntInput,
+  AntSelect,
+  AntTextArea,
+  AntTimePicker,
+  AntInputNumber,
+  AntDatePicker,
+  AntCheckbox,
+  WrappedAntForm,
   StyledButton,
   StyledCard,
 } from '../styled';
@@ -116,18 +117,18 @@ export const CreateEvent = props => {
     <StyledCreateEvent>
       <StyledCard>
         <h1>Let's Create An Event</h1>
-        <WrappedAntdForm onSubmit={handleSubmit}>
-          <AntdInput name={'Name of Event'} type="text" />
-          <AntdSelect
+        <WrappedAntForm onSubmit={handleSubmit}>
+          <AntInput name={'Name of Event'} type="text" />
+          <AntSelect
             name={'Types of Causes'}
             placeholder="Please select causes"
             mode="multiple"
           >
             {causeAreaTags}
-          </AntdSelect>
+          </AntSelect>
           <label>When is the event?</label>
 
-          <AntdDatePicker name={'Date'} format={dateFormat} />
+          <AntDatePicker name={'Date'} format={dateFormat} />
 
           <RecurringEvent
             name={'ReccuringEvent'}
@@ -137,19 +138,19 @@ export const CreateEvent = props => {
             notRequired
           />
 
-          <AntdTimePicker name={'Start Time'} use12Hours format={'h:mm a'} />
+          <AntTimePicker name={'Start Time'} use12Hours format={'h:mm a'} />
           <p>to</p>
 
-          <AntdTimePicker name={'End Time'} use12Hours format={'h:mm a'} />
+          <AntTimePicker name={'End Time'} use12Hours format={'h:mm a'} />
 
-          <AntdInputNumber name={'Number of People'} type="number" min={0} />
+          <AntInputNumber name={'Number of People'} type="number" min={0} />
 
-          <AntdInput
+          <AntInput
             name={'Location'}
             placeholder="Select location"
-          ></AntdInput>
+          ></AntInput>
 
-          <AntdInput
+          <AntInput
             name={'Phone Number'}
             type="tel"
             pattern={'[0-9]{3}-[0-9]{3}-[0-9]{4}'}
@@ -157,28 +158,28 @@ export const CreateEvent = props => {
           />
           <label>Who is the point of Contact?</label>
 
-          <AntdInput name={'First Name'} type="text" />
-          <AntdInput name={'Last Name'} type="text" />
-          <AntdInput name={'Email'} type="email" />
-          <AntdTextArea name={'Description'} type="text" />
+          <AntInput name={'First Name'} type="text" />
+          <AntInput name={'Last Name'} type="text" />
+          <AntInput name={'Email'} type="email" />
+          <AntTextArea name={'Description'} type="text" />
           <label>What are the requirements?</label>
-          <AntdSelect
+          <AntSelect
             name={'Volunteer Requirments'}
             placeholder="Please select requirments"
             mode="multiple"
           >
             {requirementTags}
-          </AntdSelect>
-          <AntdSelect
+          </AntSelect>
+          <AntSelect
             name={'Interest'}
             placeholder="Please select interest"
             mode="multiple"
           >
             {interestTags}
-          </AntdSelect>
+          </AntSelect>
 
-          <AntdInput name={'Website'} />
-          <AntdTextArea
+          <AntInput name={'Website'} />
+          <AntTextArea
             name={'Other Notes'}
             placeholder={'Any additional helpful tips for the event go here.'}
           />
@@ -188,7 +189,7 @@ export const CreateEvent = props => {
           <StyledButton type="primary" htmlType="submit">
             Create
           </StyledButton>
-        </WrappedAntdForm>
+        </WrappedAntForm>
       </StyledCard>
     </StyledCreateEvent>
   );
