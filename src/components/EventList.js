@@ -1,6 +1,6 @@
 import React from 'react';
-import Event from './Event';
 import styled from 'styled-components';
+import Event from './Event';
 
 export const EventList = ({ events }) => {
   return (

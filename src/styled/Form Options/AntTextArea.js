@@ -11,7 +11,7 @@ export class AntTextArea extends Component{
 }
 
 AntTextArea.propTypes = {
-  notRequired: PropTypes.bool,
+  notRequired: PropTypes.string,
   tooltipTitle: PropTypes.string,
 };
 const StyledTextArea = styled(TextArea)``;

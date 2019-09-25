@@ -1,7 +1,5 @@
 import React from 'react';
 import { StyledCard, StyledButton } from '../styled';
-import { Button } from 'antd';
-
 import { useStateValue } from '../hooks/useStateValue';
 
 export const Event = ({ event }) => {

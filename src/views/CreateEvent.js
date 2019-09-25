@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Select, DatePicker } from 'antd';
+import { Select } from 'antd';
 import styled from 'styled-components';
-import moment from 'moment';
 import {
   AntInput,
   AntSelect,
@@ -16,7 +15,7 @@ import {
 } from '../styled';
 import { useStateValue } from '../hooks/useStateValue';
 import { createEvent } from '../actions';
-import ReccurringEvent from '../components/ReccurringEvent';
+import RecurringEvent from '../components/RecurringEvent';
 
 const { Option } = Select;
 
@@ -67,7 +66,7 @@ export const CreateEvent = props => {
       reccurringInfo: {
         // repeatNumber: localState.formState.repeatNumber,
         repeatTimePeriod: localState.repeatTimePeriod,
-        // reccurringEventDays: localState.formState.reccurringEventDays,
+        // recurringEventDays: localState.formState.recurringEventDays,
         // ocurrences: localState.formStart.ocurrences,
         // reccurringEndDate: localState.formStart.reccurringEndDate.unix(),
       },
@@ -118,7 +117,11 @@ export const CreateEvent = props => {
     <StyledCreateEvent>
       <StyledCard>
         <h1>Let's Create An Event</h1>
-        <WrappedAntForm onSubmit={handleSubmit}>
+        <WrappedAntForm
+          onSubmit={handleSubmit}
+          buttonType={'primary'}
+          buttonText={'Submit'}
+        >
           <AntInput name={'Name of Event'} type="text" />
           <AntSelect
             name={'Types of Causes'}
@@ -131,7 +134,7 @@ export const CreateEvent = props => {
 
           <AntDatePicker name={'Date'} format={dateFormat} />
 
-          <ReccurringEvent
+          <RecurringEvent
             name={'ReccuringEvent'}
             localState={localState}
             setState={setState}
@@ -146,10 +149,7 @@ export const CreateEvent = props => {
 
           <AntInputNumber name={'Number of People'} type="number" min={0} />
 
-          <AntInput
-            name={'Location'}
-            placeholder="Select location"
-          ></AntInput>
+          <AntInput name={'Location'} placeholder="Select location"></AntInput>
 
           <AntInput
             name={'Phone Number'}

@@ -14,7 +14,7 @@ export class AntInput extends Component{
 }
 
 AntInput.propTypes = {
-  notRequired: PropTypes.bool,
+  notRequired: PropTypes.string,
   tooltipTitle: PropTypes.string,
 };
 

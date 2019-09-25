@@ -161,6 +161,7 @@ export const REGISTER_FAILED = 'REGISTER_FAILED';
  */
 export const register = ( user, dispatch ) => {
   dispatch( action( REGISTER_INIT ) );
+  console.log(user)
   store
     .collection( 'users' )
     .doc( user.uid )
