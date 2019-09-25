@@ -38,29 +38,29 @@ export const CreateEvent = props => {
   const [state, dispatch] = useStateValue();
   
   //Destructuring
-  const { recurringInfo, recurringEvent } = localState;
-
+  const {recurringInfo, recurringEvent} = localState;
+  
   useEffect(() => {
-    if (props.location.state.org) {
+    if (props.location.state.org){
       setState({
         ...localState,
         orgId: props.location.state.org.orgId,
       });
     }
   }, [props.location.state.org]);
-
+  
   //Date Format
   const dateFormat = 'MM/DD/YYYY';
-
+  
   const removeUndefinied = event => {
     Object.keys(event).forEach(key => {
-      if (event[key] === undefined) {
-        delete event[key];
+      if (event[ key ] === undefined){
+        delete event[ key ];
       }
       return event;
     });
   };
-
+  
   //Handle Submit for Form
   const handleSubmit = values => {
     console.log(values);
@@ -68,10 +68,15 @@ export const CreateEvent = props => {
       ...values,
       orgName: props.location.state.org.organizationName,
       orgImagePath: props.location.state.org.imagePath,
+      orgId: props.location.state.org.orgId,
       orgPage: '',
       date: values.date.unix(),
       startTime: values.startTime.format('LT'),
       endTime: values.endTime.format('LT'),
+      startTimeStamp: moment(values.date.format('LL') + ' ' +
+        values.startTime.format('LT')).unix(),
+      endTimeSTamp: moment(values.date.format('LL') + ' ' +
+        values.endTime.format('LT')).unix(),
       pointOfcontact: {
         firstName: values.firstName,
         lastName: values.lastName,
@@ -81,20 +86,20 @@ export const CreateEvent = props => {
         recurringEvent: localState.recurringEvent,
       },
     };
-
-    if (recurringEvent === 'Yes') {
+    
+    if (recurringEvent === 'Yes'){
       event.recurringInfo = recurringInfo;
       if (
         event.recurringInfo.repeatTimePeriod === 'Custom' &&
         event.recurringInfo.occurrenceEnds === 'On'
-      ) {
+      ){
         event.recurringInfo.occurrenceEndDate = event.recurringInfo.occurrenceEndDate.unix();
         event.recurringInfo.occurrenceEndsAfter = '';
       }
       if (
         event.recurringInfo.repeatTimePeriod === 'Custom' &&
         event.recurringInfo.occurrenceEnds === 'After'
-      ) {
+      ){
         event.recurringInfo.occurrenceEndDate = '';
       }
       removeUndefinied(event);
@@ -105,9 +110,9 @@ export const CreateEvent = props => {
     createEvent(event, dispatch);
     props.history.push('/org-dashboard');
   };
-
+  
   const handleDynmaicDate = date => {
-    const dynamicDay = date._d.toString().split(' ')[0];
+    const dynamicDay = date._d.toString().split(' ')[ 0 ];
     const dynamicYear = date._d
       .toString()
       .split(' ')
@@ -137,7 +142,7 @@ export const CreateEvent = props => {
       </Option>
     );
   });
-
+  
   let requirementTags = [];
   
   if (state.tags.requirements){
@@ -192,14 +197,14 @@ export const CreateEvent = props => {
           
           <AntTimePicker name={'Start Time'} use12Hours format={'h:mm a'}/>
           <p>to</p>
-
-          <AntTimePicker name={'End Time'} use12Hours format={'h:mm a'} />
-
-          <AntInputNumber name={'Number of Volunteers'} type="number" min={0} />
-
+          
+          <AntTimePicker name={'End Time'} use12Hours format={'h:mm a'}/>
+          
+          <AntInputNumber name={'Number of Volunteers'} type="number" min={0}/>
+          
           <AntInput name={'City'} placeholder="City"></AntInput>
           <AntInput name={'State'} placeholder="State"></AntInput>
-
+          
           <AntInput
             name={'Phone Number'}
             type="tel"

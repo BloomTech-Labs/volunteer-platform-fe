@@ -34,28 +34,26 @@ export const FilteredComponent = Component => {
         }
       });
     }
-    if (interests){
+    if (interests) {
       filteredEvents.forEach(event => {
-        event.interests.forEach(interest => {
-          if (tagFilter.interests[ interest ]){
+        event.interest.forEach(interest => {
+          if (tagFilter.interests[interest])
             event.sortRank = event.sortRank + 1;
-          }
         });
       });
     }
-    if (requirements){
+    if (requirements) {
       filteredEvents.forEach(event => {
-        event.requirements.forEach(requirement => {
-          if (tagFilter.requirements[ requirement ]){
+        event.volunteerRequirments.forEach(requirement => {
+          if (tagFilter.requirements[requirement])
             event.sortRank = event.sortRank + 1;
-          }
         });
       });
     }
-    
+
     filteredEvents.sort((a, b) => (a.sortRank < b.sortRank ? 1 : -1));
     filteredEvents = filteredEvents.filter(event => event.sortRank > 0);
-    
+
     return <Component events={filteredEvents} {...props} />;
   };
 };
