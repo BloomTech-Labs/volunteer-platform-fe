@@ -68,6 +68,7 @@ export const CreateEvent = props => {
       ...values,
       orgName: props.location.state.org.organizationName,
       orgImagePath: props.location.state.org.imagePath,
+      orgId: props.location.state.org.orgId,
       orgPage: '',
       date: values.date.unix(),
       startTime: values.startTime.format('LT'),
