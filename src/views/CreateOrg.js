@@ -213,15 +213,6 @@ export const CreateOrg = props => {
                   />
                 </div>
               </div>
-              <div className={'flex'}>
-                <div className={'inline'}>
-                  <AntInput
-                    name={'Phone'}
-                    notRequired={'false'}
-                    layout={formLayouts.formItemLayout}
-                  />
-                </div>
-              </div>
             </div>
             
             <div className={'mg-tp-lg'}>
