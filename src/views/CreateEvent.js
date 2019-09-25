@@ -8,7 +8,6 @@ import {
   AntTimePicker,
   AntInputNumber,
   AntDatePicker,
-  AntCheckbox,
   WrappedAntForm,
   StyledButton,
   StyledCard,
@@ -24,23 +23,21 @@ export const CreateEvent = props => {
     nameOfEvent: '',
     typeOfCause: [],
     date: '',
-    startTime: '',
-    endTime: '',
+    dynmaicDay: '',
+    dynamicYear: '',
     numberOfVolunteers: '',
     phoneNumber: '',
-    pointOfcontact: [{ firstName: '', lastName: '', email: '' }],
+    pointOfcontact: '',
     description: '',
     volunteerRequirements: [],
-    interest: [],
     website: '',
-    otherNotes: '',
   };
   const [localState, setState] = useState(initialEvent);
 
   const [state, dispatch] = useStateValue();
 
   //Destructuring
-  let { event } = localState;
+  const { reccurringInfo, reccurringEvent } = localState;
 
   useEffect(() => {
     if (props.location.state.org) {
@@ -53,7 +50,7 @@ export const CreateEvent = props => {
 
   //Date Format
   const dateFormat = 'MM/DD/YYYY';
-  console.log(localState);
+
   //Handle Submit for Form
   const handleSubmit = values => {
     console.log(values);
@@ -63,6 +60,7 @@ export const CreateEvent = props => {
       date: values.date.unix(),
       startTime: values.startTime.format('LT'),
       endTime: values.endTime.format('LT'),
+      numberOfVolunteers: values.numberOfVolunteers,
       reccurringInfo: {
         // repeatNumber: localState.formState.repeatNumber,
         repeatTimePeriod: localState.repeatTimePeriod,
@@ -77,13 +75,50 @@ export const CreateEvent = props => {
         lastName: values.lastName,
         email: values.email,
       },
+      reccurringInfo: {
+        reccurringEvent: localState.reccurringEvent,
+      },
+      description: values.description,
       volunteerRequirements: values.volunteerRequirments,
       interest: values.interest,
       website: values.website,
       otherNotes: values.otherNotes,
     };
+
+    if (reccurringEvent === 'Yes') {
+      event.reccurringInfo = reccurringInfo;
+      if (
+        event.reccurringInfo.repeatTimePeriod === 'Custom' &&
+        event.reccurringInfo.occurrenceEnds === 'On'
+      ) {
+        event.reccurringInfo.occurrenceEndDate = event.reccurringInfo.occurrenceEndDate.unix();
+        event.reccurringInfo.occurrenceEndsAfter = '';
+      }
+      if (
+        event.reccurringInfo.repeatTimePeriod === 'Custom' &&
+        event.reccurringInfo.occurrenceEnds === 'After'
+      ) {
+        event.reccurringInfo.occurrenceEndDate = '';
+      }
+    }
     console.log(event);
     // createEvent(event, dispatch);
+    props.history.push('/org-dashboard');
+  };
+
+  const handleDynmaicDate = date => {
+    const dynamicDay = date._d.toString().split(' ')[0];
+    const dynamicYear = date._d
+      .toString()
+      .split(' ')
+      .slice(1, 3)
+      .join(' ');
+
+    setState({
+      ...localState,
+      dynamicDay: dynamicDay,
+      dynamicYear: dynamicYear,
+    });
   };
 
   //Options for tags
@@ -132,13 +167,19 @@ export const CreateEvent = props => {
           </AntSelect>
           <label>When is the event?</label>
 
-          <AntDatePicker name={'Date'} format={dateFormat} />
+          <AntDatePicker
+            name={'Date'}
+            format={dateFormat}
+            onChange={handleDynmaicDate}
+          />
 
           <RecurringEvent
             name={'ReccuringEvent'}
             localState={localState}
             setState={setState}
             dateFormat={dateFormat}
+            dynamicDay={localState.dynamicDay}
+            dynamicYear={localState.dynamicYear}
             notRequired
           />
 
@@ -147,7 +188,7 @@ export const CreateEvent = props => {
 
           <AntTimePicker name={'End Time'} use12Hours format={'h:mm a'} />
 
-          <AntInputNumber name={'Number of People'} type="number" min={0} />
+          <AntInputNumber name={'Number of Volunteers'} type="number" min={0} />
 
           <AntInput name={'Location'} placeholder="Select location"></AntInput>
 
