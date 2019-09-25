@@ -26,6 +26,7 @@ import {
   RegisterRoute,
 } from './routes/index';
 
+
 const { Sider, Content } = Layout;
 
 function App() {
