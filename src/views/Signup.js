@@ -6,8 +6,7 @@ import { useStateValue } from '../hooks/useStateValue';
 import { register } from '../actions';
 import { formLayouts } from '../utility/formLayouts';
 
-
-export const Signup = () => {
+export const Signup = (props) => {
   const [state, dispatch] = useStateValue();
   /**
    * @type {User}
@@ -51,7 +50,7 @@ export const Signup = () => {
 
   const handleSubmit = values => {
     values.uid = localState.uid;
-    register(values, dispatch);
+    register( values, dispatch );
   };
 
   return (

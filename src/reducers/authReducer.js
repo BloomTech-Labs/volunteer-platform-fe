@@ -1,5 +1,5 @@
 import {
-  SIGNIN_INIT, SIGNED_IN, SIGNED_OUT, SIGNIN_FAILED, SIGNUP_FAILED, SIGNIN_NEW_USER, GET_USER_ACCOUNT_SUCCESSFUL, REGISTER_INIT, REGISTER_SUECESSFUL
+  SIGNIN_INIT, SIGNED_IN, SIGNED_OUT, SIGNIN_FAILED, SIGNUP_FAILED, SIGNIN_NEW_USER, GET_USER_ACCOUNT_SUCCESSFUL, REGISTER_INIT, REGISTER_SUECESSFUL, REGISTER_FAILED
 } from "../actions/auth";
 
 export const authReducer = ( state, action ) => {
@@ -22,6 +22,8 @@ export const authReducer = ( state, action ) => {
       return { ...state, isLoading: true}
     case REGISTER_SUECESSFUL:
       return { ...state, registeredUser: action.payload, signedUp: true, isLoading: false };
+    case REGISTER_FAILED:
+      return { ...state, isLoading: false };
     default:
       return state;
   }
