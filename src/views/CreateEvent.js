@@ -15,6 +15,7 @@ import {
 import { useStateValue } from '../hooks/useStateValue';
 import { createEvent, createRecurringEvent } from '../actions';
 import RecurringEvent from '../components/RecurringEvent';
+import { object } from 'prop-types';
 
 const { Option } = Select;
 
@@ -55,14 +56,10 @@ export const CreateEvent = props => {
   const handleSubmit = values => {
     console.log(values);
     const event = {
-      nameOfEvent: values.nameOfEvent,
-      typeOfCauses: values.typesOfCauses,
+      ...values,
       date: values.date.format('HH:AA A'),
       startTime: values.startTime.format('LT'),
       endTime: values.endTime.format('LT'),
-      numberOfVolunteers: values.numberOfVolunteers,
-      location: values.location,
-      phoneNumber: values.phoneNumber,
       pointOfcontact: {
         firstName: values.firstName,
         lastName: values.lastName,
@@ -71,11 +68,6 @@ export const CreateEvent = props => {
       reccurringInfo: {
         reccurringEvent: localState.reccurringEvent,
       },
-      description: values.description,
-      volunteerRequirements: values.volunteerRequirments,
-      interest: values.interest,
-      website: values.website,
-      otherNotes: values.otherNotes,
     };
 
     if (reccurringEvent === 'Yes') {
@@ -97,6 +89,11 @@ export const CreateEvent = props => {
       }
       createRecurringEvent(event, dispatch);
     }
+    Object.keys(event).forEach(key => {
+      if (event[key] === undefined) {
+        delete event[key];
+      }
+    });
     console.log(event);
     createEvent(event, dispatch);
     props.history.push('/org-dashboard');
@@ -135,7 +132,7 @@ export const CreateEvent = props => {
   });
 
   let requirementTags = [];
-
+  console.log(localState);
   if (state.tags.requirements) {
     requirementTags = state.tags.requirements.map(tag => {
       return <Option key={tag}>{tag}</Option>;
@@ -192,7 +189,8 @@ export const CreateEvent = props => {
 
           <AntInputNumber name={'Number of Volunteers'} type="number" min={0} />
 
-          <AntInput name={'Location'} placeholder="Select location"></AntInput>
+          <AntInput name={'City'} placeholder="City"></AntInput>
+          <AntInput name={'State'} placeholder="State"></AntInput>
 
           <AntInput
             name={'Phone Number'}
@@ -226,6 +224,7 @@ export const CreateEvent = props => {
           <AntTextArea
             name={'Other Notes'}
             placeholder={'Any additional helpful tips for the event go here.'}
+            notRequired
           />
           <StyledButton type="secondary" htmlType="submit" onClick={cancelForm}>
             Cancel
