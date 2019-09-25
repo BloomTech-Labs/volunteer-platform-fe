@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyledForm, StyledButton, AntdInput } from "../styled";
+import { StyledForm, StyledButton, AntInput } from "../styled";
 import {
   Form, Avatar
 } from "antd";
@@ -70,24 +70,24 @@ export const Signup = () => {
     <Avatar src={ localState.photoURL } shape="square" size={ 64 }
             icon="user"/> }
     <StyledForm onSubmit={ handleSubmit }>
-      <AntdInput name={ "First Name" } values={ localState }
-                   onChange={ changeValue }/>
-      <AntdInput name={ "Last Name" } values={ localState }
-                   onChange={ changeValue }/>
-      <AntdInput name={ "Phone Number" }
-                   values={ localState }
-                   onChange={ changeValue }/>
-      <AntdInput name={ "Age" }
-                   values={ localState }
-                   onChange={ changeValue }/>
-      <AntdInput name={ "Email" } values={ localState }
-                   onChange={ changeValue }/>
-      <AntdInput name={ "City" } values={ localState }
-                   onChange={ changeValue }/>
-      <AntdInput name={ "State" } values={ localState }
-                   onChange={ changeValue }/>
-      <AntdInput name={ "Zip Code" } values={ localState }
-                   onChange={ changeValue }/>
+      <AntInput name={ "First Name" } values={ localState }
+                onChange={ changeValue }/>
+      <AntInput name={ "Last Name" } values={ localState }
+                onChange={ changeValue }/>
+      <AntInput name={ "Phone Number" }
+                values={ localState }
+                onChange={ changeValue }/>
+      <AntInput name={ "Age" }
+                values={ localState }
+                onChange={ changeValue }/>
+      <AntInput name={ "Email" } values={ localState }
+                onChange={ changeValue }/>
+      <AntInput name={ "City" } values={ localState }
+                onChange={ changeValue }/>
+      <AntInput name={ "State" } values={ localState }
+                onChange={ changeValue }/>
+      <AntInput name={ "Zip Code" } values={ localState }
+                onChange={ changeValue }/>
       
       <StyledButton type="primary" htmlType="submit">
         Register

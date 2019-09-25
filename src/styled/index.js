@@ -8,12 +8,12 @@ export * from './StyledSelect';
 export * from './StyledForm';
 
 //Exports for form building
-export * from './Form Options/AntdCheckbox';
-export * from './Form Options/AntdDatePicker';
-export * from './AntdForm';
-export * from './Form Options/AntdInput';
-export * from './Form Options/AntdInputNumber';
-export * from './Form Options/AntdRadio';
-export * from './Form Options/AntdSelect';
-export * from './Form Options/AntdTextArea';
-export * from './Form Options/AntdTimePicker';
+export * from './Form Options/AntCheckbox';
+export * from './Form Options/AntDatePicker';
+export * from './AntForm';
+export * from './Form Options/AntInput';
+export * from './Form Options/AntInputNumber';
+export * from './Form Options/AntRadio';
+export * from './Form Options/AntSelect';
+export * from './Form Options/AntTextArea';
+export * from './Form Options/AntTimePicker';
