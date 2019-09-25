@@ -12,7 +12,8 @@ import {
 const { Option } = Select;
 
 export const RecurringEvent = props => {
-  const { setState, localState, dateFormat, dynamicDay, dynamicYear } = props;
+  const { setState, localState, dateFormat } = props;
+  const { dynamicDay, dynamicYear, dynamicNth } = localState;
   const [formState, setFormState] = useState({});
 
   const dayOptions = [
@@ -31,7 +32,7 @@ export const RecurringEvent = props => {
     'Does not repeat',
     'Daily',
     `Weekly on ${dynamicDay}`,
-    `Monthly on 1st/2nd/3rd/4th ${dynamicDay} `,
+    `Monthly on the ${dynamicNth} ${dynamicDay} `,
     `Annually on ${dynamicYear}`,
     'Every Weekday',
     'Custom',
