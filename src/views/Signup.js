@@ -66,7 +66,7 @@ export const Signup = () => {
           icon="user"
         />
       )}
-      <WrappedAntForm onSubmit={handleSubmit}>
+      <WrappedAntForm onSubmit={handleSubmit} autofill={localState}>
         <AntInput name={'First Name'} />
         <AntInput name={'Last Name'} />
         <AntInput name={'Phone Number'} />
