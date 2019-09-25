@@ -32,7 +32,7 @@ export const FilteredComponent = Component => {
     }
     if (interests) {
       filteredEvents.forEach(event => {
-        event.tags.interests.forEach(interest => {
+        event.interest.forEach(interest => {
           if (tagFilter.interests[interest])
             event.sortRank = event.sortRank + 1;
         });
@@ -40,7 +40,7 @@ export const FilteredComponent = Component => {
     }
     if (requirements) {
       filteredEvents.forEach(event => {
-        event.tags.requirements.forEach(requirement => {
+        event.volunteerRequirments.forEach(requirement => {
           if (tagFilter.requirements[requirement])
             event.sortRank = event.sortRank + 1;
         });
