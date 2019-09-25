@@ -61,9 +61,6 @@ export const CreateEvent = props => {
       startTime: values.startTime.format('LT'),
       endTime: values.endTime.format('LT'),
       numberOfVolunteers: values.numberOfVolunteers,
-      reccurringInfo: {
-        repeatTimePeriod: localState.repeatTimePeriod,
-      },
       location: values.location,
       phoneNumber: values.phoneNumber,
       pointOfcontact: {
@@ -100,7 +97,7 @@ export const CreateEvent = props => {
       }
       createRecurringEvent(event, dispatch);
     }
-
+    console.log(event);
     createEvent(event, dispatch);
     props.history.push('/org-dashboard');
   };
