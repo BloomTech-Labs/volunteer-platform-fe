@@ -31,8 +31,6 @@ export const CreateOrg = props => {
     }
   }, []);
 
-  console.log(state.auth.googleAuthUser.uid);
-
   const getPOCInputs = () => {
     const poc = [
       <div className={'flex'} key={'poc1'}>
