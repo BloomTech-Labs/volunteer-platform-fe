@@ -31,6 +31,8 @@ export const CreateOrg = props => {
     }
   }, []);
 
+  console.log(state.auth.googleAuthUser.uid);
+
   const getPOCInputs = () => {
     const poc = [
       <div className={'flex'} key={'poc1'}>
@@ -152,6 +154,7 @@ export const CreateOrg = props => {
             autofill={orgToEdit}
             buttonText={'Submit'}
             buttonType={'primary'}
+            buttonLoading={state.org.isLoading}
           >
             <div className={'styledGroup'}>
               <div className={'flex'}>
