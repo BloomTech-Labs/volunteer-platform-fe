@@ -179,7 +179,7 @@ export const getAllRecurringEventsByState = (state, dispatch) => {
         res.forEach(event => {
           const data = event.data();
           data.eventId = event.id;
-          events.push(event);
+          events.push(data);
         });
         
         dispatch(action(GET_RECURRING_EVENTS_BY_STATE, events));
