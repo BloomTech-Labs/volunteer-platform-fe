@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 import styled from 'styled-components';
 import { Radio } from 'antd';
+import PropTypes from 'prop-types';
 
-export class AntdRadio extends Component {
+export class AntRadio extends Component {
     render() {
-        let {children, ...rest} = this.props
+        let { children, notRequired, ...rest } = this.props
         return (
             <StyledRadio {...rest}>
                 {children}
@@ -12,7 +13,10 @@ export class AntdRadio extends Component {
         )
     }
 }
-
+AntRadio.propTypes = {
+  notRequired: PropTypes.bool,
+  tooltipTitle: PropTypes.string,
+};
 const StyledRadio = styled(Radio)``;
 
-export default AntdRadio;
+export default AntRadio;

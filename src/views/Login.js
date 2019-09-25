@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { Form, Icon } from 'antd';
 import {
   StyledButton,
-  WrappedAntdForm,
-  AntdInput,
+  WrappedAntForm,
+  AntInput,
   StyledLine,
   StyledLink,
 } from '../styled';
@@ -60,7 +60,7 @@ export const Login = props => {
       </div>
       <StyledCenter>
         <h4>Or</h4>
-        <WrappedAntdForm
+        <WrappedAntForm
           onSubmit={values => {
             signIn(
               EMAIL_PROVIDER,
@@ -71,18 +71,18 @@ export const Login = props => {
           }}
           useButton={false}
         >
-          <AntdInput
+          <AntInput
             name={'Email'}
             prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
             placeholder="Email"
           />
-          <AntdInput
+          <AntInput
             name={'Password'}
             prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
             placeholder="Password"
             type="password"
           />
-        </WrappedAntdForm>
+        </WrappedAntForm>
         <StyledCenter>
           <Form.Item>
             <StyledButton type="primary" htmlType="submit">
