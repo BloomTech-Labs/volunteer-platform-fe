@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Select, DatePicker } from 'antd';
+import { Select } from 'antd';
 import styled from 'styled-components';
-import moment from 'moment';
 import {
   AntdInput,
   AntdSelect,
@@ -9,14 +8,13 @@ import {
   AntdTimePicker,
   AntdInputNumber,
   AntdDatePicker,
-  AntdCheckbox,
   WrappedAntdForm,
   StyledButton,
   StyledCard,
 } from '../styled';
 import { useStateValue } from '../hooks/useStateValue';
 import { createEvent } from '../actions';
-import ReccurringEvent from '../components/ReccurringEvent';
+import RecurringEvent from '../components/RecurringEvent';
 
 const { Option } = Select;
 
@@ -67,7 +65,7 @@ export const CreateEvent = props => {
       reccurringInfo: {
         // repeatNumber: localState.formState.repeatNumber,
         repeatTimePeriod: localState.repeatTimePeriod,
-        // reccurringEventDays: localState.formState.reccurringEventDays,
+        // recurringEventDays: localState.formState.recurringEventDays,
         // ocurrences: localState.formStart.ocurrences,
         // reccurringEndDate: localState.formStart.reccurringEndDate.unix(),
       },
@@ -131,7 +129,7 @@ export const CreateEvent = props => {
 
           <AntdDatePicker name={'Date'} format={dateFormat} />
 
-          <ReccurringEvent
+          <RecurringEvent
             name={'ReccuringEvent'}
             localState={localState}
             setState={setState}

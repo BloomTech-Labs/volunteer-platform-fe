@@ -6,6 +6,7 @@ export * from './StyledAvatar';
 export * from './StyledLine';
 export * from './StyledSelect';
 export * from './StyledForm';
+export * from './StyledUploadImage'
 
 //Exports for form building
 export * from './Form Options/AntdCheckbox';

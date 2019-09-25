@@ -107,7 +107,6 @@ function App(){
               component={ OrganizationDashboard }
             />
             <RegisterRoute path={ '/register' } component={ Signup }/>
-            <Route path={ '/upload-image' } component={ StyledUploadImage }/>
             <Route path={ '/' } component={ StyledUploadImage }/>
           </Switch>
         </StyledContent>

@@ -1,99 +1,87 @@
-import React, { useEffect, useState } from "react";
-import { StyledForm, StyledButton, AntdInput } from "../styled";
-import {
-  Form, Avatar
-} from "antd";
-import styled from "styled-components";
-import { useStateValue } from "../hooks/useStateValue";
-import { register } from "../actions";
+import React, { useEffect, useState } from 'react';
+import { WrappedAntdForm, StyledButton, AntdInput } from '../styled';
+import { Avatar } from 'antd';
+import styled from 'styled-components';
+import { useStateValue } from '../hooks/useStateValue';
+import { register } from '../actions';
 
 const SignUpForm = styled.div`
-margin: 4rem 2rem;
+  margin: 4rem 2rem;
   max-width: 50%;
 `;
 
 export const Signup = () => {
-  
-  const [ state, dispatch ] = useStateValue();
+  const [state, dispatch] = useStateValue();
   /**
    * @type {User}
    */
   let user = {
-    firstName: "",
-    lastName: "",
-    city: "",
-    state: "",
-    zipCode: "",
-    phoneNumber: "",
-    email: "",
-    uid: "",
-    age: 18
+    firstName: '',
+    lastName: '',
+    city: '',
+    state: '',
+    zipCode: '',
+    phoneNumber: '',
+    email: '',
+    uid: '',
+    age: 18,
   };
-  const [ localState, setState ] = useState( user );
-  
-  useEffect( () => {
-    
-    if( state.auth.googleAuthUser ){
+  const [localState, setState] = useState(user);
+
+  useEffect(() => {
+    if (state.auth.googleAuthUser) {
       user.uid = state.auth.googleAuthUser.uid;
-      if( state.auth.googleAuthUser.displayName ){
-        const name = state.auth.googleAuthUser.displayName.split( " " );
-        user.firstName = name[ 0 ];
-        user.lastName = name[ 1 ];
+      if (state.auth.googleAuthUser.displayName) {
+        const name = state.auth.googleAuthUser.displayName.split(' ');
+        user.firstName = name[0];
+        user.lastName = name[1];
       }
-      
-      if( state.auth.googleAuthUser.email ){
+
+      if (state.auth.googleAuthUser.email) {
         user.email = state.auth.googleAuthUser.email;
       }
-      
-      if( state.auth.googleAuthUser.phoneNumber ){
+
+      if (state.auth.googleAuthUser.phoneNumber) {
         user.phoneNumber = state.auth.googleAuthUser.phoneNumber;
       }
-      
-      if( state.auth.googleAuthUser.photoURL ){
+
+      if (state.auth.googleAuthUser.photoURL) {
         user.photoURL = state.auth.googleAuthUser.photoURL;
       }
-      setState( { ...user } );
+      setState({ ...user });
     }
-  }, [ state ] );
-  
-  const changeValue = e => {
-    setState( { ...localState, [ e.target.name ]: e.target.value } );
+  }, [state]);
+
+  const handleSubmit = values => {
+    register(values, dispatch);
   };
-  
-  const handleSubmit = e => {
-    e.preventDefault();
-    register( localState, dispatch );
-  };
-  
-  return ( <SignUpForm>
-    { localState.photoURL &&
-    <Avatar src={ localState.photoURL } shape="square" size={ 64 }
-            icon="user"/> }
-    <StyledForm onSubmit={ handleSubmit }>
-      <AntdInput name={ "First Name" } values={ localState }
-                   onChange={ changeValue }/>
-      <AntdInput name={ "Last Name" } values={ localState }
-                   onChange={ changeValue }/>
-      <AntdInput name={ "Phone Number" }
-                   values={ localState }
-                   onChange={ changeValue }/>
-      <AntdInput name={ "Age" }
-                   values={ localState }
-                   onChange={ changeValue }/>
-      <AntdInput name={ "Email" } values={ localState }
-                   onChange={ changeValue }/>
-      <AntdInput name={ "City" } values={ localState }
-                   onChange={ changeValue }/>
-      <AntdInput name={ "State" } values={ localState }
-                   onChange={ changeValue }/>
-      <AntdInput name={ "Zip Code" } values={ localState }
-                   onChange={ changeValue }/>
-      
-      <StyledButton type="primary" htmlType="submit">
-        Register
-      </StyledButton>
-    </StyledForm>
-  </SignUpForm> );
+
+  return (
+    <SignUpForm>
+      {localState.photoURL && (
+        <Avatar
+          src={localState.photoURL}
+          shape="square"
+          size={64}
+          icon="user"
+        />
+      )}
+      <WrappedAntdForm onSubmit={handleSubmit}>
+        <AntdInput name={'First Name'} />
+        <AntdInput name={'Last Name'} />
+        <AntdInput name={'Phone Number'} />
+        <AntdInput name={'Age'} />
+        <AntdInput name={'Email'} />
+        <AntdInput name={'City'} />
+        <AntdInput name={'State'} />
+        <AntdInput name={'Zip Code'} />
+
+        <StyledButton type="primary" htmlType="submit">
+          Register
+        </StyledButton>
+      </WrappedAntdForm>
+    </SignUpForm>
+  );
 };
 
 export default Signup;
