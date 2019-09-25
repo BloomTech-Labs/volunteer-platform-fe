@@ -1,38 +1,38 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
-import {Layout} from 'antd'
+import React from 'react';
+import {Link} from 'react-router-dom';
+import {Layout} from 'antd';
 import styled from 'styled-components';
 
-const { Footer } = Layout
+const {Footer} = Layout;
 
 export const FooterDiv = () => {
-    return (
-        <StyledFooter className='Footer' >
-            <div className='container'>
-                <div className='sitemap'>
-                    <h5>Site Map</h5>
-                    <div className='links'>
-                        <div className='links-left'>
-                        <Link to="/">Home</Link>
-                        <Link to="/dashboard">Browse Events</Link>
-                        </div>
-                        <div className='links-right'>
-                            <Link to="/dashboard">Create Organization</Link>
-                            <Link to="/">View Volunteers</Link>
-                        </div>
-                    </div>
-                </div>
-                <div className='Logo'>
-                    <h5>Volun<span>Tier </span> </h5>
-                    <h6> © 2019</h6>
-                </div>
+  return (
+    <StyledFooter className='Footer'>
+      <div className='container'>
+        <div className='sitemap'>
+          <h5>Site Map</h5>
+          <div className='links'>
+            <div className='links-left'>
+              <Link to="/">Home</Link>
+              <Link to="/dashboard">Browse Events</Link>
             </div>
-        </StyledFooter>
-    )
-}
+            <div className='links-right'>
+              <Link to="/dashboard">Create Organization</Link>
+              <Link to="/">View Volunteers</Link>
+            </div>
+          </div>
+        </div>
+        <div className='Logo'>
+          <h5>Volun<span>Tier </span></h5>
+          <h6> © 2019</h6>
+        </div>
+      </div>
+    </StyledFooter>
+  );
+};
 
 const StyledFooter = styled(Footer)`
-
+z-index: 100;
 .container {
     display:flex;
     flex-direction: row;
@@ -69,8 +69,8 @@ const StyledFooter = styled(Footer)`
         a {
             font-size: 12px;
             cursor: pointer;
-            font-family: ${({ theme }) => theme.titleText};
-            color: ${({ theme }) => theme.primary8};
+            font-family: ${({theme}) => theme.titleText};
+            color: ${({theme}) => theme.primary8};
             
             &:hover {
                 text-decoration: underline;
@@ -82,12 +82,12 @@ const StyledFooter = styled(Footer)`
     .Logo {
         margin-right: 10%;
         display:flex;
-        font-family: ${({ theme }) => theme.titleText};
+        font-family: ${({theme}) => theme.titleText};
         z-index: 20 !important;
         height: 100%;
 
         h5 {       
-            color: ${({ theme }) => theme.primary};
+            color: ${({theme}) => theme.primary};
             z-index: 20;
             height: 100%;
             margin-right: 10px;
@@ -98,6 +98,6 @@ const StyledFooter = styled(Footer)`
     }
 }
 `;
-    
-    export default FooterDiv
+
+export default FooterDiv;
     
