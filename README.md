@@ -5,7 +5,7 @@
 
 # 1️⃣ Volunteer Platform
 
-1️⃣ You can find the deployed project[Here](hhttps://volunteer-platform.netlify.com/).
+1️⃣ You can find the deployed project[Here] (hhttps://volunteer-platform.netlify.com/).
 
 ## Contributors
 
