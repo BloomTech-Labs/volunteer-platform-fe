@@ -97,7 +97,7 @@ export class AntForm extends React.Component {
   };
 
   renderChildren = children => {
-      console.log(children)
+    //console.log(children)
     if (!Array.isArray(children)) {
       if (children.type === 'div') {
         return this.wrapInDiv(children);

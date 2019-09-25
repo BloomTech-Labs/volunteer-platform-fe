@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Form, Icon } from 'antd';
+import { Icon } from 'antd';
 import {
-  StyledButton,
   WrappedAntForm,
   AntInput,
   StyledLine,
@@ -15,11 +14,12 @@ import {
   TWITTER_PROVIDER,
   EMAIL_PROVIDER,
 } from '../actions';
+import { formLayouts } from '../utility/formLayouts';
 import { useStateValue } from '../hooks/useStateValue';
 import { device } from '../styled/deviceBreakpoints';
 
 export const Login = props => {
-  const [, dispatch] = useStateValue();
+  const [state, dispatch] = useStateValue();
   const [localState, setState] = useState({});
   const [pathName, setPathName] = useState(props.location.pathname);
 
@@ -59,11 +59,12 @@ export const Login = props => {
         <StyledLine big width={'53%'} />
       </div>
       <StyledCenter>
-        <h4>Or</h4>
+        <h4>OR</h4>
         <WrappedAntForm
           onSubmit={values => {
             signIn(EMAIL_PROVIDER, dispatch, values.email, values.password);
           }}
+          layout={'vertical'}
           buttonType="primary"
           buttonText={pathName === `/login` ? 'Login' : 'Register'}
         >
@@ -71,23 +72,30 @@ export const Login = props => {
             name={'Email'}
             prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
             placeholder="Email"
+            layout={formLayouts.formItemLayout}
           />
           <AntInput
             name={'Password'}
             prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
             placeholder="Password"
             type="password"
+            layout={formLayouts.formItemLayout}
           />
         </WrappedAntForm>
+        {state.auth.signInError && <div>{state.auth.signInError}</div>}
+        {state.auth.signUpError && <div>{state.auth.signUpError}</div>}
+        <div className={'line-box'}>
+          <StyledLine big width={'53%'} />
+        </div>
         <StyledCenter>
           <h4>
             {pathName === '/login'
-              ? 'Dont have an account?'
+              ? 'Don\'t have an account?'
               : 'Already have an account?'}
           </h4>
-          <StyledLink to={pathName === '/login' ? '/signup' : '/login'}>
+          <CustomStyledLink to={pathName === '/login' ? '/signup' : '/login'}>
             {pathName === '/login' ? 'Sign up here.' : 'Login here.'}
-          </StyledLink>
+          </CustomStyledLink>
         </StyledCenter>
       </StyledCenter>
     </StyledLogin>
@@ -101,16 +109,7 @@ const StyledLogin = styled.div`
   min-height: 100vh;
   margin-bottom: 4rem;
 
-  form{
-      display: flex;
-      flex-direction: column;
-  }
   
-  button {
-    align-self: center;
-    align-items: center;
-    margin: 0 auto;
-  }
   h3 {
     margin-top: 3.9rem;
     margin-bottom: 2.3rem;
@@ -146,5 +145,44 @@ const StyledCenter = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    margin: 2rem auto;
+    align-items: center:
+  }
+
+  
+  
+  button {
+    align-self: center;
+    width: 120px;
+    padding: 0.5rem 2rem;
+    font-family: Arvo;
+    font-size: 16px;
+    height: auto;
+  }
+
+  button:hover {
+    background: ${props => props.theme.primary8};
+  }
+
+  label {
+    color: ${props => props.theme.primary};
+    font-size: 18px;
+    line-height: 22px;
+    margin-bottom: 
+  }
 `;
+
+const CustomStyledLink = styled(StyledLink)`
+  margin: 0;
+
+  :hover {
+    color: ${props => props.theme.primary8};
+  }
+`
+
+
 export default Login;

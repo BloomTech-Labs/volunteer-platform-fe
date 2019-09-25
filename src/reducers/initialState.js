@@ -61,6 +61,8 @@ export const initialState = {
     signedUp: checkRegistered || false,
     googleAuthUser: null,
     registeredUser: null,
+    signInError: null,
+    signUpError: null
   },
   org: {
     createdOrg: false,
