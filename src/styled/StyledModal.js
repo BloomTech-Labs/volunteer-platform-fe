@@ -10,7 +10,7 @@ const { confirm, error, success, info } = ModalStyled;
 
 export const confirmModal = content => {
   return () => {
-    return confirm({
+    confirm({
       ...content,
       onOk() {
         content.onOk || console.log('OK', content.title || '');
@@ -24,24 +24,18 @@ export const confirmModal = content => {
 
 export const deleteModal = content => {
   return () => {
-    return confirm({
+    confirm({
       ...content,
       cancelText: content.cancelText || 'No',
       okText: content.okText || 'Yes',
       okType: content.okType || 'danger',
-      onOk() {
-        content.onOk || console.log('OK', content.title || '');
-      },
-      onCancel() {
-        content.onCancel || console.log('Cancel', content.title || '');
-      },
     });
   };
 };
 
 export const errorModal = content => {
   return () => {
-    return error({
+    error({
       ...content,
       onOk() {
         content.onOk || console.log('OK', content.title || '');
@@ -52,7 +46,7 @@ export const errorModal = content => {
 
 export const successModal = content => {
   return () => {
-    return success({
+    success({
       ...content,
       onOk() {
         content.onOk || console.log('OK', content.title || '');
@@ -63,7 +57,7 @@ export const successModal = content => {
 
 export const infoModal = content => {
   return () => {
-    return info({
+    info({
       ...content,
       onOk() {
         content.onOk || console.log('OK', content.title || '');

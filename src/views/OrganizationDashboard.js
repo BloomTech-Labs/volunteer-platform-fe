@@ -13,7 +13,12 @@ import {
 import {useStateValue} from '../hooks/useStateValue';
 import EventList from '../components/EventList';
 import OrganizationInfo from '../components/OrganizationInfo';
-import {StyledButton, StyledAvatar, StyledUploadImage} from '../styled';
+import {
+  StyledButton,
+  StyledAvatar,
+  StyledUploadImage,
+  deleteModal,
+} from '../styled';
 
 export const OrganizationDashboard = () => {
   const [state, dispatch] = useStateValue();
@@ -56,8 +61,14 @@ export const OrganizationDashboard = () => {
   }, [displayOrg]);
   
   const deleteOrg = e => {
+    const deleteOrgModal = deleteModal({
+      title: 'Are you sure you want to delete this organization?',
+      content: 'This cannot be undone.',
+      onOk: () => deleteOrganization(displayOrg.orgId, dispatch),
+    });
+
     e.preventDefault();
-    deleteOrganization(displayOrg.orgId, dispatch);
+    deleteOrgModal();
   };
   
   const onFileUpload = path => {
