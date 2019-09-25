@@ -63,17 +63,15 @@ export const CreateEvent = props => {
       startTime: values.startTime.format('LT'),
       endTime: values.endTime.format('LT'),
       numberOfVolunteers: values.numberOfVolunteers,
-      recurringInfo: {
-        repeatTimePeriod: localState.repeatTimePeriod,
-      },
-      city: values.city,
-      state: values.state,
-      address: values.address,
+      location: values.location,
       phoneNumber: values.phoneNumber,
       pointOfcontact: {
         firstName: values.firstName,
         lastName: values.lastName,
         email: values.email,
+      },
+      reccurringInfo: {
+        reccurringEvent: localState.reccurringEvent,
       },
       description: values.description,
       volunteerRequirements: values.volunteerRequirments,
@@ -105,7 +103,7 @@ export const CreateEvent = props => {
     createEvent(event, dispatch);
     props.history.push('/org-dashboard');
   };
-  
+
   const handleDynmaicDate = date => {
     const dynamicDay = date._d.toString().split(' ')[ 0 ];
     const dynamicYear = date._d

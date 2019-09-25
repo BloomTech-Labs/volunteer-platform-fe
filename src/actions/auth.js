@@ -50,6 +50,7 @@ export const SIGNIN_INIT = 'SIGNIN_INIT';
 export const SIGNIN_NEW_USER = 'SIGNIN_NEW_USER';
 export const SIGNIN_FAILED = 'SIGNIN_FAILED';
 export const GET_USER_ACCOUNT_SUCCESSFUL = 'GET_USER_ACCOUNT_SUCCESSFUL';
+export const SIGNUP_FAILED = 'SIGNUP_FAILED';
 
 /**
  * Log a googleAuthUser in.
@@ -75,7 +76,6 @@ export const signIn = ( authType, dispatch, email, password ) => {
           } );
       } )
       .catch( error => {
-        console.log( error.code );
         if( error.code.includes( 'email-already-in-use' ) ){
           firebase
             .auth()
@@ -84,8 +84,10 @@ export const signIn = ( authType, dispatch, email, password ) => {
               signedIn( res.user, dispatch );
             } )
             .catch( err => {
-              console.log( err );
+              dispatch( action( SIGNIN_FAILED, err.message ) );
             } );
+        } else {
+          dispatch( action( SIGNUP_FAILED, error.message ) );
         }
       } );
     return;
