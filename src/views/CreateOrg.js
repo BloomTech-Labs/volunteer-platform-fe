@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import {
   WrappedAntForm,
@@ -9,28 +9,29 @@ import {
   StyledCard,
   StyledButton,
 } from '../styled';
-import {useStateValue} from '../hooks/useStateValue';
-import {Icon, Select} from 'antd';
+import { useStateValue } from '../hooks/useStateValue';
+import { Icon, Select } from 'antd';
 import CheckboxGroup from 'antd/lib/checkbox/Group';
-import {registerOrganization, updateOrganization} from '../actions';
+import { registerOrganization, updateOrganization } from '../actions';
 import createOrgImg from '../assets/undraw_unexpected_friends.svg';
 import {formLayouts} from '../utility/formLayouts';
+
 
 export const CreateOrg = props => {
   const [numberOfPOC, setNumberOfPOC] = useState(1);
   const [state, dispatch] = useStateValue();
   const [orgToEdit, setOrgToEdit] = useState({});
   const Option = Select.Option;
-  
+
   useEffect(() => {
-    if (props.location.state){
+    if (props.location.state) {
       setOrgToEdit(props.location.state.org);
-      if (props.location.state.org.firstName2){
+      if (props.location.state.org.firstName2) {
         setNumberOfPOC(2);
       }
     }
   }, []);
-  
+
   const getPOCInputs = () => {
     const poc = [
       <div className={'flex'} key={'poc1'}>
@@ -41,7 +42,6 @@ export const CreateOrg = props => {
             key={'firstName'}
           />
         </div>
-        
         <div className={'inline'}>
           <AntInput
             name={'Last name'}
@@ -96,7 +96,7 @@ export const CreateOrg = props => {
     }
     return poc;
   };
-  
+
   const onSubmit = values => {
     let POC = [];
     POC.push({
@@ -104,7 +104,7 @@ export const CreateOrg = props => {
       firstName: values.firstName,
       lastName: values.lastName,
     });
-    if (values.email2){
+    if (values.email2) {
       POC.push({
         email: values.email2,
         firstName: values.firstName2,
@@ -118,20 +118,20 @@ export const CreateOrg = props => {
       startTime: values.startTime.format('HH:MM A'),
       endTime: values.endTime.format('HH:MM A'),
     };
-    for (let key in org){
-      if (org[ key ] === undefined){
-        delete org[ key ];
+    for (let key in org) {
+      if (org[key] === undefined) {
+        delete org[key];
       }
     }
-    if (orgToEdit.orgId){
+    if (orgToEdit.orgId) {
       updateOrganization(orgToEdit.orgId, org, dispatch);
-    }else{
+    } else {
       registerOrganization(org, dispatch);
     }
-    
+
     props.history.push('/org-dashboard');
   };
-  
+
   const days = [
     'Sunday',
     'Monday',
@@ -141,7 +141,6 @@ export const CreateOrg = props => {
     'Friday',
     'Saturday',
   ];
-  
   return (
     <StyledDiv className={'flex center'}>
       <CustomStyledCard style={{maxWidth: '900px', margin: '2rem 0 5rem 0'}}>
@@ -188,7 +187,7 @@ export const CreateOrg = props => {
                   </AntSelect>
                 </div>
               </div>
-              
+
               <div className={'flex'}>
                 <div className={'inline'}>
                   <AntInput
@@ -214,12 +213,20 @@ export const CreateOrg = props => {
                   />
                 </div>
               </div>
+              <div className={'flex'}>
+                <div className={'inline'}>
+                  <AntInput
+                    name={'Phone'}
+                    notRequired={'false'}
+                    layout={formLayouts.formItemLayout}
+                  />
+                </div>
+              </div>
             </div>
             
             <div className={'mg-tp-lg'}>
               <h4>Who is the point of contact?</h4>
             </div>
-            
             {getPOCInputs()}
             {numberOfPOC === 1 ? (
               <>
@@ -252,7 +259,6 @@ export const CreateOrg = props => {
             <div className={'mg-tp-lg'}>
               <h4>What are your hours of operation?</h4>
             </div>
-            
             <div className={'styledGroup'}>
               <CheckboxGroup
                 name={'Days of the week'}
@@ -303,7 +309,6 @@ const StyledCreateOrgForm = styled.div`
   margin-top: 2rem;
   width: 100%;
   font-weight: bold;
-  
   .inline {
     width: 50%;
   }
@@ -317,8 +322,7 @@ const StyledCreateOrgForm = styled.div`
 
   .mg-tp-lg {
     margin-top: 4rem;
-  }
-  
+  }  
   label {
   color: ${props => props.theme.primary8}
   }
