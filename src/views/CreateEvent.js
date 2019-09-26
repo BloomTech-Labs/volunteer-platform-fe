@@ -14,9 +14,9 @@ import {
 } from '../styled';
 import { useStateValue } from '../hooks/useStateValue';
 import { createEvent, createRecurringEvent } from '../actions';
-import { formLayouts } from '../utility/formLayouts';
 import RecurringEvent from '../components/RecurringEvent';
 import moment from 'moment';
+import { formLayouts } from '../utility/formLayouts';
 
 const { Option } = Select;
 
@@ -64,16 +64,22 @@ export const CreateEvent = props => {
 
   //Handle Submit for Form
   const handleSubmit = values => {
-    console.log(values);
     const event = {
       ...values,
       orgId: localState.orgId,
       orgName: props.location.state.org.organizationName,
       orgImagePath: props.location.state.org.imagePath,
+      orgId: props.location.state.org.orgId,
       orgPage: '',
       date: values.date.unix(),
       startTime: values.startTime.format('LT'),
       endTime: values.endTime.format('LT'),
+      startTimeStamp: moment(
+        values.date.format('LL') + ' ' + values.startTime.format('LT')
+      ).unix(),
+      endTimeSTamp: moment(
+        values.date.format('LL') + ' ' + values.endTime.format('LT')
+      ).unix(),
       pointOfcontact: {
         firstName: values.firstName,
         lastName: values.lastName,
@@ -101,10 +107,10 @@ export const CreateEvent = props => {
       }
       removeUndefinied(event);
       createRecurringEvent(event, dispatch);
+    } else {
+      removeUndefinied(event);
+      createEvent(event, dispatch);
     }
-    removeUndefinied(event);
-    console.log('event before on submit', event);
-    createEvent(event, dispatch);
     props.history.push('/org-dashboard');
   };
 
@@ -141,7 +147,7 @@ export const CreateEvent = props => {
   });
 
   let requirementTags = [];
-  console.log(localState);
+
   if (state.tags.requirements) {
     requirementTags = state.tags.requirements.map(tag => {
       return <Option key={tag}>{tag}</Option>;
@@ -159,102 +165,204 @@ export const CreateEvent = props => {
   };
 
   return (
-    <StyledDiv className="flex center">
-      <CustomStyledCard>
+    <StyledDiv className={'flex center'}>
+      <CustomStyledCard
+        className={'flex center'}
+        style={{ maxWidth: '900px', margin: '2rem 0 5rem 0' }}
+      >
         <h1>Let's Create An Event</h1>
-        <StyledCreateEvent>
+        <StyledCreateEvent style={{ marginRight: '1rem' }}>
           <WrappedAntForm
             layout={'vertical'}
             onSubmit={handleSubmit}
             buttonType={'primary'}
             buttonText={'Submit'}
+            className={'flex center'}
           >
-            <AntInput
-              name={'Name of Event'}
-              type="text"
-              layout={formLayouts.formItemLayoutInline}
-            />
-            <AntSelect
-              name={'Types of Causes'}
-              placeholder="Please select causes"
-              mode="multiple"
-            >
-              {causeAreaTags}
-            </AntSelect>
+            <div className={'flex'}>
+              <div className={'inline'}>
+                <AntInput
+                  name={'Name of Event'}
+                  type="text"
+                  layout={formLayouts.formItemLayout}
+                />
+              </div>
+              <div className={'inline invisible'}>
+                <AntSelect
+                  name={'Types of Causes'}
+                  placeholder="Types of Causes"
+                  mode="multiple"
+                  layout={formLayouts.formItemLayout}
+                >
+                  {causeAreaTags}
+                </AntSelect>
+              </div>
+            </div>
+            <div className={'flex'}>
+              <div className={'inline'}>
+                <AntInput
+                  name={'City'}
+                  layout={formLayouts.formItemLayout}
+                  placeholder="City"
+                ></AntInput>
+              </div>
+              <div className={'inline'}>
+                <AntInput
+                  name={'State'}
+                  layout={formLayouts.formItemLayout}
+                  placeholder="State"
+                ></AntInput>
+              </div>
+              <div className={'inline'}>
+                <AntInput
+                  name={'Phone Number'}
+                  pattern={'[0-9]{3}-[0-9]{3}-[0-9]{4}'}
+                  placeholder={'000-000-0000'}
+                  layout={formLayouts.formItemLayout}
+                />
+              </div>
+            </div>
+
             <label>When is the event?</label>
+            <div className={'styledGroup'}>
+              <div className={'flex'}>
+                <div className={'inline'}>
+                  <RecurringEvent
+                    name={'RecurringEvent'}
+                    localState={localState}
+                    setState={setState}
+                    dateFormat={dateFormat}
+                    layout={formLayouts.formItemLayout}
+                  />
+                </div>
+                <div className={'inline'}>
+                  <AntDatePicker
+                    name={'Date'}
+                    format={dateFormat}
+                    onChange={handleDynmaicDate}
+                    disabledDate={current =>
+                      current && current < moment().endOf('day')
+                    }
+                    layout={formLayouts.formItemLayout}
+                  />
+                </div>
+              </div>
 
-            <AntDatePicker
-              name={'Date'}
-              format={dateFormat}
-              onChange={handleDynmaicDate}
-              disabledDate={current =>
-                current && current < moment().endOf('day')
-              }
-            />
+              <div className={'flex'}>
+                <div className={'inline hidden'}>
+                  <AntTimePicker
+                    name={'Start Time'}
+                    use12Hours
+                    format={'h:mm a'}
+                  />
+                </div>
+                <div className={'inline'}>
+                  <p>to</p>
+                </div>
+                <div className={'inline hidden'}>
+                  <AntTimePicker
+                    name={'End Time'}
+                    use12Hours
+                    format={'h:mm a'}
+                  />
+                </div>
+              </div>
+            </div>
 
-            <RecurringEvent
-              name={'RecurringEvent'}
-              localState={localState}
-              setState={setState}
-              dateFormat={dateFormat}
-              notRequired
-            />
-
-            <AntTimePicker name={'Start Time'} use12Hours format={'h:mm a'} />
-            <p>to</p>
-
-            <AntTimePicker name={'End Time'} use12Hours format={'h:mm a'} />
-
-            <AntInputNumber
-              name={'Number of Volunteers'}
-              type="number"
-              min={0}
-            />
-
-            <AntInput name={'City'} placeholder="City"></AntInput>
-            <AntInput name={'State'} placeholder="State"></AntInput>
-
-            <AntInput
-              name={'Phone Number'}
-              type="tel"
-              pattern={'[0-9]{3}-[0-9]{3}-[0-9]{4}'}
-              placeholder={'000-000-0000'}
-            />
             <label>Who is the point of Contact?</label>
 
-            <AntInput name={'First Name'} type="text" />
-            <AntInput name={'Last Name'} type="text" />
-            <AntInput name={'Email'} type="email" />
-            <AntTextArea name={'Description'} type="text" />
-            <label>What are the requirements?</label>
-            <AntSelect
-              name={'Volunteer Requirments'}
-              placeholder="Please select requirments"
-              mode="multiple"
-            >
-              {requirementTags}
-            </AntSelect>
-            <AntSelect
-              name={'Interest'}
-              placeholder="Please select interest"
-              mode="multiple"
-            >
-              {interestTags}
-            </AntSelect>
+            <div className={'flex'}>
+              <div className={'inline'}>
+                <AntInput
+                  name={'First Name'}
+                  type="text"
+                  layout={formLayouts.formItemLayout}
+                />
+              </div>
+              <div className={'inline'}>
+                <AntInput
+                  name={'Last Name'}
+                  type="text"
+                  layout={formLayouts.formItemLayout}
+                />
+              </div>
+              <div className={'inline'}>
+                <AntInput
+                  name={'Email'}
+                  type="email"
+                  layout={formLayouts.formItemLayout}
+                />
+              </div>
+            </div>
 
-            <AntInput name={'Website'} />
-            <AntTextArea
-              name={'Other Notes'}
-              placeholder={'Any additional helpful tips for the event go here.'}
-              notRequired
-            />
-            <StyledButton
-              type="secondary"
-              htmlType="submit"
-              onClick={cancelForm}
-            >
-              Cancel
-            </StyledButton>
+            {/* <AntTextArea name={'Description'} type="text" /> */}
+
+            <label>What are the requirements?</label>
+            <div className={'styledGroup'}>
+              <label>List Requirements here</label>
+              <div className={'inline hidden'}>
+                <AntSelect
+                  name={'Volunteer Requirments'}
+                  placeholder="Please select requirments"
+                  mode="multiple"
+                  layout={formLayouts.formItemLayout}
+                >
+                  {requirementTags}
+                </AntSelect>
+              </div>
+              <div className={'inline'}>
+                <AntSelect
+                  name={'Interest'}
+                  placeholder="Please select interest"
+                  mode="multiple"
+                  layout={formLayouts.formItemLayout}
+                >
+                  {interestTags}
+                </AntSelect>
+              </div>
+            </div>
+
+            <div className={'flex'}>
+              <div className={'inline'}>
+                <AntInput
+                  name={'Website'}
+                  layout={formLayouts.formItemLayout}
+                />
+              </div>
+              <div className={'flex column'}>
+                <label style={{ width: 315 }}>
+                  How many volunteers do you need?
+                </label>
+                <small>We recommend adding +5 to your need</small>
+              </div>
+              <div className={'inline hidden'}>
+                <AntInputNumber
+                  name={'Number of Volunteers'}
+                  type="number"
+                  min={0}
+                />
+              </div>
+            </div>
+            <div className={'inline'}>
+              <AntTextArea
+                name={'Other Notes'}
+                style={{ width: 423, height: 115 }}
+                placeholder={
+                  'Any additional helpful tips for the event go here.'
+                }
+                layout={formLayouts.formItemLayout}
+                notRequired
+              />
+            </div>
+            <div className={'flex'}>
+              <StyledButton
+                type="secondary"
+                htmlType="submit"
+                onClick={cancelForm}
+              >
+                Cancel
+              </StyledButton>
+            </div>
           </WrappedAntForm>
         </StyledCreateEvent>
       </CustomStyledCard>
@@ -263,9 +371,10 @@ export const CreateEvent = props => {
 };
 
 const StyledCreateEvent = styled.div`
-  margin-top: 2rem;
+  margin: 2rem;
   width: 100%;
   font-weight: bold;
+  text-align: left;
   .inline {
     width: 50%;
   }
@@ -277,16 +386,23 @@ const StyledCreateEvent = styled.div`
     padding: 3rem;
   }
 
+  .hidden {
+    label {
+      display: none;
+    }
+  }
+  .invisible {
+    label {
+      visibility: hidden;
+    }
+  }
+
   .mg-tp-lg {
     margin-top: 4rem;
   }
   label {
     color: ${props => props.theme.primary8};
   }
-`;
-
-const StyledEvent = styled.div`
-  border: 1px solid black;
 `;
 
 const StyledDiv = styled.div`
@@ -298,6 +414,7 @@ const StyledDiv = styled.div`
   h4 {
     color: ${props => props.theme.primary8};
   }
+  padding: 2rem;
 `;
 
 const CustomStyledCard = styled(StyledCard)`
