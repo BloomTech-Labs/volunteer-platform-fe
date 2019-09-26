@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { Drawer, Select, Checkbox, Radio } from 'antd';
+import { Drawer, Select, Checkbox, Radio, DatePicker, InputNumber } from 'antd';
 import {
   StyledButton,
   StyledSelect,
   WrappedAntForm,
   AntInputNumber,
-  AntDatePicker,
   AntSelect,
 } from '../styled';
 
@@ -44,6 +43,13 @@ export const RecurringEvent = props => {
   repeatTimePeriodOptions.push(`Annually on ${dynamicYear}`);
   repeatTimePeriodOptions.push('Custom');
 
+  const closeDrawer = () => {
+    setFormState({
+      ...formState,
+      recurringBoolean: false,
+    });
+  };
+
   const handleCheckBox = checked => {
     setState({
       ...localState,
@@ -67,6 +73,33 @@ export const RecurringEvent = props => {
     });
   };
 
+  const handleDatePicker = date => {
+    setState({
+      ...localState,
+      recurringInfo: {
+        ...localState.recurringInfo,
+        occurrenceEndDate: date,
+      },
+    });
+  };
+  const handleOccurrences = occurrence => {
+    setState({
+      ...localState,
+      recurringInfo: {
+        ...localState.recurringInfo,
+        occurrenceEnds: occurrence.target.value,
+      },
+    });
+  };
+  const handleInputNumber = number => {
+    setState({
+      ...localState,
+      recurringInfo: {
+        ...localState.recurringInfo,
+        occurrenceEndsAfter: number,
+      },
+    });
+  };
   const handleSubmit = values => {
     setState({
       ...localState,
@@ -76,20 +109,6 @@ export const RecurringEvent = props => {
       },
     });
     setFormState({
-      recurringBoolean: false,
-    });
-  };
-
-  const handleOccurrences = occurrence => {
-    setFormState({
-      ...formState,
-      occurrence: occurrence.target.value,
-    });
-  };
-
-  const closeDrawer = () => {
-    setFormState({
-      ...formState,
       recurringBoolean: false,
     });
   };
@@ -117,14 +136,45 @@ export const RecurringEvent = props => {
         <Radio value={'No'}>No</Radio>
       </Radio.Group>
       {localState.recurringEvent === 'Yes' && (
-        <StyledSelect
-          style={{ width: 200 }}
-          defaultValue="Does not Repeat"
-          name={'Repeat Time Period'}
-          onChange={handleRepeatPeriod}
-        >
-          {repeatTimePeriod}
-        </StyledSelect>
+        <div>
+          <StyledSelect
+            style={{ width: 200 }}
+            name={'Repeat Time Period'}
+            onChange={handleRepeatPeriod}
+          >
+            {repeatTimePeriod}
+          </StyledSelect>
+
+          <label>Ends</label>
+          <Radio.Group
+            name={'Occurrence Ends'}
+            onChange={handleOccurrences}
+            notRequired
+          >
+            <Radio value={'Never'}>Never</Radio>
+            <Radio value={'On'}>On</Radio>
+            <Radio value={'After'}>After</Radio>
+          </Radio.Group>
+          <DatePicker
+            name={'Occurrence End Date'}
+            onChange={handleDatePicker}
+            disabledDate={current => current && current < moment().endOf('day')}
+            disabled={
+              localState.recurringInfo.occurrenceEnds === 'On' ? false : true
+            }
+            notRequired
+          />
+          <InputNumber
+            style={{ width: 50 }}
+            name={'Occurrence Ends After'}
+            min={0}
+            onChange={handleInputNumber}
+            disabled={
+              localState.recurringInfo.occurrenceEnds === 'After' ? false : true
+            }
+            notRequired
+          />
+        </div>
       )}
 
       <Drawer
@@ -154,30 +204,6 @@ export const RecurringEvent = props => {
             {periodOfTime}
           </AntSelect>
           <Checkbox.Group name={'Days'} options={dayOptions} notRequired />
-          <label>Ends</label>
-          <Radio.Group
-            name={'Occurrence Ends'}
-            onChange={handleOccurrences}
-            notRequired
-          >
-            <Radio value={'Never'}>Never</Radio>
-            <Radio value={'On'}>On</Radio>
-            <Radio value={'After'}>After</Radio>
-          </Radio.Group>
-          <AntDatePicker
-            name={'Occurrence End Date'}
-            format={dateFormat}
-            disabledDate={current => current && current < moment().endOf('day')}
-            disabled={formState.occurrence === 'On' ? false : true}
-            notRequired
-          />
-          <AntInputNumber
-            style={{ width: 50 }}
-            name={'Occurrence Ends After'}
-            min={0}
-            disabled={formState.occurrence === 'After' ? false : true}
-            notRequired
-          />
 
           <StyledButton type="secondary" onClick={closeDrawer}>
             Back
