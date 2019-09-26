@@ -3,10 +3,17 @@ import React from 'react';
 export const FilteredComponent = Component => {
   return ({ events, filter, tagFilter, recurringEvents }, ...props) => {
     const { location } = filter;
-    const { interests, requirements } = tagFilter;
+    const { interests, requirements, causeAreas } = tagFilter;
     const { state, city } = location;
 
-    if (!events) {
+    let filterCount = 0;
+    for(let key in interests)
+        interests[key] && filterCount++
+    for(let key in requirements)
+        requirements[key] && filterCount++
+    for(let key in causeAreas)
+        causeAreas[key] && filterCount++
+    if (!events || !filterCount) {
       return (
         <Component
           events={events}
@@ -16,7 +23,7 @@ export const FilteredComponent = Component => {
       );
     }
 
-    let filteredEvents = events;
+    let filteredEvents = [...events, ...recurringEvents];
     filteredEvents.forEach(event => (event.sortRank = 0));
 
     /* This is a crude way to sort events. For each filter match, sortRank
@@ -50,7 +57,7 @@ export const FilteredComponent = Component => {
     }
     if (requirements) {
       filteredEvents.forEach(event => {
-        event.volunteerRequirments.forEach(requirement => {
+        event.volunteerRequirements.forEach(requirement => {
           if (tagFilter.requirements[requirement])
             event.sortRank = event.sortRank + 1;
         });
@@ -62,8 +69,9 @@ export const FilteredComponent = Component => {
 
     return (
       <Component
+        filtered={true}
         events={filteredEvents}
-        recurringEvents={recurringEvents}
+        recurringEvents={[]}
         {...props}
       />
     );
