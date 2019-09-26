@@ -11,20 +11,24 @@ export const FilteredComponent = Component => {
     for (let key in interests) interests[key] && filterCount++;
     for (let key in requirements) requirements[key] && filterCount++;
     for (let key in causeAreas) causeAreas[key] && filterCount++;
-
+    
     events.forEach(event => {
       event.nextDate = event.startTimeStamp || event.date;
     });
     recurringEvents.forEach(event => {
-      event.nextDate = findNext(
+      let nextDate = findNext(
         event.startTimeStamp || event.date,
         event.recurringInfo
       );
+      event.nextDate = moment(
+        moment.unix(nextDate).format('LL') + ' ' + event.startTime
+      ).unix();
     });
     let allEvents = [...events, ...recurringEvents].sort(
       (a, b) => a.nextDate - b.nextDate
     );
-        
+
+    console.log(allEvents);
     if (!events || !filterCount) {
       return <Component events={allEvents} {...props} />;
     }
