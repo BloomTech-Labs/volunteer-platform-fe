@@ -24,7 +24,7 @@ export const authReducer = (state, action) => {
     case SIGNUP_FAILED:
       return {...state, signUpError: action.payload, isLoading: false};
     case GET_USER_ACCOUNT_SUCCESSFUL:
-      return {...state, registeredUser: action.payload};
+      return {...state, googleAuthUser: action.payload, registeredUser: action.payload};
     case REGISTER_INIT:
       return {...state, isLoading: true};
     case REGISTER_SUECESSFUL:

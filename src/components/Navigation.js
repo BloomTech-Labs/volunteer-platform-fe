@@ -17,6 +17,8 @@ export const Navigation = props => {
     '/org-dashboard': 'Org Dashboard',
     '/login': state.auth.loggedIn ? 'Logout' : 'Login',
   };
+
+  console.log(state.auth.googleAuthUser);
   
   useEffect(() => {
     setCurrent(pathNames[ props.location.pathname ]);
@@ -34,7 +36,7 @@ export const Navigation = props => {
       <Menu onClick={handleClick} selectedKeys={[current]} mode="inline">
         <Menu.Item className='nav-name'>
           {state.auth.googleAuthUser && (state.auth.googleAuthUser.firstName ?
-            `${state.auth.googleAuthUser.firstName} ${state.auth.googleAuthUser.lastName[0]}` :
+            `${state.auth.googleAuthUser.firstName} ${state.auth.googleAuthUser.lastName[0]}.` :
             'Welcome!')}
         </Menu.Item>
         <Menu.Divider/>
@@ -58,7 +60,6 @@ export const Navigation = props => {
             Upcoming Events
           </Link>
         </Menu.Item>
-<<<<<<< HEAD
         {state.org.createdOrg && (
           <Menu.Item key={'Org Dashboard'}>
             <Link to={'/org-dashboard'}>
@@ -74,9 +75,6 @@ export const Navigation = props => {
           </Menu.Item>
         )}
         <Menu.Divider />
-=======
-        <Menu.Divider/>
->>>>>>> 9735dcb44fb105f60f53a71c6464485e006dccec
         <Menu.Item className='nav-bottom'
                    key={state.auth.loggedIn ? 'Logout' : 'Login'}
         >
