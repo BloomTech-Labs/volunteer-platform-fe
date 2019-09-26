@@ -88,10 +88,11 @@ export const ORG_HAS_NO_EVENTS = 'ORG_HAS_NO_EVENTS';
  * @param {Dispatch} dispatch
  */
 export const getAllEventsByOrg = (orgId, dispatch) => {
+  const time = moment().unix();
   store
     .collection('events')
     .where('orgId', '==', orgId)
-    .where('date', '>', moment().unix())
+    .where('startTimeStamp', '>', time)
     .get()
     .then(res => {
       if (res.empty){
@@ -128,7 +129,7 @@ export const getAllEventsByState = (state, dispatch) => {
   store
     .collection('events')
     .where('state', '==', state)
-    .where('date', '>', moment().unix())
+    .where('startTimeStamp', '>', moment().unix())
     .get()
     .then(res => {
       if (res.empty){
