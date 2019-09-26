@@ -77,9 +77,13 @@ export const OrganizationDashboard = () => {
     
     updateOrganization(displayOrg.orgId, updatedDisplayOrg, dispatch);
   };
-
+  
   return (
     <StyledDashboard>
+      
+      <h2 className={'org-title'}>Welcome
+        Back {displayOrg.organizationName}</h2>
+      
       <div className={'row mg-lf-4 row-wrap'}>
         <div className={'column'}>
           {imageUrl ? (
@@ -110,7 +114,7 @@ export const OrganizationDashboard = () => {
             </StyledButton>
           </div>
           
-          <h1>Welcome Back {displayOrg.organizationName}</h1>
+          
           <StyledButton type={'secondary'}>
             <Link
               to={{
@@ -126,38 +130,44 @@ export const OrganizationDashboard = () => {
         
         </div>
         
-        <div>
-          
-          {displayOrg ? (
-            <>
+        <div className={'bottom'}>
+          <div className={'details'}>
+            
+            {displayOrg ? (
               
               <OrganizationInfo org={displayOrg}/>
-            </>
-          ) : (
-            <div>You have not created any organization yet</div>
-          )}
-          <Link
-            to={{
-              pathname: '/org-dashboard/create-event',
-              state: {
-                org: displayOrg,
-              },
-            }}
+            
+            ) : (
+              <div>You have not created any organization yet</div>
+            )}
+            <StyledButton className={'create-event-button'}>
+              <Link
+                to={{
+                  pathname: '/org-dashboard/create-event',
+                  state: {
+                    org: displayOrg,
+                  },
+                }}
+              >
+                Create event
+              </Link>
+            </StyledButton>
+          </div>
+          <div className={'events'}
           >
-            Create event
-          </Link>
+            {state.events.events.length > 0 ||
+            state.events.recurringEvents.length > 0 ? (
+              <EventList
+                events={state.events.events}
+                recurringEvents={state.events.recurringEvents}
+              />
+            ) : (
+              <div>No event has been created</div>
+            )}
+          </div>
         </div>
       </div>
-
-      {state.events.events.length > 0 ||
-      state.events.recurringEvents.length > 0 ? (
-        <EventList
-          events={state.events.events}
-          recurringEvents={state.events.recurringEvents}
-        />
-      ) : (
-        <div>No event has been created</div>
-      )}
+    
     </StyledDashboard>
   );
 };
@@ -165,6 +175,7 @@ export const OrganizationDashboard = () => {
 const StyledDashboard = styled.div`
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
   align-items: center;
   max-height: 100%;
   margin-top: 4rem;
@@ -175,6 +186,27 @@ const StyledDashboard = styled.div`
   
   .row {
     justify-content: space-around;
+  }
+  
+  .details {
+  width: 30%;
+  }
+  .events {
+  width: 58%;
+  }
+  .bottom {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  }
+  
+  .create-event-button {
+  margin-top: 2rem;
+  }
+  
+  .org-title {
+  align-self: flex-start;
+  margin-left: 10rem;
   }
 `;
 
