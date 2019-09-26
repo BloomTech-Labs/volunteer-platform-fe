@@ -9,6 +9,8 @@ import firebase, {store} from '../firebase/FirebaseConfig';
  */
 
 export const CREATED_ORGANIZATION = 'CREATED_ORGANIZATION';
+export const CREATE_ORGANIZATION_INIT = 'CREATE_ORGANIZATION_INIT';
+export const CREATE_ORGANIZATION_FAIL = 'CREATE_ORGANIZATION_FAIL';
 
 /**
  * Register a new non profit organization.
@@ -17,17 +19,17 @@ export const CREATED_ORGANIZATION = 'CREATED_ORGANIZATION';
  * @param {Dispatch} dispatch
  */
 export const registerOrganization = (org, dispatch) => {
-    debugger;
+  dispatch( { type: CREATE_ORGANIZATION_INIT } );
   store
     .collection('organizations')
     .add(org)
     .then(res => {
-      //dispatch(action(CREATED_ORGANIZATION));
-      //I have to comment out this or it will throw error when redirecting to
-      // dashboard after a new org is added
+      console.log(res);
+      dispatch( action( CREATED_ORGANIZATION ) );
     })
     .catch(err => {
       console.log(err);
+      dispatch( { type: CREATE_ORGANIZATION_FAIL } );
     });
 };
 
@@ -83,6 +85,11 @@ export const getOrganizationByOrgId = (orgId, dispatch) => {
       }
     });
 };
+
+export const UPDATE_ORGANIZATION_INIT = 'UPDATE_ORGANIZATION_INIT';
+export const UPDATE_ORGANIZATION_SUCCESS = 'UPDATE_ORGANIZATION_SUCCESS';
+export const UPDATE_ORGANIZATION_FAIL = 'UPDATE_ORGANIZATION_FAIL';
+
 /**
  * Update an organization in the db
  * @function
@@ -90,15 +97,19 @@ export const getOrganizationByOrgId = (orgId, dispatch) => {
  * @param {Organization} updates
  * @param {Dispatch} dispatch
  */
-export const updateOrganization = (orgId, updates, dispatch) => {
+
+ export const updateOrganization = (orgId, updates, dispatch) => {
+  dispatch( { type: UPDATE_ORGANIZATION_INIT } );
   store.collection('organizations')
     .doc(orgId)
     .set(updates)
     .then(res => {
       console.log('success updating organization');
+      dispatch( { type:  UPDATE_ORGANIZATION_SUCCESS } );
     })
     .catch(err => {
       console.log('error updating organization');
+      dispatch( { type:  UPDATE_ORGANIZATION_FAIL } );
     });
 };
 
