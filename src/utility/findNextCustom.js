@@ -1,9 +1,9 @@
 import moment from 'moment';
 
 export const findNextCustom = (date, info) => {
-  let unit = info.repeatEveryValue; //Week
-  let timeFrame = 2; //2
-  let days = ['Sunday']; //Monday
+  let unit = info.repeatEveryValue; 
+  let timeFrame = info.repeatEvery; 
+  let days = [...info.days]; 
   let nextOccurrence = moment.unix(date);
   switch (unit) {
     case 'Day':
@@ -35,13 +35,3 @@ export const findNextCustom = (date, info) => {
   }
   return 1;
 };
-
-// recurringInfo: {
-//     days: [],
-//     occurrenceEndDate:
-//     occurrenceEnds:
-//     occurenceEndsAFter:
-//     repeatEvery:
-//     repeatEveryValue:
-//     repeatTimePeriod: (Custom, Daily, Weekly on Day, Monthly on Nth, Annually on, Every Weekday)
-// }

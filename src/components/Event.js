@@ -40,7 +40,7 @@ export const Event = ({ event }) => {
           <h5>Requirements: {requirements}</h5>
         </div>
         <div className='date'>
-          <h5>On: {moment.unix(event.date).format('ll')}</h5>
+          <h5>On: {event.nextDate}</h5>
           <h5>from: {event.startTime}</h5>
           <h5>to: {event.endTime}</h5>
         </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { findNext } from '../utility/findNextRecurEvent';
-
+import moment from 'moment'
 export const FilteredComponent = Component => {
   return ({ events, filter, tagFilter, recurringEvents }, ...props) => {
     const { location } = filter;
@@ -13,9 +13,10 @@ export const FilteredComponent = Component => {
     for (let key in causeAreas) causeAreas[key] && filterCount++;
 
     events.forEach(event => {
-      event.nextDate = event.date;
+      event.nextDate = moment.unix(event.date).format('LL');
     });
     recurringEvents.forEach(event => {
+        
       event.nextDate = findNext(event.date, event.recurringInfo);
     });
     let allEvents = [...events, ...recurringEvents].sort(
