@@ -3,7 +3,7 @@ import {Link, withRouter} from 'react-router-dom';
 import {
   signOut, getFileUrl, updateRegisteredUser, deleteFile,
 } from '../actions';
-import {Menu, Icon, Avatar} from 'antd';
+import {Menu, Icon, Avatar, Tooltip} from 'antd';
 import styled from 'styled-components';
 import {useStateValue} from '../hooks/useStateValue';
 import {StyledUploadImage, StyledButton} from '../styled';
@@ -71,9 +71,14 @@ export const Navigation = props => {
         
         <div className={'avatar'}>
           {state.auth.registeredUser && state.auth.registeredUser.imageUrl ?
-            <><StyledAvatar size={64} src={state.auth.registeredUser.imageUrl}/><StyledButton
-              onClick={deleteAvatar}>Delete
-              Image</StyledButton></> :
+            <StyledAvatarImage className={'avatar-img'}>
+              <StyledAvatar size={100}
+                            src={state.auth.registeredUser.imageUrl}/>
+              <Tooltip title={'Delete Avatar'}>
+                <StyledDelete
+                  onClick={deleteAvatar} type="close"/>
+              </Tooltip>
+            </StyledAvatarImage> :
             <StyledUploadImage fileUploadComplete={onFileUploaded}/>}
         
         </div>
@@ -107,8 +112,22 @@ export const Navigation = props => {
   );
 };
 
+const StyledAvatarImage = styled.div`
+position: relative;
+:hover > i {
+  color: #ff4d4f;
+}
+`;
+
 const StyledAvatar = styled(Avatar)`
 
+`;
+
+const StyledDelete = styled(Icon)`
+position: absolute;
+right: 0;
+top: 0;
+color: transparent;
 `;
 
 const StyledNavigation = styled.div`
