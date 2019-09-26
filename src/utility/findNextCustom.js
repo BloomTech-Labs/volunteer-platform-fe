@@ -1,8 +1,8 @@
 import moment from 'moment';
 import { findNthWeek } from './findNthWeek';
 export const findNextCustom = (date, info) => {
-  let unit = 'Month' || info.repeatEveryValue;
-  let timeFrame = 6 || info.repeatEvery;
+  let unit = info.repeatEveryValue;
+  let timeFrame = info.repeatEvery;
   let days = [...info.days];
   let nextOccurrence = moment.unix(date);
   switch (unit) {
@@ -38,7 +38,7 @@ export const findNextCustom = (date, info) => {
       return firstOccurrence.format('LL');
 
     case 'Month' || 'Months':
-      let option = info.monthlyPeriod || 'Monthly on the Fourth Sat';
+      let option = info.monthlyPeriod;
       let firstEvent, day;
       if (option.includes('Monthly on day')) {
         day = +option.split(' ')[3];
