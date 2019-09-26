@@ -160,15 +160,16 @@ export const REGISTER_FAILED = 'REGISTER_FAILED';
  * @param {User} user
  * @param {function} dispatch
  */
-export const register = ( user, dispatch ) => {
+export const register = ( user, dispatch,  ) => {
   dispatch( action( REGISTER_INIT ) );
-  console.log(user)
   store
     .collection( 'users' )
     .doc( user.uid )
     .set( user )
     .then( res => {
       localStorage.setItem( 'signedUp', 'true' );
+      //any difference between signedUp vs userRegistered? I could not get the form to re-rout so I had to add line 172
+      localStorage.setItem( 'userRegistered', 'true' );
       dispatch( action( REGISTER_SUECESSFUL, user ) );
     } )
     .catch( err => {
