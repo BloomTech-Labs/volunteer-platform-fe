@@ -13,21 +13,18 @@ import moment from 'moment';
 const { Option } = Select;
 
 export const RecurringEvent = props => {
-  const { setState, localState, dateFormat } = props;
+  const { setState, localState } = props;
   const { dynamicDay, dynamicYear, dynamicNth } = localState;
   const [formState, setFormState] = useState({});
 
-  const dayOptions = [
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-    'Sunday',
-  ];
+  const dayOptions = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
-  const timePeriodOptions = ['Week', 'Month', 'Annual'];
+  const timePeriodOptions = ['Day', 'Week', 'Month'];
+
+  const monthlyOptions = [
+    `Monthly on day ${dynamicYear}`,
+    `Monthly on the ${dynamicNth} ${dynamicDay}`,
+  ];
 
   const repeatTimePeriodOptions = [
     'Does not repeat',
@@ -91,12 +88,30 @@ export const RecurringEvent = props => {
       },
     });
   };
-  const handleInputNumber = number => {
+  const handleOccurrencesEndsAfter = number => {
     setState({
       ...localState,
       recurringInfo: {
         ...localState.recurringInfo,
         occurrenceEndsAfter: number,
+      },
+    });
+  };
+  const handleEveryValue = value => {
+    setState({
+      ...localState,
+      recurringInfo: {
+        ...localState.recurringInfo,
+        repeatEveryValue: value,
+      },
+    });
+  };
+  const handleRepeatEvery = value => {
+    setState({
+      ...localState,
+      recurringInfo: {
+        ...localState.recurringInfo,
+        repeatEvery: value,
       },
     });
   };
@@ -114,11 +129,19 @@ export const RecurringEvent = props => {
   };
 
   const periodOfTime = timePeriodOptions.map(period => {
-    return (
-      <Option key={period} value={period}>
-        {period}
-      </Option>
-    );
+    if (localState.recurringInfo.repeatEvery > 1) {
+      return (
+        <Option key={period} value={period + 's'}>
+          {period + 's'}
+        </Option>
+      );
+    } else {
+      return (
+        <Option key={period} value={period}>
+          {period}
+        </Option>
+      );
+    }
   });
 
   const repeatTimePeriod = repeatTimePeriodOptions.map(period => {
@@ -129,6 +152,13 @@ export const RecurringEvent = props => {
     );
   });
 
+  const monthlyPeriod = monthlyOptions.map(period => {
+    return (
+      <Option key={period} value={period}>
+        {period}
+      </Option>
+    );
+  });
   return (
     <div>
       <Radio.Group onChange={handleCheckBox}>
@@ -168,7 +198,7 @@ export const RecurringEvent = props => {
             style={{ width: 50 }}
             name={'Occurrence Ends After'}
             min={0}
-            onChange={handleInputNumber}
+            onChange={handleOccurrencesEndsAfter}
             disabled={
               localState.recurringInfo.occurrenceEnds === 'After' ? false : true
             }
@@ -193,18 +223,26 @@ export const RecurringEvent = props => {
           <AntInputNumber
             name={'Repeat every'}
             style={{ width: 100 }}
+            onChange={handleRepeatEvery}
             min={0}
             notRequired
           />
           <AntSelect
             style={{ width: 100 }}
             name={'Repeat every value'}
+            onChange={handleEveryValue}
             notRequired
           >
             {periodOfTime}
           </AntSelect>
-          <Checkbox.Group name={'Days'} options={dayOptions} notRequired />
-
+          {localState.recurringInfo.repeatEveryValue === 'Week' && (
+            <Checkbox.Group name={'Days'} options={dayOptions} notRequired />
+          )}
+          {localState.recurringInfo.repeatEveryValue === 'Month' && (
+            <AntSelect name={'Monthly Period'} notRequired>
+              {monthlyPeriod}
+            </AntSelect>
+          )}
           <StyledButton type="secondary" onClick={closeDrawer}>
             Back
           </StyledButton>

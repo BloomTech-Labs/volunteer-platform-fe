@@ -108,7 +108,7 @@ export const CreateEvent = props => {
 
     props.history.push('/org-dashboard');
   };
-  console.log(localState);
+  console.log('localState', localState);
   const handleDynmaicDate = date => {
     const dynamicDay = date._d.toString().split(' ')[0];
     const dynamicYear = date._d
@@ -238,7 +238,9 @@ export const CreateEvent = props => {
                     name={'Is This a Recurring Event ?'}
                     localState={localState}
                     setState={setState}
-                    dateFormat={dateFormat}
+                    dynamicDay={localState.dynamicDay}
+                    dynamicYear={localState.dynamicYear}
+                    dynamicNth={localState.dynamicNth}
                     layout={formLayouts.formItemLayout}
                     notRequired
                   />
