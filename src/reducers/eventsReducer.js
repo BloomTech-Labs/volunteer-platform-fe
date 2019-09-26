@@ -43,7 +43,7 @@ export const eventsReducer = ( state, action ) => {
       };
     case GET_RECURRING_EVENTS_BY_ORG:
       return {
-        ...state, recurringEvents: [],
+        ...state, recurringEvents: [...action.payload],
       };
     case RECURRING_EVENTS_BY_ORG_EMPTY:
       return {

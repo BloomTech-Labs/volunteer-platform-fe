@@ -63,7 +63,6 @@ export const CreateEvent = props => {
   
   //Handle Submit for Form
   const handleSubmit = values => {
-    console.log(values);
     const event = {
       ...values,
       orgName: props.location.state.org.organizationName,
@@ -105,9 +104,10 @@ export const CreateEvent = props => {
       removeUndefinied(event);
       createRecurringEvent(event, dispatch);
     }
-    removeUndefinied(event);
-    console.log('event before on submit', event);
-    createEvent(event, dispatch);
+    else{
+        removeUndefinied(event);
+        createEvent(event, dispatch);
+    }
     props.history.push('/org-dashboard');
   };
   
