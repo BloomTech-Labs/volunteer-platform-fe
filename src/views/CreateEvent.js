@@ -310,8 +310,8 @@ export const CreateEvent = props => {
               <label>List Requirements here</label>
               <div className={'inline hidden'}>
                 <AntSelect
-                  name={'Volunteer Requirments'}
-                  placeholder="Please select requirments"
+                  name={'Volunteer Requirements'}
+                  placeholder="Please select requirements"
                   mode="multiple"
                   layout={formLayouts.formItemLayout}
                 >
