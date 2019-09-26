@@ -3,7 +3,7 @@ import { findNthWeek } from './findNthWeek';
 export const findNextCustom = (date, info) => {
   let unit = info.repeatEveryValue;
   let timeFrame = info.repeatEvery;
-  let days = [...info.days];
+  let days = info.days ? [...info.days] : [];
   let nextOccurrence = moment.unix(date);
   switch (unit) {
     case 'Day' || 'Days':
