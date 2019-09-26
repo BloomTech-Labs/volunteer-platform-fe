@@ -26,105 +26,167 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import React, { useEffect, useState } from "react";
-import { StyledForm, StyledButton, StyledInput } from "../styled";
-import {
-  Form, Avatar
-} from "antd";
-import styled from "styled-components";
-import { useStateValue } from "../hooks/useStateValue";
-import { register } from "../actions";
+            <pre class="prettyprint source linenums"><code>import React, { useEffect, useState } from 'react';
+import { WrappedAntForm, StyledButton, AntInput, StyledCard } from '../styled';
+import { Avatar } from 'antd';
+import styled from 'styled-components';
+import { useStateValue } from '../hooks/useStateValue';
+import { register } from '../actions';
+import { formLayouts } from '../utility/formLayouts';
 
-const SignUpForm = styled.div`
-margin: 4rem 2rem;
-  max-width: 50%;
-`;
-
-const Signup = () => {
-  
-  const [ state, dispatch ] = useStateValue();
+export const Signup = (props) => {
+  const [state, dispatch] = useStateValue();
   /**
    * @type {User}
    */
   let user = {
-    firstName: "",
-    lastName: "",
-    city: "",
-    state: "",
-    zipCode: "",
-    phoneNumber: "",
-    email: "",
-    uid: "",
-    age: 18
+    firstName: '',
+    lastName: '',
+    city: '',
+    state: '',
+    zipCode: '',
+    phoneNumber: '',
+    email: '',
+    uid: '',
+    age: 18,
   };
-  const [ localState, setState ] = useState( user );
-  
-  useEffect( () => {
-    
-    if( state.auth.googleAuthUser ){
+  const [localState, setState] = useState(user);
+
+  useEffect(() => {
+    if (state.auth.googleAuthUser) {
       user.uid = state.auth.googleAuthUser.uid;
-      if( state.auth.googleAuthUser.displayName ){
-        const name = state.auth.googleAuthUser.displayName.split( " " );
-        user.firstName = name[ 0 ];
-        user.lastName = name[ 1 ];
+      if (state.auth.googleAuthUser.displayName) {
+        const name = state.auth.googleAuthUser.displayName.split(' ');
+        user.firstName = name[0];
+        user.lastName = name[1];
       }
-      
-      if( state.auth.googleAuthUser.email ){
+
+      if (state.auth.googleAuthUser.email) {
         user.email = state.auth.googleAuthUser.email;
       }
-      
-      if( state.auth.googleAuthUser.phoneNumber ){
+
+      if (state.auth.googleAuthUser.phoneNumber) {
         user.phoneNumber = state.auth.googleAuthUser.phoneNumber;
       }
-      
-      if( state.auth.googleAuthUser.photoURL ){
+
+      if (state.auth.googleAuthUser.photoURL) {
         user.photoURL = state.auth.googleAuthUser.photoURL;
       }
-      setState( { ...user } );
+      setState({ ...user });
     }
-  }, [ state ] );
-  
-  const changeValue = e => {
-    setState( { ...localState, [ e.target.name ]: e.target.value } );
+  }, [state]);
+
+  const handleSubmit = values => {
+    values.uid = localState.uid;
+    register( values, dispatch );
   };
-  
-  const handleSubmit = e => {
-    e.preventDefault();
-    register( localState, dispatch );
-  };
-  
-  return ( &lt;SignUpForm>
-    { localState.photoURL &amp;&amp;
-    &lt;Avatar src={ localState.photoURL } shape="square" size={ 64 }
-            icon="user"/> }
-    &lt;StyledForm onSubmit={ handleSubmit }>
-      &lt;StyledInput name={ "First Name" } values={ localState }
-                   onChange={ changeValue }/>
-      &lt;StyledInput name={ "Last Name" } values={ localState }
-                   onChange={ changeValue }/>
-      &lt;StyledInput name={ "Phone Number" }
-                   values={ localState }
-                   onChange={ changeValue }/>
-      &lt;StyledInput name={ "Age" }
-                   values={ localState }
-                   onChange={ changeValue }/>
-      &lt;StyledInput name={ "Email" } values={ localState }
-                   onChange={ changeValue }/>
-      &lt;StyledInput name={ "City" } values={ localState }
-                   onChange={ changeValue }/>
-      &lt;StyledInput name={ "State" } values={ localState }
-                   onChange={ changeValue }/>
-      &lt;StyledInput name={ "Zip Code" } values={ localState }
-                   onChange={ changeValue }/>
-      
-      &lt;StyledButton type="primary" htmlType="submit">
-        Register
-      &lt;/StyledButton>
-    &lt;/StyledForm>
-  &lt;/SignUpForm> );
+
+  return (
+    &lt;StyledDiv className={'flex center'}>
+      &lt;CustomStyledCard style={{ maxWidth: '900px', margin: '2rem 0 5rem 0' }}>
+        &lt;h1>Let's set up your profile&lt;/h1>
+        {localState.photoURL &amp;&amp; (
+          &lt;Avatar
+            src={localState.photoURL}
+            shape="square"
+            size={64}
+            icon="user"
+          />
+        )}
+        &lt;WrappedAntForm
+          layout={'vertical'}
+          onSubmit={handleSubmit}
+          autofill={localState}
+          buttonType="primary"
+          buttonText="Register"
+          buttonLoading={state.auth.isLoading}
+        >
+          &lt;div className='inputGroup'>
+            &lt;div className='top'>
+              &lt;AntInput name={'First Name'} 
+                        layout={formLayouts.formItemLayout} />
+              &lt;AntInput name={'Last Name'} 
+                        layout={formLayouts.formItemLayout}/>  
+              &lt;AntInput name={'Age'} 
+                        layout={formItemLayoutShort} />
+            &lt;/div>
+            &lt;div className='middle'>
+            &lt;AntInput name={'Email'} 
+                        layout={formLayouts.formItemLayout} />
+              &lt;AntInput name={'Phone Number'}
+                        layout={formLayouts.formItemLayout} />
+            &lt;/div>
+            &lt;div className='bottom'>
+              &lt;AntInput name={'City'} 
+                        layout={formLayouts.formItemLayout} />
+              &lt;AntInput name={'State'} 
+                        layout={formLayouts.formItemLayout} />
+              &lt;AntInput name={'Zip Code'} 
+                        layout={formItemLayoutShort}/>
+            &lt;/div>        
+          &lt;/div>
+        &lt;/WrappedAntForm>
+      &lt;/CustomStyledCard>
+    &lt;/StyledDiv>
+  );
 };
 
-export default Signup;</code></pre>
+export default Signup;
+
+const CustomStyledCard = styled(StyledCard)`
+  background: #d9d9d9;
+  text-align: center;
+
+  button {
+    align-self: center;
+    width: 120px;
+    padding: 0.5rem 2rem;
+    font-family: Arvo;
+    font-size: 16px;
+    height: auto;
+    margin-top: 1.5rem;
+  }
+
+  button:hover {
+    background: ${props => props.theme.primary8};
+  }
+
+  label {
+    color: ${props => props.theme.primary8};
+    font-weight: bold;
+  }
+
+  .inputGroup {
+    background: ${props => props.theme.gray4};
+    width: 90%;
+    margin: 3rem;
+    border-radius: 3px;
+    padding: 2rem 3.5rem;
+  }
+  
+  .top, .middle, .bottom {
+    display: flex;
+    justify-content: flex-start;
+    margin: 2rem 0;
+  }
+`;
+
+const StyledDiv = styled.div`
+  background: white;
+`
+
+const formItemLayoutShort = {
+  labelCol: {
+    xs: {span: 20},
+    sm: {span: 20},
+  },
+  wrapperCol: {
+    xs: {span: 10},
+    sm: {span: 10},
+  },
+};
+
+</code></pre>
         </article>
     </section>
 
@@ -134,13 +196,13 @@ export default Signup;</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-actions_auth.html">actions/auth</a></li><li><a href="module-actions_events.html">actions/events</a></li><li><a href="module-actions_organizations.html">actions/organizations</a></li><li><a href="module-actions_tags.html">actions/tags</a></li><li><a href="module-State.html">State</a></li><li><a href="module-Types.html">Types</a></li></ul><h3>Global</h3><ul><li><a href="global.html#action">action</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-actions_auth.html">actions/auth</a></li><li><a href="module-actions_events.html">actions/events</a></li><li><a href="module-actions_file.html">actions/file</a></li><li><a href="module-actions_organizations.html">actions/organizations</a></li><li><a href="module-State.html">State</a></li><li><a href="module-Types.html">Types</a></li></ul><h3>Global</h3><ul><li><a href="global.html#action">action</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Thu Sep 19 2019 12:46:22 GMT-0600 (Mountain Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Thu Sep 26 2019 10:30:18 GMT-0600 (Mountain Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

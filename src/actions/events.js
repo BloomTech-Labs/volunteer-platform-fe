@@ -88,10 +88,11 @@ export const ORG_HAS_NO_EVENTS = 'ORG_HAS_NO_EVENTS';
  * @param {Dispatch} dispatch
  */
 export const getAllEventsByOrg = (orgId, dispatch) => {
+  const time = moment().unix();
   store
     .collection('events')
     .where('orgId', '==', orgId)
-    .where('date', '>', moment().unix())
+    .where('startTimeStamp', '>', time)
     .get()
     .then(res => {
       if (res.empty){
@@ -125,11 +126,10 @@ export const NO_EVENTS_FOR_THAT_STATE = 'NO_EVENTS_FOR_THAT_STATE';
  * @param {Dispatch} dispatch
  */
 export const getAllEventsByState = (state, dispatch) => {
-  debugger;
   store
     .collection('events')
     .where('state', '==', state)
-    .where('date', '>', moment().unix())
+    .where('startTimeStamp', '>', moment().unix())
     .get()
     .then(res => {
       if (res.empty){
@@ -167,6 +167,11 @@ export const createRecurringEvent = (event, dispatch) => {
 export const GET_RECURRING_EVENTS_BY_STATE = 'GET_RECURRING_EVENTS_BY_STATE';
 export const RECURRING_EVENTS_BY_STATE_EMPTY = 'RECURRING_EVENTS_BY_STATE_EMPTY';
 
+/**
+ * Gets all the recurring events for the state. Updates the recurring events in events reducer.
+ * @param {String} state - two letter abbreviation of the state.
+ * @param dispatch
+ */
 export const getAllRecurringEventsByState = (state, dispatch) => {
   store.collection('recurring events')
     .where('state', '==', state)
@@ -190,6 +195,11 @@ export const getAllRecurringEventsByState = (state, dispatch) => {
 export const GET_RECURRING_EVENTS_BY_ORG = 'GET_RECURRING_EVENTS_BY_ORG';
 export const RECURRING_EVENTS_BY_ORG_EMPTY = 'RECURRING_EVENTS_BY_ORG_EMPTY';
 
+/**
+ * Gets all the recurring events for the organization. Updated recurring events in the events reducer.
+ * @param {String} orgId None profits id
+ * @param {Dispatch} dispatch
+ */
 export const getAllRecurringEventsByOrg = (orgId, dispatch) => {
   store.collection('recurring events')
     .where('orgId', '==', orgId)
@@ -202,12 +212,12 @@ export const getAllRecurringEventsByOrg = (orgId, dispatch) => {
         res.forEach(event => {
           const data = event.data();
           data.eventId = event.id;
-          events.push( data );
-        } );
+          events.push(data);
+        });
         
         dispatch(action(GET_RECURRING_EVENTS_BY_ORG, events));
       }
-    } )
+    })
     .catch(err => console.log(err));
 };
 

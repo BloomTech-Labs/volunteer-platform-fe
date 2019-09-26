@@ -1,22 +1,33 @@
 import React from 'react';
-
+import { findNext } from '../utility/findNextRecurEvent';
+import moment from 'moment'
 export const FilteredComponent = Component => {
   return ({ events, filter, tagFilter, recurringEvents }, ...props) => {
     const { location } = filter;
-    const { interests, requirements } = tagFilter;
+    const { interests, requirements, causeAreas } = tagFilter;
     const { state, city } = location;
 
-    if (!events) {
-      return (
-        <Component
-          events={events}
-          recurringEvents={recurringEvents}
-          {...props}
-        />
-      );
+    let filterCount = 0;
+    for (let key in interests) interests[key] && filterCount++;
+    for (let key in requirements) requirements[key] && filterCount++;
+    for (let key in causeAreas) causeAreas[key] && filterCount++;
+    console.log(events, recurringEvents)
+    events.forEach(event => {
+      event.nextDate = moment.unix(event.date).format('LL');
+    });
+    recurringEvents.forEach(event => {
+        
+      event.nextDate = findNext(event.date, event.recurringInfo);
+    });
+    let allEvents = [...events, ...recurringEvents].sort(
+      (a, b) => a.nextDate - b.nextDate
+    );
+
+    if (!events || !filterCount) {
+      return <Component events={allEvents} {...props} />;
     }
 
-    let filteredEvents = events;
+    let filteredEvents = allEvents;
     filteredEvents.forEach(event => (event.sortRank = 0));
 
     /* This is a crude way to sort events. For each filter match, sortRank
@@ -50,22 +61,22 @@ export const FilteredComponent = Component => {
     }
     if (requirements) {
       filteredEvents.forEach(event => {
-        event.volunteerRequirments.forEach(requirement => {
+        event.volunteerRequirements.forEach(requirement => {
           if (tagFilter.requirements[requirement])
             event.sortRank = event.sortRank + 1;
         });
       });
     }
 
-    filteredEvents.sort((a, b) => (a.sortRank < b.sortRank ? 1 : -1));
+    filteredEvents.sort((a, b) => {
+      if(a.sortRank === b.sortRank){
+          return a.nextDate - b.nextDate
+      }
+      else
+        return a.sortRank < b.sortRank ? 1 : -1;
+    });
     filteredEvents = filteredEvents.filter(event => event.sortRank > 0);
 
-    return (
-      <Component
-        events={filteredEvents}
-        recurringEvents={recurringEvents}
-        {...props}
-      />
-    );
+    return <Component events={filteredEvents} {...props} />;
   };
 };
