@@ -39,7 +39,6 @@ export const MainDashboard = () => {
     axios
       .get(`https://geoip-db.com/json/${process.env.REACT_APP_ipinfoKey}`)
       .then(res => {
-        console.log(res);
         let stateAbbrev = Object.keys(stateConversion).find(
           key => stateConversion[key] === res.data.state
         );

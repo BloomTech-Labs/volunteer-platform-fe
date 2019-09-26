@@ -29,8 +29,6 @@ export const Event = ({ event }) => {
   // const requirements = event.volunteerRequirements.map(item => {
   //   return <Tag>{item = [item]}</Tag> 
   // })
-
-  console.log(event)
   return (
     <StyledCard>
       <div className='container'>

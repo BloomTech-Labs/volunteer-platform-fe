@@ -1,10 +1,11 @@
 import moment from 'moment';
 export const findNext = (date, info) => {
-  console.log(info);
   let keyWord = info.repeatTimePeriod.split(' ')[0];
   let dayAbbrevs = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
   let unitConversion = { First: 1, Second: 2, Third: 3, Fourth: 4, Fifth: 5 };
   switch (keyWord) {
+    case 'Custom':
+        return 1569701550
     case 'Daily':
       return moment()
         .add(1, 'days')

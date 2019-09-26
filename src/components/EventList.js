@@ -4,18 +4,19 @@ import Event from './Event';
 import moment from 'moment';
 import { findNext } from '../utility/findNextRecurEvent';
 
-export const EventList = ({ events, recurringEvents }) => {
-  events.forEach(event => {
+export const EventList = ({ events, recurringEvents, filtered }) => {
+    console.log(events)
+  !filtered && events.forEach(event => {
     event.nextDate = event.date;
   });
   recurringEvents.forEach(event => {
     event.nextDate = findNext(event.date, event.recurringInfo)
-    console.log(event.nextDate)
   });
+  let allEvents = filtered ? events : [...events, ...recurringEvents].sort((a, b) => a.nextDate - b.nextDate)
 
   return (
     <StyledEventList>
-      {events.map(event => (
+      {allEvents.map(event => (
         <Event key={event.eventId} event={event} />
       ))}
     </StyledEventList>
