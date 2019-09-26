@@ -51,6 +51,19 @@
  * @property {SocialMedia[]} socialMedia Array of social media objects.
  * @property {String} email Organizations email
  * @property {String} [imagePath] Org image path to be changed into url.
+ * @property {PointOfContact[]} POC Points of contact for the org.
+ * @property {String[]} causeAreas Array of cause areas the org is associated with.
+ * @property {String} startTime Time the organization opens.
+ * @property {String} endTime Time the organization closes.
+ * @property {String[]} daysOfTheWeek Days of the week the organization is open.
+ *
+ */
+
+/**
+ * @typedef PointOfContact
+ * @property {String} email Email address of the point of contact.
+ * @property {String} firstName First name of the point of contact.
+ * @property {lastName} lastName Last name of the point of contact.
  */
 
 /**

@@ -1,12 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import {
-  signOut, getFileUrl, updateRegisteredUser, deleteFile,
+  signOut,
 } from '../actions';
-import {Menu, Icon, Avatar, Tooltip} from 'antd';
+import {Menu} from 'antd';
 import styled from 'styled-components';
 import {useStateValue} from '../hooks/useStateValue';
-import {StyledUploadImage, StyledButton} from '../styled';
 
 export const Navigation = props => {
   const [state, dispatch] = useStateValue();
@@ -30,42 +29,15 @@ export const Navigation = props => {
     }
   };
   
-  const onFileUploaded = async(path) => {
-    const url = await getFileUrl(path);
-    const user = state.auth.registeredUser;
-    user.imagePath = path;
-    user.imageUrl = url;
-    updateRegisteredUser(user, dispatch);
-    
-  };
-  
-  const deleteAvatar = () => {
-    deleteFile(state.auth.registeredUser.imagePath);
-    const user = state.auth.registeredUser;
-    delete (user.imagePath);
-    delete (user.imageUrl);
-    updateRegisteredUser(user, dispatch);
-  };
-  
   return (
     <StyledNavigation>
       <Menu onClick={handleClick} selectedKeys={[current]} mode="inline">
         <Menu.Item className='nav-name'>
-          {state.auth.googleAuthUser && (state.auth.googleAuthUser.firstName ? `${state.auth.googleAuthUser.firstName} ${state.auth.googleAuthUser.lastName}` : 'Welcome!')}
+          {state.auth.googleAuthUser && (state.auth.googleAuthUser.firstName ?
+            `${state.auth.googleAuthUser.firstName} ${state.auth.googleAuthUser.lastName}` :
+            'Welcome!')}
         </Menu.Item>
-        <Menu.Divider />
-        <div className={'avatar'}>
-          {state.auth.registeredUser && state.auth.registeredUser.imageUrl ?
-            <StyledAvatarImage className={'avatar-img'}>
-              <StyledAvatar size={100}
-                            src={state.auth.registeredUser.imageUrl}/>
-              <Tooltip title={'Delete Avatar'}>
-                <StyledDelete
-                  onClick={deleteAvatar} type="close"/>
-              </Tooltip>
-            </StyledAvatarImage> :
-            <StyledUploadImage fileUploadComplete={onFileUploaded}/>}
-        </div>
+        <Menu.Divider/>
         <Menu.Item>
           <Link to='#'>
             Profile
@@ -95,14 +67,14 @@ export const Navigation = props => {
             Browse
           </Link>
         </Menu.Item>
-        <Menu.Item >
+        <Menu.Item>
           <Link to='#'>
             Upcoming Events
           </Link>
         </Menu.Item>
-        <Menu.Divider />
+        <Menu.Divider/>
         <Menu.Item className='nav-bottom'
-          key={state.auth.loggedIn ? 'Logout' : 'Login'}
+                   key={state.auth.loggedIn ? 'Logout' : 'Login'}
         >
           {state.auth.loggedIn ? (
             <Link to="/dashboard">
@@ -154,10 +126,5 @@ const StyledNavigation = styled.div`
     }
     
 `;
-
-const StyledAvatar = styled(Avatar)`
-
-`;
-
 
 export default withRouter(Navigation);
