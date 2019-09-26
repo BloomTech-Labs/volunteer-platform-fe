@@ -1,4 +1,5 @@
 import React from 'react';
+import { findNext } from '../utility/findNextRecurEvent';
 
 export const FilteredComponent = Component => {
   return ({ events, filter, tagFilter, recurringEvents }, ...props) => {
@@ -7,23 +8,25 @@ export const FilteredComponent = Component => {
     const { state, city } = location;
 
     let filterCount = 0;
-    for(let key in interests)
-        interests[key] && filterCount++
-    for(let key in requirements)
-        requirements[key] && filterCount++
-    for(let key in causeAreas)
-        causeAreas[key] && filterCount++
+    for (let key in interests) interests[key] && filterCount++;
+    for (let key in requirements) requirements[key] && filterCount++;
+    for (let key in causeAreas) causeAreas[key] && filterCount++;
+
+    events.forEach(event => {
+      event.nextDate = event.date;
+    });
+    recurringEvents.forEach(event => {
+      event.nextDate = findNext(event.date, event.recurringInfo);
+    });
+    let allEvents = [...events, ...recurringEvents].sort(
+      (a, b) => a.nextDate - b.nextDate
+    );
+
     if (!events || !filterCount) {
-      return (
-        <Component
-          events={events}
-          recurringEvents={recurringEvents}
-          {...props}
-        />
-      );
+      return <Component events={allEvents} {...props} />;
     }
 
-    let filteredEvents = [...events, ...recurringEvents];
+    let filteredEvents = allEvents;
     filteredEvents.forEach(event => (event.sortRank = 0));
 
     /* This is a crude way to sort events. For each filter match, sortRank
@@ -64,16 +67,15 @@ export const FilteredComponent = Component => {
       });
     }
 
-    filteredEvents.sort((a, b) => (a.sortRank < b.sortRank ? 1 : -1));
+    filteredEvents.sort((a, b) => {
+      if(a.sortRank === b.sortRank){
+          return a.nextDate - b.nextDate
+      }
+      else
+        return a.sortRank < b.sortRank ? 1 : -1;
+    });
     filteredEvents = filteredEvents.filter(event => event.sortRank > 0);
 
-    return (
-      <Component
-        filtered={true}
-        events={filteredEvents}
-        recurringEvents={[]}
-        {...props}
-      />
-    );
+    return <Component events={filteredEvents} {...props} />;
   };
 };

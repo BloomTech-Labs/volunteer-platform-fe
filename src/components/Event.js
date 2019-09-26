@@ -28,7 +28,6 @@ export const Event = ({ event }) => {
     return <Tag>{item = [item]}</Tag> 
   })
 
-  console.log(event)
   return (
     <StyledCard>
       <div className='container'>

@@ -134,7 +134,6 @@ export const checkUserRegistered = (uid, dispatch) => {
     .doc(uid)
     .get()
     .then(res => {
-      debugger;
       if (res.exists){
         const data = res.data();
         data.uid = res.id;
