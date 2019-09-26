@@ -26,7 +26,7 @@ export const StyledCard = styled(Card)`
 
     .contact {
       display: flex;
-      justify-content: space-evenly;
+      flex-direction:column;
     }
   }
 `;

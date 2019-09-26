@@ -45,10 +45,9 @@ export const Event = ({ event }) => {
           <h5>to: {event.endTime}</h5>
         </div>
         <div className='contact'>
-          <h5>{event.phoneNumber}</h5>
+          <h5>Contact: {event.firstName + ' ' + event.lastName}</h5>
+          <h5>Contact Number: {event.phoneNumber}</h5>
           <h5>{event.email}</h5>
-          <h5>{event.firstName}</h5>
-          <h5>{event.lastName}</h5>
           <h5>{event.website}</h5>
         </div>
         <div className='description'>

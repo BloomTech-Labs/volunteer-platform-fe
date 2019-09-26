@@ -127,7 +127,7 @@ export const OrganizationDashboard = (props) => {
           <div className={'org-top'}>
             <div className={'org-top-col'}>
               <h3>Hours of operations:</h3>
-              {displayOrg && <h5>{displayOrg.daysOfTheWeek.map(day => {
+              {displayOrg && <h5>{displayOrg.daysOfTheWeek.daysOfTheWeek.map(day => {
                 return (<span className={'day'}>{day}</span>);
               })}</h5>}
               {displayOrg && <h5>Opens: {displayOrg.startTime}</h5>}
