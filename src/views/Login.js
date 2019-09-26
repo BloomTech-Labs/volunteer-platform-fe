@@ -185,5 +185,4 @@ const CustomStyledLink = styled(StyledLink)`
   }
 `
 
-
 export default Login;

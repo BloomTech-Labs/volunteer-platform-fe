@@ -152,6 +152,7 @@ export const CreateOrg = props => {
             autofill={orgToEdit}
             buttonText={'Submit'}
             buttonType={'primary'}
+            buttonLoading={state.org.isLoading}
           >
             <div className={'styledGroup'}>
               <div className={'flex'}>

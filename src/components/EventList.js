@@ -10,6 +10,7 @@ export const EventList = ({ events, recurringEvents }) => {
   });
   recurringEvents.forEach(event => {
     event.nextDate = findNext(event.date, event.recurringInfo)
+    console.log(event.nextDate)
   });
 
   return (

@@ -1,6 +1,5 @@
 import {
-  GET_USER_ORGANIZATIONS, GET_USER_ORGANIZATIONS_FAILED, CREATED_ORGANIZATION,
-  GET_ORG_BY_ID, GET_ORG_BY_ID_FAILED, USER_HAS_NO_ORGANIZATIONS, DELETE_ORG,
+  GET_USER_ORGANIZATIONS, GET_USER_ORGANIZATIONS_FAILED, CREATE_ORGANIZATION_INIT, CREATED_ORGANIZATION, CREATE_ORGANIZATION_FAIL, GET_ORG_BY_ID, GET_ORG_BY_ID_FAILED, USER_HAS_NO_ORGANIZATIONS, UPDATE_ORGANIZATION_INIT, UPDATE_ORGANIZATION_SUCCESS, UPDATE_ORGANIZATION_FAIL, DELETE_ORG,
   DELETE_ORG_FAILED, GET_TOP_ORGANIZATIONS, GET_TOP_ORGANIZATIONS_FAILED,
   THERE_ARE_NO_ORGANIZATIONS,
 } from '../actions/organization';
@@ -8,11 +7,16 @@ import {SIGNED_OUT} from '../actions';
 
 export const orgReducer = (state, action) => {
   switch (action.type){
+    case CREATE_ORGANIZATION_INIT:
+      return { ...state, isLoading: true };
     case CREATED_ORGANIZATION:
       return {
         ...state,
-        userOrganizations: [...state.userOrganizations, action.payload],
+        //userOrganizations: [...state.userOrganizations, action.payload],
+        isLoading: false
       };
+    case CREATE_ORGANIZATION_FAIL:
+      return { ...state, isLoading: false };
     case GET_USER_ORGANIZATIONS:
       let orgs = action.payload;
       return {
@@ -48,6 +52,24 @@ export const orgReducer = (state, action) => {
         ...state, createdOrg: false, userOrganizations: [],
       };
     
+    case UPDATE_ORGANIZATION_INIT:
+      return {
+        ...state, 
+        isLoading: true
+      };
+    
+    case UPDATE_ORGANIZATION_SUCCESS:
+      return {
+        ...state, 
+        isLoading: false
+      };
+      
+    case UPDATE_ORGANIZATION_FAIL:
+      return {
+        ...state, 
+        isLoading: false
+      };
+
     case DELETE_ORG:
       return {
         ...state,
