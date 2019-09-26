@@ -24,11 +24,9 @@ export const Event = ({ event }) => {
     return <Tag>{item = [item]}</Tag>
   })
 
-  // comes back as undefined, even with actual data. 
-  //it would still display that data with <h5>{events.volunteerRequirements[0]}</h5>
-  // const requirements = event.volunteerRequirements.map(item => {
-  //   return <Tag>{item = [item]}</Tag> 
-  // })
+  const requirements = event.volunteerRequirements.map(item => {
+    return <Tag>{item = [item]}</Tag> 
+  })
 
   console.log(event)
   return (
@@ -40,7 +38,7 @@ export const Event = ({ event }) => {
           <h5>{event.city} </h5>
           <h5>Causes: {causes}</h5>
           <h5>Interests: {interest} </h5>
-          {/* <h5>Requirements: {requirements}</h5> */}
+          <h5>Requirements: {requirements}</h5>
         </div>
         <div className='date'>
           <h5>On: {moment.unix(event.date).format('ll')}</h5>
