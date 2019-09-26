@@ -7,32 +7,30 @@ export const OrganizationInfo = (props) => {
     return <Tag>{`${cause}`}</Tag>;
   });
   return (<StyledDiv>
-      <Descriptions title={''}>
-        <Descriptions.Item
-          label='Cause Areas'>{causeAreas}</Descriptions.Item>
-        <Descriptions.Item
-          label='Mission Statement'>{props.org.missionStatement}</Descriptions.Item>
-        <Descriptions.Item
-          label='About us'>{props.org.aboutUs}</Descriptions.Item>
-        <Descriptions.Item
-          label={'Start Time'}>{props.org.startTime}</Descriptions.Item>
-        <Descriptions.Item
-          label={'End Time'}>{props.org.endTime}</Descriptions.Item>
-        <Descriptions.Item label='City'>{props.org.city}</Descriptions.Item>
-        <Descriptions.Item label='State'>{props.org.state}</Descriptions.Item>
-        <Descriptions.Item label='Email'>{props.org.email}</Descriptions.Item>
-        <Descriptions.Item label='Phone'>{props.org.phone}</Descriptions.Item>
-        {/* <Descriptions.Item label='Social Media'>{props.org.socialMedia}</Descriptions.Item> */}
-        <Descriptions.Item
-          label='website'>{props.org.website}</Descriptions.Item>
-      </Descriptions>
+      
+      <Col>
+        <h1>CauseAreas</h1>
+        {causeAreas}
+      </Col>
+    
     </StyledDiv>
   
   );
 };
 
 const StyledDiv = styled.div`
+display: flex;
+width: 100%;
 
+`;
+
+const Row = styled.div`
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+`;
+
+const Col = styled.div`
 
 `;
 

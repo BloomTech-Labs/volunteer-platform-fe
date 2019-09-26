@@ -87,7 +87,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="actions_organization.js.html">actions/organization.js</a>, <a href="actions_organization.js.html#line4">line 4</a>
+        <a href="actions_organization.js.html">actions/organization.js</a>, <a href="actions_organization.js.html#line5">line 5</a>
     </li></ul></dd>
     
 
@@ -138,6 +138,68 @@
 
         
             
+<h4 class="name" id=".deleteOrganizationImage"><span class="type-signature">(static, constant) </span>deleteOrganizationImage<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>Delete an organization from the db.</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="actions_organization.js.html">actions/organization.js</a>, <a href="actions_organization.js.html#line142">line 142</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
 <h4 class="name" id=".getOrganizationByOrgId"><span class="type-signature">(static, constant) </span>getOrganizationByOrgId<span class="type-signature"></span></h4>
 
 
@@ -182,7 +244,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="actions_organization.js.html">actions/organization.js</a>, <a href="actions_organization.js.html#line77">line 77</a>
+        <a href="actions_organization.js.html">actions/organization.js</a>, <a href="actions_organization.js.html#line75">line 75</a>
     </li></ul></dd>
     
 
@@ -200,10 +262,14 @@
 
         
             
-<h4 class="name" id=".updateOrganization"><span class="type-signature">(static, constant) </span>updateOrganization<span class="type-signature"></span></h4>
+<h4 class="name" id=".getTopOrganizations"><span class="type-signature">(static, constant) </span>getTopOrganizations<span class="type-signature"></span></h4>
 
 
 
+
+<div class="description">
+    <p>Gets the top organizations to display on the front page.</p>
+</div>
 
 
 
@@ -240,7 +306,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="actions_organization.js.html">actions/organization.js</a>, <a href="actions_organization.js.html#line96">line 96</a>
+        <a href="actions_organization.js.html">actions/organization.js</a>, <a href="actions_organization.js.html#line164">line 164</a>
     </li></ul></dd>
     
 
@@ -268,7 +334,7 @@
     
 
     
-    <h4 class="name" id=".getUsersOrganizations"><span class="type-signature">(static) </span>getUsersOrganizations<span class="signature">(uid, dispatch)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".deleteOrganization"><span class="type-signature">(static) </span>deleteOrganization<span class="signature">(orgId, dispatch)</span><span class="type-signature"></span></h4>
     
 
     
@@ -276,7 +342,7 @@
 
 
 <div class="description">
-    <p>Gets all the users organizations</p>
+    <p>Delete an organization in the db</p>
 </div>
 
 
@@ -312,13 +378,13 @@
 
         <tr>
             
-                <td class="name"><code>uid</code></td>
+                <td class="name"><code>orgId</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">String</span>
 
 
             
@@ -328,7 +394,7 @@
 
             
 
-            <td class="description last"><p>User unique id from google auth.</p></td>
+            <td class="description last"></td>
         </tr>
 
     
@@ -351,7 +417,7 @@
 
             
 
-            <td class="description last"><p>From useStateValue hook</p></td>
+            <td class="description last"></td>
         </tr>
 
     
@@ -392,7 +458,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="actions_organization.js.html">actions/organization.js</a>, <a href="actions_organization.js.html#line42">line 42</a>
+        <a href="actions_organization.js.html">actions/organization.js</a>, <a href="actions_organization.js.html#line125">line 125</a>
     </li></ul></dd>
     
 
@@ -552,7 +618,350 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="actions_organization.js.html">actions/organization.js</a>, <a href="actions_organization.js.html#line18">line 18</a>
+        <a href="actions_organization.js.html">actions/organization.js</a>, <a href="actions_organization.js.html#line21">line 21</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".subscribeToUserOrganizations"><span class="type-signature">(static) </span>subscribeToUserOrganizations<span class="signature">(uid, dispatch)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Gets all the users organizations</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>uid</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>User unique id from google auth.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dispatch</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Dispatch</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>From useStateValue hook</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="actions_organization.js.html">actions/organization.js</a>, <a href="actions_organization.js.html#line46">line 46</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".updateOrganization"><span class="type-signature">(static) </span>updateOrganization<span class="signature">(orgId, updates, dispatch)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Update an organization in the db</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>orgId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>updates</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Organization</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dispatch</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Dispatch</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="actions_organization.js.html">actions/organization.js</a>, <a href="actions_organization.js.html#line101">line 101</a>
     </li></ul></dd>
     
 
@@ -598,13 +1007,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-actions_auth.html">actions/auth</a></li><li><a href="module-actions_events.html">actions/events</a></li><li><a href="module-actions_organizations.html">actions/organizations</a></li><li><a href="module-actions_tags.html">actions/tags</a></li><li><a href="module-State.html">State</a></li><li><a href="module-Types.html">Types</a></li></ul><h3>Global</h3><ul><li><a href="global.html#action">action</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-actions_auth.html">actions/auth</a></li><li><a href="module-actions_events.html">actions/events</a></li><li><a href="module-actions_file.html">actions/file</a></li><li><a href="module-actions_organizations.html">actions/organizations</a></li><li><a href="module-State.html">State</a></li><li><a href="module-Types.html">Types</a></li></ul><h3>Global</h3><ul><li><a href="global.html#action">action</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Thu Sep 19 2019 12:46:23 GMT-0600 (Mountain Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Thu Sep 26 2019 10:30:18 GMT-0600 (Mountain Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

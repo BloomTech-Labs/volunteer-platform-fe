@@ -31,6 +31,8 @@
  * @property {string} zipCode - users zip code
  * @property {string} uid - users google auth unique id
  * @property {number} age - users age
+ * @property {string} [imagePath] - path where profile image is stored.
+ * @property {string} [imageUrl] - avatar image url
  */
 
 /**
@@ -99,9 +101,9 @@
 
 /**
  * @typedef Attendees
- * @type {Date[]} userUIDs Attending user ids.
+ * @type {Date[]}
  */
 
 /**
- * @type {String} Date
+ * @type {String}
  */
