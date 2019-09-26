@@ -1,11 +1,13 @@
 import moment from 'moment';
+import { findNextCustom } from './findNextCustom';
+
 export const findNext = (date, info) => {
   let keyWord = info.repeatTimePeriod.split(' ')[0];
   let dayAbbrevs = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
   let unitConversion = { First: 1, Second: 2, Third: 3, Fourth: 4, Fifth: 5 };
   switch (keyWord) {
     case 'Custom':
-        return 1569701550
+      return findNextCustom(date, info);
     case 'Daily':
       return moment()
         .add(1, 'days')
@@ -66,13 +68,3 @@ export const findNext = (date, info) => {
       }
   }
 };
-
-// recurringInfo: {
-//     days: [],
-//     occurrenceEndDate:
-//     occurrenceEnds:
-//     occurenceEndsAFter:
-//     repeatEvery:
-//     repeatEveryValue:
-//     repeatTimePeriod: (Custom, Daily, Weekly on Day, Monthly on Nth, Annually on, Every Weekday)
-// }
