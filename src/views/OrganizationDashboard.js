@@ -17,10 +17,10 @@ import {
   StyledButton,
   StyledAvatar,
   StyledUploadImage,
-  deleteModal,
+  deleteModal, StyledCard,
 } from '../styled';
 
-export const OrganizationDashboard = () => {
+export const OrganizationDashboard = (props) => {
   const [state, dispatch] = useStateValue();
   const [displayOrg, setDisplayOrg] = useState('');
   const [imageUrl, setImageUrl] = useState(null);
@@ -78,30 +78,77 @@ export const OrganizationDashboard = () => {
       updateOrganization(displayOrg.orgId, updatedDisplayOrg, dispatch);
     }).catch(err => console.log(err));
   };
-  
+  debugger;
   return (
     <StyledDashboard>
       
-      <h2 className={'org-title'}>Welcome
-        Back {displayOrg.organizationName}</h2>
+      <h4 className={'org-title'}>Dashboard of</h4>
+      <h2 className={'org-name'}>{displayOrg.organizationName}</h2>
+      <div className={'org-actions'}>
+        <div className={'action'}>
+          <div className={'action-icon'}>
+            <Icon type="edit"/>
+          </div>
+          <span>Update Org. Info</span>
+        </div>
+        <div className={'action'}>
+          <div className={'action-icon'}>
+            <Icon type="form"/>
+          </div>
+          <span>Create Event</span>
+        </div>
+        <div className={'action'}>
+          <div className={'action-icon'}>
+            <Icon type="delete"/>
+          </div>
+          <span>Delete Org</span>
+        </div>
+      </div>
       
       <div className={'row mg-lf-4 row-wrap'}>
         <div className={'column'}>
-          {imageUrl ? (
-            <StyledAvatarImage className={'column mg-rt-4'}>
-              <StyledAvatar shape="square" size={256} src={imageUrl}/>
-              <Tooltip title={'Delete Avatar'}>
-                <StyledDelete
-                  onClick={() => deleteOrganizationImage(displayOrg)}
-                  type="close"/>
-              </Tooltip>
-            </StyledAvatarImage>
-          ) : (
-            <StyledUploadImage fileUploadComplete={onFileUpload}/>
-          )}
+          <StyledCard backgroundColor={'#E8E8E8'}>
+            {imageUrl ? (
+              <StyledAvatarImage className={'column'}>
+                <StyledAvatar shape="square" size={256} src={imageUrl}/>
+                <Tooltip title={'Delete Avatar'}>
+                  <StyledDelete
+                    onClick={() => deleteOrganizationImage(displayOrg)}
+                    type="close"/>
+                </Tooltip>
+              </StyledAvatarImage>
+            ) : (
+              <StyledUploadImage fileUploadComplete={onFileUpload}/>
+            )}
+          </StyledCard>
         </div>
-        <div>
+        <StyledCard backgroundColor={'#E8E8E8'}>
+          
+          <h3>Org Info.</h3>
           <div className={'org-top'}>
+            <div className={'org-top-col'}>
+              <h3>Hours of operations:</h3>
+              {displayOrg && <h5>{displayOrg.daysOfTheWeek.map(day => {
+                return (<span className={'day'}>{day}</span>);
+              })}</h5>}
+              {displayOrg && <h5>Opens: {displayOrg.startTime}</h5>}
+              {displayOrg && <h5>Closes: {displayOrg.endTime}</h5>}
+            </div>
+            <div className={'org-top-col'}>
+              <h3>Hours of operations:</h3>
+              {displayOrg && <h5>{displayOrg.daysOfTheWeek.map(day => {
+                return (<span className={'day'}>{day}</span>);
+              })}</h5>}
+              {displayOrg && <h5>Opens: {displayOrg.startTime}</h5>}
+              {displayOrg && <h5>Closes: {displayOrg.endTime}</h5>}
+            </div>
+          
+          </div>
+        
+        </StyledCard>
+        
+        <div className={'bottom'}>
+          <div className={'details'}>
             <Select defaultValue="select" onChange={changeHandler}>
               <Select.Option value="select" disabled>
                 Select one
@@ -112,30 +159,6 @@ export const OrganizationDashboard = () => {
                 </Select.Option>
               ))}
             </Select>
-            <StyledButton standard={true} type={'danger'} onClick={deleteOrg}>
-              Delete Org
-            </StyledButton>
-          </div>
-          
-          
-          <StyledButton type={'secondary'}>
-            <Link
-              to={{
-                pathname: '/create-org',
-                state: {
-                  org: displayOrg,
-                },
-              }}
-            >
-              Edit organization info
-            </Link>
-          </StyledButton>
-        
-        </div>
-        
-        <div className={'bottom'}>
-          <div className={'details'}>
-            
             {displayOrg ? (
               
               <OrganizationInfo org={displayOrg}/>
@@ -208,9 +231,53 @@ const StyledDashboard = styled.div`
   }
   
   .org-title {
-  align-self: flex-start;
-  margin-left: 10rem;
+    margin-bottom: 0;
   }
+  
+  .org-name {
+    margin-bottom: 4rem;
+  }
+  
+  .org-actions {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border: 2px solid ${props => props.theme.primary5}
+  width: 50%;
+  min-height: 80px;
+  margin-bottom: 3rem;
+  }
+  
+  .action {
+    padding: 1rem;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+  }
+  
+  .action-icon {
+    color: ${props => props.theme.gray1};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    background-color: ${props => props.theme.gray8};
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+  }
+  
+  .day:not(:first-child) {
+    margin-left: 1rem;
+  }
+  
+  .org-top-col {
+    display: flex;
+    flex-direction: column;
+  }
+  
+
 `;
 
 const StyledDelete = styled(Icon)`
