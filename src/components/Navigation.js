@@ -54,13 +54,14 @@ export const Navigation = props => {
           {state.auth.googleAuthUser && (state.auth.googleAuthUser.firstName ? `${state.auth.googleAuthUser.firstName} ${state.auth.googleAuthUser.lastName}` : 'Welcome!')}
         </Menu.Item>
         <Menu.Divider />
-        <div className={'avatar'}>
+
+        {/*<div className={'avatar'}>
           {state.auth.registeredUser && state.auth.registeredUser.imageUrl ?
             <><StyledAvatar size={64} src={state.auth.registeredUser.imageUrl}/><StyledButton
               onClick={deleteAvatar}>Delete
               Image</StyledButton></> :
             <StyledUploadImage fileUploadComplete={onFileUploaded}/>}
-        </div>
+          </div>*/}
         <Menu.Item>
           <Link to='#'>
             Profile
@@ -71,20 +72,6 @@ export const Navigation = props => {
             Messages
           </Link>
         </Menu.Item>
-        {state.auth.loggedIn && (
-          <Menu.Item key={'Create Org'}>
-            <Link to={'/create-org'}>
-              Create Organization
-            </Link>
-          </Menu.Item>
-        )}
-        {state.org.createdOrg && (
-          <Menu.Item key={'Org Dashboard'}>
-            <Link to={'/org-dashboard'}>
-              Your Organization{state.org.userOrganizations.length > 1 && 's'}
-            </Link>
-          </Menu.Item>
-        )}
         <Menu.Item key="Home">
           <Link to={'/dashboard'}>
             Browse
@@ -95,6 +82,20 @@ export const Navigation = props => {
             Upcoming Events
           </Link>
         </Menu.Item>
+        {state.org.createdOrg && (
+          <Menu.Item key={'Org Dashboard'}>
+            <Link to={'/org-dashboard'}>
+              Your Organization{state.org.userOrganizations.length > 1 && 's'}
+            </Link>
+          </Menu.Item>
+        )}
+        {state.auth.loggedIn && (
+          <Menu.Item key={'Create Org'}>
+            <Link to={'/create-org'}>
+              Create Organization
+            </Link>
+          </Menu.Item>
+        )}
         <Menu.Divider />
         <Menu.Item className='nav-bottom'
           key={state.auth.loggedIn ? 'Logout' : 'Login'}
