@@ -98,8 +98,8 @@ export const CreateEvent = props => {
         event.recurringInfo.occurrenceEndDate = '';
       }
       removeUndefinied(event);
-      createRecurringEvent(event, dispatch);
       console.log('recurring', event);
+      createRecurringEvent(event, dispatch);
     } else {
       removeUndefinied(event);
       console.log('regular', event);
@@ -116,7 +116,13 @@ export const CreateEvent = props => {
       .split(' ')
       .slice(1, 3)
       .join(' ');
+    const dynamicNumber = date._d
+      .toString()
+      .split(' ')
+      .slice(2, 3)
+      .join(' ');
     let dayAsNum = date._d.toString().split(' ')[2];
+
     let count = 1;
     while (dayAsNum > 7) {
       dayAsNum -= 7;
@@ -128,6 +134,7 @@ export const CreateEvent = props => {
       ...localState,
       dynamicDay: dynamicDay,
       dynamicYear: dynamicYear,
+      dynamicNumber: dynamicNumber,
       dynamicNth: nth[count],
     });
   };
@@ -238,9 +245,6 @@ export const CreateEvent = props => {
                     name={'Is This a Recurring Event ?'}
                     localState={localState}
                     setState={setState}
-                    dynamicDay={localState.dynamicDay}
-                    dynamicYear={localState.dynamicYear}
-                    dynamicNth={localState.dynamicNth}
                     layout={formLayouts.formItemLayout}
                     notRequired
                   />

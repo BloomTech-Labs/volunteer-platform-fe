@@ -14,7 +14,7 @@ const { Option } = Select;
 
 export const RecurringEvent = props => {
   const { setState, localState } = props;
-  const { dynamicDay, dynamicYear, dynamicNth } = localState;
+  const { dynamicDay, dynamicYear, dynamicNth, dynamicNumber } = localState;
   const [formState, setFormState] = useState({});
 
   const dayOptions = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -22,12 +22,11 @@ export const RecurringEvent = props => {
   const timePeriodOptions = ['Day', 'Week', 'Month'];
 
   const monthlyOptions = [
-    `Monthly on day ${dynamicYear}`,
+    `Monthly on day ${dynamicNumber}`,
     `Monthly on the ${dynamicNth} ${dynamicDay}`,
   ];
 
   const repeatTimePeriodOptions = [
-    'Does not repeat',
     'Daily',
     'Every Weekday',
     `Weekly on ${dynamicDay}`,
@@ -159,9 +158,10 @@ export const RecurringEvent = props => {
       </Option>
     );
   });
+
   return (
     <div>
-      <Radio.Group onChange={handleCheckBox}>
+      <Radio.Group onChange={handleCheckBox} disabled={!localState.dynamicDay}>
         <Radio value={'Yes'}>Yes</Radio>
         <Radio value={'No'}>No</Radio>
       </Radio.Group>
@@ -235,14 +235,19 @@ export const RecurringEvent = props => {
           >
             {periodOfTime}
           </AntSelect>
-          {localState.recurringInfo.repeatEveryValue === 'Week' && (
-            <Checkbox.Group name={'Days'} options={dayOptions} notRequired />
-          )}
-          {localState.recurringInfo.repeatEveryValue === 'Month' && (
-            <AntSelect name={'Monthly Period'} notRequired>
-              {monthlyPeriod}
-            </AntSelect>
-          )}
+
+          {localState.recurringInfo.repeatEveryValue === 'Week' ||
+            (localState.recurringInfo.repeatEveryValue === 'Weeks' && (
+              <Checkbox.Group name={'Days'} options={dayOptions} notRequired />
+            ))}
+
+          {localState.recurringInfo.repeatEveryValue === 'Month' ||
+            (localState.recurringInfo.repeatEveryValue === 'Months' && (
+              <AntSelect name={'Monthly Period'} notRequired>
+                {monthlyPeriod}
+              </AntSelect>
+            ))}
+
           <StyledButton type="secondary" onClick={closeDrawer}>
             Back
           </StyledButton>
