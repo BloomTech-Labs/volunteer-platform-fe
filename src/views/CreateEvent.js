@@ -16,6 +16,7 @@ import { useStateValue } from '../hooks/useStateValue';
 import { createEvent, createRecurringEvent } from '../actions';
 import RecurringEvent from '../components/RecurringEvent';
 import moment from 'moment';
+import createEventImg from '../assets/undraw_blooming_jtv6.svg';
 import { formLayouts } from '../utility/formLayouts';
 
 const { Option } = Select;
@@ -111,6 +112,8 @@ export const CreateEvent = props => {
       removeUndefinied(event);
       createEvent(event, dispatch);
     }
+    console.log(event);
+    console.log(localState);
     props.history.push('/org-dashboard');
   };
 
@@ -171,6 +174,7 @@ export const CreateEvent = props => {
         style={{ maxWidth: '900px', margin: '2rem 0 5rem 0' }}
       >
         <h1>Let's Create An Event</h1>
+        <StyledImg src={createEventImg} alt="undraw unexpected friends" />
         <StyledCreateEvent style={{ marginRight: '1rem' }}>
           <WrappedAntForm
             layout={'vertical'}
@@ -227,15 +231,6 @@ export const CreateEvent = props => {
             <div className={'styledGroup'}>
               <div className={'flex'}>
                 <div className={'inline'}>
-                  <RecurringEvent
-                    name={'RecurringEvent'}
-                    localState={localState}
-                    setState={setState}
-                    dateFormat={dateFormat}
-                    layout={formLayouts.formItemLayout}
-                  />
-                </div>
-                <div className={'inline'}>
                   <AntDatePicker
                     name={'Date'}
                     format={dateFormat}
@@ -246,17 +241,29 @@ export const CreateEvent = props => {
                     layout={formLayouts.formItemLayout}
                   />
                 </div>
+                <div className={'inline'}>
+                  <RecurringEvent
+                    name={'Is This a Recurring Event ?'}
+                    localState={localState}
+                    setState={setState}
+                    dateFormat={dateFormat}
+                    layout={formLayouts.formItemLayout}
+                    notRequired
+                  />
+                </div>
               </div>
 
-              <div className={'flex'}>
+              <label>What time ?</label>
+              <div className={'flex center'}>
                 <div className={'inline hidden'}>
                   <AntTimePicker
                     name={'Start Time'}
                     use12Hours
                     format={'h:mm a'}
+                    layout={formLayouts.formItemLayout}
                   />
                 </div>
-                <div className={'inline'}>
+                <div className={'flex'}>
                   <p>to</p>
                 </div>
                 <div className={'inline hidden'}>
@@ -264,6 +271,7 @@ export const CreateEvent = props => {
                     name={'End Time'}
                     use12Hours
                     format={'h:mm a'}
+                    // layout={formLayouts.formItemLayout}
                   />
                 </div>
               </div>
@@ -329,18 +337,20 @@ export const CreateEvent = props => {
                   layout={formLayouts.formItemLayout}
                 />
               </div>
-              <div className={'flex column'}>
-                <label style={{ width: 315 }}>
-                  How many volunteers do you need?
-                </label>
-                <small>We recommend adding +5 to your need</small>
-              </div>
-              <div className={'inline hidden'}>
-                <AntInputNumber
-                  name={'Number of Volunteers'}
-                  type="number"
-                  min={0}
-                />
+              <div className={'flex'}>
+                <div className={'flex column'}>
+                  <label style={{ width: 215 }}>
+                    How many volunteers do you need?
+                  </label>
+                  <small>We recommend adding +5 to your need</small>
+                </div>
+                <div className={'inline hidden'} style={{ width: 106 }}>
+                  <AntInputNumber
+                    name={'Number of Volunteers'}
+                    type="number"
+                    min={0}
+                  />
+                </div>
               </div>
             </div>
             <div className={'inline'}>
@@ -375,6 +385,7 @@ const StyledCreateEvent = styled.div`
   width: 100%;
   font-weight: bold;
   text-align: left;
+
   .inline {
     width: 50%;
   }
@@ -403,10 +414,14 @@ const StyledCreateEvent = styled.div`
   label {
     color: ${props => props.theme.primary8};
   }
+  small {
+    color: #bfbfbf;
+  }
 `;
 
 const StyledDiv = styled.div`
-  background: white;
+  background: #003d61;
+
   h1 {
     color: ${props => props.theme.primary8};
   }
@@ -419,15 +434,20 @@ const StyledDiv = styled.div`
 
 const CustomStyledCard = styled(StyledCard)`
   &&& {
-    background: #d9d9d9;
+    background: #fafafa;
     text-align: center;
     cursor: default;
     transition: none;
-
+    max-width: 1088px;
     &:hover {
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
     }
   }
+`;
+
+const StyledImg = styled.img`
+  width: 211px;
+  margin: 2rem auto;
 `;
 
 export default CreateEvent;
