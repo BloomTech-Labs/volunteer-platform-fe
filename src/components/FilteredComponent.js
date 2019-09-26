@@ -50,7 +50,7 @@ export const FilteredComponent = Component => {
     }
     if (requirements) {
       filteredEvents.forEach(event => {
-        event.volunteerRequirments.forEach(requirement => {
+        event.volunteerRequirements.forEach(requirement => {
           if (tagFilter.requirements[requirement])
             event.sortRank = event.sortRank + 1;
         });
