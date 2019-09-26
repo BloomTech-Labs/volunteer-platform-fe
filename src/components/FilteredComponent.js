@@ -1,6 +1,6 @@
 import React from 'react';
 import { findNext } from '../utility/findNextRecurEvent';
-import moment from 'moment'
+import moment from 'moment';
 export const FilteredComponent = Component => {
   return ({ events, filter, tagFilter, recurringEvents }, ...props) => {
     const { location } = filter;
@@ -11,18 +11,20 @@ export const FilteredComponent = Component => {
     for (let key in interests) interests[key] && filterCount++;
     for (let key in requirements) requirements[key] && filterCount++;
     for (let key in causeAreas) causeAreas[key] && filterCount++;
-    console.log(events, recurringEvents)
+
     events.forEach(event => {
-      event.nextDate = moment.unix(event.date).format('LL');
+      event.nextDate = event.startTimeStamp || event.date;
     });
     recurringEvents.forEach(event => {
-        
-      event.nextDate = findNext(event.date, event.recurringInfo);
+      event.nextDate = findNext(
+        event.startTimeStamp || event.date,
+        event.recurringInfo
+      );
     });
     let allEvents = [...events, ...recurringEvents].sort(
       (a, b) => a.nextDate - b.nextDate
     );
-
+        
     if (!events || !filterCount) {
       return <Component events={allEvents} {...props} />;
     }
@@ -69,11 +71,9 @@ export const FilteredComponent = Component => {
     }
 
     filteredEvents.sort((a, b) => {
-      if(a.sortRank === b.sortRank){
-          return a.nextDate - b.nextDate
-      }
-      else
-        return a.sortRank < b.sortRank ? 1 : -1;
+      if (a.sortRank === b.sortRank) {
+        return a.nextDate - b.nextDate;
+      } else return a.sortRank < b.sortRank ? 1 : -1;
     });
     filteredEvents = filteredEvents.filter(event => event.sortRank > 0);
 

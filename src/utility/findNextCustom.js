@@ -6,12 +6,14 @@ export const findNextCustom = (date, info) => {
   let days = info.days ? [...info.days] : [];
   let nextOccurrence = moment.unix(date);
   switch (unit) {
-    case 'Day' || 'Days':
+    case 'Day':
+    case 'Days':
       while (moment().diff(nextOccurrence) >= 0) {
         nextOccurrence = nextOccurrence.add(timeFrame, 'days');
       }
-      return nextOccurrence.format('LL');
-    case 'Week' || 'Weeks':
+      return nextOccurrence.unix();
+    case 'Week':
+    case 'Weeks':
       let createdDate = moment.unix(date);
       let eventFirstWeek = days.map(day => {
         let possibleFirst = moment
@@ -27,7 +29,7 @@ export const findNextCustom = (date, info) => {
         .unix(date)
         .startOf('week')
         .day(days[0]);
-      if (firstDate) return firstDate.format('LL');
+      if (firstDate) return firstDate.unix();
       else
         while (
           moment().diff(firstOccurrence) >= 0 ||
@@ -35,9 +37,10 @@ export const findNextCustom = (date, info) => {
         ) {
           firstOccurrence = firstOccurrence.add(timeFrame, 'weeks');
         }
-      return firstOccurrence.format('LL');
+      return firstOccurrence.unix();
 
-    case 'Month' || 'Months':
+    case 'Month':
+    case 'Months':
       let option = info.monthlyPeriod;
       let firstEvent, day;
       if (option.includes('Monthly on day')) {
@@ -49,9 +52,9 @@ export const findNextCustom = (date, info) => {
         while (moment().diff(firstEvent) >= 0) {
           firstEvent = firstEvent.add(timeFrame, 'month');
         }
-        return firstEvent.format('LL');
+        return firstEvent.unix();
       } else {
-        return findNthWeek(date, {repeatTimePeriod: option}, timeFrame)
+        return findNthWeek(date, { repeatTimePeriod: option }, timeFrame);
       }
   }
   return 1;

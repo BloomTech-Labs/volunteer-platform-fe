@@ -10,29 +10,29 @@ export const findNext = (date, info) => {
     case 'Daily':
       return moment()
         .add(1, 'days')
-        .format('LL');
+        .unix();
     case 'Weekly':
       let weekdayOfEvent = moment.unix(date).day();
       return moment()
         .day(weekdayOfEvent + 7)
-        .format('LL');
+        .unix();
     case 'Monthly':
       return findNthWeek(date, info, 1);
     case 'Annually':
       return moment
         .unix(date)
         .add(1, 'year')
-        .format('LL');
+        .unix();
     case 'Every':
       let today = moment().day();
       if (today === 5 || today === 6) {
         return moment()
           .day(8)
-          .format('LL');
+          .unix();
       } else {
         return moment()
           .add(1, 'days')
-          .format('LL');
+          .unix();
       }
   }
 };
