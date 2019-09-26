@@ -9,7 +9,6 @@ import {
 } from '../styled';
 
 import moment from 'moment';
-import { tsCallSignatureDeclaration } from '@babel/types';
 
 const { Option } = Select;
 
@@ -172,7 +171,6 @@ export const RecurringEvent = props => {
             style={{ width: 200 }}
             name={'Repeat Time Period'}
             onChange={handleRepeatPeriod}
-            required
           >
             {repeatTimePeriod}
           </StyledSelect>
@@ -221,17 +219,14 @@ export const RecurringEvent = props => {
             style={{ width: 100 }}
             onChange={handleRepeatEvery}
             min={0}
-            notRequired
           />
           <AntSelect
             style={{ width: 100 }}
             name={'Repeat every value'}
             onChange={handleEveryValue}
-            notRequired
           >
             {periodOfTime}
           </AntSelect>
-
           {localState.recurringInfo.repeatEveryValue === 'Week' && (
             <Checkbox.Group name={'Days'} options={dayOptions} />
           )}
