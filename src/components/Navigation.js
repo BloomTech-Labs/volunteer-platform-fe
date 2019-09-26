@@ -71,13 +71,6 @@ export const Navigation = props => {
             Messages
           </Link>
         </Menu.Item>
-        <Menu.Divider/>
-        <Menu.Item key="Home">
-          <Link to={'/dashboard'}>
-            <Icon type="home"/>
-            Home
-          </Link>
-        </Menu.Item>
         {state.auth.loggedIn && (
           <Menu.Item key={'Create Org'}>
             <Link to={'/create-org'}>
@@ -149,6 +142,12 @@ const StyledNavigation = styled.div`
     color: ${props => props.theme.primary8};
   }
 
+  .avatar {
+    display: flex;
+      justify-content: center;
+      margin: 3rem 0;
+    }
+    
 `;
 
 
@@ -156,12 +155,5 @@ const StyledAvatar = styled(Avatar)`
 
 `;
 
-const StyledNavigation = styled.div`
-.avatar {
-display: flex;
-  justify-content: center;
-  margin: 3rem 0;
-}
-`;
 
 export default withRouter(Navigation);
