@@ -3,7 +3,7 @@ import {Link, withRouter} from 'react-router-dom';
 import {
   signOut, getFileUrl, updateRegisteredUser, deleteFile,
 } from '../actions';
-import {Menu, Icon, Avatar} from 'antd';
+import {Menu, Icon, Avatar, Tooltip} from 'antd';
 import styled from 'styled-components';
 import {useStateValue} from '../hooks/useStateValue';
 import {StyledUploadImage, StyledButton} from '../styled';
@@ -56,9 +56,14 @@ export const Navigation = props => {
         <Menu.Divider />
         <div className={'avatar'}>
           {state.auth.registeredUser && state.auth.registeredUser.imageUrl ?
-            <><StyledAvatar size={64} src={state.auth.registeredUser.imageUrl}/><StyledButton
-              onClick={deleteAvatar}>Delete
-              Image</StyledButton></> :
+            <StyledAvatarImage className={'avatar-img'}>
+              <StyledAvatar size={100}
+                            src={state.auth.registeredUser.imageUrl}/>
+              <Tooltip title={'Delete Avatar'}>
+                <StyledDelete
+                  onClick={deleteAvatar} type="close"/>
+              </Tooltip>
+            </StyledAvatarImage> :
             <StyledUploadImage fileUploadComplete={onFileUploaded}/>}
         </div>
         <Menu.Item>
@@ -149,7 +154,6 @@ const StyledNavigation = styled.div`
     }
     
 `;
-
 
 const StyledAvatar = styled(Avatar)`
 

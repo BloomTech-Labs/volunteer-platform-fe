@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
-import {Select} from 'antd';
+import {Icon, Select, Tooltip} from 'antd';
 import {Link} from 'react-router-dom';
 import {
   getAllEventsByOrg,
@@ -66,16 +66,17 @@ export const OrganizationDashboard = () => {
       content: 'This cannot be undone.',
       onOk: () => deleteOrganization(displayOrg.orgId, dispatch),
     });
-
+    
     e.preventDefault();
     deleteOrgModal();
   };
   
   const onFileUpload = path => {
-    setImageUrl(getFileUrl(path));
-    const updatedDisplayOrg = {...displayOrg, imagePath: path};
-    
-    updateOrganization(displayOrg.orgId, updatedDisplayOrg, dispatch);
+    getFileUrl(path).then(url => {
+      setImageUrl(url);
+      const updatedDisplayOrg = {...displayOrg, imagePath: path, imageUrl: url};
+      updateOrganization(displayOrg.orgId, updatedDisplayOrg, dispatch);
+    }).catch(err => console.log(err));
   };
   
   return (
@@ -87,12 +88,14 @@ export const OrganizationDashboard = () => {
       <div className={'row mg-lf-4 row-wrap'}>
         <div className={'column'}>
           {imageUrl ? (
-            <div className={'column mg-rt-4'}>
+            <StyledAvatarImage className={'column mg-rt-4'}>
               <StyledAvatar shape="square" size={256} src={imageUrl}/>
-              <StyledButton onClick={() => deleteOrganizationImage(displayOrg)}>
-                Delete Image
-              </StyledButton>
-            </div>
+              <Tooltip title={'Delete Avatar'}>
+                <StyledDelete
+                  onClick={() => deleteOrganizationImage(displayOrg)}
+                  type="close"/>
+              </Tooltip>
+            </StyledAvatarImage>
           ) : (
             <StyledUploadImage fileUploadComplete={onFileUpload}/>
           )}
@@ -208,6 +211,20 @@ const StyledDashboard = styled.div`
   align-self: flex-start;
   margin-left: 10rem;
   }
+`;
+
+const StyledDelete = styled(Icon)`
+position: absolute;
+right: 10px;
+top: 10px;
+color: transparent;
+`;
+
+const StyledAvatarImage = styled.div`
+position: relative;
+:hover > i {
+  color: #ff4d4f;
+}
 `;
 
 export default OrganizationDashboard;
