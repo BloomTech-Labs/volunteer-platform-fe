@@ -9,6 +9,7 @@ import {
 } from '../styled';
 
 import moment from 'moment';
+import { tsCallSignatureDeclaration } from '@babel/types';
 
 const { Option } = Select;
 
@@ -171,16 +172,13 @@ export const RecurringEvent = props => {
             style={{ width: 200 }}
             name={'Repeat Time Period'}
             onChange={handleRepeatPeriod}
+            required
           >
             {repeatTimePeriod}
           </StyledSelect>
 
           <label>Ends</label>
-          <Radio.Group
-            name={'Occurrence Ends'}
-            onChange={handleOccurrences}
-            notRequired
-          >
+          <Radio.Group name={'Occurrence Ends'} onChange={handleOccurrences}>
             <Radio value={'Never'}>Never</Radio>
             <Radio value={'On'}>On</Radio>
             <Radio value={'After'}>After</Radio>
@@ -192,7 +190,6 @@ export const RecurringEvent = props => {
             disabled={
               localState.recurringInfo.occurrenceEnds === 'On' ? false : true
             }
-            notRequired
           />
           <InputNumber
             style={{ width: 50 }}
@@ -202,7 +199,6 @@ export const RecurringEvent = props => {
             disabled={
               localState.recurringInfo.occurrenceEnds === 'After' ? false : true
             }
-            notRequired
           />
         </div>
       )}
@@ -236,17 +232,18 @@ export const RecurringEvent = props => {
             {periodOfTime}
           </AntSelect>
 
-          {localState.recurringInfo.repeatEveryValue === 'Week' ||
-            (localState.recurringInfo.repeatEveryValue === 'Weeks' && (
-              <Checkbox.Group name={'Days'} options={dayOptions} notRequired />
-            ))}
-
-          {localState.recurringInfo.repeatEveryValue === 'Month' ||
-            (localState.recurringInfo.repeatEveryValue === 'Months' && (
-              <AntSelect name={'Monthly Period'} notRequired>
-                {monthlyPeriod}
-              </AntSelect>
-            ))}
+          {localState.recurringInfo.repeatEveryValue === 'Week' && (
+            <Checkbox.Group name={'Days'} options={dayOptions} />
+          )}
+          {localState.recurringInfo.repeatEveryValue === 'Weeks' && (
+            <Checkbox.Group name={'Days'} options={dayOptions} />
+          )}
+          {localState.recurringInfo.repeatEveryValue === 'Month' && (
+            <AntSelect name={'Monthly Period'}>{monthlyPeriod}</AntSelect>
+          )}
+          {localState.recurringInfo.repeatEveryValue === 'Months' && (
+            <AntSelect name={'Monthly Period'}>{monthlyPeriod}</AntSelect>
+          )}
 
           <StyledButton type="secondary" onClick={closeDrawer}>
             Back
