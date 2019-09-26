@@ -11,7 +11,7 @@ export const FilteredComponent = Component => {
     for (let key in interests) interests[key] && filterCount++;
     for (let key in requirements) requirements[key] && filterCount++;
     for (let key in causeAreas) causeAreas[key] && filterCount++;
-
+    console.log(events, recurringEvents)
     events.forEach(event => {
       event.nextDate = moment.unix(event.date).format('LL');
     });

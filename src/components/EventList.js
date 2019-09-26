@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import Event from './Event';
-import moment from 'moment';
 
 export const EventList = ({ events }) => {
   return (

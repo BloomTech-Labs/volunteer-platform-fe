@@ -78,7 +78,6 @@ export const OrganizationDashboard = (props) => {
       updateOrganization(displayOrg.orgId, updatedDisplayOrg, dispatch);
     }).catch(err => console.log(err));
   };
-  debugger;
   return (
     <StyledDashboard>
       
