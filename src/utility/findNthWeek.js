@@ -29,5 +29,5 @@ export const findNthWeek = (date, info, period) => {
         .add(7 * (whichWeek - 1), 'days');
     }
   }
-  return correct_week.format('LL');
+  return correct_week.unix();
 };
