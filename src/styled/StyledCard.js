@@ -37,3 +37,4 @@ export const StyledCard = styled(Card)`
 //   borderRadiusDefault: PropTypes.String,
 //   backgroundColor: PropTypes.String,
 // };
+

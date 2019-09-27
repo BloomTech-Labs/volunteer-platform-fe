@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import { useStateValue } from '../hooks/useStateValue';
-import { EventList, FilteredComponent, FilterTopbar } from '../components';
-import { getAllEventsByState, getAllRecurringEventsByState } from '../actions';
-import { stateConversion } from '../utility/stateConversion';
+import {useStateValue} from '../hooks/useStateValue';
+import {EventList, FilteredComponent, FilterTopbar} from '../components';
+import {getAllEventsByState, getAllRecurringEventsByState} from '../actions';
+import {stateConversion} from '../utility/stateConversion';
 
 export const MainDashboard = () => {
   const [state, dispatch] = useStateValue();
@@ -18,35 +18,40 @@ export const MainDashboard = () => {
     causeAreas: false,
   });
   const [inputState, setInputState] = useState({
-    location: { state: '', city: '' },
-    tags: { interests: [], requirements: [], causeAreas: [] },
+    location: {state: '', city: ''},
+    tags: {interests: [], requirements: [], causeAreas: []},
   });
-
+  
   useEffect(() => {
     const tagCollections = ['interests', 'requirements', 'causeAreas'];
     let collectionMeta = {};
     tagCollections.forEach(collectionName => {
-      collectionMeta[collectionName] = {};
-      state.tags[collectionName].forEach(
-        tag => (collectionMeta[collectionName][tag] = false)
+      collectionMeta[ collectionName ] = {};
+      state.tags[ collectionName ].forEach(
+        tag => (collectionMeta[ collectionName ][ tag ] = false),
       );
     });
     setTagFilterState(collectionMeta);
   }, []);
-
+  
   //fetching user's location by IP
   useEffect(() => {
+    
     axios
       .get(`https://geoip-db.com/json/${process.env.REACT_APP_ipinfoKey}`)
       .then(res => {
         let stateAbbrev = Object.keys(stateConversion).find(
-          key => stateConversion[key] === res.data.state
+          key => stateConversion[ key ] === res.data.state,
         );
-        let userCity = res.data.city
-        if (stateAbbrev) {
+        let userCity = res.data.city;
+        if (stateAbbrev){
           setInputState({
             ...inputState,
-            location: { ...inputState.location, state: stateAbbrev, city: userCity },
+            location: {
+              ...inputState.location,
+              state: stateAbbrev,
+              city: userCity,
+            },
           });
         }
       })
@@ -54,46 +59,46 @@ export const MainDashboard = () => {
         console.log('Error detecting location');
       });
   }, []);
-
+  
   useEffect(() => {
-    if (inputState.location.state.length === 2) {
+    if (inputState.location.state.length === 2){
       getAllEventsByState(inputState.location.state, dispatch);
-      getAllRecurringEventsByState(inputState.location.state, dispatch)
+      getAllRecurringEventsByState(inputState.location.state, dispatch);
     }
   }, [inputState.location.state]);
-
+  
   const onChange = e => {
-    setInputState({ ...inputState, [e.target.name]: e.target.value });
+    setInputState({...inputState, [ e.target.name ]: e.target.value});
   };
   const onLocationChange = e => {
     setInputState({
       ...inputState,
-      location: { ...inputState.location, [e.target.name]: e.target.value },
+      location: {...inputState.location, [ e.target.name ]: e.target.value},
     });
   };
-
+  
   const onTagsChange = (e, name, collection) => {
     setTagFilterState({
       ...tagFilterState,
-      [collection]: { ...tagFilterState[collection], [name]: e },
+      [ collection ]: {...tagFilterState[ collection ], [ name ]: e},
     });
   };
-
+  
   const toggleTagExpand = collectionName => {
     setTagExpandState({
       ...tagExpandState,
-      [collectionName]: !tagExpandState[collectionName],
+      [ collectionName ]: !tagExpandState[ collectionName ],
     });
   };
-
+  
   const FilteredEventList = FilteredComponent(EventList);
   const [activeTabKey, setActiveTabKey] = useState('Events');
-
+  
   return (
-    <div className="main-content" style={{ maxWidth: 1020, margin: '0 auto' }}>
+    <div className="main-content" style={{maxWidth: 1020, margin: '0 auto'}}>
       <h2>Browse {activeTabKey}</h2>
       <FilterTopbar
-        changeHandlers={{ onChange, onLocationChange, onTagsChange }}
+        changeHandlers={{onChange, onLocationChange, onTagsChange}}
         inputState={inputState}
         tagFilterState={tagFilterState}
         tagExpandState={tagExpandState}

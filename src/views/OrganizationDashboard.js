@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Icon, Select, Tooltip } from 'antd';
-import { Link } from 'react-router-dom';
+import {Icon, Select, Tooltip, Calendar} from 'antd';
+import {Link} from 'react-router-dom';
 import {
   getAllEventsByOrg,
   deleteOrganization,
@@ -12,7 +12,6 @@ import {
 } from '../actions';
 import { useStateValue } from '../hooks/useStateValue';
 import EventList from '../components/EventList';
-import OrganizationInfo from '../components/OrganizationInfo';
 import {
   StyledButton,
   StyledAvatar,
@@ -20,12 +19,15 @@ import {
   deleteModal,
   StyledCard,
 } from '../styled';
+import moment from 'moment';
 
 export const OrganizationDashboard = props => {
   const [state, dispatch] = useStateValue();
   const [displayOrg, setDisplayOrg] = useState('');
   const [imageUrl, setImageUrl] = useState(null);
-
+  const [selectedDate, setSelectedDate] = useState();
+  const [calendarValue, setCalendarValue] = useState(moment());
+ 
   useEffect(() => {
     if (displayOrg.imagePath) {
       getFileUrl(displayOrg.imagePath).then(res => {
@@ -85,6 +87,29 @@ export const OrganizationDashboard = props => {
       })
       .catch(err => console.log(err));
   };
+  const onSelect = (value, mode) => {
+    const begining = value.startOf('date');
+    const newValue = moment.unix(begining.unix());
+    debugger;
+    if (selectedDate){
+      
+      const date2 = newValue.unix();
+      if (selectedDate === date2){
+        setSelectedDate(null);
+      }else{
+        setSelectedDate(newValue.unix());
+      }
+    }else{
+      setSelectedDate(newValue.unix());
+    }
+    
+    setCalendarValue(newValue);
+  };
+  
+  function onPanelChange(value, mode){
+    console.log(value, mode);
+  }
+
   return (
     <StyledDashboard>
       <h4 className={'org-title'}>Dashboard of</h4>
@@ -97,10 +122,19 @@ export const OrganizationDashboard = props => {
           <span>Update Org. Info</span>
         </div>
         <div className={'action'}>
-          <div className={'action-icon'}>
-            <Icon type="form" />
-          </div>
-          <span>Create Event</span>
+          <Link
+            to={{
+              pathname: '/org-dashboard/create-event',
+              state: {
+                org: displayOrg,
+              },
+            }}
+          >
+            <div className={'action-icon'}>
+              <Icon type="form"/>
+            </div>
+            <span>Create Event</span>
+          </Link>
         </div>
         <div className={'action'}>
           <div className={'action-icon'}>
@@ -129,7 +163,14 @@ export const OrganizationDashboard = props => {
           </StyledCard>
         </div>
         <StyledCard backgroundColor={'#E8E8E8'}>
-          <h3>Org Info.</h3>
+          <Select defaultValue="select" onChange={changeHandler}
+                  value={displayOrg ? displayOrg.orgId : ''}>
+            {state.org.userOrganizations.map(item => (
+              <Select.Option key={item.orgId} value={item.orgId}>
+                {item.organizationName}
+              </Select.Option>
+            ))}
+          </Select>
           <div className={'org-top'}>
             <div className={'org-top-col'}>
               <h3>Hours of operations:</h3>
@@ -160,39 +201,45 @@ export const OrganizationDashboard = props => {
 
         <div className={'bottom'}>
           <div className={'details'}>
-            <Select defaultValue="select" onChange={changeHandler}>
-              <Select.Option value="select" disabled>
-                Select one
-              </Select.Option>
-              {state.org.userOrganizations.map(item => (
-                <Select.Option key={item.orgId} value={item.orgId}>
-                  {item.organizationName}
-                </Select.Option>
-              ))}
-            </Select>
             {displayOrg ? (
-              <OrganizationInfo org={displayOrg} />
+              <div style={{
+                width: 300,
+                border: '1px solid #d9d9d9',
+                borderRadius: 4,
+              }}>
+                <Calendar fullscreen={false}
+                          disabledDate={current =>
+                            current && current < moment().startOf('day')}
+                          onSelect={onSelect}
+                          value={calendarValue}
+                          onPanelChange={onPanelChange}
+                
+                />
+              </div>
             ) : (
               <div>You have not created any organization yet</div>
             )}
-            <StyledButton className={'create-event-button'}>
-              <Link
-                to={{
-                  pathname: '/org-dashboard/create-event',
-                  state: {
-                    org: displayOrg,
-                  },
-                }}
-              >
-                Create event
-              </Link>
-            </StyledButton>
           </div>
           <div className={'events'}>
             {state.events.events.length > 0 ||
             state.events.recurringEvents.length > 0 ? (
               <EventList
-                events={state.events.events}
+                events={selectedDate ? state.events.events.filter(event => {
+                  
+                  const isBigger = event.date >=
+                    selectedDate;
+                  const lessThanNextDay = event.date <
+                    moment.unix(selectedDate)
+                      .add(1, 'day')
+                      .startOf('day')
+                      .unix();
+                  
+                  if (isBigger && lessThanNextDay){
+                    return true;
+                  }
+                  return false;
+                  
+                }) : state.events.events}
                 recurringEvents={state.events.recurringEvents}
               />
             ) : (
@@ -228,9 +275,10 @@ const StyledDashboard = styled.div`
     width: 58%;
   }
   .bottom {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  margin-top: 3rem;
   }
 
   .create-event-button {

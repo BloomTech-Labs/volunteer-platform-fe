@@ -92,7 +92,6 @@ export const getAllEventsByOrg = (orgId, dispatch) => {
   store
     .collection('events')
     .where('orgId', '==', orgId)
-    .where('startTimeStamp', '>', time)
     .get()
     .then(res => {
       if (res.empty){
@@ -102,9 +101,13 @@ export const getAllEventsByOrg = (orgId, dispatch) => {
       
       const events = [];
       res.forEach(event => {
+        
         let eventToAdd = event.data();
         eventToAdd.eventId = event.id;
-        events.push(eventToAdd);
+        
+        if (eventToAdd.startTimeStamp > time){
+          events.push(eventToAdd);
+        }
       });
       
       dispatch(action(GET_EVENTS_BY_ORG, events));
