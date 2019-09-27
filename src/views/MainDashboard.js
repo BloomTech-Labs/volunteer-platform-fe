@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
+import {message} from 'antd';
 import {useStateValue} from '../hooks/useStateValue';
 import {EventList, FilteredComponent, FilterTopbar} from '../components';
 import {getAllEventsByState, getAllRecurringEventsByState} from '../actions';
@@ -53,6 +54,9 @@ export const MainDashboard = () => {
               city: userCity,
             },
           });
+        }else{
+          message.warning(
+            'We were unable to get your location. Please enter your state below to continue.');
         }
       })
       .catch(err => {

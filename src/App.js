@@ -108,16 +108,16 @@ function App(){
             </HeaderDiv>
             <Switch>
               <Route exact path={'/'} component={LandingPage}/>
-              <RegisteredAndLoggedInRoute
+              <ProtectedRoute
                 path={'/dashboard'}
                 component={MainDashboard}
               />
-              <LoginRoute 
-                path={'/login'} 
+              <LoginRoute
+                path={'/login'}
                 component={Login}/>
               <LoginRoute path={'/signup'} component={Login}/>
-              <RegisteredAndLoggedInRoute 
-                path={'/create-org'} 
+              <RegisteredAndLoggedInRoute
+                path={'/create-org'}
                 component={CreateOrg}/>
               <OrganizationRoute
                 path={'/org-dashboard/create-event'}

@@ -92,7 +92,7 @@ export const OrganizationDashboard = () => {
       setCalendarValue(newValue);
     }
   };
-
+  
   const onPanelChange = (value, mode) => {
     setCalendarValue(moment.unix(value.unix()));
   };
