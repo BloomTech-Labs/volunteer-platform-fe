@@ -7,7 +7,6 @@ import {
   AntTextArea,
   AntTimePicker,
   StyledCard,
-  StyledButton,
 } from '../styled';
 import { useStateValue } from '../hooks/useStateValue';
 import { Icon, Select } from 'antd';
@@ -29,7 +28,7 @@ export const CreateOrg = props => {
         setNumberOfPOC(2);
       }
     }
-  }, []);
+  }, [props.location.state]);
 
   const getPOCInputs = () => {
     const poc = [

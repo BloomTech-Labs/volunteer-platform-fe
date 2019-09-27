@@ -29,7 +29,7 @@ export const OrgInfo = ({ displayOrg, changeHandler }) => {
       6: 'Saturday',
     };
     let daysAsNum = arr.map(day => dayConversion[day]);
-    debugger;
+    
     let daySegments = [];
     let segment = [];
     for (let i = 0; i < daysAsNum.length; i++) {
