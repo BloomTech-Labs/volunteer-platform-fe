@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import {Icon, Select, Tooltip, Calendar} from 'antd';
-import {Link} from 'react-router-dom';
+import { Icon, Select, Tooltip, Calendar } from 'antd';
+import { Link } from 'react-router-dom';
 import {
   getAllEventsByOrg,
   deleteOrganization,
@@ -27,7 +27,7 @@ export const OrganizationDashboard = props => {
   const [imageUrl, setImageUrl] = useState(null);
   const [selectedDate, setSelectedDate] = useState();
   const [calendarValue, setCalendarValue] = useState(moment());
- 
+
   useEffect(() => {
     if (displayOrg.imagePath) {
       getFileUrl(displayOrg.imagePath).then(res => {
@@ -90,26 +90,30 @@ export const OrganizationDashboard = props => {
   const onSelect = (value, mode) => {
     const begining = value.startOf('date');
     const newValue = moment.unix(begining.unix());
-    debugger;
-    if (selectedDate){
-      
+    if (selectedDate) {
       const date2 = newValue.unix();
-      if (selectedDate === date2){
+      if (selectedDate === date2) {
         setSelectedDate(null);
-      }else{
+        setCalendarValue(moment());
+      } else {
         setSelectedDate(newValue.unix());
+        setCalendarValue(newValue);
       }
-    }else{
+    } else {
       setSelectedDate(newValue.unix());
+      setCalendarValue(newValue);
     }
-    
-    setCalendarValue(newValue);
   };
-  
-  function onPanelChange(value, mode){
+
+  function onPanelChange(value, mode) {
     console.log(value, mode);
   }
 
+  const displayAll = e => {
+    e.preventDefault();
+    setSelectedDate(null);
+    setCalendarValue(moment());
+  };
   return (
     <StyledDashboard>
       <h4 className={'org-title'}>Dashboard of</h4>
@@ -131,7 +135,7 @@ export const OrganizationDashboard = props => {
             }}
           >
             <div className={'action-icon'}>
-              <Icon type="form"/>
+              <Icon type="form" />
             </div>
             <span>Create Event</span>
           </Link>
@@ -163,8 +167,11 @@ export const OrganizationDashboard = props => {
           </StyledCard>
         </div>
         <StyledCard backgroundColor={'#E8E8E8'}>
-          <Select defaultValue="select" onChange={changeHandler}
-                  value={displayOrg ? displayOrg.orgId : ''}>
+          <Select
+            defaultValue="select"
+            onChange={changeHandler}
+            value={displayOrg ? displayOrg.orgId : ''}
+          >
             {state.org.userOrganizations.map(item => (
               <Select.Option key={item.orgId} value={item.orgId}>
                 {item.organizationName}
@@ -202,18 +209,21 @@ export const OrganizationDashboard = props => {
         <div className={'bottom'}>
           <div className={'details'}>
             {displayOrg ? (
-              <div style={{
-                width: 300,
-                border: '1px solid #d9d9d9',
-                borderRadius: 4,
-              }}>
-                <Calendar fullscreen={false}
-                          disabledDate={current =>
-                            current && current < moment().startOf('day')}
-                          onSelect={onSelect}
-                          value={calendarValue}
-                          onPanelChange={onPanelChange}
-                
+              <div
+                style={{
+                  width: 300,
+                  border: '1px solid #d9d9d9',
+                  borderRadius: 4,
+                }}
+              >
+                <Calendar
+                  fullscreen={false}
+                  disabledDate={current =>
+                    current && current < moment().startOf('day')
+                  }
+                  onSelect={onSelect}
+                  value={calendarValue}
+                  onPanelChange={onPanelChange}
                 />
               </div>
             ) : (
@@ -225,8 +235,9 @@ export const OrganizationDashboard = props => {
             state.events.recurringEvents.length > 0 ? (
               <EventPanel
                 recurringEvents={state.events.recurringEvents}
-                events = {state.events.events}
+                events={state.events.events}
                 selectedDate={selectedDate}
+                displayAll={displayAll}
               />
             ) : (
               <div>No event has been created</div>
@@ -245,6 +256,7 @@ const StyledDashboard = styled.div`
   align-items: center;
   max-height: 100%;
   margin-top: 4rem;
+  margin-bottom: 10rem;
   .org-top {
     display: flex;
     justify-content: space-around;
@@ -261,10 +273,10 @@ const StyledDashboard = styled.div`
     width: 58%;
   }
   .bottom {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  margin-top: 3rem;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin-top: 3rem;
   }
 
   .create-event-button {

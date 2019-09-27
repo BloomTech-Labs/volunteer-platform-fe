@@ -3,11 +3,18 @@ import { Collapse } from 'antd';
 import styled from 'styled-components';
 import { findNext } from '../utility/findNextRecurEvent';
 import moment from 'moment';
+import { StyledCard, StyledButton } from '../styled';
 const { Panel } = Collapse;
 
-export const EventPanel = ({ events, recurringEvents, selectedDate }) => {
+export const EventPanel = ({
+  events,
+  recurringEvents,
+  selectedDate,
+  displayAll,
+}) => {
   events.forEach(event => {
     event.nextDate = event.startTimeStamp || event.date;
+    event.isRecurring = false;
   });
 
   recurringEvents.forEach(event => {
@@ -18,6 +25,7 @@ export const EventPanel = ({ events, recurringEvents, selectedDate }) => {
     event.nextDate = moment(
       moment.unix(nextDate).format('LL') + ' ' + event.startTime
     ).unix();
+    event.isRecurring = true;
   });
 
   const filterEvents = (arr, property) => {
@@ -46,26 +54,54 @@ export const EventPanel = ({ events, recurringEvents, selectedDate }) => {
   }
   selectedEvents.sort((a, b) => a.nextDate - b.nextDate);
   return (
-    <Collapse accordion>
-      {selectedEvents.map(event => {
-        return (
-          <StyledPanel
-            header={event.nameOfEvent}
-            key={event.startTimeStamp || event.date}
-          >
-            <p>Date: {moment.unix(event.nextDate).format('LL')}</p>
-          </StyledPanel>
-        );
-      })}
-    </Collapse>
+    <StyledCard backgroundColor={'#E8E8E8'}>
+      <UpperDiv>
+        <h2>Upcoming Events</h2>
+        <h2>{selectedDate && moment.unix(selectedDate).format('LL')}</h2>
+        <StyledButton onClick={displayAll}>Display All Events</StyledButton>
+      </UpperDiv>
+      <Collapse accordion bordered={false} style={{ background: '#E8E8E8' }}>
+        {selectedEvents.map(event => {
+          return (
+            <StyledPanel
+              header={event.nameOfEvent}
+              key={event.startTimeStamp || event.date}
+            >
+              <h5>{moment.unix(event.nextDate).format('LL')}</h5>
+              <p>{event.isRecurring && 'This is a recurring event.'}</p>
+              <h5>Point of Contact</h5>
+              <p>
+                {event.pointOfcontact.firstName} {event.pointOfcontact.lastName}
+              </p>
+            </StyledPanel>
+          );
+        })}
+      </Collapse>
+    </StyledCard>
   );
 };
 
 const StyledPanel = styled(Panel)`
-  background: '#f7f7f7';
-  border-radius: 4;
-  margin-bottom: 24;
-  border: 0;
-  overflow: 'hidden';
+  && {
+    background: white;
+    border-radius: 4px;
+    margin-bottom: 24px;
+    overflow: hidden;
+
+    .ant-collapse-header {
+      border-bottom: 1px solid ${({ theme }) => theme.gray4};
+    }
+  }
+`;
+
+const UpperDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin-bottom: 20px;
+  button {
+    width: 25%;
+    margin: 0 auto;
+  }
 `;
 export default EventPanel;
