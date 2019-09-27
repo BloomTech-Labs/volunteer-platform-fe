@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Calendar } from 'antd';
+import { Calendar, Select } from 'antd';
 import moment from 'moment';
 import { useStateValue } from '../hooks/useStateValue';
 import {
@@ -108,6 +108,18 @@ export const OrganizationDashboard = () => {
       <h2 className={'org-name'}>{displayOrg.organizationName}</h2>
 
       <OrgButtons displayOrg={displayOrg} deleteOrg={deleteOrg} />
+      <Select
+        defaultValue="select"
+        onChange={changeHandler}
+        value={displayOrg ? displayOrg.orgId : ''}
+        style = {{width: '300px', marginBottom: '40px'}}
+      >
+        {org.userOrganizations.map(item => (
+          <Select.Option key={item.orgId} value={item.orgId}>
+            {item.organizationName}
+          </Select.Option>
+        ))}
+      </Select>
       <StyledContent>
         <div className={'left-col'}>
           <OrgPhoto
