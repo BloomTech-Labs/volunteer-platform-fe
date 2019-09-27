@@ -11,7 +11,7 @@ import {
   getAllRecurringEventsByOrg,
 } from '../actions';
 import { useStateValue } from '../hooks/useStateValue';
-import EventList from '../components/EventList';
+import EventPanel from '../components/EventPanel';
 import {
   StyledButton,
   StyledAvatar,
@@ -176,7 +176,7 @@ export const OrganizationDashboard = props => {
               <h3>Hours of operations:</h3>
               {displayOrg && (
                 <h5>
-                  {displayOrg.daysOfTheWeek.daysOfTheWeek.map(day => {
+                  {displayOrg.daysOfTheWeek.map(day => {
                     return <span className={'day'}>{day}</span>;
                   })}
                 </h5>
@@ -223,24 +223,10 @@ export const OrganizationDashboard = props => {
           <div className={'events'}>
             {state.events.events.length > 0 ||
             state.events.recurringEvents.length > 0 ? (
-              <EventList
-                events={selectedDate ? state.events.events.filter(event => {
-                  
-                  const isBigger = event.date >=
-                    selectedDate;
-                  const lessThanNextDay = event.date <
-                    moment.unix(selectedDate)
-                      .add(1, 'day')
-                      .startOf('day')
-                      .unix();
-                  
-                  if (isBigger && lessThanNextDay){
-                    return true;
-                  }
-                  return false;
-                  
-                }) : state.events.events}
+              <EventPanel
                 recurringEvents={state.events.recurringEvents}
+                events = {state.events.events}
+                selectedDate={selectedDate}
               />
             ) : (
               <div>No event has been created</div>
