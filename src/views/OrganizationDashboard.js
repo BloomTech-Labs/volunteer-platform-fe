@@ -85,6 +85,7 @@ export const OrganizationDashboard = () => {
   };
   
   const onSelect = (value, mode) => {
+    debugger;
     const beginning = value.startOf('date');
     const newValue = moment.unix(beginning.unix());
     if (selectedDate){
@@ -100,6 +101,14 @@ export const OrganizationDashboard = () => {
       setSelectedDate(newValue.unix());
       setCalendarValue(newValue);
     }
+  };
+  
+  const onChange = (value, mode) => {
+    debugger;
+  };
+  
+  const onPanelChange = (value, mode) => {
+    setCalendarValue(moment.unix(value.unix()));
   };
   
   const displayAll = e => {
@@ -129,13 +138,16 @@ export const OrganizationDashboard = () => {
               disabledDate={current =>
                 current && current < moment().startOf('day')
               }
+              
               onSelect={onSelect}
               value={calendarValue}
+              onPanelChange={onPanelChange}
               style={{
                 width: 300,
                 border: '1px solid #d9d9d9',
                 borderRadius: 4,
               }}
+              onChange={onChange}
             />
           </div>
           <div className={'events'}>
