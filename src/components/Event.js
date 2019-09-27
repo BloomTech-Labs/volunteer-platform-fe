@@ -34,7 +34,7 @@ export const Event = ({ event }) => {
         <div className='head'>
           <h4>{event.nameOfEvent}</h4>
           <h5>Host Organization: {event.orgName} </h5>
-          <h5>{event.city} </h5>
+          <h5>City: {event.city} </h5>
           <h5>Causes: {causes}</h5>
           <h5>Interests: {interest} </h5>
           <h5>Requirements: {requirements}</h5>
@@ -43,30 +43,12 @@ export const Event = ({ event }) => {
           <h5>On: {moment.unix(event.nextDate).format('LL')}</h5>
           <h5>from: {event.startTime}</h5>
           <h5>to: {event.endTime}</h5>
-        </div>
-        <div className='contact'>
-          <h5>Contact: {event.firstName + ' ' + event.lastName}</h5>
-          <h5>Contact Number: {event.phoneNumber}</h5>
-          <h5>{event.email}</h5>
-          <h5>{event.website}</h5>
-        </div>
-        <div className='description'>
           <h5>Spot(s) Remaining: {event.numberOfVolunteers}</h5> 
-          <h5>{event.description}</h5>
-          <h5>{event.otherNotes}</h5>
-          {ableToDelete && <StyledButton type="danger">Delete</StyledButton>}
         </div>
+          {ableToDelete && <StyledButton type="danger">Delete</StyledButton>}
       </div>
     </StyledCard>
   );
 };
 
 export default Event;
-
-/* 
-    Title
-    Organization
-    Description...cut off with ellipsis
-    City, State
-    time and date
-*/
