@@ -10,6 +10,7 @@ import {
   updateOrganization,
   deleteOrganizationImage,
   getAllRecurringEventsByOrg,
+  generateRandomEvents,
 } from '../actions';
 import {
   OrgButtons,
@@ -118,7 +119,7 @@ export const OrganizationDashboard = () => {
           imageUrl={imageUrl}
           displayOrg={displayOrg}
           deleteOrganizationImage={deleteOrganizationImage}
-          onFiledUpload={onFileUpload}
+          onFileUpload={onFileUpload}
         />
         
         <OrgInfo displayOrg={displayOrg} changeHandler={changeHandler}/>

@@ -1,4 +1,4 @@
-const causeAreas = [
+export const causeAreas = [
   'Animal Care',
   'Health & Medicine',
   'Computers & Technology',
@@ -23,7 +23,7 @@ const causeAreas = [
   'Advocacy & Human Rights',
 ];
 
-const requirements = [
+export const requirements = [
   'Background Check',
   'Light Lifting Required',
   'Orientation or Training',
@@ -35,7 +35,7 @@ const requirements = [
   'Basic Computer Skills',
 ];
 
-const interests = [
+export const interests = [
   'Work with Animals',
   'Virtual',
   'Group Friendly',
@@ -65,7 +65,7 @@ export const initialState = {
     signInError: null,
     signUpError: null,
     topVolunteersError: null,
-    isLoading: false
+    isLoading: false,
   },
   org: {
     createdOrg: false,
@@ -75,7 +75,7 @@ export const initialState = {
     organization: {},
     deleteOrgFailedError: '',
     error: '',
-    isLoading: false
+    isLoading: false,
   },
   events: {
     events: [],
@@ -84,7 +84,7 @@ export const initialState = {
     deleteEventFailedError: '',
     editEventFailedError: '',
     getEventsFailedError: '',
-    isLoading: false
+    isLoading: false,
   },
   tags: {
     interests: interests,

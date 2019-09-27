@@ -1,15 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
-import { Select } from 'antd';
-import { StyledCard } from '../../styled';
-import { useStateValue } from '../../hooks/useStateValue';
+import {Select} from 'antd';
+import {StyledCard} from '../../styled';
+import {useStateValue} from '../../hooks/useStateValue';
 
-export const OrgInfo = ({ displayOrg, changeHandler }) => {
-  const [{ org }] = useStateValue();
-
+export const OrgInfo = ({displayOrg, changeHandler}) => {
+  const [{org}] = useStateValue();
+  
   const setDaysOpen = arr => {
-    if (!arr) return '';
+    if (!arr){
+      return '';
+    }
     const dayConversion = {
       Sunday: 0,
       Monday: 1,
@@ -28,28 +30,29 @@ export const OrgInfo = ({ displayOrg, changeHandler }) => {
       5: 'Friday',
       6: 'Saturday',
     };
-    let daysAsNum = arr.map(day => dayConversion[day]);
+    let daysAsNum = arr.map(day => dayConversion[ day ]);
     
     let daySegments = [];
     let segment = [];
-    for (let i = 0; i < daysAsNum.length; i++) {
-      segment.push(daysAsNum[i]);
-      if (i < daysAsNum.length - 1 && daysAsNum[i] + 1 === daysAsNum[i + 1])
+    for (let i = 0; i < daysAsNum.length; i++){
+      segment.push(daysAsNum[ i ]);
+      if (i < daysAsNum.length - 1 && daysAsNum[ i ] + 1 ===
+        daysAsNum[ i + 1 ]){
         continue;
-      else {
+      }else{
         daySegments.push(segment);
         segment = [];
       }
     }
     let result = [];
-    for (let i = 0; i < daySegments.length; i++) {
-      switch (daySegments[i].length) {
+    for (let i = 0; i < daySegments.length; i++){
+      switch (daySegments[ i ].length){
         case 1:
-          result.push(`${rC[daySegments[i][0]]}`);
+          result.push(`${rC[ daySegments[ i ][ 0 ] ]}`);
           break;
         case 2:
-          result.push(`${rC[daySegments[i][0]]}`);
-          result.push(`${rC[daySegments[i][1]]}`);
+          result.push(`${rC[ daySegments[ i ][ 0 ] ]}`);
+          result.push(`${rC[ daySegments[ i ][ 1 ] ]}`);
           break;
         case 3:
         case 4:
@@ -57,18 +60,18 @@ export const OrgInfo = ({ displayOrg, changeHandler }) => {
         case 6:
         case 7:
           result.push(
-            `${rC[daySegments[i][0]]} - ${
-              rC[daySegments[i][daySegments[i].length - 1]]
-            }`
+            `${rC[ daySegments[ i ][ 0 ] ]} - ${
+              rC[ daySegments[ i ][ daySegments[ i ].length - 1 ] ]
+              }`,
           );
           break;
       }
     }
     return result.join(', ');
   };
-
+  
   return (
-    <OrgInfoDiv backgroundColor={'#E8E8E8'}>
+    <OrgInfoDiv backgroundcolor={'#E8E8E8'}>
       <Select
         defaultValue="select"
         onChange={changeHandler}
@@ -92,7 +95,7 @@ export const OrgInfo = ({ displayOrg, changeHandler }) => {
           {displayOrg && (
             <h5>
               {displayOrg.daysOfTheWeek.map(day => {
-                return <span className={'day'}>{day}</span>;
+                return <span key={day} className={'day'}>{day}</span>;
               })}
             </h5>
           )}
