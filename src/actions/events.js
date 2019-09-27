@@ -2,7 +2,7 @@ import {action} from './action';
 import firebase, {store} from '../firebase/FirebaseConfig';
 import moment from 'moment';
 import faker from 'faker';
-import {interests, causeAreas} from '../reducers/initialState';
+import {interests, causeAreas, requirements} from '../reducers/initialState';
 
 /**
  * Auth Actions
@@ -135,6 +135,7 @@ export const getAllEventsByState = (state, dispatch) => {
     .collection('events')
     .where('state', '==', state)
     .where('startTimeStamp', '>', moment().unix())
+    .orderBy('startTimeStamp').limit(20)
     .get()
     .then(res => {
       if (res.empty){
@@ -236,13 +237,13 @@ export const generateRandomEvents = () => {
     });
     debugger;
     orgs.forEach(org => {
-      for (let i = 0; i < 50; i++){
+      for (let i = 0; i < 3; i++){
         const date = moment(faker.date.future());
         
         const poc1 = {
           email: faker.internet.email(),
           firstName: faker.name.firstName(),
-          lastname: faker.name.lastName(),
+          lastName: faker.name.lastName(),
         };
         
         const website = 'http://' + faker.internet.domainName();
@@ -258,7 +259,7 @@ export const generateRandomEvents = () => {
           endTime: date.add(Math.ceil(Math.random() * 5), 'hours').format('LT'),
           endTimeStamp: date.unix(),
           firstName: poc1.firstName,
-          lastName: poc1.lastname,
+          lastName: poc1.lastName,
           interest: getRandomInterests(),
           numberOfVolunteers: Math.ceil(Math.random() * 20) + 5,
           orgId: org.orgId,
@@ -304,9 +305,9 @@ const getRandomCauses = () => {
   const randomNumber = Math.ceil(Math.random() * 5);
   const selectedNumber = [];
   for (let i = 0; i < randomNumber; i++){
-    let randomCusesNumber = Math.floor(Math.random() * interests.length);
+    let randomCusesNumber = Math.floor(Math.random() * causeAreas.length);
     while (selectedNumber.includes(randomCusesNumber)){
-      randomCusesNumber = Math.floor(Math.random() * interests.length);
+      randomCusesNumber = Math.floor(Math.random() * causeAreas.length);
     }
     selectedNumber.push(randomCusesNumber);
     randomCauses.push(causeAreas[ randomCusesNumber ]);
@@ -320,12 +321,13 @@ const getRandomRequirements = () => {
   const randomNumber = Math.ceil(Math.random() * 5);
   const selectedNumber = [];
   for (let i = 0; i < randomNumber; i++){
-    let randomRequirementNumber = Math.floor(Math.random() * interests.length);
+    let randomRequirementNumber = Math.floor(Math.random() *
+      requirements.length);
     while (selectedNumber.includes(randomRequirementNumber)){
-      randomRequirementNumber = Math.floor(Math.random() * interests.length);
+      randomRequirementNumber = Math.floor(Math.random() * requirements.length);
     }
     selectedNumber.push(randomRequirementNumber);
-    randomRequirements.push(causeAreas[ randomRequirementNumber ]);
+    randomRequirements.push(requirements[ randomRequirementNumber ]);
   }
   
   return randomRequirements;

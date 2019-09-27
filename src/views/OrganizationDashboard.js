@@ -10,7 +10,6 @@ import {
   updateOrganization,
   deleteOrganizationImage,
   getAllRecurringEventsByOrg,
-  generateRandomEvents,
 } from '../actions';
 import {
   OrgButtons,
