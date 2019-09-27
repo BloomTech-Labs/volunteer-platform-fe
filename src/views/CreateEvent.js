@@ -206,6 +206,10 @@ export const CreateEvent = props => {
                 </AntSelect>
               </div>
             </div>
+            <AntInput
+              name={'Street Address'}
+              layout={formLayouts.formItemLayout}
+            />
             <div className={'flex'}>
               <div className={'inline'}>
                 <AntInput
