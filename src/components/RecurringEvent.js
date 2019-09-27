@@ -176,11 +176,7 @@ export const RecurringEvent = props => {
           </StyledSelect>
 
           <label>Ends</label>
-          <Radio.Group
-            name={'Occurrence Ends'}
-            onChange={handleOccurrences}
-            notRequired
-          >
+          <Radio.Group name={'Occurrence Ends'} onChange={handleOccurrences}>
             <Radio value={'Never'}>Never</Radio>
             <Radio value={'On'}>On</Radio>
             <Radio value={'After'}>After</Radio>
@@ -192,7 +188,6 @@ export const RecurringEvent = props => {
             disabled={
               localState.recurringInfo.occurrenceEnds === 'On' ? false : true
             }
-            notRequired
           />
           <InputNumber
             style={{ width: 50 }}
@@ -202,7 +197,6 @@ export const RecurringEvent = props => {
             disabled={
               localState.recurringInfo.occurrenceEnds === 'After' ? false : true
             }
-            notRequired
           />
         </div>
       )}
@@ -232,13 +226,11 @@ export const RecurringEvent = props => {
             style={{ width: 100 }}
             onChange={handleRepeatEvery}
             min={0}
-            notRequired
           />
           <AntSelect
             style={{ width: 100 }}
             name={'Repeat every value'}
             onChange={handleEveryValue}
-            notRequired
           >
             {periodOfTime}
           </AntSelect>

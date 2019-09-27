@@ -13,11 +13,15 @@ export const FooterDiv = () => {
           <h5>Site Map</h5>
           <div className='links'>
             <div className='links-left'>
-              <Link to="/">Home</Link>
+              <div className='top-left'>
+                <Link to="/">Home</Link>
+              </div>
               <Link to="/dashboard">Browse Events</Link>
             </div>
             <div className='links-right'>
-              <Link to="/dashboard">Create Organization</Link>
+              <div className='top-right'>
+                <Link to="/dashboard">Create Organization</Link>
+              </div>
               <Link to="/">View Volunteers</Link>
             </div>
           </div>
@@ -64,6 +68,13 @@ z-index: 100;
         display: flex;
         flex-direction: column;
         margin-left: 1%
+
+        .top-left, .top-right {
+          margin-bottom: 4px;
+        }
+    }
+    .links-right {
+      margin-left: 5%;
     }
         
         a {
@@ -73,14 +84,14 @@ z-index: 100;
             color: ${({theme}) => theme.primary8};
             
             &:hover {
-                text-decoration: underline;
+                text-decoration: none;
             }
         }
     }
     
     
     .Logo {
-        margin-right: 10%;
+        margin-right: 5%;
         display:flex;
         font-family: ${({theme}) => theme.titleText};
         z-index: 20 !important;

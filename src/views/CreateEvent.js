@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Select, Tag } from 'antd';
+import { Select } from 'antd';
 import styled from 'styled-components';
 import {
   AntInput,
@@ -101,7 +101,7 @@ export const CreateEvent = props => {
       }
       removeUndefinied(event);
       console.log('recurring', event);
-      // createRecurringEvent(event, dispatch);
+      createRecurringEvent(event, dispatch);
     } else {
       removeUndefinied(event);
       console.log('regular', event);
@@ -110,7 +110,7 @@ export const CreateEvent = props => {
 
     props.history.push('/org-dashboard');
   };
-  console.log('localState', localState);
+
   const handleDynmaicDate = date => {
     const dynamicDay = date._d.toString().split(' ')[0];
     const dynamicYear = date._d
@@ -286,7 +286,7 @@ export const CreateEvent = props => {
               </div>
             </div>
 
-            <label>Who is the Point of Contact?</label>
+            <label>Who is the point of Contact?</label>
 
             <div className={'flex'}>
               <div className={'inline'}>
@@ -312,7 +312,7 @@ export const CreateEvent = props => {
               </div>
             </div>
 
-            <AntTextArea name={'Description'} type="text" />
+            {/* <AntTextArea name={'Description'} type="text" /> */}
 
             <label>What are the requirements?</label>
             <div className={'styledGroup'}>

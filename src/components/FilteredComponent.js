@@ -16,15 +16,19 @@ export const FilteredComponent = Component => {
       event.nextDate = event.startTimeStamp || event.date;
     });
     recurringEvents.forEach(event => {
-      event.nextDate = findNext(
+      let nextDate = findNext(
         event.startTimeStamp || event.date,
         event.recurringInfo
       );
+      event.nextDate = moment(
+        moment.unix(nextDate).format('LL') + ' ' + event.startTime
+      ).unix();
     });
     let allEvents = [...events, ...recurringEvents].sort(
       (a, b) => a.nextDate - b.nextDate
     );
-        
+
+    console.log(allEvents);
     if (!events || !filterCount) {
       return <Component events={allEvents} {...props} />;
     }
@@ -51,6 +55,15 @@ export const FilteredComponent = Component => {
         if (event.city.toLowerCase().includes(city.toLowerCase())) {
           event.sortRank = event.sortRank + 1;
         }
+      });
+    }
+    if (causeAreas) {
+      filteredEvents.forEach(event => {
+        console.log(event);
+        event.typesOfCauses.forEach(causeArea => {
+          if (tagFilter.causeAreas[causeArea])
+            event.sortRank = event.sortRank + 1;
+        });
       });
     }
     if (interests) {

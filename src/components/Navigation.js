@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import {
+  checkUserRegistered,
   signOut,
 } from '../actions';
 import {Menu} from 'antd';
@@ -25,7 +26,6 @@ export const Navigation = props => {
   const handleClick = e => {
     if (e.key === 'Logout'){
       signOut(dispatch);
-      return;
     }
   };
   
@@ -33,8 +33,8 @@ export const Navigation = props => {
     <StyledNavigation>
       <Menu onClick={handleClick} selectedKeys={[current]} mode="inline">
         <Menu.Item className='nav-name'>
-          {state.auth.googleAuthUser && (state.auth.googleAuthUser.firstName ?
-            `${state.auth.googleAuthUser.firstName} ${state.auth.googleAuthUser.lastName}` :
+          {state.auth.registeredUser && (state.auth.registeredUser.firstName ?
+            `${state.auth.registeredUser.firstName} ${state.auth.registeredUser.lastName[ 0 ]}.` :
             'Welcome!')}
         </Menu.Item>
         <Menu.Divider/>
@@ -48,20 +48,6 @@ export const Navigation = props => {
             Messages
           </Link>
         </Menu.Item>
-        {state.auth.loggedIn && (
-          <Menu.Item key={'Create Org'}>
-            <Link to={'/create-org'}>
-              Create Organization
-            </Link>
-          </Menu.Item>
-        )}
-        {state.org.createdOrg && (
-          <Menu.Item key={'Org Dashboard'}>
-            <Link to={'/org-dashboard'}>
-              Your Organization{state.org.userOrganizations.length > 1 && 's'}
-            </Link>
-          </Menu.Item>
-        )}
         <Menu.Item key="Home">
           <Link to={'/dashboard'}>
             Browse
@@ -72,6 +58,22 @@ export const Navigation = props => {
             Upcoming Events
           </Link>
         </Menu.Item>
+        {state.org.createdOrg && (
+          <Menu.Item key={'Org Dashboard'}>
+            <Link to={'/org-dashboard'}>
+              Your Organization{state.org.userOrganizations.length > 1 && 's'}
+            </Link>
+          </Menu.Item>
+        )}
+        {(state.auth.loggedIn &&
+          (state.auth.registeredUser && state.auth.registeredUser.firstName)) &&
+        (
+          <Menu.Item key={'Create Org'}>
+            <Link to={'/create-org'}>
+              Create Organization
+            </Link>
+          </Menu.Item>
+        )}
         <Menu.Divider/>
         <Menu.Item className='nav-bottom'
                    key={state.auth.loggedIn ? 'Logout' : 'Login'}

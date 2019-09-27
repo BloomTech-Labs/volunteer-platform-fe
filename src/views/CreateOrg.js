@@ -7,7 +7,6 @@ import {
   AntTextArea,
   AntTimePicker,
   StyledCard,
-  StyledButton,
 } from '../styled';
 import { useStateValue } from '../hooks/useStateValue';
 import { Icon, Select } from 'antd';
@@ -29,7 +28,7 @@ export const CreateOrg = props => {
         setNumberOfPOC(2);
       }
     }
-  }, []);
+  }, [props.location.state]);
 
   const getPOCInputs = () => {
     const poc = [
@@ -114,8 +113,8 @@ export const CreateOrg = props => {
       ...values,
       POC,
       organizationOwnerUID: state.auth.googleAuthUser.uid,
-      startTime: values.startTime.format('HH:MM A'),
-      endTime: values.endTime.format('HH:MM A'),
+      startTime: values.startTime.unix(),
+      endTime: values.endTime.unix(),
     };
     for (let key in org) {
       if (org[key] === undefined) {

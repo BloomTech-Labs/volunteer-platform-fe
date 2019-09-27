@@ -1,4 +1,4 @@
-const causeAreas = [
+export const causeAreas = [
   'Animal Care',
   'Health & Medicine',
   'Computers & Technology',
@@ -23,7 +23,7 @@ const causeAreas = [
   'Advocacy & Human Rights',
 ];
 
-const requirements = [
+export const requirements = [
   'Background Check',
   'Light Lifting Required',
   'Orientation or Training',
@@ -35,7 +35,7 @@ const requirements = [
   'Basic Computer Skills',
 ];
 
-const interests = [
+export const interests = [
   'Work with Animals',
   'Virtual',
   'Group Friendly',
@@ -61,9 +61,11 @@ export const initialState = {
     signedUp: checkRegistered || false,
     googleAuthUser: null,
     registeredUser: null,
+    topVolunteers: [],
     signInError: null,
-    signUpError: null, 
-    isLoading: false
+    signUpError: null,
+    topVolunteersError: null,
+    isLoading: false,
   },
   org: {
     createdOrg: false,
@@ -73,7 +75,7 @@ export const initialState = {
     organization: {},
     deleteOrgFailedError: '',
     error: '',
-    isLoading: false
+    isLoading: false,
   },
   events: {
     events: [],
@@ -82,7 +84,7 @@ export const initialState = {
     deleteEventFailedError: '',
     editEventFailedError: '',
     getEventsFailedError: '',
-    isLoading: false
+    isLoading: false,
   },
   tags: {
     interests: interests,
@@ -116,6 +118,7 @@ export const initialState = {
  * @property {boolean} signedUp Indicates if the user has completed registration
  * @property {Object} googleAuthUser User object given to use from google auth.
  * @property {User} registeredUser Registered user data
+ * @property {User[]} topVolunteers Array of top volunteers
  */
 
 /**

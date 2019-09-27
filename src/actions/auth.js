@@ -129,6 +129,7 @@ export const signOut = dispatch => {
  * @param {Dispatch} dispatch - function from useStateValue() hook.
  */
 export const checkUserRegistered = (uid, dispatch) => {
+  
   store
     .collection('users')
     .doc(uid)
@@ -182,6 +183,8 @@ export const UPDATE_REGISTERED_USER = 'UPDATE_REGISTERED_USER';
 
 /**
  * Update registered user in the db.
+ *
+ * @function
  * @param {User} user
  * @param {Dispatch} dispatch
  */
@@ -189,4 +192,33 @@ export const updateRegisteredUser = (user, dispatch) => {
   store.collection('users').doc(user.uid).set(user).then(res => {
     dispatch(action(UPDATE_REGISTERED_USER, user));
   }).catch(err => console.log(err));
+};
+
+export const GET_TOP_VOLUNTEERS = 'GET_TOP_VOLUNTEERS';
+export const GET_TOP_VOLUNTEERS_FAILED = 'GET_TOP_VOLUNTEERS_FAILED';
+export const NO_VOLUNTEERS_REGISTERED = 'NO_VOLUNTEERS_REGISTERED';
+
+/**
+ * Gets the top volunteers fromt he db.
+ * @function
+ * @param {Dispatch} dispatch
+ */
+export const getTopVolunteers = (dispatch) => {
+  store.collection('users').limit(20).get().then(res => {
+    if (!res.empty){
+      const volunteers = [];
+      res.forEach(data => {
+        const volunteer = data.data();
+        volunteer.uid = data.id;
+        volunteers.push(volunteer);
+      });
+      
+      dispatch(action(GET_TOP_VOLUNTEERS, volunteers));
+    }else{
+      dispatch(action(NO_VOLUNTEERS_REGISTERED));
+    }
+  }).catch(err => {
+    console.log(err);
+    dispatch(action(GET_TOP_VOLUNTEERS_FAILED, err.message));
+  });
 };
