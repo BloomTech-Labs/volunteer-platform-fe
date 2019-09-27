@@ -76,7 +76,6 @@ export const OrganizationDashboard = () => {
   };
 
   const onSelect = (value, mode) => {
-    debugger;
     const beginning = value.startOf('date');
     const newValue = moment.unix(beginning.unix());
     if (selectedDate) {
@@ -92,10 +91,6 @@ export const OrganizationDashboard = () => {
       setSelectedDate(newValue.unix());
       setCalendarValue(newValue);
     }
-  };
-
-  const onChange = (value, mode) => {
-    debugger;
   };
 
   const onPanelChange = (value, mode) => {
@@ -139,8 +134,8 @@ export const OrganizationDashboard = () => {
           </div>
           <StyledAboutUs backgroundcolor={'#E8E8E8'} borderRadius="0px">
             <h5>About Us</h5>
-            <StyledLine />
-            {displayOrg.aboutUs}
+            <StyledLine width={'40%'} />
+            <p>{displayOrg.aboutUs}</p>
           </StyledAboutUs>
         </div>
         <div className={'right-col'}>
@@ -208,6 +203,11 @@ const StyledAboutUs = styled(StyledCard)`
   h5 {
     font-size: 16px;
     text-align: center;
+  }
+
+  p{
+      margin-top: 10px;
+      padding: 15px;
   }
 `;
 export default OrganizationDashboard;

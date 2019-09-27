@@ -108,9 +108,14 @@ const UpperDiv = styled.div`
   flex-direction: column;
   text-align: center;
   margin-bottom: 20px;
+
+  h2{
+      margin: 0;
+  }
   button {
     width: 25%;
     margin: 0 auto;
+    margin-top: 20px;
   }
 `;
 export default EventPanel;

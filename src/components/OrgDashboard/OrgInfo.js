@@ -70,7 +70,7 @@ export const OrgInfo = ({ displayOrg, changeHandler }) => {
   };
 
   return (
-    <OrgInfoDiv backgroundcolor={'#E8E8E8'} borderRadius={'0px'}>
+    <OrgInfoDiv backgroundcolor={'#E8E8E8'} borderRadius={'0px'} margin={'0 0 40px 0'}>
       <Select
         defaultValue="select"
         onChange={changeHandler}
@@ -107,8 +107,10 @@ export const OrgInfo = ({ displayOrg, changeHandler }) => {
 };
 
 const OrgInfoDiv = styled(StyledCard)`
-  border-radius: 0;
-
+.ant-select{
+    width: 200px;
+    margin-left: 300px;
+}
   .upper-info {
     display: flex;
     justify-content: space-between;
