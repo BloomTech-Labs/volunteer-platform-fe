@@ -112,9 +112,13 @@ function App(){
                 path={'/dashboard'}
                 component={MainDashboard}
               />
-              <LoginRoute path={'/login'} component={Login}/>
+              <LoginRoute 
+                path={'/login'} 
+                component={Login}/>
               <LoginRoute path={'/signup'} component={Login}/>
-              <ProtectedRoute path={'/create-org'} component={CreateOrg}/>
+              <RegisteredAndLoggedInRoute 
+                path={'/create-org'} 
+                component={CreateOrg}/>
               <OrganizationRoute
                 path={'/org-dashboard/create-event'}
                 component={CreateEvent}

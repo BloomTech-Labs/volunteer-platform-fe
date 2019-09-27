@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { StyledCard, StyledAvatar, StyledUploadImage } from '../../styled';
-import { Tooltip, Icon } from 'antd';
+import { Tooltip, Icon, Popconfirm, message } from 'antd';
 
 export const OrgPhoto = ({
   imageUrl,
@@ -20,10 +20,18 @@ export const OrgPhoto = ({
           <StyledAvatarImage className={'column'}>
             <StyledAvatar shape="square" size={187} src={imageUrl} />
             <Tooltip title={'Delete Avatar'}>
-              <StyledDelete
-                onClick={() => deleteOrganizationImage(displayOrg)}
-                type="close"
-              />
+              <Popconfirm
+                onConfirm={() => {
+                  message.success('Photo deleted.');
+                  deleteOrganizationImage(displayOrg);
+                }}
+                title={'Delete this photo?'}
+                okText={'Yes'}
+                cancelText={'No'}
+                placement={'rightTop'}
+              >
+                <StyledDelete type="close" />
+              </Popconfirm>
             </Tooltip>
           </StyledAvatarImage>
         ) : (

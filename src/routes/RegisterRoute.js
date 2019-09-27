@@ -8,9 +8,9 @@ export const RegisterRoute = ( { component: Component, ...rest } ) => {
   return ( <Route
     { ...rest }
     render={ props => {
-      return localStorage.getItem('userRegistered') === "true" ? <Redirect to={ '/dashboard' }/> :
-        <Component { ...props }/>;
-    } }
+      return ( localStorage.getItem('loggedIn') === 'true' &&
+          localStorage.getItem('userRegistered') !== "true" ) ? <Component { ...props }/> : <Redirect to={ '/login' }/> 
+    }}
   /> );
 };
 

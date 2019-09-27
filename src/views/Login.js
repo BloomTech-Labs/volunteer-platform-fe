@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
-import { Icon } from 'antd';
+import {Icon} from 'antd';
 import {
   WrappedAntForm,
   AntInput,
@@ -14,19 +14,19 @@ import {
   TWITTER_PROVIDER,
   EMAIL_PROVIDER,
 } from '../actions';
-import { formLayouts } from '../utility/formLayouts';
-import { useStateValue } from '../hooks/useStateValue';
-import { device } from '../styled/deviceBreakpoints';
+import {formLayouts} from '../utility/formLayouts';
+import {useStateValue} from '../hooks/useStateValue';
+import {device} from '../styled/deviceBreakpoints';
 
 export const Login = props => {
   const [state, dispatch] = useStateValue();
   //const [localState, setState] = useState({});
   const [pathName, setPathName] = useState(props.location.pathname);
-
+  
   useEffect(() => {
     setPathName(props.location.pathname);
   }, [props.location.pathname]);
-
+  
   return (
     <StyledLogin>
       <h3>
@@ -35,9 +35,9 @@ export const Login = props => {
           : 'Lets do some good in the' + ' world. Sign up below.'}
       </h3>
       <div className={'line-box'}>
-        <StyledLine big width={'53%'} />
+        <StyledLine big width={'53%'}/>
       </div>
-
+      
       <h5>
         {pathName === `/login`
           ? 'Sign in with any of the following'
@@ -49,14 +49,14 @@ export const Login = props => {
           type="twitter"
           onClick={() => signIn(TWITTER_PROVIDER, dispatch)}
         />
-        <Icon type="google" onClick={() => signIn(GOOGLE_PROVIDER, dispatch)} />
+        <Icon type="google" onClick={() => signIn(GOOGLE_PROVIDER, dispatch)}/>
         <Icon
           type="facebook"
           onClick={() => signIn(FACEBOOK_PROVIDER, dispatch)}
         />
       </Inline>
       <div className={'line-box'}>
-        <StyledLine big width={'53%'} />
+        <StyledLine big width={'53%'}/>
       </div>
       <StyledCenter>
         <h4>OR</h4>
@@ -66,18 +66,18 @@ export const Login = props => {
           }}
           layout={'vertical'}
           buttonType="primary"
-          buttonText={pathName === `/login` ? 'Login' : 'Register'}
+          buttonText={pathName === `/login` ? 'Login' : 'Signup'}
           buttonLoading={state.auth.isLoading}
         >
           <AntInput
             name={'Email'}
-            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+            prefix={<Icon type="user" style={{color: 'rgba(0,0,0,.25)'}}/>}
             placeholder="Email"
             layout={formLayouts.formItemLayout}
           />
           <AntInput
             name={'Password'}
-            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+            prefix={<Icon type="lock" style={{color: 'rgba(0,0,0,.25)'}}/>}
             placeholder="Password"
             type="password"
             layout={formLayouts.formItemLayout}
@@ -86,7 +86,7 @@ export const Login = props => {
         {state.auth.signInError && <div>{state.auth.signInError}</div>}
         {state.auth.signUpError && <div>{state.auth.signUpError}</div>}
         <div className={'line-box'}>
-          <StyledLine big width={'53%'} />
+          <StyledLine big width={'53%'}/>
         </div>
         <StyledCenter>
           <h4>
@@ -183,6 +183,6 @@ const CustomStyledLink = styled(StyledLink)`
   :hover {
     color: ${props => props.theme.primary8};
   }
-`
+`;
 
 export default Login;

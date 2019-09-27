@@ -103,20 +103,20 @@ export const FilterTopbar = ({
         <Divider dashed style={{marginTop: 16}}/>
         <Row>
           <Row style={{fontSize: 18}}>Location</Row>
-          <Form.Item label="State">
-            <Input
-              value={inputState.location.state}
-              name={'state'}
-              onChange={onLocationChange}
-              placeholder="State Initials"
-            />
-          </Form.Item>
           <Form.Item label="City">
             <Input
               value={inputState.location.city}
               name={'city'}
               onChange={onLocationChange}
               placeholder="City"
+            />
+          </Form.Item>
+          <Form.Item label="State">
+            <Input
+              value={inputState.location.state}
+              name={'state'}
+              onChange={onLocationChange}
+              placeholder="State Initials"
             />
           </Form.Item>
         </Row>
