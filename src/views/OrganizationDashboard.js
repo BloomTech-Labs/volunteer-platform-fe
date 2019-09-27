@@ -1,7 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import {Icon, Select, Tooltip} from 'antd';
-import {Link} from 'react-router-dom';
+import { Calendar } from 'antd';
+import moment from 'moment';
+import { useStateValue } from '../hooks/useStateValue';
 import {
   getAllEventsByOrg,
   deleteOrganization,
@@ -10,55 +11,53 @@ import {
   deleteOrganizationImage,
   getAllRecurringEventsByOrg,
 } from '../actions';
-import {useStateValue} from '../hooks/useStateValue';
-import EventList from '../components/EventList';
-import OrganizationInfo from '../components/OrganizationInfo';
 import {
-  StyledButton,
-  StyledAvatar,
-  StyledUploadImage,
-  deleteModal, StyledCard,
-} from '../styled';
+  OrgButtons,
+  OrgPhoto,
+  OrgInfo,
+  EventPanel,
+} from '../components/OrgDashboard';
+import { deleteModal } from '../styled';
 
-export const OrganizationDashboard = (props) => {
-  const [state, dispatch] = useStateValue();
+export const OrganizationDashboard = () => {
+  const [{ auth, org, events }, dispatch] = useStateValue();
   const [displayOrg, setDisplayOrg] = useState('');
   const [imageUrl, setImageUrl] = useState(null);
-  
+  const [selectedDate, setSelectedDate] = useState();
+  const [calendarValue, setCalendarValue] = useState(moment());
+
   useEffect(() => {
-    if (displayOrg.imagePath){
+    if (displayOrg.imagePath) {
       getFileUrl(displayOrg.imagePath).then(res => {
         setImageUrl(res);
       });
-    }else{
+    } else {
       setImageUrl(null);
     }
   }, [displayOrg]);
-  
+
+  //   useEffect(() => {
+  //     if (auth.googleAuthUser) {
+  //       const uid = auth.googleAuthUser.uid;
+  //     }
+  //   }, []);
+
   useEffect(() => {
-    if (state.auth.googleAuthUser){
-      const uid = state.auth.googleAuthUser.uid;
+    if (org.userOrganizations.length > 0) {
+      setDisplayOrg(org.userOrganizations[0]);
     }
-  }, []);
-  
-  const changeHandler = value => {
-    setDisplayOrg(
-      state.org.userOrganizations.find(item => item.orgId === value),
-    );
-  };
-  
+  }, [org.userOrganizations]);
+
   useEffect(() => {
-    if (state.org.userOrganizations.length > 0){
-      setDisplayOrg(state.org.userOrganizations[ 0 ]);
-    }
-  }, [state.org.userOrganizations]);
-  
-  useEffect(() => {
-    if (displayOrg){
+    if (displayOrg) {
       getAllEventsByOrg(displayOrg.orgId, dispatch);
       getAllRecurringEventsByOrg(displayOrg.orgId, dispatch);
     }
   }, [displayOrg]);
+
+  const changeHandler = value => {
+    setDisplayOrg(org.userOrganizations.find(item => item.orgId === value));
+  };
   
   const deleteOrg = e => {
     const deleteOrgModal = deleteModal({
@@ -66,133 +65,89 @@ export const OrganizationDashboard = (props) => {
       content: 'This cannot be undone.',
       onOk: () => deleteOrganization(displayOrg.orgId, dispatch),
     });
-    
+
     e.preventDefault();
     deleteOrgModal();
   };
-  
+
   const onFileUpload = path => {
-    getFileUrl(path).then(url => {
-      setImageUrl(url);
-      const updatedDisplayOrg = {...displayOrg, imagePath: path, imageUrl: url};
-      updateOrganization(displayOrg.orgId, updatedDisplayOrg, dispatch);
-    }).catch(err => console.log(err));
+    getFileUrl(path)
+      .then(url => {
+        setImageUrl(url);
+        const updatedDisplayOrg = {
+          ...displayOrg,
+          imagePath: path,
+          imageUrl: url,
+        };
+        updateOrganization(displayOrg.orgId, updatedDisplayOrg, dispatch);
+      })
+      .catch(err => console.log(err));
+  };
+
+  const onSelect = (value, mode) => {
+    const beginning = value.startOf('date');
+    const newValue = moment.unix(beginning.unix());
+    if (selectedDate) {
+      const date2 = newValue.unix();
+      if (selectedDate === date2) {
+        setSelectedDate(null);
+        setCalendarValue(moment());
+      } else {
+        setSelectedDate(newValue.unix());
+        setCalendarValue(newValue);
+      }
+    } else {
+      setSelectedDate(newValue.unix());
+      setCalendarValue(newValue);
+    }
+  };
+
+  const displayAll = e => {
+    e.preventDefault();
+    setSelectedDate(null);
+    setCalendarValue(moment());
   };
   return (
     <StyledDashboard>
-      
       <h4 className={'org-title'}>Dashboard of</h4>
       <h2 className={'org-name'}>{displayOrg.organizationName}</h2>
-      <div className={'org-actions'}>
-        <div className={'action'}>
-          <div className={'action-icon'}>
-            <Icon type="edit"/>
-          </div>
-          <span>Update Org. Info</span>
-        </div>
-        <div className={'action'}>
-          <div className={'action-icon'}>
-            <Icon type="form"/>
-          </div>
-          <span>Create Event</span>
-        </div>
-        <div className={'action'}>
-          <div className={'action-icon'}>
-            <Icon type="delete"/>
-          </div>
-          <span>Delete Org</span>
-        </div>
-      </div>
-      
+
+      <OrgButtons displayOrg={displayOrg} deleteOrg={deleteOrg} />
       <div className={'row mg-lf-4 row-wrap'}>
-        <div className={'column'}>
-          <StyledCard backgroundColor={'#E8E8E8'}>
-            {imageUrl ? (
-              <StyledAvatarImage className={'column'}>
-                <StyledAvatar shape="square" size={256} src={imageUrl}/>
-                <Tooltip title={'Delete Avatar'}>
-                  <StyledDelete
-                    onClick={() => deleteOrganizationImage(displayOrg)}
-                    type="close"/>
-                </Tooltip>
-              </StyledAvatarImage>
-            ) : (
-              <StyledUploadImage fileUploadComplete={onFileUpload}/>
-            )}
-          </StyledCard>
-        </div>
-        <StyledCard backgroundColor={'#E8E8E8'}>
-          
-          <h3>Org Info.</h3>
-          <div className={'org-top'}>
-            <div className={'org-top-col'}>
-              <h3>Hours of operations:</h3>
-              {displayOrg && <h5>{displayOrg.daysOfTheWeek.daysOfTheWeek.map(day => {
-                return (<span className={'day'}>{day}</span>);
-              })}</h5>}
-              {displayOrg && <h5>Opens: {displayOrg.startTime}</h5>}
-              {displayOrg && <h5>Closes: {displayOrg.endTime}</h5>}
-            </div>
-            <div className={'org-top-col'}>
-              <h3>Hours of operations:</h3>
-              {displayOrg && <h5>{displayOrg.daysOfTheWeek.map(day => {
-                return (<span className={'day'}>{day}</span>);
-              })}</h5>}
-              {displayOrg && <h5>Opens: {displayOrg.startTime}</h5>}
-              {displayOrg && <h5>Closes: {displayOrg.endTime}</h5>}
-            </div>
-          
-          </div>
-        
-        </StyledCard>
-        
+        <OrgPhoto
+          imageUrl={imageUrl}
+          displayOrg={displayOrg}
+          deleteOrganizationImage={deleteOrganizationImage}
+          onFiledUpload={onFileUpload}
+        />
+
+        <OrgInfo displayOrg={displayOrg} changeHandler={changeHandler} />
         <div className={'bottom'}>
-          <div className={'details'}>
-            <Select defaultValue="select" onChange={changeHandler}>
-              <Select.Option value="select" disabled>
-                Select one
-              </Select.Option>
-              {state.org.userOrganizations.map(item => (
-                <Select.Option key={item.orgId} value={item.orgId}>
-                  {item.organizationName}
-                </Select.Option>
-              ))}
-            </Select>
-            {displayOrg ? (
-              
-              <OrganizationInfo org={displayOrg}/>
-            
-            ) : (
-              <div>You have not created any organization yet</div>
-            )}
-            <StyledButton className={'create-event-button'}>
-              <Link
-                to={{
-                  pathname: '/org-dashboard/create-event',
-                  state: {
-                    org: displayOrg,
-                  },
-                }}
-              >
-                Create event
-              </Link>
-            </StyledButton>
+          <div className={'calendar'}>
+            <Calendar
+              fullscreen={false}
+              disabledDate={current =>
+                current && current < moment().startOf('day')
+              }
+              onSelect={onSelect}
+              value={calendarValue}
+              style={{
+                width: 300,
+                border: '1px solid #d9d9d9',
+                borderRadius: 4,
+              }}
+            />
           </div>
-          <div className={'events'}
-          >
-            {state.events.events.length > 0 ||
-            state.events.recurringEvents.length > 0 ? (
-              <EventList
-                events={state.events.events}
-                recurringEvents={state.events.recurringEvents}
-              />
-            ) : (
-              <div>No event has been created</div>
-            )}
+          <div className={'events'}>
+            <EventPanel
+              recurringEvents={events.recurringEvents}
+              events={events.events}
+              selectedDate={selectedDate}
+              displayAll={displayAll}
+            />
           </div>
         </div>
       </div>
-    
     </StyledDashboard>
   );
 };
@@ -204,93 +159,32 @@ const StyledDashboard = styled.div`
   align-items: center;
   max-height: 100%;
   margin-top: 4rem;
-  .org-top {
-    display: flex;
-    justify-content: space-around;
-  }
-  
+  margin-bottom: 10rem;
+
   .row {
     justify-content: space-around;
   }
-  
-  .details {
-  width: 30%;
+
+  .calendar {
+    width: 30%;
   }
   .events {
-  width: 58%;
+    width: 58%;
   }
   .bottom {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin-top: 3rem;
   }
-  
-  .create-event-button {
-  margin-top: 2rem;
-  }
-  
+
   .org-title {
     margin-bottom: 0;
   }
-  
+
   .org-name {
     margin-bottom: 4rem;
   }
-  
-  .org-actions {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  border: 2px solid ${props => props.theme.primary5}
-  width: 50%;
-  min-height: 80px;
-  margin-bottom: 3rem;
-  }
-  
-  .action {
-    padding: 1rem;
-   display: flex;
-   flex-direction: column;
-   justify-content: center;
-   align-items: center;
-  }
-  
-  .action-icon {
-    color: ${props => props.theme.gray1};
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2rem;
-    background-color: ${props => props.theme.gray8};
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-  }
-  
-  .day:not(:first-child) {
-    margin-left: 1rem;
-  }
-  
-  .org-top-col {
-    display: flex;
-    flex-direction: column;
-  }
-  
-
-`;
-
-const StyledDelete = styled(Icon)`
-position: absolute;
-right: 10px;
-top: 10px;
-color: transparent;
-`;
-
-const StyledAvatarImage = styled.div`
-position: relative;
-:hover > i {
-  color: #ff4d4f;
-}
 `;
 
 export default OrganizationDashboard;
