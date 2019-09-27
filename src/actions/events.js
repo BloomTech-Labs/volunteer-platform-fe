@@ -20,6 +20,7 @@ export const CREATE_EVENT_FAILED = 'CREATE_EVENT_FAILED';
  * @param {Dispatch} dispatch
  */
 export const createEvent = (event, dispatch) => {
+  debugger;
   store
     .collection('events')
     .add(event)
