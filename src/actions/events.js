@@ -88,7 +88,6 @@ export const ORG_HAS_NO_EVENTS = 'ORG_HAS_NO_EVENTS';
  * @param {Dispatch} dispatch
  */
 export const getAllEventsByOrg = (orgId, dispatch) => {
-  
   const time = moment().unix();
   store
     .collection('events')

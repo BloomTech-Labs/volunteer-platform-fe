@@ -26,7 +26,15 @@ export const StyledCard = styled(Card)`
 
     .contact {
       display: flex;
-      justify-content: space-evenly;
+      flex-direction:column;
     }
   }
 `;
+
+// StyledCard.propTypes = {
+//   margin: PropTypes.String,
+//   maxWidth: PropTypes.String,
+//   borderRadiusDefault: PropTypes.String,
+//   backgroundColor: PropTypes.String,
+// };
+

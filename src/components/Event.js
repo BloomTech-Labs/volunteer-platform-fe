@@ -28,7 +28,6 @@ export const Event = ({ event }) => {
     return <Tag>{item = [item]}</Tag> 
   })
 
-  console.log(event)
   return (
     <StyledCard>
       <div className='container'>
@@ -41,15 +40,14 @@ export const Event = ({ event }) => {
           <h5>Requirements: {requirements}</h5>
         </div>
         <div className='date'>
-          <h5>On: {moment.unix(event.date).format('ll')}</h5>
+          <h5>On: {moment.unix(event.nextDate).format('LL')}</h5>
           <h5>from: {event.startTime}</h5>
           <h5>to: {event.endTime}</h5>
         </div>
         <div className='contact'>
-          <h5>{event.phoneNumber}</h5>
+          <h5>Contact: {event.firstName + ' ' + event.lastName}</h5>
+          <h5>Contact Number: {event.phoneNumber}</h5>
           <h5>{event.email}</h5>
-          <h5>{event.firstName}</h5>
-          <h5>{event.lastName}</h5>
           <h5>{event.website}</h5>
         </div>
         <div className='description'>
