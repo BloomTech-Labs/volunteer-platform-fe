@@ -1,45 +1,47 @@
-import React from 'react';
-import { Icon, Card } from 'antd';
+import React, {useEffect} from 'react';
+import {Icon, Card} from 'antd';
 import styled from 'styled-components';
 import orgPic1 from '../../assets/orgPic1.png';
 import orgPic2 from '../../assets/orgPic2.png';
 import orgPic3 from '../../assets/orgPic3.png';
 import orgPic4 from '../../assets/orgPic4.png';
+import {useStateValue} from '../../hooks/useStateValue';
+import {getTopOrganizations} from '../../actions/organization';
 
 export const TopNonProfits = () => {
-  const { Meta } = Card;
-
+  const {Meta} = Card;
+  const [state, dispatch] = useStateValue();
+  
+  useEffect(() => {
+    getTopOrganizations(dispatch);
+  }, []);
+  
   return (
     <StyledDiv>
-      <h2>Our Featured Organizations<Icon type="thunderbolt" theme='twoTone' twoToneColor='#FA8C16'/></h2>
+      <h2>Our Featured Organizations<Icon type="thunderbolt" theme='twoTone'
+                                          twoToneColor='#FA8C16'/></h2>
       <div className='nonprofits-cards'>
-        <StyledCard
-          cover={<img src={orgPic1} alt='nonprofit-org1'/>}
-        >
-          <Meta title='UrbanYouthFilm' description='4.5/5'></Meta>
-        </StyledCard>
-        <StyledCard
-          cover={<img src={orgPic2} alt='nonprofit-org2'/>}
-        >
-          <Meta title='ASPCA-LA' description='4.5/5'></Meta>
-        </StyledCard>
-        <StyledCard
-          cover={<img src={orgPic3} alt='nonprofit-org3'/>}
-        >
-          <Meta title='St.Painters' description='4/5'></Meta>
-        </StyledCard>
-        <StyledCard
-          cover={<img src={orgPic4} alt='nonprofit-org4'/>}
-        >
-          <Meta title='Penfriends' description='4/5'></Meta>
-        </StyledCard>
-        <h6><Icon type="project" />More Organizations</h6>
+        
+        {state.org.topOrganizations &&
+        state.org.topOrganizations.map((org, i) => {
+          if (i < 4){
+            return (
+              <StyledCard key={org.orgId}
+                          cover={<img src={org.imageUrl} alt='nonprofit-org1'/>}
+              >
+                <Meta title={org.organizationName} description='4.5/5'></Meta>
+              </StyledCard>
+            );
+          }
+        })}
+        
+        <h6><Icon type="project"/>More Organizations</h6>
       </div>
     </StyledDiv>
-  )
-}
+  );
+};
 
-export default TopNonProfits
+export default TopNonProfits;
 
 const StyledDiv = styled.div`
   display: flex;
@@ -48,7 +50,7 @@ const StyledDiv = styled.div`
 
   h2 {
     font-size: 24px;
-    color: ${({ theme }) => theme.primary8};
+    color: ${({theme}) => theme.primary8};
     margin: 60px 0 40px 0;
   }
 
@@ -66,12 +68,12 @@ const StyledDiv = styled.div`
 
     h6 {
       margin: 1rem;
-      color: ${({ theme }) => theme.gray7};
+      color: ${({theme}) => theme.gray7};
       font-size: 0.9rem;
       width: 150px;
     }
   }
-`
+`;
 
 const StyledCard = styled(Card)`
   background: #FFF7E6;
@@ -89,9 +91,9 @@ const StyledCard = styled(Card)`
     }
 
     .ant-card-meta-description {
-      color: ${({ theme }) => theme.primary7};
+      color: ${({theme}) => theme.primary7};
       font-size: 0.8rem;
       font-style: italic;
     }
   }
-`
+`;

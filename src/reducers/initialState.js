@@ -61,8 +61,10 @@ export const initialState = {
     signedUp: checkRegistered || false,
     googleAuthUser: null,
     registeredUser: null,
+    topVolunteers: [],
     signInError: null,
-    signUpError: null, 
+    signUpError: null,
+    topVolunteersError: null,
     isLoading: false
   },
   org: {
@@ -116,6 +118,7 @@ export const initialState = {
  * @property {boolean} signedUp Indicates if the user has completed registration
  * @property {Object} googleAuthUser User object given to use from google auth.
  * @property {User} registeredUser Registered user data
+ * @property {User[]} topVolunteers Array of top volunteers
  */
 
 /**
