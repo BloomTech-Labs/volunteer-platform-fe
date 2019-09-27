@@ -28,7 +28,6 @@ export const Navigation = props => {
       signOut(dispatch);
     }
   };
-  debugger;
   return (
     <StyledNavigation>
       <Menu onClick={handleClick} selectedKeys={[current]} mode="inline">

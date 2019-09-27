@@ -1,17 +1,31 @@
 import {
-  SIGNIN_INIT, SIGNED_IN, SIGNED_OUT, SIGNIN_FAILED, SIGNUP_FAILED,
-  SIGNIN_NEW_USER, GET_USER_ACCOUNT_SUCCESSFUL, REGISTER_INIT,
-  REGISTER_SUECESSFUL, REGISTER_FAILED, UPDATE_REGISTERED_USER,
-  GET_TOP_VOLUNTEERS_FAILED, NO_VOLUNTEERS_REGISTERED, GET_TOP_VOLUNTEERS,
+  SIGNIN_INIT,
+  SIGNED_IN,
+  SIGNED_OUT,
+  SIGNIN_FAILED,
+  SIGNUP_FAILED,
+  SIGNIN_NEW_USER,
+  GET_USER_ACCOUNT_SUCCESSFUL,
+  REGISTER_INIT,
+  REGISTER_SUECESSFUL,
+  REGISTER_FAILED,
+  UPDATE_REGISTERED_USER,
+  GET_TOP_VOLUNTEERS_FAILED,
+  NO_VOLUNTEERS_REGISTERED,
+  GET_TOP_VOLUNTEERS,
 } from '../actions/auth';
 
 export const authReducer = (state, action) => {
-  debugger;
-  switch (action.type){
+  switch (action.type) {
     case SIGNIN_INIT:
-      return {...state, signInError: null, signUpError: null, isLoading: true};
+      return {
+        ...state,
+        signInError: null,
+        signUpError: null,
+        isLoading: true,
+      };
     case SIGNIN_NEW_USER:
-      return {...state, signedUp: false};
+      return { ...state, signedUp: false };
     case SIGNED_IN:
       return {
         ...state,
@@ -20,18 +34,18 @@ export const authReducer = (state, action) => {
         isLoading: false,
       };
     case SIGNED_OUT:
-      return {...state, loggedIn: false};
+      return { ...state, loggedIn: false };
     case SIGNIN_FAILED:
-      return {...state, signInError: action.payload, isLoading: false};
+      return { ...state, signInError: action.payload, isLoading: false };
     case SIGNUP_FAILED:
-      return {...state, signUpError: action.payload, isLoading: false};
+      return { ...state, signUpError: action.payload, isLoading: false };
     case GET_USER_ACCOUNT_SUCCESSFUL:
       return {
         ...state,
         registeredUser: action.payload,
       };
     case REGISTER_INIT:
-      return {...state, isLoading: true};
+      return { ...state, isLoading: true };
     case REGISTER_SUECESSFUL:
       return {
         ...state,
@@ -40,9 +54,9 @@ export const authReducer = (state, action) => {
         isLoading: false,
       };
     case REGISTER_FAILED:
-      return {...state, isLoading: false};
+      return { ...state, isLoading: false };
     case UPDATE_REGISTERED_USER:
-      return {...state, registeredUser: action.payload};
+      return { ...state, registeredUser: action.payload };
     case GET_TOP_VOLUNTEERS_FAILED:
       return {
         ...state,
@@ -61,10 +75,8 @@ export const authReducer = (state, action) => {
         topVolunteers: [],
         topVolunteersError: 'There are no volunteers registered',
       };
-    
+
     default:
       return state;
   }
 };
-
-

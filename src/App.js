@@ -116,7 +116,7 @@ function App(){
                 path={'/login'} 
                 component={Login}/>
               <LoginRoute path={'/signup'} component={Login}/>
-              <RegisteredAndLoggedInRoute 
+              <RegisteredAndLoggedInRoute
                 path={'/create-org'} 
                 component={CreateOrg}/>
               <OrganizationRoute

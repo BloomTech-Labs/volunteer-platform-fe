@@ -235,7 +235,6 @@ export const generateRandomEvents = () => {
       data.orgId = org.id;
       orgs.push(data);
     });
-    debugger;
     orgs.forEach(org => {
       for (let i = 0; i < 3; i++){
         const date = moment(faker.date.future());
