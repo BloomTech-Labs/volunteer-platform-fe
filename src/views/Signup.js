@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { WrappedAntForm, AntInput, AntInputNumber } from '../styled';
-import { Avatar, Card } from 'antd';
+import React, {useEffect, useState} from 'react';
+import {WrappedAntForm, AntInput, AntInputNumber} from '../styled';
+import {Avatar, Card} from 'antd';
 import styled from 'styled-components';
-import { useStateValue } from '../hooks/useStateValue';
-import { register } from '../actions';
-import { formLayouts } from '../utility/formLayouts';
+import {useStateValue} from '../hooks/useStateValue';
+import {register} from '../actions';
+import {formLayouts} from '../utility/formLayouts';
 import sampleProfile from '../assets/undraw_profile.svg';
-import { device } from '../styled/deviceBreakpoints';
+import {device} from '../styled/deviceBreakpoints';
 
 export const Signup = (props) => {
   const [state, dispatch] = useStateValue();
@@ -25,40 +25,40 @@ export const Signup = (props) => {
     age: 18,
   };
   const [localState, setState] = useState(user);
-
+  
   useEffect(() => {
-    if (state.auth.googleAuthUser) {
+    if (state.auth.googleAuthUser){
       user.uid = state.auth.googleAuthUser.uid;
-      if (state.auth.googleAuthUser.displayName) {
+      if (state.auth.googleAuthUser.displayName){
         const name = state.auth.googleAuthUser.displayName.split(' ');
-        user.firstName = name[0];
-        user.lastName = name[1];
+        user.firstName = name[ 0 ];
+        user.lastName = name[ 1 ];
       }
-
-      if (state.auth.googleAuthUser.email) {
+      
+      if (state.auth.googleAuthUser.email){
         user.email = state.auth.googleAuthUser.email;
       }
-
-      if (state.auth.googleAuthUser.phoneNumber) {
+      
+      if (state.auth.googleAuthUser.phoneNumber){
         user.phoneNumber = state.auth.googleAuthUser.phoneNumber;
       }
-
-      if (state.auth.googleAuthUser.photoURL) {
+      
+      if (state.auth.googleAuthUser.photoURL){
         user.photoURL = state.auth.googleAuthUser.photoURL;
       }
-      setState({ ...user });
+      setState({...user});
     }
   }, [state]);
-
+  
   const handleSubmit = values => {
     values.uid = localState.uid;
-    register( values, dispatch );
+    register(values, dispatch);
   };
-
+  
   return (
     <StyledDiv>
       <div className='inner-div'>
-        <CustomStyledCard style={{ maxWidth: '800px', margin: `2rem 0 5rem 0` }}>
+        <CustomStyledCard style={{maxWidth: '800px', margin: `2rem 0 5rem 0`}}>
           <h1>Get Registered</h1>
           {localState.photoURL ? (
             <Avatar
@@ -66,44 +66,44 @@ export const Signup = (props) => {
               shape="square"
               size={64}
               icon="user"
-            /> 
+            />
           ) : (
-            <img src={sampleProfile} alt='undraw profile' /> 
+            <img src={sampleProfile} alt='undraw profile'/>
           )}
           <WrappedAntForm
             layout={'vertical'}
             onSubmit={handleSubmit}
             autofill={localState}
             buttonType="primary"
-            buttonText="Register"
+            buttonText="Signup"
             buttonLoading={state.auth.isLoading}
           >
             <div className='inputGroup'>
               <div className='row'>
-                <AntInput name={'First Name'} 
-                          layout={formLayouts.formItemLayout} />
-                <AntInput name={'Last Name'} 
-                          layout={formLayouts.formItemLayout}/>  
+                <AntInput name={'First Name'}
+                          layout={formLayouts.formItemLayout}/>
+                <AntInput name={'Last Name'}
+                          layout={formLayouts.formItemLayout}/>
               </div>
               <div className='row'>
-                <AntInput name={'City'} 
-                          layout={formLayouts.formItemLayout} />
-                <AntInput name={'State'} 
-                          layout={formLayouts.formItemLayout} />
-
+                <AntInput name={'City'}
+                          layout={formLayouts.formItemLayout}/>
+                <AntInput name={'State'}
+                          layout={formLayouts.formItemLayout}/>
+              
               </div>
               <div className='row'>
-                <AntInput name={'Email'} 
-                          layout={formLayouts.formItemLayout} />
-                <AntInput name={'Zip Code'} 
+                <AntInput name={'Email'}
+                          layout={formLayouts.formItemLayout}/>
+                <AntInput name={'Zip Code'}
                           layout={formItemLayoutShort}/>
-              </div>    
+              </div>
               <div className='row'>
                 <AntInput name={'Phone Number'}
-                          layout={formLayouts.formItemLayout} />
-                <AntInputNumber name={'Age'} 
-                          layout={formItemLayoutShort} />
-              </div>     
+                          layout={formLayouts.formItemLayout}/>
+                <AntInputNumber name={'Age'}
+                                layout={formItemLayoutShort}/>
+              </div>
             </div>
           </WrappedAntForm>
         </CustomStyledCard>
@@ -193,7 +193,7 @@ const StyledDiv = styled.div`
     flex-direction: column;
     align-items: center;
   }
-`
+`;
 
 const formItemLayoutShort = {
   labelCol: {
