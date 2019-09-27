@@ -1,6 +1,8 @@
 import {action} from './action';
 import firebase, {store} from '../firebase/FirebaseConfig';
 import moment from 'moment';
+import faker from 'faker';
+import {interests, causeAreas} from '../reducers/initialState';
 
 /**
  * Auth Actions
@@ -222,5 +224,110 @@ export const getAllRecurringEventsByOrg = (orgId, dispatch) => {
       }
     })
     .catch(err => console.log(err));
+};
+
+export const generateRandomEvents = () => {
+  store.collection('organizations').get().then(res => {
+    const orgs = [];
+    res.forEach(org => {
+      const data = org.data();
+      data.orgId = org.id;
+      orgs.push(data);
+    });
+    debugger;
+    orgs.forEach(org => {
+      for (let i = 0; i < 50; i++){
+        const date = moment(faker.date.future());
+        
+        const poc1 = {
+          email: faker.internet.email(),
+          firstName: faker.name.firstName(),
+          lastname: faker.name.lastName(),
+        };
+        
+        const website = 'http://' + faker.internet.domainName();
+        
+        const event = {
+          nameOfEvent: faker.company.catchPhrase(),
+          city: org.city ? org.city : faker.address.city(),
+          state: org.state ? org.state : faker.address.state(),
+          email: poc1.email,
+          date: date.unix(),
+          startTime: date.format('LT'),
+          startTimeStamp: date.unix(),
+          endTime: date.add(Math.ceil(Math.random() * 5), 'hours').format('LT'),
+          endTimeStamp: date.unix(),
+          firstName: poc1.firstName,
+          lastName: poc1.lastname,
+          interest: getRandomInterests(),
+          numberOfVolunteers: Math.ceil(Math.random() * 20) + 5,
+          orgId: org.orgId,
+          phoneNumber: faker.phone.phoneNumber(),
+          pointOfContact: poc1,
+          recurringInfo: {
+            recurringEvent: 'No',
+          },
+          typesOfCauses: getRandomCauses(),
+          volunteerRequirements: getRandomRequirements(),
+          website,
+          
+        };
+        
+        store.collection('events').add(event).then(res => {
+          console.log(res);
+        }).catch(err => {
+          console.log(err);
+        });
+      }
+    });
+  });
+};
+
+const getRandomInterests = () => {
+  const randomInterests = [];
+  const randomNumber = Math.ceil(Math.random() * 5);
+  const selectedNumber = [];
+  for (let i = 0; i < randomNumber; i++){
+    let randomInterestNumber = Math.floor(Math.random() * interests.length);
+    while (selectedNumber.includes(randomInterestNumber)){
+      randomInterestNumber = Math.floor(Math.random() * interests.length);
+    }
+    selectedNumber.push(randomInterestNumber);
+    randomInterests.push(interests[ randomInterestNumber ]);
+  }
+  
+  return randomInterests;
+};
+
+const getRandomCauses = () => {
+  const randomCauses = [];
+  const randomNumber = Math.ceil(Math.random() * 5);
+  const selectedNumber = [];
+  for (let i = 0; i < randomNumber; i++){
+    let randomCusesNumber = Math.floor(Math.random() * interests.length);
+    while (selectedNumber.includes(randomCusesNumber)){
+      randomCusesNumber = Math.floor(Math.random() * interests.length);
+    }
+    selectedNumber.push(randomCusesNumber);
+    randomCauses.push(causeAreas[ randomCusesNumber ]);
+  }
+  
+  return randomCauses;
+};
+
+const getRandomRequirements = () => {
+  const randomRequirements = [];
+  const randomNumber = Math.ceil(Math.random() * 5);
+  const selectedNumber = [];
+  for (let i = 0; i < randomNumber; i++){
+    let randomRequirementNumber = Math.floor(Math.random() * interests.length);
+    while (selectedNumber.includes(randomRequirementNumber)){
+      randomRequirementNumber = Math.floor(Math.random() * interests.length);
+    }
+    selectedNumber.push(randomRequirementNumber);
+    randomRequirements.push(causeAreas[ randomRequirementNumber ]);
+  }
+  
+  return randomRequirements;
 };
 

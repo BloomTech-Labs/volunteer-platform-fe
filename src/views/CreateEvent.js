@@ -81,7 +81,7 @@ export const CreateEvent = props => {
       endTimeSTamp: moment(
         values.date.format('LL') + ' ' + values.endTime.format('LT'),
       ).unix(),
-      pointOfcontact: {
+      pointOfContact: {
         firstName: values.firstName,
         lastName: values.lastName,
         email: values.email,
@@ -90,12 +90,12 @@ export const CreateEvent = props => {
     
     if (recurringEvent === 'Yes'){
       event.recurringInfo = recurringInfo;
-      if (event.recurringInfo.occurrenceEnds === 'On') {
+      if (event.recurringInfo.occurrenceEnds === 'On'){
         event.recurringInfo.occurrenceEndDate = event.recurringInfo.occurrenceEndDate.unix();
         event.recurringInfo.occurrenceEndsAfter = '';
       }
-      if (event.recurringInfo.occurrenceEnds === 'After') {
-
+      if (event.recurringInfo.occurrenceEnds === 'After'){
+        
         event.recurringInfo.occurrenceEndDate = '';
       }
       removeUndefinied(event);
@@ -106,10 +106,10 @@ export const CreateEvent = props => {
       console.log('regular', event);
       createEvent(event, dispatch);
     }
-
+    
     props.history.push('/org-dashboard');
   };
-
+  
   const handleDynmaicDate = date => {
     const dynamicDay = date._d.toString().split(' ')[ 0 ];
     const dynamicYear = date._d
@@ -122,8 +122,8 @@ export const CreateEvent = props => {
       .split(' ')
       .slice(2, 3)
       .join(' ');
-    let dayAsNum = date._d.toString().split(' ')[2];
-
+    let dayAsNum = date._d.toString().split(' ')[ 2 ];
+    
     let count = 1;
     while (dayAsNum > 7){
       dayAsNum -= 7;
@@ -136,8 +136,8 @@ export const CreateEvent = props => {
       dynamicDay: dynamicDay,
       dynamicYear: dynamicYear,
       dynamicNumber: dynamicNumber,
-      dynamicNth: nth[count],
-
+      dynamicNth: nth[ count ],
+      
     });
   };
   
