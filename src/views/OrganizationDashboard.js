@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Icon, Select, Tooltip, Calendar } from 'antd';
-import { Link } from 'react-router-dom';
+import { Calendar } from 'antd';
+import moment from 'moment';
+import { useStateValue } from '../hooks/useStateValue';
 import {
   getAllEventsByOrg,
   deleteOrganization,
@@ -10,19 +11,16 @@ import {
   deleteOrganizationImage,
   getAllRecurringEventsByOrg,
 } from '../actions';
-import { useStateValue } from '../hooks/useStateValue';
-import EventPanel from '../components/EventPanel';
 import {
-  StyledButton,
-  StyledAvatar,
-  StyledUploadImage,
-  deleteModal,
-  StyledCard,
-} from '../styled';
-import moment from 'moment';
+  OrgButtons,
+  OrgPhoto,
+  OrgInfo,
+  EventPanel,
+} from '../components/OrgDashboard';
+import { deleteModal } from '../styled';
 
-export const OrganizationDashboard = props => {
-  const [state, dispatch] = useStateValue();
+export const OrganizationDashboard = () => {
+  const [{ auth, org, events }, dispatch] = useStateValue();
   const [displayOrg, setDisplayOrg] = useState('');
   const [imageUrl, setImageUrl] = useState(null);
   const [selectedDate, setSelectedDate] = useState();
@@ -38,23 +36,17 @@ export const OrganizationDashboard = props => {
     }
   }, [displayOrg]);
 
-  useEffect(() => {
-    if (state.auth.googleAuthUser) {
-      const uid = state.auth.googleAuthUser.uid;
-    }
-  }, []);
-
-  const changeHandler = value => {
-    setDisplayOrg(
-      state.org.userOrganizations.find(item => item.orgId === value)
-    );
-  };
+  //   useEffect(() => {
+  //     if (auth.googleAuthUser) {
+  //       const uid = auth.googleAuthUser.uid;
+  //     }
+  //   }, []);
 
   useEffect(() => {
-    if (state.org.userOrganizations.length > 0) {
-      setDisplayOrg(state.org.userOrganizations[0]);
+    if (org.userOrganizations.length > 0) {
+      setDisplayOrg(org.userOrganizations[0]);
     }
-  }, [state.org.userOrganizations]);
+  }, [org.userOrganizations]);
 
   useEffect(() => {
     if (displayOrg) {
@@ -63,6 +55,10 @@ export const OrganizationDashboard = props => {
     }
   }, [displayOrg]);
 
+  const changeHandler = value => {
+    setDisplayOrg(org.userOrganizations.find(item => item.orgId === value));
+  };
+  
   const deleteOrg = e => {
     const deleteOrgModal = deleteModal({
       title: 'Are you sure you want to delete this organization?',
@@ -87,9 +83,10 @@ export const OrganizationDashboard = props => {
       })
       .catch(err => console.log(err));
   };
+
   const onSelect = (value, mode) => {
-    const begining = value.startOf('date');
-    const newValue = moment.unix(begining.unix());
+    const beginning = value.startOf('date');
+    const newValue = moment.unix(beginning.unix());
     if (selectedDate) {
       const date2 = newValue.unix();
       if (selectedDate === date2) {
@@ -105,10 +102,6 @@ export const OrganizationDashboard = props => {
     }
   };
 
-  function onPanelChange(value, mode) {
-    console.log(value, mode);
-  }
-
   const displayAll = e => {
     e.preventDefault();
     setSelectedDate(null);
@@ -118,130 +111,40 @@ export const OrganizationDashboard = props => {
     <StyledDashboard>
       <h4 className={'org-title'}>Dashboard of</h4>
       <h2 className={'org-name'}>{displayOrg.organizationName}</h2>
-      <div className={'org-actions'}>
-        <div className={'action'}>
-          <div className={'action-icon'}>
-            <Icon type="edit" />
-          </div>
-          <span>Update Org. Info</span>
-        </div>
-        <div className={'action'}>
-          <Link
-            to={{
-              pathname: '/org-dashboard/create-event',
-              state: {
-                org: displayOrg,
-              },
-            }}
-          >
-            <div className={'action-icon'}>
-              <Icon type="form" />
-            </div>
-            <span>Create Event</span>
-          </Link>
-        </div>
-        <div className={'action'}>
-          <div className={'action-icon'}>
-            <Icon type="delete" />
-          </div>
-          <span>Delete Org</span>
-        </div>
-      </div>
 
+      <OrgButtons displayOrg={displayOrg} deleteOrg={deleteOrg} />
       <div className={'row mg-lf-4 row-wrap'}>
-        <div className={'column'}>
-          <StyledCard backgroundColor={'#E8E8E8'}>
-            {imageUrl ? (
-              <StyledAvatarImage className={'column'}>
-                <StyledAvatar shape="square" size={256} src={imageUrl} />
-                <Tooltip title={'Delete Avatar'}>
-                  <StyledDelete
-                    onClick={() => deleteOrganizationImage(displayOrg)}
-                    type="close"
-                  />
-                </Tooltip>
-              </StyledAvatarImage>
-            ) : (
-              <StyledUploadImage fileUploadComplete={onFileUpload} />
-            )}
-          </StyledCard>
-        </div>
-        <StyledCard backgroundColor={'#E8E8E8'}>
-          <Select
-            defaultValue="select"
-            onChange={changeHandler}
-            value={displayOrg ? displayOrg.orgId : ''}
-          >
-            {state.org.userOrganizations.map(item => (
-              <Select.Option key={item.orgId} value={item.orgId}>
-                {item.organizationName}
-              </Select.Option>
-            ))}
-          </Select>
-          <div className={'org-top'}>
-            <div className={'org-top-col'}>
-              <h3>Hours of operations:</h3>
-              {displayOrg && (
-                <h5>
-                  {displayOrg.daysOfTheWeek.map(day => {
-                    return <span className={'day'}>{day}</span>;
-                  })}
-                </h5>
-              )}
-              {displayOrg && <h5>Opens: {displayOrg.startTime}</h5>}
-              {displayOrg && <h5>Closes: {displayOrg.endTime}</h5>}
-            </div>
-            <div className={'org-top-col'}>
-              <h3>Hours of operations:</h3>
-              {displayOrg && (
-                <h5>
-                  {displayOrg.daysOfTheWeek.map(day => {
-                    return <span className={'day'}>{day}</span>;
-                  })}
-                </h5>
-              )}
-              {displayOrg && <h5>Opens: {displayOrg.startTime}</h5>}
-              {displayOrg && <h5>Closes: {displayOrg.endTime}</h5>}
-            </div>
-          </div>
-        </StyledCard>
+        <OrgPhoto
+          imageUrl={imageUrl}
+          displayOrg={displayOrg}
+          deleteOrganizationImage={deleteOrganizationImage}
+          onFiledUpload={onFileUpload}
+        />
 
+        <OrgInfo displayOrg={displayOrg} changeHandler={changeHandler} />
         <div className={'bottom'}>
-          <div className={'details'}>
-            {displayOrg ? (
-              <div
-                style={{
-                  width: 300,
-                  border: '1px solid #d9d9d9',
-                  borderRadius: 4,
-                }}
-              >
-                <Calendar
-                  fullscreen={false}
-                  disabledDate={current =>
-                    current && current < moment().startOf('day')
-                  }
-                  onSelect={onSelect}
-                  value={calendarValue}
-                  onPanelChange={onPanelChange}
-                />
-              </div>
-            ) : (
-              <div>You have not created any organization yet</div>
-            )}
+          <div className={'calendar'}>
+            <Calendar
+              fullscreen={false}
+              disabledDate={current =>
+                current && current < moment().startOf('day')
+              }
+              onSelect={onSelect}
+              value={calendarValue}
+              style={{
+                width: 300,
+                border: '1px solid #d9d9d9',
+                borderRadius: 4,
+              }}
+            />
           </div>
           <div className={'events'}>
-            {state.events.events.length > 0 ||
-            state.events.recurringEvents.length > 0 ? (
-              <EventPanel
-                recurringEvents={state.events.recurringEvents}
-                events={state.events.events}
-                selectedDate={selectedDate}
-                displayAll={displayAll}
-              />
-            ) : (
-              <div>No event has been created</div>
-            )}
+            <EventPanel
+              recurringEvents={events.recurringEvents}
+              events={events.events}
+              selectedDate={selectedDate}
+              displayAll={displayAll}
+            />
           </div>
         </div>
       </div>
@@ -257,16 +160,12 @@ const StyledDashboard = styled.div`
   max-height: 100%;
   margin-top: 4rem;
   margin-bottom: 10rem;
-  .org-top {
-    display: flex;
-    justify-content: space-around;
-  }
 
   .row {
     justify-content: space-around;
   }
 
-  .details {
+  .calendar {
     width: 30%;
   }
   .events {
@@ -279,69 +178,12 @@ const StyledDashboard = styled.div`
     margin-top: 3rem;
   }
 
-  .create-event-button {
-    margin-top: 2rem;
-  }
-
   .org-title {
     margin-bottom: 0;
   }
 
   .org-name {
     margin-bottom: 4rem;
-  }
-
-  .org-actions {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    border: 2px solid ${props => props.theme.primary5};
-    width: 50%;
-    min-height: 80px;
-    margin-bottom: 3rem;
-  }
-
-  .action {
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .action-icon {
-    color: ${props => props.theme.gray1};
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2rem;
-    background-color: ${props => props.theme.gray8};
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-  }
-
-  .day:not(:first-child) {
-    margin-left: 1rem;
-  }
-
-  .org-top-col {
-    display: flex;
-    flex-direction: column;
-  }
-`;
-
-const StyledDelete = styled(Icon)`
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  color: transparent;
-`;
-
-const StyledAvatarImage = styled.div`
-  position: relative;
-  :hover > i {
-    color: #ff4d4f;
   }
 `;
 

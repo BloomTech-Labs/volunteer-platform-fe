@@ -1,9 +1,10 @@
 import React from 'react';
-import { Collapse } from 'antd';
 import styled from 'styled-components';
-import { findNext } from '../utility/findNextRecurEvent';
 import moment from 'moment';
-import { StyledCard, StyledButton } from '../styled';
+import { Collapse } from 'antd';
+import { findNext } from '../../utility/findNextRecurEvent';
+import { StyledCard, StyledButton } from '../../styled';
+
 const { Panel } = Collapse;
 
 export const EventPanel = ({
@@ -53,30 +54,38 @@ export const EventPanel = ({
     selectedEvents = [...recurs, ...regs];
   }
   selectedEvents.sort((a, b) => a.nextDate - b.nextDate);
+
   return (
     <StyledCard backgroundColor={'#E8E8E8'}>
-      <UpperDiv>
-        <h2>Upcoming Events</h2>
-        <h2>{selectedDate && moment.unix(selectedDate).format('LL')}</h2>
-        <StyledButton onClick={displayAll}>Display All Events</StyledButton>
-      </UpperDiv>
-      <Collapse accordion bordered={false} style={{ background: '#E8E8E8' }}>
-        {selectedEvents.map(event => {
-          return (
-            <StyledPanel
-              header={event.nameOfEvent}
-              key={event.startTimeStamp || event.date}
-            >
-              <h5>{moment.unix(event.nextDate).format('LL')}</h5>
-              <p>{event.isRecurring && 'This is a recurring event.'}</p>
-              <h5>Point of Contact</h5>
-              <p>
-                {event.pointOfcontact.firstName} {event.pointOfcontact.lastName}
-              </p>
-            </StyledPanel>
-          );
-        })}
-      </Collapse>
+      {selectedEvents.length > 0 || selectedDate ? (
+        <UpperDiv>
+          <h2>Upcoming Events</h2>
+          <h2>{selectedDate && moment.unix(selectedDate).format('LL')}</h2>
+          <StyledButton onClick={displayAll}>Display All Events</StyledButton>
+        </UpperDiv>
+      ) : (
+        <div>No events have been created yet.</div>
+      )}
+      {selectedEvents.length > 0 && (
+        <Collapse accordion bordered={false} style={{ background: '#E8E8E8' }}>
+          {selectedEvents.map(event => {
+            return (
+              <StyledPanel
+                header={event.nameOfEvent}
+                key={event.startTimeStamp || event.date}
+              >
+                <h5>{moment.unix(event.nextDate).format('LL')}</h5>
+                <p>{event.isRecurring && 'This is a recurring event.'}</p>
+                <h5>Point of Contact</h5>
+                <p>
+                  {event.pointOfcontact.firstName}{' '}
+                  {event.pointOfcontact.lastName}
+                </p>
+              </StyledPanel>
+            );
+          })}
+        </Collapse>
+      )}
     </StyledCard>
   );
 };
