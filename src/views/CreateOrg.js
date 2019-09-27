@@ -114,8 +114,8 @@ export const CreateOrg = props => {
       ...values,
       POC,
       organizationOwnerUID: state.auth.googleAuthUser.uid,
-      startTime: values.startTime.format('HH:MM A'),
-      endTime: values.endTime.format('HH:MM A'),
+      startTime: values.startTime.unix(),
+      endTime: values.endTime.unix(),
     };
     for (let key in org) {
       if (org[key] === undefined) {

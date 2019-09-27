@@ -5,15 +5,19 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 
 export class AntForm extends React.Component {
-
   componentDidUpdate(prevProps) {
     if (prevProps.autofill !== this.props.autofill) {
       for (let key in this.props.autofill) {
         const field = this.props.form.getFieldInstance(key);
         if (field) {
           if (key === 'startTime' || key === 'endTime') {
-            const time = moment(this.props.autofill[key], 'HH:MM A');
-            this.props.form.setFieldsValue({ [key]: time });
+            if (this.props.autofill[key].includes(':')) {
+              const oldTime = moment(this.props.autofill[key], 'HH:MM A');
+              this.props.form.setFieldsValue({ [key]: oldTime });
+            } else {
+              const time = moment.unix(this.props.autofill[key], 'HH:MM A');
+              this.props.form.setFieldsValue({ [key]: time });
+            }
           } else {
             this.props.form.setFieldsValue({ [key]: this.props.autofill[key] });
           }
