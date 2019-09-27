@@ -135,6 +135,7 @@ export const getAllEventsByState = (state, dispatch) => {
     .collection('events')
     .where('state', '==', state)
     .where('startTimeStamp', '>', moment().unix())
+    .orderBy("startTimeStamp").limit(20)
     .get()
     .then(res => {
       if (res.empty){
