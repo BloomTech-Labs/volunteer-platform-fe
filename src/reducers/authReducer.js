@@ -6,6 +6,7 @@ import {
 } from '../actions/auth';
 
 export const authReducer = (state, action) => {
+  debugger;
   switch (action.type){
     case SIGNIN_INIT:
       return {...state, signInError: null, signUpError: null, isLoading: true};
@@ -27,7 +28,7 @@ export const authReducer = (state, action) => {
     case GET_USER_ACCOUNT_SUCCESSFUL:
       return {
         ...state,
-        googleAuthUser: action.payload,
+        registeredUser: action.payload,
       };
     case REGISTER_INIT:
       return {...state, isLoading: true};
