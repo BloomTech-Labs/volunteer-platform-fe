@@ -17,7 +17,7 @@ import {
   OrgInfo,
   EventPanel,
 } from '../components/OrgDashboard';
-import { deleteModal } from '../styled';
+import { deleteModal, StyledCard, StyledLine } from '../styled';
 
 export const OrganizationDashboard = () => {
   const [{ org, events }, dispatch] = useStateValue();
@@ -104,41 +104,46 @@ export const OrganizationDashboard = () => {
       <h2 className={'org-name'}>{displayOrg.organizationName}</h2>
 
       <OrgButtons displayOrg={displayOrg} deleteOrg={deleteOrg} />
-      <div className={'row mg-lf-4 row-wrap'}>
-        <OrgPhoto
-          imageUrl={imageUrl}
-          displayOrg={displayOrg}
-          deleteOrganizationImage={deleteOrganizationImage}
-          onFileUpload={onFileUpload}
-        />
+      <StyledContent>
+        <div className={'left-col'}>
+          <OrgPhoto
+            imageUrl={imageUrl}
+            displayOrg={displayOrg}
+            deleteOrganizationImage={deleteOrganizationImage}
+            onFileUpload={onFileUpload}
+          />
 
-        <OrgInfo displayOrg={displayOrg} changeHandler={changeHandler} />
-        <div className={'bottom'}>
-          <div className={'calendar'}>
-            <Calendar
-              fullscreen={false}
-              disabledDate={current =>
-                current && current < moment().startOf('day')
-              }
-              onSelect={onSelect}
-              value={calendarValue}
-              style={{
-                width: 300,
-                border: '1px solid #d9d9d9',
-                borderRadius: 4,
-              }}
-            />
-          </div>
-          <div className={'events'}>
-            <EventPanel
-              recurringEvents={events.recurringEvents}
-              events={events.events}
-              selectedDate={selectedDate}
-              displayAll={displayAll}
-            />
-          </div>
+          <Calendar
+            fullscreen={false}
+            disabledDate={current =>
+              current && current < moment().startOf('day')
+            }
+            onSelect={onSelect}
+            value={calendarValue}
+            style={{
+              width: 300,
+              border: '1px solid #d9d9d9',
+              borderRadius: 4,
+            }}
+          />
+
+          <StyledAboutUs>
+            <h3>About Us</h3>
+            <StyledLine />
+            {displayOrg.aboutUs}
+          </StyledAboutUs>
         </div>
-      </div>
+        <div className={'right-col'}>
+          <OrgInfo displayOrg={displayOrg} changeHandler={changeHandler} />
+
+          <EventPanel
+            recurringEvents={events.recurringEvents}
+            events={events.events}
+            selectedDate={selectedDate}
+            displayAll={displayAll}
+          />
+        </div>
+      </StyledContent>
     </StyledDashboard>
   );
 };
@@ -152,30 +157,37 @@ const StyledDashboard = styled.div`
   margin-top: 4rem;
   margin-bottom: 10rem;
 
-  .row {
-    justify-content: space-around;
-  }
-
-  .calendar {
-    width: 30%;
-  }
-  .events {
-    width: 58%;
-  }
-  .bottom {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    margin-top: 3rem;
-  }
-
   .org-title {
     margin-bottom: 0;
   }
 
   .org-name {
-    margin-bottom: 4rem;
+    margin-bottom: 2.5rem;
+    margin-top: 0;
   }
 `;
 
+const StyledContent = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+
+  .left-col{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+  }
+
+  .right-col{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+  }
+
+
+`;
+
+const StyledAboutUs = styled(StyledCard)``;
 export default OrganizationDashboard;
