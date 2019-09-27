@@ -50,10 +50,6 @@ const StyledHeader = styled( Header )`
         cursor: pointer;
         font-family: ${ ( { theme } ) => theme.titleText };
         color: ${ ( { theme } ) => theme.primary8 };
-
-        &:hover {
-          text-decoration: underline;
-        }
       }
     }
   }

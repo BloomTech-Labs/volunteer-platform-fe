@@ -84,10 +84,6 @@ const StyledOrgButtons = styled.div`
 
   span {
     color: #262626;
-
-    &:hover {
-      text-decoration: underline;
-    }
   }
 `;
 export default OrgButtons;

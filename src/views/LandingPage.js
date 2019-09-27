@@ -87,7 +87,6 @@ const HeroContent = styled.div`
     margin-top: 30px;
 
     &:hover {
-      text-decoration: underline;
       background: ${({theme}) => theme.accent7};
     }
 
