@@ -236,21 +236,23 @@ export const RecurringEvent = props => {
             {periodOfTime}
           </AntSelect>
 
-          {localState.recurringInfo.repeatEveryValue === 'Week' ||
-            (localState.recurringInfo.repeatEveryValue === 'Weeks' && (
-              <Checkbox.Group name={'Days'} options={dayOptions} notRequired />
-            ))}
+          {localState.recurringInfo.repeatEveryValue === 'Week' && (
+            <Checkbox.Group name={'Days'} options={dayOptions} notRequired />
+          )}
+          {localState.recurringInfo.repeatEveryValue === 'Weeks' && (
+            <Checkbox.Group name={'Days'} options={dayOptions} notRequired />
+          )}
 
-          {localState.recurringInfo.repeatEveryValue === 'Month' ||
-            (localState.recurringInfo.repeatEveryValue === 'Months' && (
-              <AntSelect name={'Monthly Period'} notRequired>
-                {monthlyPeriod}
-              </AntSelect>
-            ))}
-
-          <StyledButton type="secondary" onClick={closeDrawer}>
-            Back
-          </StyledButton>
+          {localState.recurringInfo.repeatEveryValue === 'Month' && (
+            <AntSelect name={'Monthly Period'} notRequired>
+              {monthlyPeriod}
+            </AntSelect>
+          )}
+          {localState.recurringInfo.repeatEveryValue === 'Months' && (
+            <AntSelect name={'Monthly Period'} notRequired>
+              {monthlyPeriod}
+            </AntSelect>
+          )}
         </WrappedAntForm>
       </Drawer>
     </div>

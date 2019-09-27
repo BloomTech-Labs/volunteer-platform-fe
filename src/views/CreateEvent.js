@@ -16,7 +16,6 @@ import { useStateValue } from '../hooks/useStateValue';
 import { createEvent, createRecurringEvent } from '../actions';
 import RecurringEvent from '../components/RecurringEvent';
 import moment from 'moment';
-import { TweenOneGroup } from 'rc-tween-one';
 import createEventImg from '../assets/undraw_blooming_jtv6.svg';
 import { formLayouts } from '../utility/formLayouts';
 
@@ -142,44 +141,6 @@ export const CreateEvent = props => {
     });
   };
 
-  //Handles interaction with volunteer requirement tags
-
-  const handleClose = removedTag => {
-    const tags = volunteerRequirements.filter(tag => tag !== removedTag);
-    setState({
-      ...localState,
-      volunteerRequirements: tags,
-    });
-  };
-
-  const handleVolunteerRequirements = tag => {
-    setState({
-      ...localState,
-      volunteerRequirements: [...volunteerRequirements, tag],
-    });
-  };
-
-  const forMap = tag => {
-    const tagElem = (
-      <Tag
-        closable
-        onClose={e => {
-          e.preventDefault();
-          handleClose(tag);
-        }}
-      >
-        {tag}
-      </Tag>
-    );
-    return (
-      <span key={tag} style={{ display: 'inline-block' }}>
-        {tagElem}
-      </span>
-    );
-  };
-
-  const tagChild = volunteerRequirements.map(forMap);
-
   //Options for tags
   const causeAreaTags = state.tags.causeAreas.map(tag => {
     return (
@@ -217,6 +178,9 @@ export const CreateEvent = props => {
         <StyledImg src={createEventImg} alt="undraw unexpected friends" />
         <StyledCreateEvent style={{ marginRight: '1rem' }}>
           <WrappedAntForm
+            cancelButton={true}
+            cancelButtonText={'Cancel'}
+            handleCancel={cancelForm}
             layout={'vertical'}
             onSubmit={handleSubmit}
             buttonType={'primary'}
@@ -344,7 +308,7 @@ export const CreateEvent = props => {
               </div>
             </div>
 
-            {/* <AntTextArea name={'Description'} type="text" /> */}
+            <AntTextArea name={'Description'} type="text" />
 
             <label>What are the requirements?</label>
             <div className={'styledGroup'}>
@@ -353,32 +317,11 @@ export const CreateEvent = props => {
                 <AntSelect
                   name={'Volunteer Requirements'}
                   placeholder="Type here and a tag will appear"
-                  showSearch
-                  onChange={handleVolunteerRequirements}
+                  mode="multiple"
                   layout={formLayouts.formItemLayout}
                 >
                   {requirementTags}
                 </AntSelect>
-              </div>
-              <div className={' hidden'} style={{ marginBottom: 16 }}>
-                <TweenOneGroup
-                  name={'tags'}
-                  className={'flex'}
-                  enter={{
-                    scale: 0.8,
-                    opacity: 0,
-                    type: 'from',
-                    duration: 100,
-                    onComplete: e => {
-                      e.target.style = '';
-                    },
-                  }}
-                  leave={{ opacity: 0, width: 0, scale: 0, duration: 200 }}
-                  appear={false}
-                  notRequired
-                >
-                  {tagChild}
-                </TweenOneGroup>
               </div>
               <div className={'inline'}>
                 <AntSelect
@@ -415,6 +358,7 @@ export const CreateEvent = props => {
                 </div>
               </div>
             </div>
+            <AntTextArea name={'Description'} type="text" />
             <div className={'inline'}>
               <AntTextArea
                 name={'Other Notes'}
@@ -425,15 +369,6 @@ export const CreateEvent = props => {
                 layout={formLayouts.formItemLayout}
                 notRequired
               />
-            </div>
-            <div className={'flex'}>
-              <StyledButton
-                type="secondary"
-                htmlType="submit"
-                onClick={cancelForm}
-              >
-                Cancel
-              </StyledButton>
             </div>
           </WrappedAntForm>
         </StyledCreateEvent>
@@ -450,6 +385,13 @@ const StyledCreateEvent = styled.div`
 
   .inline {
     width: 50%;
+  }
+  label {
+    margin-left: 25px;
+  }
+  .buttonStyles {
+    display: flex;
+    justify-content: space-around;
   }
 
   .styledGroup {

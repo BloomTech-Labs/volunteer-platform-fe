@@ -5,7 +5,6 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 
 export class AntForm extends React.Component {
-
   componentDidUpdate(prevProps) {
     if (prevProps.autofill !== this.props.autofill) {
       for (let key in this.props.autofill) {
@@ -135,17 +134,27 @@ export class AntForm extends React.Component {
         hideRequiredMark
         layout={this.props.layout || 'horizontal'}
       >
-        {this.renderChildren(this.props.children)}
-        {!this.props.noButton && (
-          <StyledButton
-            onClick={this.handleSubmit}
-            type={this.props.buttonType}
-            loading={this.props.buttonLoading}
-            disabled={this.props.buttonLoading}
-          >
-            {this.props.buttonText}
-          </StyledButton>
-        )}
+        >{this.renderChildren(this.props.children)}
+        <div className={'buttonStyles'}>
+          {this.props.cancelButton && (
+            <StyledButton
+              onClick={this.handleCancel}
+              type={this.props.buttonType}
+            >
+              {this.props.cancelButtonText}
+            </StyledButton>
+          )}
+          {!this.props.noButton && (
+            <StyledButton
+              onClick={this.handleSubmit}
+              type={this.props.buttonType}
+              loading={this.props.buttonLoading}
+              disabled={this.props.buttonLoading}
+            >
+              {this.props.buttonText}
+            </StyledButton>
+          )}
+        </div>
       </Form>
     );
   }
@@ -157,6 +166,9 @@ AntForm.propTypes = {
   autofill: PropTypes.object,
   onSubmit: PropTypes.func.isRequired,
   noButton: PropTypes.bool,
+  cancelButton: PropTypes.bool,
+  handleCancel: PropTypes.func,
+  cancelButtonText: PropTypes.string,
 };
 
 export const WrappedAntForm = Form.create({ name: 'register' })(AntForm);
