@@ -9,7 +9,7 @@ import {
   getFileUrl,
   updateOrganization,
   deleteOrganizationImage,
-  getAllRecurringEventsByOrg
+  getAllRecurringEventsByOrg,
 } from '../actions';
 import {
   OrgButtons,
