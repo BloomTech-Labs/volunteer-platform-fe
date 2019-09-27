@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import {Card} from 'antd';
+import { Card } from 'antd';
 
-export const StyledCard = ({...rest}) => {
-  return (<StyledAntCard {...rest} />);
+export const StyledCard = ({ ...rest }) => {
+  return <StyledAntCard {...rest} />;
 };
 
 const StyledAntCard = styled(Card)`
@@ -13,21 +13,13 @@ const StyledAntCard = styled(Card)`
     width: 100%;
     margin: ${props => (props.margin ? props.margin : 0)};
     max-width: ${props => (props.maxWidth ? props.maxWidth : '800px')};
-    border-radius: ${({theme}) => theme.borderRadiusDefault};
+    border-radius: ${props =>
+      props.borderRadius || props.theme.borderRadiusDefault};
     background-color: ${props =>
-  props.backgroundcolor ? props.backgroundcolor : props.theme.gray2};
+      props.backgroundcolor ? props.backgroundcolor : props.theme.gray2};
     letter-spacing: 0.2px;
-    margin-bottom: 20px;
     .ant-card-body {
       width: 100%;
-    }
-    .head {
-      padding-bottom: 10px;
-    }
-    .date {
-      display: flex;
-      justify-content: space-evenly;
-      text-align: justify;
     }
   }
 `;
