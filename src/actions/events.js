@@ -88,12 +88,11 @@ export const ORG_HAS_NO_EVENTS = 'ORG_HAS_NO_EVENTS';
  * @param {Dispatch} dispatch
  */
 export const getAllEventsByOrg = (orgId, dispatch) => {
-  debugger;
+  
   const time = moment().unix();
   store
     .collection('events')
     .where('orgId', '==', orgId)
-    .where('startTimeStamp', '>', time)
     .get()
     .then(res => {
       if (res.empty){
@@ -103,9 +102,13 @@ export const getAllEventsByOrg = (orgId, dispatch) => {
       
       const events = [];
       res.forEach(event => {
+        
         let eventToAdd = event.data();
         eventToAdd.eventId = event.id;
-        events.push(eventToAdd);
+        
+        if (eventToAdd.startTimeStamp > time){
+          events.push(eventToAdd);
+        }
       });
       
       dispatch(action(GET_EVENTS_BY_ORG, events));

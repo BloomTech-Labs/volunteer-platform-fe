@@ -30,10 +30,3 @@ export const StyledCard = styled(Card)`
     }
   }
 `;
-
-StyledCard.propTypes = {
-  margin: PropTypes.String,
-  maxWidth: PropTypes.String,
-  borderRadiusDefault: PropTypes.String,
-  backgroundColor: PropTypes.String,
-};
