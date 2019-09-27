@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Drawer, Select, Checkbox, Radio, DatePicker, InputNumber } from 'antd';
+import { Modal, Select, Checkbox, Radio, DatePicker, InputNumber } from 'antd';
 import {
   StyledButton,
   StyledSelect,
@@ -39,7 +39,7 @@ export const RecurringEvent = props => {
   repeatTimePeriodOptions.push(`Annually on ${dynamicYear}`);
   repeatTimePeriodOptions.push('Custom');
 
-  const closeDrawer = () => {
+  const closeModal = () => {
     setFormState({
       ...formState,
       recurringBoolean: false,
@@ -207,18 +207,25 @@ export const RecurringEvent = props => {
         </div>
       )}
 
-      <Drawer
+      <Modal
         title="Add a recurring event"
         width={720}
-        closable={false}
-        placement="left"
-        onClose={closeDrawer}
+        onClose={closeModal}
         visible={formState.recurringBoolean}
+        footer={[
+          <StyledButton key="cancel" onClick={closeModal}>
+            Cancel
+          </StyledButton>,
+          <StyledButton key="submit" onClick={handleSubmit}>
+            Submit
+          </StyledButton>,
+        ]}
       >
         <WrappedAntForm
           buttonText="Submit"
           buttonType="primary"
           onSubmit={handleSubmit}
+          noButton={true}
         >
           <AntInputNumber
             name={'Repeat every'}
@@ -254,7 +261,7 @@ export const RecurringEvent = props => {
             </AntSelect>
           )}
         </WrappedAntForm>
-      </Drawer>
+      </Modal>
     </div>
   );
 };
