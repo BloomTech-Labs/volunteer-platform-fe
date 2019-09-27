@@ -200,6 +200,7 @@ export const CreateOrg = props => {
                     name={'State'}
                     notRequired={'false'}
                     layout={formLayouts.formItemLayout}
+                    placeholder={'State Initials'}
                   />
                 </div>
               </div>
@@ -240,10 +241,17 @@ export const CreateOrg = props => {
               <>
                 <Icon
                   type="minus-circle"
-                  style={{ fontSize: '1.6rem', marginRight: '1rem' }}
+                  style={{
+                    fontSize: '1.6rem',
+                    marginRight: '1rem',
+                    color: '#005A87'
+                  }}
                   onClick={() => setNumberOfPOC(1)}
                 />
-                <span onClick={() => setNumberOfPOC(1)}>
+                <span 
+                  style={{ color: '#005A87' }}
+                  onClick={() => setNumberOfPOC(1)}
+                  >
                   Remove extra point of contact.
                 </span>
               </>
