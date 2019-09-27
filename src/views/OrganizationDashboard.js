@@ -92,7 +92,7 @@ export const OrganizationDashboard = () => {
       setCalendarValue(newValue);
     }
   };
-  
+
   const onPanelChange = (value, mode) => {
     setCalendarValue(moment.unix(value.unix()));
   };
@@ -205,9 +205,9 @@ const StyledAboutUs = styled(StyledCard)`
     text-align: center;
   }
 
-  p{
-      margin-top: 10px;
-      padding: 15px;
+  p {
+    margin-top: 10px;
+    padding: 15px;
   }
 `;
 export default OrganizationDashboard;
