@@ -131,6 +131,7 @@ export const NO_EVENTS_FOR_THAT_STATE = 'NO_EVENTS_FOR_THAT_STATE';
  * @param {Dispatch} dispatch
  */
 export const getAllEventsByState = (state, dispatch) => {
+  
   store
     .collection('events')
     .where('state', '==', state)
@@ -235,6 +236,7 @@ export const generateRandomEvents = () => {
       data.orgId = org.id;
       orgs.push(data);
     });
+    
     orgs.forEach(org => {
       for (let i = 0; i < 3; i++){
         const date = moment(faker.date.future());

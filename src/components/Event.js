@@ -53,7 +53,8 @@ export const Event = ({ event }) => {
 };
 
 const StyledEventCard = styled(StyledCard)`
-  margin-bottom: 20px .ant-card-body {
+  margin-bottom: 20px;
+  .ant-card-body {
     width: 100%;
   }
   .head {

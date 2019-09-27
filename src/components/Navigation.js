@@ -28,6 +28,7 @@ export const Navigation = props => {
       signOut(dispatch);
     }
   };
+  
   return (
     <StyledNavigation>
       <Menu onClick={handleClick} selectedKeys={[current]} mode="inline">
@@ -65,7 +66,7 @@ export const Navigation = props => {
           </Menu.Item>
         )}
         {(state.auth.loggedIn &&
-          (state.auth.googleAuthUser && state.auth.googleAuthUser.firstName)) &&
+          (state.auth.registeredUser && state.auth.registeredUser.firstName)) &&
         (
           <Menu.Item key={'Create Org'}>
             <Link to={'/create-org'}>

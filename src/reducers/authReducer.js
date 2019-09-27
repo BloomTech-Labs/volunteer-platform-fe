@@ -16,7 +16,8 @@ import {
 } from '../actions/auth';
 
 export const authReducer = (state, action) => {
-  switch (action.type) {
+  
+  switch (action.type){
     case SIGNIN_INIT:
       return {
         ...state,

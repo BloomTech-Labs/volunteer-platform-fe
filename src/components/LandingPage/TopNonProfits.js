@@ -16,6 +16,12 @@ export const TopNonProfits = () => {
     getTopOrganizations(dispatch);
   }, []);
   
+  const hardCodedPics = {
+      0: orgPic1,
+      1: orgPic2,
+      2: orgPic3,
+      3: orgPic4
+  }
   return (
     <StyledDiv>
       <h2>Our Featured Organizations<Icon type="thunderbolt" theme='twoTone'
@@ -27,7 +33,7 @@ export const TopNonProfits = () => {
           if (i < 4){
             return (
               <StyledCard key={org.orgId}
-                          cover={<img src={org.imageUrl} alt='nonprofit-org1'/>}
+                          cover={<img src={org.imageUrl || hardCodedPics[i]} alt='nonprofit-org1'/>}
               >
                 <Meta title={org.organizationName} description='4.5/5'></Meta>
               </StyledCard>
