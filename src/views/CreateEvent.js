@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Select } from 'antd';
+import { Select, Tag } from 'antd';
 import styled from 'styled-components';
 import {
   AntInput,
@@ -16,6 +16,7 @@ import { useStateValue } from '../hooks/useStateValue';
 import { createEvent, createRecurringEvent } from '../actions';
 import RecurringEvent from '../components/RecurringEvent';
 import moment from 'moment';
+import { TweenOneGroup } from 'rc-tween-one';
 import createEventImg from '../assets/undraw_blooming_jtv6.svg';
 import { formLayouts } from '../utility/formLayouts';
 
@@ -41,7 +42,7 @@ export const CreateEvent = props => {
   const [state, dispatch] = useStateValue();
 
   //Destructuring
-  const { recurringInfo, recurringEvent } = localState;
+  const { recurringInfo, recurringEvent, volunteerRequirements } = localState;
 
   useEffect(() => {
     if (props.location.state.org) {
@@ -66,6 +67,7 @@ export const CreateEvent = props => {
 
   //Handle Submit for Form
   const handleSubmit = values => {
+    console.log('values', values);
     const event = {
       ...values,
       orgId: localState.orgId,
@@ -81,6 +83,7 @@ export const CreateEvent = props => {
       endTimeSTamp: moment(
         values.date.format('LL') + ' ' + values.endTime.format('LT')
       ).unix(),
+      volunteerRequirements: volunteerRequirements,
       pointOfcontact: {
         firstName: values.firstName,
         lastName: values.lastName,
@@ -99,11 +102,11 @@ export const CreateEvent = props => {
       }
       removeUndefinied(event);
       console.log('recurring', event);
-      createRecurringEvent(event, dispatch);
+      // createRecurringEvent(event, dispatch);
     } else {
       removeUndefinied(event);
       console.log('regular', event);
-      createEvent(event, dispatch);
+      // createEvent(event, dispatch);
     }
 
     props.history.push('/org-dashboard');
@@ -138,6 +141,44 @@ export const CreateEvent = props => {
       dynamicNth: nth[count],
     });
   };
+
+  //Handles interaction with volunteer requirement tags
+
+  const handleClose = removedTag => {
+    const tags = volunteerRequirements.filter(tag => tag !== removedTag);
+    setState({
+      ...localState,
+      volunteerRequirements: tags,
+    });
+  };
+
+  const handleVolunteerRequirements = tag => {
+    setState({
+      ...localState,
+      volunteerRequirements: [...volunteerRequirements, tag],
+    });
+  };
+
+  const forMap = tag => {
+    const tagElem = (
+      <Tag
+        closable
+        onClose={e => {
+          e.preventDefault();
+          handleClose(tag);
+        }}
+      >
+        {tag}
+      </Tag>
+    );
+    return (
+      <span key={tag} style={{ display: 'inline-block' }}>
+        {tagElem}
+      </span>
+    );
+  };
+
+  const tagChild = volunteerRequirements.map(forMap);
 
   //Options for tags
   const causeAreaTags = state.tags.causeAreas.map(tag => {
@@ -277,7 +318,7 @@ export const CreateEvent = props => {
               </div>
             </div>
 
-            <label>Who is the point of Contact?</label>
+            <label>Who is the Point of Contact?</label>
 
             <div className={'flex'}>
               <div className={'inline'}>
@@ -311,17 +352,38 @@ export const CreateEvent = props => {
               <div className={'inline hidden'}>
                 <AntSelect
                   name={'Volunteer Requirements'}
-                  placeholder="Please select requirements"
-                  mode="multiple"
+                  placeholder="Type here and a tag will appear"
+                  showSearch
+                  onChange={handleVolunteerRequirements}
                   layout={formLayouts.formItemLayout}
                 >
                   {requirementTags}
                 </AntSelect>
               </div>
+              <div className={' hidden'} style={{ marginBottom: 16 }}>
+                <TweenOneGroup
+                  name={'tags'}
+                  className={'flex'}
+                  enter={{
+                    scale: 0.8,
+                    opacity: 0,
+                    type: 'from',
+                    duration: 100,
+                    onComplete: e => {
+                      e.target.style = '';
+                    },
+                  }}
+                  leave={{ opacity: 0, width: 0, scale: 0, duration: 200 }}
+                  appear={false}
+                  notRequired
+                >
+                  {tagChild}
+                </TweenOneGroup>
+              </div>
               <div className={'inline'}>
                 <AntSelect
                   name={'Interest'}
-                  placeholder="Please select interest"
+                  placeholder="All"
                   mode="multiple"
                   layout={formLayouts.formItemLayout}
                 >
