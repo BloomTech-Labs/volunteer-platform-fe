@@ -358,7 +358,7 @@ export const CreateEvent = props => {
                 </div>
               </div>
             </div>
-            <AntTextArea name={'Description'} type="text" />
+            <AntTextArea name={'Event Details'} type="text" />
             <div className={'inline'}>
               <AntTextArea
                 name={'Other Notes'}
