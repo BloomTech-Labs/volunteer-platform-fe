@@ -129,7 +129,7 @@ export const signOut = dispatch => {
  * @param {Dispatch} dispatch - function from useStateValue() hook.
  */
 export const checkUserRegistered = (uid, dispatch) => {
-  debugger;
+  
   store
     .collection('users')
     .doc(uid)

@@ -17,7 +17,7 @@ const StyledAntCard = styled(Card)`
     background-color: ${props =>
   props.backgroundcolor ? props.backgroundcolor : props.theme.gray2};
     letter-spacing: 0.2px;
-    margin-bottom: 20px
+    margin-bottom: 20px;
     .ant-card-body {
       width: 100%;
     }

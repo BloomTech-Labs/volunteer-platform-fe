@@ -85,7 +85,7 @@ export const OrganizationDashboard = () => {
   };
   
   const onSelect = (value, mode) => {
-    debugger;
+    
     const beginning = value.startOf('date');
     const newValue = moment.unix(beginning.unix());
     if (selectedDate){
@@ -104,7 +104,7 @@ export const OrganizationDashboard = () => {
   };
   
   const onChange = (value, mode) => {
-    debugger;
+  
   };
   
   const onPanelChange = (value, mode) => {
