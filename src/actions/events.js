@@ -1,7 +1,7 @@
 import {action} from './action';
 import firebase, {store} from '../firebase/FirebaseConfig';
 import moment from 'moment';
-import faker from 'faker';
+import {faker} from 'faker';
 import {interests, causeAreas} from '../reducers/initialState';
 
 /**

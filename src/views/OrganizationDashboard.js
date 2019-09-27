@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import {Calendar} from 'antd';
+import { Calendar } from 'antd';
 import moment from 'moment';
-import {useStateValue} from '../hooks/useStateValue';
+import { useStateValue } from '../hooks/useStateValue';
 import {
   getAllEventsByOrg,
   deleteOrganization,
@@ -18,59 +18,50 @@ import {
   OrgInfo,
   EventPanel,
 } from '../components/OrgDashboard';
-import {deleteModal} from '../styled';
+import { deleteModal } from '../styled';
 
 export const OrganizationDashboard = () => {
-  const [{org, events}, dispatch] = useStateValue();
+  const [{ org, events }, dispatch] = useStateValue();
   const [displayOrg, setDisplayOrg] = useState('');
   const [imageUrl, setImageUrl] = useState(null);
   const [selectedDate, setSelectedDate] = useState();
   const [calendarValue, setCalendarValue] = useState(moment());
-  
+
   useEffect(() => {
-    if (displayOrg.imagePath){
-      getFileUrl(displayOrg.imagePath).then(res => {
-        setImageUrl(res);
-      });
-    }else{
-      setImageUrl(null);
-    }
-  }, [displayOrg]);
-  
-  //   useEffect(() => {
-  //     if (auth.googleAuthUser) {
-  //       const uid = auth.googleAuthUser.uid;
-  //     }
-  //   }, []);
-  
-  useEffect(() => {
-    if (org.userOrganizations.length > 0){
-      setDisplayOrg(org.userOrganizations[ 0 ]);
+    if (org.userOrganizations.length > 0) {
+      setDisplayOrg(org.userOrganizations[0]);
     }
   }, [org.userOrganizations]);
-  
+
   useEffect(() => {
-    if (displayOrg){
+    if (displayOrg) {
       getAllEventsByOrg(displayOrg.orgId, dispatch);
       getAllRecurringEventsByOrg(displayOrg.orgId, dispatch);
     }
+    if (displayOrg.imagePath) {
+      getFileUrl(displayOrg.imagePath).then(res => {
+        setImageUrl(res);
+      });
+    } else {
+      setImageUrl(null);
+    }
   }, [displayOrg, dispatch]);
-  
+
   const changeHandler = value => {
     setDisplayOrg(org.userOrganizations.find(item => item.orgId === value));
   };
-  
+
   const deleteOrg = e => {
     const deleteOrgModal = deleteModal({
       title: 'Are you sure you want to delete this organization?',
       content: 'This cannot be undone.',
       onOk: () => deleteOrganization(displayOrg.orgId, dispatch),
     });
-    
+
     e.preventDefault();
     deleteOrgModal();
   };
-  
+
   const onFileUpload = path => {
     getFileUrl(path)
       .then(url => {
@@ -84,25 +75,25 @@ export const OrganizationDashboard = () => {
       })
       .catch(err => console.log(err));
   };
-  
+
   const onSelect = (value, mode) => {
     const beginning = value.startOf('date');
     const newValue = moment.unix(beginning.unix());
-    if (selectedDate){
+    if (selectedDate) {
       const date2 = newValue.unix();
-      if (selectedDate === date2){
+      if (selectedDate === date2) {
         setSelectedDate(null);
         setCalendarValue(moment());
-      }else{
+      } else {
         setSelectedDate(newValue.unix());
         setCalendarValue(newValue);
       }
-    }else{
+    } else {
       setSelectedDate(newValue.unix());
       setCalendarValue(newValue);
     }
   };
-  
+
   const displayAll = e => {
     e.preventDefault();
     setSelectedDate(null);
@@ -112,8 +103,8 @@ export const OrganizationDashboard = () => {
     <StyledDashboard>
       <h4 className={'org-title'}>Dashboard of</h4>
       <h2 className={'org-name'}>{displayOrg.organizationName}</h2>
-      
-      <OrgButtons displayOrg={displayOrg} deleteOrg={deleteOrg}/>
+
+      <OrgButtons displayOrg={displayOrg} deleteOrg={deleteOrg} />
       <div className={'row mg-lf-4 row-wrap'}>
         <OrgPhoto
           imageUrl={imageUrl}
@@ -121,8 +112,8 @@ export const OrganizationDashboard = () => {
           deleteOrganizationImage={deleteOrganizationImage}
           onFileUpload={onFileUpload}
         />
-        
-        <OrgInfo displayOrg={displayOrg} changeHandler={changeHandler}/>
+
+        <OrgInfo displayOrg={displayOrg} changeHandler={changeHandler} />
         <div className={'bottom'}>
           <div className={'calendar'}>
             <Calendar
