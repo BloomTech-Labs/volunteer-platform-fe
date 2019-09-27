@@ -11,10 +11,14 @@ export const OrgPhoto = ({
 }) => {
   return (
     <div className={'column'}>
-      <StyledOrgPhoto backgroundcolor={'#E8E8E8'}>
+      <StyledOrgPhoto
+        backgroundcolor={'#E8E8E8'}
+        margin={'0 0 70px 0'}
+        borderRadius={'0px'}
+      >
         {imageUrl ? (
           <StyledAvatarImage className={'column'}>
-            <StyledAvatar shape="square" size={256} src={imageUrl} />
+            <StyledAvatar shape="square" size={187} src={imageUrl} />
             <Tooltip title={'Delete Avatar'}>
               <StyledDelete
                 onClick={() => deleteOrganizationImage(displayOrg)}
@@ -23,7 +27,11 @@ export const OrgPhoto = ({
             </Tooltip>
           </StyledAvatarImage>
         ) : (
-          <StyledUploadImage fileUploadComplete={onFileUpload} />
+          <StyledUploadImage
+            fileUploadComplete={onFileUpload}
+            width={'187px'}
+            height={'187px'}
+          />
         )}
       </StyledOrgPhoto>
     </div>
@@ -31,8 +39,9 @@ export const OrgPhoto = ({
 };
 
 const StyledOrgPhoto = styled(StyledCard)`
-
+  padding: 0 80px;
 `;
+
 const StyledDelete = styled(Icon)`
   position: absolute;
   right: 10px;
@@ -46,4 +55,5 @@ const StyledAvatarImage = styled.div`
     color: #ff4d4f;
   }
 `;
+
 export default OrgPhoto;

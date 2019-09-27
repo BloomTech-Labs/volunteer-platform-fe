@@ -1,15 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
-import {Select} from 'antd';
-import {StyledCard} from '../../styled';
-import {useStateValue} from '../../hooks/useStateValue';
+import { Select, Icon } from 'antd';
+import { StyledCard } from '../../styled';
+import { useStateValue } from '../../hooks/useStateValue';
 
-export const OrgInfo = ({displayOrg, changeHandler}) => {
-  const [{org}] = useStateValue();
-  
+export const OrgInfo = ({ displayOrg, changeHandler }) => {
+  const [{ org }] = useStateValue();
+
   const setDaysOpen = arr => {
-    if (!arr){
+    if (!arr) {
       return '';
     }
     const dayConversion = {
@@ -30,29 +30,28 @@ export const OrgInfo = ({displayOrg, changeHandler}) => {
       5: 'Friday',
       6: 'Saturday',
     };
-    let daysAsNum = arr.map(day => dayConversion[ day ]);
-    
+    let daysAsNum = arr.map(day => dayConversion[day]);
+
     let daySegments = [];
     let segment = [];
-    for (let i = 0; i < daysAsNum.length; i++){
-      segment.push(daysAsNum[ i ]);
-      if (i < daysAsNum.length - 1 && daysAsNum[ i ] + 1 ===
-        daysAsNum[ i + 1 ]){
+    for (let i = 0; i < daysAsNum.length; i++) {
+      segment.push(daysAsNum[i]);
+      if (i < daysAsNum.length - 1 && daysAsNum[i] + 1 === daysAsNum[i + 1]) {
         continue;
-      }else{
+      } else {
         daySegments.push(segment);
         segment = [];
       }
     }
     let result = [];
-    for (let i = 0; i < daySegments.length; i++){
-      switch (daySegments[ i ].length){
+    for (let i = 0; i < daySegments.length; i++) {
+      switch (daySegments[i].length) {
         case 1:
-          result.push(`${rC[ daySegments[ i ][ 0 ] ]}`);
+          result.push(`${rC[daySegments[i][0]]}`);
           break;
         case 2:
-          result.push(`${rC[ daySegments[ i ][ 0 ] ]}`);
-          result.push(`${rC[ daySegments[ i ][ 1 ] ]}`);
+          result.push(`${rC[daySegments[i][0]]}`);
+          result.push(`${rC[daySegments[i][1]]}`);
           break;
         case 3:
         case 4:
@@ -60,18 +59,18 @@ export const OrgInfo = ({displayOrg, changeHandler}) => {
         case 6:
         case 7:
           result.push(
-            `${rC[ daySegments[ i ][ 0 ] ]} - ${
-              rC[ daySegments[ i ][ daySegments[ i ].length - 1 ] ]
-              }`,
+            `${rC[daySegments[i][0]]} - ${
+              rC[daySegments[i][daySegments[i].length - 1]]
+            }`
           );
           break;
       }
     }
     return result.join(', ');
   };
-  
+
   return (
-    <OrgInfoDiv backgroundcolor={'#E8E8E8'}>
+    <OrgInfoDiv backgroundcolor={'#E8E8E8'} borderRadius={'0px'}>
       <Select
         defaultValue="select"
         onChange={changeHandler}
@@ -83,40 +82,54 @@ export const OrgInfo = ({displayOrg, changeHandler}) => {
           </Select.Option>
         ))}
       </Select>
-      <div className={'org-top'}>
-        <div className={'org-top-col'}>
-          <h5>Org Info</h5>
-          <span>{setDaysOpen(displayOrg.daysOfTheWeek)}</span>
+
+      <h5>Org Info</h5>
+      <div className="upper-info">
+        <div className="hours-of-op">
+          <span>{setDaysOpen(displayOrg.daysOfTheWeek)} </span>
           <span>
             {`${moment.unix(displayOrg.startTime).format('LT')} - 
               ${moment.unix(displayOrg.endTime).format('LT')}`}
           </span>
-          <h3>Hours of operations:</h3>
-          {displayOrg && (
-            <h5>
-              {displayOrg.daysOfTheWeek.map(day => {
-                return <span key={day} className={'day'}>{day}</span>;
-              })}
-            </h5>
-          )}
-          {displayOrg && <h5>Opens: {displayOrg.startTime}</h5>}
-          {displayOrg && <h5>Closes: {displayOrg.endTime}</h5>}
         </div>
-        <div className={'org-top-col'}></div>
+        <div className="location">
+          <Icon
+            type="environment"
+            theme={'twoTone'}
+            twoToneColor={'#005a87'}
+            className={'location-icon'}
+          />
+          <span>{`${displayOrg.city} ${displayOrg.state}`}</span>
+        </div>
       </div>
     </OrgInfoDiv>
   );
 };
 
 const OrgInfoDiv = styled(StyledCard)`
-  .org-top {
+  border-radius: 0;
+
+  .upper-info {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    align-items: center;
   }
 
-  .org-top-col {
+  .hours-of-op {
     display: flex;
     flex-direction: column;
+  }
+
+  .location {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 45%;
+  }
+
+  .location-icon {
+    font-size: 30px;
+    padding-right: 10px;
   }
 `;
 export default OrgInfo;

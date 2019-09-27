@@ -76,6 +76,7 @@ export const OrganizationDashboard = () => {
   };
 
   const onSelect = (value, mode) => {
+    debugger;
     const beginning = value.startOf('date');
     const newValue = moment.unix(beginning.unix());
     if (selectedDate) {
@@ -91,6 +92,14 @@ export const OrganizationDashboard = () => {
       setSelectedDate(newValue.unix());
       setCalendarValue(newValue);
     }
+  };
+
+  const onChange = (value, mode) => {
+    debugger;
+  };
+
+  const onPanelChange = (value, mode) => {
+    setCalendarValue(moment.unix(value.unix()));
   };
 
   const displayAll = e => {
@@ -112,23 +121,24 @@ export const OrganizationDashboard = () => {
             deleteOrganizationImage={deleteOrganizationImage}
             onFileUpload={onFileUpload}
           />
-
-          <Calendar
-            fullscreen={false}
-            disabledDate={current =>
-              current && current < moment().startOf('day')
-            }
-            onSelect={onSelect}
-            value={calendarValue}
-            style={{
-              width: 300,
-              border: '1px solid #d9d9d9',
-              borderRadius: 4,
-            }}
-          />
-
-          <StyledAboutUs>
-            <h3>About Us</h3>
+          <div className="calendar">
+            <Calendar
+              fullscreen={false}
+              disabledDate={current =>
+                current && current < moment().startOf('day')
+              }
+              onSelect={onSelect}
+              onPanelChange={onPanelChange}
+              value={calendarValue}
+              style={{
+                width: 300,
+                border: '1px solid #d9d9d9',
+                borderRadius: 4,
+              }}
+            />
+          </div>
+          <StyledAboutUs backgroundcolor={'#E8E8E8'} borderRadius="0px">
+            <h5>About Us</h5>
             <StyledLine />
             {displayOrg.aboutUs}
           </StyledAboutUs>
@@ -169,25 +179,35 @@ const StyledDashboard = styled.div`
 
 const StyledContent = styled.div`
   display: flex;
-  width: 100%;
-  justify-content: space-evenly;
+  width: 80%;
+  justify-content: space-around;
+  align-items: baseline;
 
-  .left-col{
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
+  .left-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .calendar {
+      margin-bottom: 70px;
+    }
   }
 
-  .right-col{
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
+  .right-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 55%;
   }
-
-
 `;
 
-const StyledAboutUs = styled(StyledCard)``;
+const StyledAboutUs = styled(StyledCard)`
+  .ant-card-body {
+    padding: 6px;
+  }
+  h5 {
+    font-size: 16px;
+    text-align: center;
+  }
+`;
 export default OrganizationDashboard;

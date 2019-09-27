@@ -56,7 +56,7 @@ export const EventPanel = ({
   selectedEvents.sort((a, b) => a.nextDate - b.nextDate);
   
   return (
-    <StyledCard backgroundcolor={'#E8E8E8'}>
+    <StyledCard backgroundcolor={'#E8E8E8'} borderRadius={'0px'}>
       {selectedEvents.length > 0 || selectedDate ? (
         <UpperDiv>
           <h2>Upcoming Events</h2>
