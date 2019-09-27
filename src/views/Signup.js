@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { WrappedAntForm, StyledButton, AntInput, StyledCard } from '../styled';
-import { Avatar } from 'antd';
+import { WrappedAntForm, AntInput, AntInputNumber } from '../styled';
+import { Avatar, Card } from 'antd';
 import styled from 'styled-components';
 import { useStateValue } from '../hooks/useStateValue';
 import { register } from '../actions';
 import { formLayouts } from '../utility/formLayouts';
+import sampleProfile from '../assets/undraw_profile.svg';
+import { device } from '../styled/deviceBreakpoints';
 
 export const Signup = (props) => {
   const [state, dispatch] = useStateValue();
@@ -54,97 +56,143 @@ export const Signup = (props) => {
   };
 
   return (
-    <StyledDiv className={'flex center'}>
-      <CustomStyledCard style={{ maxWidth: '900px', margin: '2rem 0 5rem 0' }}>
-        <h1>Let's set up your profile</h1>
-        {localState.photoURL && (
-          <Avatar
-            src={localState.photoURL}
-            shape="square"
-            size={64}
-            icon="user"
-          />
-        )}
-        <WrappedAntForm
-          layout={'vertical'}
-          onSubmit={handleSubmit}
-          autofill={localState}
-          buttonType="primary"
-          buttonText="Register"
-          buttonLoading={state.auth.isLoading}
-        >
-          <div className='inputGroup'>
-            <div className='top'>
-              <AntInput name={'First Name'} 
-                        layout={formLayouts.formItemLayout} />
-              <AntInput name={'Last Name'} 
-                        layout={formLayouts.formItemLayout}/>  
-              <AntInput name={'Age'} 
-                        layout={formItemLayoutShort} />
+    <StyledDiv>
+      <div className='inner-div'>
+        <CustomStyledCard style={{ maxWidth: '800px', margin: `2rem 0 5rem 0` }}>
+          <h1>Get Registered</h1>
+          {localState.photoURL ? (
+            <Avatar
+              src={localState.photoURL}
+              shape="square"
+              size={64}
+              icon="user"
+            /> 
+          ) : (
+            <img src={sampleProfile} alt='undraw profile' /> 
+          )}
+          <WrappedAntForm
+            layout={'vertical'}
+            onSubmit={handleSubmit}
+            autofill={localState}
+            buttonType="primary"
+            buttonText="Register"
+            buttonLoading={state.auth.isLoading}
+          >
+            <div className='inputGroup'>
+              <div className='row'>
+                <AntInput name={'First Name'} 
+                          layout={formLayouts.formItemLayout} />
+                <AntInput name={'Last Name'} 
+                          layout={formLayouts.formItemLayout}/>  
+              </div>
+              <div className='row'>
+                <AntInput name={'City'} 
+                          layout={formLayouts.formItemLayout} />
+                <AntInput name={'State'} 
+                          layout={formLayouts.formItemLayout} />
+
+              </div>
+              <div className='row'>
+                <AntInput name={'Email'} 
+                          layout={formLayouts.formItemLayout} />
+                <AntInput name={'Zip Code'} 
+                          layout={formItemLayoutShort}/>
+              </div>    
+              <div className='row'>
+                <AntInput name={'Phone Number'}
+                          layout={formLayouts.formItemLayout} />
+                <AntInputNumber name={'Age'} 
+                          layout={formItemLayoutShort} />
+              </div>     
             </div>
-            <div className='middle'>
-            <AntInput name={'Email'} 
-                        layout={formLayouts.formItemLayout} />
-              <AntInput name={'Phone Number'}
-                        layout={formLayouts.formItemLayout} />
-            </div>
-            <div className='bottom'>
-              <AntInput name={'City'} 
-                        layout={formLayouts.formItemLayout} />
-              <AntInput name={'State'} 
-                        layout={formLayouts.formItemLayout} />
-              <AntInput name={'Zip Code'} 
-                        layout={formItemLayoutShort}/>
-            </div>        
-          </div>
-        </WrappedAntForm>
-      </CustomStyledCard>
+          </WrappedAntForm>
+        </CustomStyledCard>
+      </div>
     </StyledDiv>
   );
 };
 
 export default Signup;
 
-const CustomStyledCard = styled(StyledCard)`
-  background: #d9d9d9;
+const CustomStyledCard = styled(Card)`
+  && {
   text-align: center;
-
-  button {
-    align-self: center;
-    width: 120px;
-    padding: 0.5rem 2rem;
-    font-family: Arvo;
-    font-size: 16px;
-    height: auto;
-    margin-top: 1.5rem;
-  }
-
-  button:hover {
-    background: ${props => props.theme.primary8};
-  }
-
-  label {
-    color: ${props => props.theme.primary8};
-    font-weight: bold;
-  }
-
-  .inputGroup {
-    background: ${props => props.theme.gray4};
-    width: 90%;
-    margin: 3rem;
-    border-radius: 3px;
-    padding: 2rem 3.5rem;
-  }
+  border-radius: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-center: space-between;
+  padding-bottom: 3rem;
   
-  .top, .middle, .bottom {
-    display: flex;
-    justify-content: flex-start;
-    margin: 2rem 0;
+    img {
+      width: 200px;
+      margin: 1.5rem auto;
+    }
+
+    button {
+      align-self: center;
+      width: 120px;
+      padding: 0.5rem 2rem;
+      font-family: Arvo;
+      font-size: 16px;
+      height: auto;
+      margin-top: 1.5rem;
+    }
+
+    button:hover {
+      background: ${props => props.theme.primary8};
+    }
+
+    label {
+      color: ${props => props.theme.primary8};
+    }
+
+    .inputGroup {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center; 
+      margin: 2rem 0 1rem 0;
+    }
+
+    .row {
+      width: 70%;
+      display: flex;
+      justify-content: center;
+      padding-left: 3.5rem;
+
+      @media ${device.tablet} {
+        width: 90%;
+      }
+
+      @media (max-width: 650px) {
+        padding-left: 0
+      }
+    }
+
+    .ant-form-item {
+      width: 50%;
+
+      @media ${device.tablet} {
+        margin-right: 0.8rem; 
+        margin-left: 0.8rem; 
+      }
+    }
+
   }
 `;
 
 const StyledDiv = styled.div`
-  background: white;
+  background: #E5E5E5;
+  width: 100vw;
+  display: flex;
+
+  .inner-div {
+    width: 1150px
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 `
 
 const formItemLayoutShort = {
@@ -153,8 +201,9 @@ const formItemLayoutShort = {
     sm: {span: 20},
   },
   wrapperCol: {
-    xs: {span: 10},
+    xs: {span: 20},
     sm: {span: 10},
   },
 };
+
 

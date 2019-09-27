@@ -17,8 +17,6 @@ export const Navigation = props => {
     '/org-dashboard': 'Org Dashboard',
     '/login': state.auth.loggedIn ? 'Logout' : 'Login',
   };
-
-  console.log(state.auth.googleAuthUser);
   
   useEffect(() => {
     setCurrent(pathNames[ props.location.pathname ]);
