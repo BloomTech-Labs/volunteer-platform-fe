@@ -17,17 +17,17 @@ const StyledAntCard = styled(Card)`
     background-color: ${props =>
   props.backgroundcolor ? props.backgroundcolor : props.theme.gray2};
     letter-spacing: 0.2px;
+    margin-bottom: 20px
     .ant-card-body {
       width: 100%;
+    }
+    .head {
+      padding-bottom: 10px;
     }
     .date {
       display: flex;
       justify-content: space-evenly;
-    }
-
-    .contact {
-      display: flex;
-      flex-direction: column;
+      text-align: justify;
     }
   }
 `;
