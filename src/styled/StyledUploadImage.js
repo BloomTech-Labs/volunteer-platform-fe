@@ -75,8 +75,8 @@ export const StyledUploadImage = props => {
         customRequest={customUpload}
         style={{
           display: 'flex',
-          width: '256px',
-          height: '256px',
+          width: props.width || '256px',
+          height: props.height || '256px',
           justifyContent: 'center',
           alignItems: 'center',
         }}
@@ -92,7 +92,12 @@ StyledUploadImage.propTypes = {
   imageUrl: PropTypes.string,
 };
 
-const StyledDiv = styled.div``;
+const StyledDiv = styled.div`
+.ant-upload.ant-upload-select.ant-upload-select-picture-card{
+    margin-right: 0px;
+    margin-bottom: 0px;
+}
+`;
 
 const StyledUpload = styled(Upload)``;
 
