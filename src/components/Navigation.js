@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import {
+  checkUserRegistered,
   signOut,
 } from '../actions';
 import {Menu} from 'antd';
@@ -21,6 +22,12 @@ export const Navigation = props => {
   useEffect(() => {
     setCurrent(pathNames[ props.location.pathname ]);
   }, [props.location.pathname]);
+  
+  useEffect(() => {
+    if (state.auth.googleAuthUser && state.auth.googleAuthUser.uid) {
+      checkUserRegistered(state.auth.googleAuthUser.uid, dispatch)
+    }
+  }, [state.auth.registeredUser]);
   
   const handleClick = e => {
     if (e.key === 'Logout'){
@@ -65,7 +72,7 @@ export const Navigation = props => {
             </Link>
           </Menu.Item>
         )}
-        {state.auth.loggedIn && (
+        {( state.auth.loggedIn && ( state.auth.googleAuthUser && state.auth.googleAuthUser.firstName )) && (
           <Menu.Item key={'Create Org'}>
             <Link to={'/create-org'}>
               Create Organization

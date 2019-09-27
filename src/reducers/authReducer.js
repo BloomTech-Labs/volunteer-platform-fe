@@ -28,7 +28,6 @@ export const authReducer = (state, action) => {
       return {
         ...state,
         googleAuthUser: action.payload,
-        registeredUser: action.payload,
       };
     case REGISTER_INIT:
       return {...state, isLoading: true};
