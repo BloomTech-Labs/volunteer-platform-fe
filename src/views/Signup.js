@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {WrappedAntForm, AntInput, AntInputNumber} from '../styled';
-import {Avatar, Card} from 'antd';
+import {Avatar, Card, message} from 'antd';
 import styled from 'styled-components';
 import {useStateValue} from '../hooks/useStateValue';
 import {register} from '../actions';
@@ -52,6 +52,7 @@ export const Signup = (props) => {
   
   const handleSubmit = values => {
     values.uid = localState.uid;
+    message.success('Registration Success!');
     register(values, dispatch);
   };
   
@@ -81,26 +82,26 @@ export const Signup = (props) => {
             <div className='inputGroup'>
               <div className='row'>
                 <AntInput name={'First Name'}
-                          layout={formLayouts.formItemLayout}/>
+                          layout={formItemLayout}/>
                 <AntInput name={'Last Name'}
-                          layout={formLayouts.formItemLayout}/>
+                          layout={formItemLayout}/>
               </div>
               <div className='row'>
                 <AntInput name={'City'}
-                          layout={formLayouts.formItemLayout}/>
+                          layout={formItemLayout}/>
                 <AntInput name={'State'}
-                          layout={formLayouts.formItemLayout}/>
+                          layout={formItemLayout}/>
               
               </div>
               <div className='row'>
                 <AntInput name={'Email'}
-                          layout={formLayouts.formItemLayout}/>
+                          layout={formItemLayout}/>
                 <AntInput name={'Zip Code'}
                           layout={formItemLayoutShort}/>
               </div>
               <div className='row'>
                 <AntInput name={'Phone Number'}
-                          layout={formLayouts.formItemLayout}/>
+                          layout={formItemLayout}/>
                 <AntInputNumber name={'Age'}
                                 layout={formItemLayoutShort}/>
               </div>
@@ -206,4 +207,14 @@ const formItemLayoutShort = {
   },
 };
 
+const formItemLayout = {
+  labelCol: {
+    xs: {span: 24},
+    sm: {span: 24},
+  },
+  wrapperCol: {
+    xs: {span: 24},
+    sm: {span: 20},
+  },
+};
 

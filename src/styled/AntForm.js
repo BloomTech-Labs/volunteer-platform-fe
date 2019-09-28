@@ -70,7 +70,8 @@ export class AntForm extends React.Component {
       const camelCase = this.getCamelCase(child.props.name);
       const required = !child.props.notRequired;
       const rules = this.getRules(child.props.type, required);
-      let label = child.props.label ? child.props.label : child.props.name;
+      let label = child.props.label ? ( child.props.notRequired ? child.props.label : child.props.label + '*' ) : 
+      ( child.props.notRequired ? child.props.name : child.props.name + '*' );
       if (child.props.tooltipTitle) {
         label = (
           <Tooltip title={child.props.tooltipTitle}>
@@ -139,7 +140,7 @@ export class AntForm extends React.Component {
         hideRequiredMark
         layout={this.props.layout || 'horizontal'}
       >
-        >{this.renderChildren(this.props.children)}
+        {this.renderChildren(this.props.children)}
         <div className={'buttonStyles'}>
           {this.props.cancelButton && (
             <StyledButton

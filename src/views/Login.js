@@ -67,7 +67,7 @@ export const Login = props => {
           layout={'vertical'}
           buttonType="primary"
           buttonText={pathName === `/login` ? 'Login' : 'Signup'}
-          buttonLoading={state.auth.isLoading}
+          buttonLoading={state.auth.isLoading} 
         >
           <AntInput
             name={'Email'}
