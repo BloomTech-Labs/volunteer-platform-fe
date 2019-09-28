@@ -1,6 +1,6 @@
 import React from 'react';
-import { Form, Icon, Tooltip } from 'antd';
-import { StyledButton } from '../styled';
+import { Form, Icon, Tooltip, Button } from 'antd';
+import { StyledButton, StyledCancelButton } from '../styled';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 
@@ -143,12 +143,12 @@ export class AntForm extends React.Component {
         {this.renderChildren(this.props.children)}
         <div className={'buttonStyles'}>
           {this.props.cancelButton && (
-            <StyledButton
-              onClick={this.handleCancel}
+            <StyledCancelButton                    //use different style for cancel button
+              onClick={this.props.handleCancel}    //fix: changed this to this.props.handleCancel
               type={this.props.buttonType}
             >
               {this.props.cancelButtonText}
-            </StyledButton>
+            </StyledCancelButton>
           )}
           {!this.props.noButton && (
             <StyledButton
