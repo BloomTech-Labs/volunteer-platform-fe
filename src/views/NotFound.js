@@ -5,16 +5,20 @@ import pug from '../assets/404.jpg';
 const MainContent = styled.div`
   margin: 0 auto;
   padding: 8px 24px;
-  width: 100vw;
+  width: 80vw;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   align-items: flex-start;
-  position: absolute;
+  position: relative;
 
   img {
     object-fit: cover;
     width: 100%;
+
+    @media (max-width: 900px) {
+      display: none;
+    }
   }
 `;
 
@@ -22,16 +26,24 @@ const NotFoundMessage = styled.div`
   position: absolute;
   top: 30px;
   right: 15%;
-  width: 200px;
+  width: 250px;
   text-align: center;
   color: white;
-  font-size: 24px;
+  font-size: 30px;
   font-weight: bold;
   span {
     display: block;
-    font-size: 72px;
+    font-size: 100px;
     font-style: italic;
     line-height: 1;
+  }
+
+  @media (max-width: 900px) {
+    position: relative;
+    margin: 20px auto;
+    color: ${props => props.theme.gray9};
+    top: 0;
+    right: 0;
   }
 `;
 
@@ -66,6 +78,12 @@ const GoBackMessage = styled.a`
   }
   &:hover {
     color: ${props => props.theme.gray2};
+  }
+  @media (max-width: 900px) {
+    position: relative;
+    margin: 0 auto;
+    top: 0;
+    left: 0;
   }
 `;
 
