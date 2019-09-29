@@ -20,7 +20,6 @@ import {device} from '../styled/deviceBreakpoints';
 
 export const Login = props => {
   const [state, dispatch] = useStateValue();
-  //const [localState, setState] = useState({});
   const [pathName, setPathName] = useState(props.location.pathname);
   
   useEffect(() => {
@@ -67,20 +66,20 @@ export const Login = props => {
           layout={'vertical'}
           buttonType="primary"
           buttonText={pathName === `/login` ? 'Login' : 'Signup'}
-          buttonLoading={state.auth.isLoading}
+          buttonLoading={state.auth.isLoading} 
         >
           <AntInput
             name={'Email'}
             prefix={<Icon type="user" style={{color: 'rgba(0,0,0,.25)'}}/>}
             placeholder="Email"
-            layout={formLayouts.formItemLayout}
+            layout={formItemLayout}
           />
           <AntInput
             name={'Password'}
             prefix={<Icon type="lock" style={{color: 'rgba(0,0,0,.25)'}}/>}
             placeholder="Password"
             type="password"
-            layout={formLayouts.formItemLayout}
+            layout={formItemLayout}
           />
         </WrappedAntForm>
         {state.auth.signInError && <div>{state.auth.signInError}</div>}
@@ -102,6 +101,8 @@ export const Login = props => {
     </StyledLogin>
   );
 };
+
+export default Login;
 
 const StyledLogin = styled.div`
   display: flex;
@@ -147,22 +148,17 @@ const StyledCenter = styled.div`
   align-items: center;
   flex-direction: column;
 
-  form {
+  .ant-form-item {
     display: flex;
     flex-direction: column;
+    align-items: center;
     margin: 2rem auto;
-    align-items: center:
+    width: 280px; 
   }
 
-  
-  
-  button {
-    align-self: center;
-    width: 120px;
-    padding: 0.5rem 2rem;
-    font-family: Arvo;
-    font-size: 16px;
-    height: auto;
+  .buttonStyles {
+    display: flex;
+    justify-content: center;
   }
 
   button:hover {
@@ -185,4 +181,14 @@ const CustomStyledLink = styled(StyledLink)`
   }
 `;
 
-export default Login;
+const formItemLayout = {
+  labelCol: {
+    span: 24
+  },
+  wrapperCol: {
+    span: 24
+  },
+};
+
+
+

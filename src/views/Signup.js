@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {WrappedAntForm, AntInput, AntInputNumber} from '../styled';
-import {Avatar, Card} from 'antd';
+import {WrappedAntForm, AntInput, AntInputNumber, successModal } from '../styled';
+import {Avatar, Card, message } from 'antd';
 import styled from 'styled-components';
 import {useStateValue} from '../hooks/useStateValue';
 import {register} from '../actions';
-import {formLayouts} from '../utility/formLayouts';
 import sampleProfile from '../assets/undraw_profile.svg';
 import {device} from '../styled/deviceBreakpoints';
 
 export const Signup = (props) => {
   const [state, dispatch] = useStateValue();
+
   /**
    * @type {User}
    */
@@ -25,7 +25,8 @@ export const Signup = (props) => {
     age: 18,
   };
   const [localState, setState] = useState(user);
-  
+  //const [modalOpen, setModalOpen] = useState(false);
+
   useEffect(() => {
     if (state.auth.googleAuthUser){
       user.uid = state.auth.googleAuthUser.uid;
@@ -53,7 +54,18 @@ export const Signup = (props) => {
   const handleSubmit = values => {
     values.uid = localState.uid;
     register(values, dispatch);
+    regUserSuccessModal();
   };
+
+  const regUserSuccessModal = successModal({
+    title: 'Registration Success!',
+    maskStyle: { background: `rgba(97, 37, 0, 0.2)` }
+  })
+
+  const cancelRegister = () => {
+    message.warning('Registration is required to continue using Voluntier');
+    console.log('testing');
+  }
   
   return (
     <StyledDiv>
@@ -77,30 +89,33 @@ export const Signup = (props) => {
             buttonType="primary"
             buttonText="Register"
             buttonLoading={state.auth.isLoading}
+            cancelButton={true}
+            cancelButtonText={'Cancel'}
+            handleCancel={cancelRegister}
           >
             <div className='inputGroup'>
               <div className='row'>
                 <AntInput name={'First Name'}
-                          layout={formLayouts.formItemLayout}/>
+                          layout={formItemLayout}/>
                 <AntInput name={'Last Name'}
-                          layout={formLayouts.formItemLayout}/>
+                          layout={formItemLayout}/>
               </div>
               <div className='row'>
                 <AntInput name={'City'}
-                          layout={formLayouts.formItemLayout}/>
+                          layout={formItemLayout}/>
                 <AntInput name={'State'}
-                          layout={formLayouts.formItemLayout}/>
+                          layout={formItemLayout}/>
               
               </div>
               <div className='row'>
                 <AntInput name={'Email'}
-                          layout={formLayouts.formItemLayout}/>
+                          layout={formItemLayout}/>
                 <AntInput name={'Zip Code'}
                           layout={formItemLayoutShort}/>
               </div>
               <div className='row'>
                 <AntInput name={'Phone Number'}
-                          layout={formLayouts.formItemLayout}/>
+                          layout={formItemLayout}/>
                 <AntInputNumber name={'Age'}
                                 layout={formItemLayoutShort}/>
               </div>
@@ -133,14 +148,13 @@ const CustomStyledCard = styled(Card)`
       align-self: center;
       width: 120px;
       padding: 0.5rem 2rem;
-      font-family: Arvo;
       font-size: 16px;
       height: auto;
-      margin-top: 1.5rem;
-    }
+      margin: 1.5rem 3rem;
 
-    button:hover {
-      background: ${props => props.theme.primary8};
+      @media (max-width: 650px) {
+        margin: 1.5rem 2rem;
+      }
     }
 
     label {
@@ -206,4 +220,14 @@ const formItemLayoutShort = {
   },
 };
 
+const formItemLayout = {
+  labelCol: {
+    xs: {span: 24},
+    sm: {span: 24},
+  },
+  wrapperCol: {
+    xs: {span: 24},
+    sm: {span: 20},
+  },
+};
 

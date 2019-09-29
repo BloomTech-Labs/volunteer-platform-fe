@@ -66,6 +66,8 @@ const theme = {
   titletext: "'Arvo', sans-serif",
 
   borderRadiusDefault: '10px',
+  footerHeight: '130px',
+  footerPadding: '160px', // footer height plus extra
 };
 
 ReactDOM.render(
