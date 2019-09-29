@@ -1,6 +1,6 @@
 import React from 'react';
-import { Form, Icon, Tooltip } from 'antd';
-import { StyledButton } from '../styled';
+import { Form, Icon, Tooltip, Button } from 'antd';
+import { StyledButton, StyledCancelButton } from '../styled';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 
@@ -70,7 +70,8 @@ export class AntForm extends React.Component {
       const camelCase = this.getCamelCase(child.props.name);
       const required = !child.props.notRequired;
       const rules = this.getRules(child.props.type, required);
-      let label = child.props.label ? child.props.label : child.props.name;
+      let label = child.props.label ? ( child.props.notRequired ? child.props.label : child.props.label + '*' ) : 
+      ( child.props.notRequired ? child.props.name : child.props.name + '*' );
       if (child.props.tooltipTitle) {
         label = (
           <Tooltip title={child.props.tooltipTitle}>
@@ -139,15 +140,15 @@ export class AntForm extends React.Component {
         hideRequiredMark
         layout={this.props.layout || 'horizontal'}
       >
-        >{this.renderChildren(this.props.children)}
+        {this.renderChildren(this.props.children)}
         <div className={'buttonStyles'}>
           {this.props.cancelButton && (
-            <StyledButton
-              onClick={this.handleCancel}
+            <StyledCancelButton                    //use different style for cancel button
+              onClick={this.props.handleCancel}    //fix: changed this to this.props.handleCancel
               type={this.props.buttonType}
             >
               {this.props.cancelButtonText}
-            </StyledButton>
+            </StyledCancelButton>
           )}
           {!this.props.noButton && (
             <StyledButton
