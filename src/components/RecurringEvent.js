@@ -23,7 +23,7 @@ export const RecurringEvent = props => {
 
   const monthlyOptions = [
     `Monthly on day ${dynamicNumber}`,
-    `Monthly on the ${dynamicNth} ${dynamicDay}`,
+    `Monthly on ${dynamicNth} ${dynamicDay}`,
   ];
 
   const repeatTimePeriodOptions = [
