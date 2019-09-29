@@ -8,7 +8,7 @@ export const StyledButton = styled( Button )`
     color: white;
     border-radius: 4px;
     font-family: Arvo;
-    width: 120px;
+    width: ${({width}) => width || '120px'};
     padding: 0.5rem 2rem;
     font-size: 16px;
     height: auto;
