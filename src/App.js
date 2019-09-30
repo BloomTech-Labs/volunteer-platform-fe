@@ -106,10 +106,13 @@ function App() {
               />
             )}
           </HeaderDiv>
-          <Switch>
-            <LoginRoute path={'/login'} component={Login} />
-            <LoginRoute path={'/signup'} component={Login} />
-            <StyledContent width={dimensions.width}>
+          <StyledContent
+            width={dimensions.width}
+            loggedIn={state.auth.loggedIn}
+          >
+            <Switch>
+              <LoginRoute path={'/login'} component={Login} />
+              <LoginRoute path={'/signup'} component={Login} />
               <Route exact path={'/'} component={LandingPage} />
               <ProtectedRoute path={'/dashboard'} component={MainDashboard} />
               <RegisteredAndLoggedInRoute
@@ -126,8 +129,8 @@ function App() {
               />
               <RegisterRoute path={'/register'} component={Signup} />
               <Route component={NotFound} />
-            </StyledContent>
-          </Switch>
+            </Switch>
+          </StyledContent>
           <FooterDiv />
         </Layout>
       </Layout>
@@ -163,7 +166,8 @@ const StyledApp = styled.div`
 
 const StyledContent = styled(Content)`
   && {
-    padding-right: ${props => (props.width > 900 ? '15rem' : 0)};
+    padding-right: ${props =>
+      props.width > 900 && props.loggedIn ? '15rem' : 0};
     padding-bottom: ${props => props.theme.footerPadding};
   }
 `;
