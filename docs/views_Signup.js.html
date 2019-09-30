@@ -26,16 +26,18 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import React, { useEffect, useState } from 'react';
-import { WrappedAntForm, StyledButton, AntInput, StyledCard } from '../styled';
-import { Avatar } from 'antd';
+            <pre class="prettyprint source linenums"><code>import React, {useEffect, useState} from 'react';
+import {WrappedAntForm, AntInput, AntInputNumber, successModal } from '../styled';
+import {Avatar, Card, message } from 'antd';
 import styled from 'styled-components';
-import { useStateValue } from '../hooks/useStateValue';
-import { register } from '../actions';
-import { formLayouts } from '../utility/formLayouts';
+import {useStateValue} from '../hooks/useStateValue';
+import {register} from '../actions';
+import sampleProfile from '../assets/undraw_profile.svg';
+import {device} from '../styled/deviceBreakpoints';
 
 export const Signup = (props) => {
   const [state, dispatch] = useStateValue();
+
   /**
    * @type {User}
    */
@@ -51,129 +53,190 @@ export const Signup = (props) => {
     age: 18,
   };
   const [localState, setState] = useState(user);
+  //const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
-    if (state.auth.googleAuthUser) {
+    if (state.auth.googleAuthUser){
       user.uid = state.auth.googleAuthUser.uid;
-      if (state.auth.googleAuthUser.displayName) {
+      if (state.auth.googleAuthUser.displayName){
+        
         const name = state.auth.googleAuthUser.displayName.split(' ');
-        user.firstName = name[0];
-        user.lastName = name[1];
+        user.firstName = name[ 0 ];
+        user.lastName = name[ 1 ];
       }
-
-      if (state.auth.googleAuthUser.email) {
+      
+      if (state.auth.googleAuthUser.email){
         user.email = state.auth.googleAuthUser.email;
       }
-
-      if (state.auth.googleAuthUser.phoneNumber) {
+      
+      if (state.auth.googleAuthUser.phoneNumber){
         user.phoneNumber = state.auth.googleAuthUser.phoneNumber;
       }
-
-      if (state.auth.googleAuthUser.photoURL) {
+      
+      if (state.auth.googleAuthUser.photoURL){
         user.photoURL = state.auth.googleAuthUser.photoURL;
       }
-      setState({ ...user });
+      setState({...user});
     }
   }, [state]);
-
+  
   const handleSubmit = values => {
     values.uid = localState.uid;
-    register( values, dispatch );
+    register(values, dispatch);
+    regUserSuccessModal();
   };
 
+  const regUserSuccessModal = successModal({
+    title: 'Registration Success!',
+    maskStyle: { background: `rgba(97, 37, 0, 0.2)` }
+  })
+
+  const cancelRegister = () => {
+    message.warning('Registration is required to continue using Voluntier');
+    console.log('testing');
+  }
+  
   return (
-    &lt;StyledDiv className={'flex center'}>
-      &lt;CustomStyledCard style={{ maxWidth: '900px', margin: '2rem 0 5rem 0' }}>
-        &lt;h1>Let's set up your profile&lt;/h1>
-        {localState.photoURL &amp;&amp; (
-          &lt;Avatar
-            src={localState.photoURL}
-            shape="square"
-            size={64}
-            icon="user"
-          />
-        )}
-        &lt;WrappedAntForm
-          layout={'vertical'}
-          onSubmit={handleSubmit}
-          autofill={localState}
-          buttonType="primary"
-          buttonText="Register"
-          buttonLoading={state.auth.isLoading}
-        >
-          &lt;div className='inputGroup'>
-            &lt;div className='top'>
-              &lt;AntInput name={'First Name'} 
-                        layout={formLayouts.formItemLayout} />
-              &lt;AntInput name={'Last Name'} 
-                        layout={formLayouts.formItemLayout}/>  
-              &lt;AntInput name={'Age'} 
-                        layout={formItemLayoutShort} />
+    &lt;StyledDiv>
+      &lt;div className='inner-div'>
+        &lt;CustomStyledCard style={{maxWidth: '800px', margin: `2rem 0 5rem 0`}}>
+          &lt;h1>Get Registered&lt;/h1>
+          {localState.photoURL ? (
+            &lt;Avatar
+              src={localState.photoURL}
+              shape="square"
+              size={64}
+              icon="user"
+            />
+          ) : (
+            &lt;img src={sampleProfile} alt='undraw profile'/>
+          )}
+          &lt;WrappedAntForm
+            layout={'vertical'}
+            onSubmit={handleSubmit}
+            autofill={localState}
+            buttonType="primary"
+            buttonText="Register"
+            buttonLoading={state.auth.isLoading}
+            cancelButton={true}
+            cancelButtonText={'Cancel'}
+            handleCancel={cancelRegister}
+          >
+            &lt;div className='inputGroup'>
+              &lt;div className='row'>
+                &lt;AntInput name={'First Name'}
+                          layout={formItemLayout}/>
+                &lt;AntInput name={'Last Name'}
+                          layout={formItemLayout}/>
+              &lt;/div>
+              &lt;div className='row'>
+                &lt;AntInput name={'City'}
+                          layout={formItemLayout}/>
+                &lt;AntInput name={'State'}
+                          layout={formItemLayout}/>
+              
+              &lt;/div>
+              &lt;div className='row'>
+                &lt;AntInput name={'Email'}
+                          layout={formItemLayout}/>
+                &lt;AntInput name={'Zip Code'}
+                          layout={formItemLayoutShort}/>
+              &lt;/div>
+              &lt;div className='row'>
+                &lt;AntInput name={'Phone Number'}
+                          layout={formItemLayout}/>
+                &lt;AntInputNumber name={'Age'}
+                                layout={formItemLayoutShort}/>
+              &lt;/div>
             &lt;/div>
-            &lt;div className='middle'>
-            &lt;AntInput name={'Email'} 
-                        layout={formLayouts.formItemLayout} />
-              &lt;AntInput name={'Phone Number'}
-                        layout={formLayouts.formItemLayout} />
-            &lt;/div>
-            &lt;div className='bottom'>
-              &lt;AntInput name={'City'} 
-                        layout={formLayouts.formItemLayout} />
-              &lt;AntInput name={'State'} 
-                        layout={formLayouts.formItemLayout} />
-              &lt;AntInput name={'Zip Code'} 
-                        layout={formItemLayoutShort}/>
-            &lt;/div>        
-          &lt;/div>
-        &lt;/WrappedAntForm>
-      &lt;/CustomStyledCard>
+          &lt;/WrappedAntForm>
+        &lt;/CustomStyledCard>
+      &lt;/div>
     &lt;/StyledDiv>
   );
 };
 
 export default Signup;
 
-const CustomStyledCard = styled(StyledCard)`
-  background: #d9d9d9;
+const CustomStyledCard = styled(Card)`
+  &amp;&amp; {
   text-align: center;
-
-  button {
-    align-self: center;
-    width: 120px;
-    padding: 0.5rem 2rem;
-    font-family: Arvo;
-    font-size: 16px;
-    height: auto;
-    margin-top: 1.5rem;
-  }
-
-  button:hover {
-    background: ${props => props.theme.primary8};
-  }
-
-  label {
-    color: ${props => props.theme.primary8};
-    font-weight: bold;
-  }
-
-  .inputGroup {
-    background: ${props => props.theme.gray4};
-    width: 90%;
-    margin: 3rem;
-    border-radius: 3px;
-    padding: 2rem 3.5rem;
-  }
+  border-radius: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-center: space-between;
+  padding-bottom: 3rem;
   
-  .top, .middle, .bottom {
-    display: flex;
-    justify-content: flex-start;
-    margin: 2rem 0;
+    img {
+      width: 200px;
+      margin: 1.5rem auto;
+    }
+
+    button {
+      align-self: center;
+      width: 120px;
+      padding: 0.5rem 2rem;
+      font-size: 16px;
+      height: auto;
+      margin: 1.5rem 3rem;
+
+      @media (max-width: 650px) {
+        margin: 1.5rem 2rem;
+      }
+    }
+
+    label {
+      color: ${props => props.theme.primary8};
+    }
+
+    .inputGroup {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center; 
+      margin: 2rem 0 1rem 0;
+    }
+
+    .row {
+      width: 70%;
+      display: flex;
+      justify-content: center;
+      padding-left: 3.5rem;
+
+      @media ${device.tablet} {
+        width: 90%;
+      }
+
+      @media (max-width: 650px) {
+        padding-left: 0
+      }
+    }
+
+    .ant-form-item {
+      width: 50%;
+
+      @media ${device.tablet} {
+        margin-right: 0.8rem; 
+        margin-left: 0.8rem; 
+      }
+    }
+
   }
 `;
 
 const StyledDiv = styled.div`
-  background: white;
-`
+  background: #E5E5E5;
+  width: 100vw;
+  display: flex;
+
+  .inner-div {
+    width: 1150px
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+`;
 
 const formItemLayoutShort = {
   labelCol: {
@@ -181,8 +244,19 @@ const formItemLayoutShort = {
     sm: {span: 20},
   },
   wrapperCol: {
-    xs: {span: 10},
+    xs: {span: 20},
     sm: {span: 10},
+  },
+};
+
+const formItemLayout = {
+  labelCol: {
+    xs: {span: 24},
+    sm: {span: 24},
+  },
+  wrapperCol: {
+    xs: {span: 24},
+    sm: {span: 20},
   },
 };
 
@@ -202,7 +276,7 @@ const formItemLayoutShort = {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Fri Sep 27 2019 06:14:08 GMT-0600 (Mountain Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Mon Sep 30 2019 11:01:38 GMT-0600 (Mountain Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

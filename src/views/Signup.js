@@ -31,6 +31,7 @@ export const Signup = (props) => {
     if (state.auth.googleAuthUser){
       user.uid = state.auth.googleAuthUser.uid;
       if (state.auth.googleAuthUser.displayName){
+        
         const name = state.auth.googleAuthUser.displayName.split(' ');
         user.firstName = name[ 0 ];
         user.lastName = name[ 1 ];
