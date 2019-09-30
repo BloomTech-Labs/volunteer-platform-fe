@@ -61,7 +61,7 @@ export const EventPanel = ({
         <UpperDiv>
           <h2>Upcoming Events</h2>
           <h2>{selectedDate && moment.unix(selectedDate).format('LL')}</h2>
-          <StyledButton onClick={displayAll}>Display All Events</StyledButton>
+          <StyledButton onClick={displayAll} width={'40%'}>Display All Events</StyledButton>
         </UpperDiv>
       ) : (
         <div>No events have been created yet.</div>
@@ -113,7 +113,6 @@ const UpperDiv = styled.div`
       margin: 0;
   }
   button {
-    width: 25%;
     margin: 0 auto;
     margin-top: 20px;
   }

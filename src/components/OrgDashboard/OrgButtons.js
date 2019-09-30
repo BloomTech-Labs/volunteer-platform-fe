@@ -37,12 +37,14 @@ export const OrgButtons = ({ displayOrg, deleteOrg }) => {
             <span>Create Event</span>
           </div>
         </Link>
-        <div onClick={deleteOrg} className={'action'}>
-          <div className={'action-icon'}>
-            <Icon type="delete" />
+        <Link>
+          <div className={'action'}>
+            <div className={'action-icon'}>
+              <Icon type="delete" />
+            </div>
+            <span>Delete Org</span>
           </div>
-          <span>Delete Org</span>
-        </div>
+        </Link>
       </div>
     </StyledOrgButtons>
   );
@@ -68,6 +70,7 @@ const StyledOrgButtons = styled.div`
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    min-width: 150px;
   }
 
   .action-icon {

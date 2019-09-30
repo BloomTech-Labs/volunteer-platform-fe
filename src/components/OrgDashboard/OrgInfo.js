@@ -1,13 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
-import { Select, Icon } from 'antd';
+import { Icon } from 'antd';
 import { StyledCard } from '../../styled';
-import { useStateValue } from '../../hooks/useStateValue';
 
-export const OrgInfo = ({ displayOrg, changeHandler }) => {
-  const [{ org }] = useStateValue();
-
+export const OrgInfo = ({ displayOrg }) => {
   const setDaysOpen = arr => {
     if (!arr) {
       return '';
@@ -68,22 +65,14 @@ export const OrgInfo = ({ displayOrg, changeHandler }) => {
     }
     return result.join(', ');
   };
-
+  console.log(displayOrg);
   return (
-    <OrgInfoDiv backgroundcolor={'#E8E8E8'} borderRadius={'0px'} margin={'0 0 40px 0'}>
-      <Select
-        defaultValue="select"
-        onChange={changeHandler}
-        value={displayOrg ? displayOrg.orgId : ''}
-      >
-        {org.userOrganizations.map(item => (
-          <Select.Option key={item.orgId} value={item.orgId}>
-            {item.organizationName}
-          </Select.Option>
-        ))}
-      </Select>
-
-      <h5>Org Info</h5>
+    <OrgInfoDiv
+      backgroundcolor={'#E8E8E8'}
+      borderRadius={'0px'}
+      margin={'0 0 40px 0'}
+    >
+      <h5 style={{ marginBottom: '5px' }}>Org Info</h5>
       <div className="upper-info">
         <div className="hours-of-op">
           <span>{setDaysOpen(displayOrg.daysOfTheWeek)} </span>
@@ -97,29 +86,49 @@ export const OrgInfo = ({ displayOrg, changeHandler }) => {
             type="environment"
             theme={'twoTone'}
             twoToneColor={'#005a87'}
-            className={'location-icon'}
+            className={'icon'}
           />
           <span>{`${displayOrg.city} ${displayOrg.state}`}</span>
         </div>
+      </div>
+      <h5 style={{ margin: '20px 0 5px' }}>
+        Contact{displayOrg.POC && displayOrg.POC.length > 1 ? 's' : ''}
+      </h5>
+      <div className="lower-info">
+        {displayOrg.POC &&
+          displayOrg.POC.map(contact => {
+            return (
+              <div className="poc">
+                <div className="poc-name">
+                  {contact.firstName} {contact.lastName}
+                </div>
+                <div className="poc-info">
+                  <Icon
+                    type="mail"
+                    theme="twoTone"
+                    twoToneColor={'#005a87'}
+                    className="icon"
+                  />
+                  {contact.email}
+                </div>
+              </div>
+            );
+          })}
       </div>
     </OrgInfoDiv>
   );
 };
 
 const OrgInfoDiv = styled(StyledCard)`
-.ant-select{
-    width: 200px;
-    margin-left: 300px;
-}
   .upper-info {
     display: flex;
-    justify-content: space-between;
     align-items: center;
   }
 
   .hours-of-op {
     display: flex;
     flex-direction: column;
+    min-width: 50%;
   }
 
   .location {
@@ -129,9 +138,29 @@ const OrgInfoDiv = styled(StyledCard)`
     width: 45%;
   }
 
-  .location-icon {
+  .icon {
     font-size: 30px;
     padding-right: 10px;
+  }
+
+  .lower-info {
+    display: flex;
+    flex-direction: column;
+
+    .poc {
+      display: flex;
+      align-items: center;
+      .poc-name {
+        min-width: 50%;
+        padding-right: 20%;
+        margin-bottom: 5px;
+      }
+
+      .poc-info {
+        display: flex;
+        align-items: center;
+      }
+    }
   }
 `;
 export default OrgInfo;

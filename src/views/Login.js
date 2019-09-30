@@ -20,7 +20,6 @@ import {device} from '../styled/deviceBreakpoints';
 
 export const Login = props => {
   const [state, dispatch] = useStateValue();
-  //const [localState, setState] = useState({});
   const [pathName, setPathName] = useState(props.location.pathname);
   
   useEffect(() => {
@@ -62,25 +61,45 @@ export const Login = props => {
         <h4>OR</h4>
         <WrappedAntForm
           onSubmit={values => {
-            signIn(EMAIL_PROVIDER, dispatch, values.email, values.password);
+            signIn(
+              EMAIL_PROVIDER,
+              dispatch,
+              values.email,
+              values.password,
+              values.firstName,
+              values.lastName);
           }}
           layout={'vertical'}
           buttonType="primary"
           buttonText={pathName === `/login` ? 'Login' : 'Signup'}
           buttonLoading={state.auth.isLoading}
         >
+          {pathName === '/signup' &&
+          <div>
+            <AntInput name={'First Name'}
+                      placeholder={'First Name'}
+                      layout={formItemLayout}
+                      style={{backgroundColor: '#e8f0fe'}}
+            />
+            <AntInput name={'Last Name'}
+                      placeholder={'Last Name'}
+                      layout={formItemLayout}
+                      style={{backgroundColor: '#e8f0fe'}}
+            />
+          </div>
+          }
           <AntInput
             name={'Email'}
             prefix={<Icon type="user" style={{color: 'rgba(0,0,0,.25)'}}/>}
             placeholder="Email"
-            layout={formLayouts.formItemLayout}
+            layout={formItemLayout}
           />
           <AntInput
             name={'Password'}
             prefix={<Icon type="lock" style={{color: 'rgba(0,0,0,.25)'}}/>}
             placeholder="Password"
             type="password"
-            layout={formLayouts.formItemLayout}
+            layout={formItemLayout}
           />
         </WrappedAntForm>
         {state.auth.signInError && <div>{state.auth.signInError}</div>}
@@ -102,6 +121,8 @@ export const Login = props => {
     </StyledLogin>
   );
 };
+
+export default Login;
 
 const StyledLogin = styled.div`
   display: flex;
@@ -147,22 +168,17 @@ const StyledCenter = styled.div`
   align-items: center;
   flex-direction: column;
 
-  form {
+  .ant-form-item {
     display: flex;
     flex-direction: column;
-    margin: 2rem auto;
     align-items: center;
+    margin: 2rem auto;
+    width: 280px;
   }
 
-  
-  
-  button {
-    align-self: center;
-    width: 120px;
-    padding: 0.5rem 2rem;
-    font-family: Arvo;
-    font-size: 16px;
-    height: auto;
+  .buttonStyles {
+    display: flex;
+    justify-content: center;
   }
 
   button:hover {
@@ -173,7 +189,6 @@ const StyledCenter = styled.div`
     color: ${props => props.theme.primary};
     font-size: 18px;
     line-height: 22px;
-    margin-bottom: 
   }
 `;
 
@@ -185,4 +200,14 @@ const CustomStyledLink = styled(StyledLink)`
   }
 `;
 
-export default Login;
+const formItemLayout = {
+  labelCol: {
+    span: 24,
+  },
+  wrapperCol: {
+    span: 24,
+  },
+};
+
+
+
