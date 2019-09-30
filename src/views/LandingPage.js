@@ -6,10 +6,13 @@ import {device} from '../styled/deviceBreakpoints';
 import {
   HowItWorks, TopVolunteers, TopNonProfits,
 } from '../components/LandingPage';
+import {useStateValue} from '../hooks/useStateValue'
 
 export const LandingPage = () => {
+    const [{auth}] = useStateValue()
+
   return (<>
-    <StyledHeroDiv image={heroImage}>
+    <StyledHeroDiv image={heroImage} loggedIn = {auth.loggedIn}>
       <HeroContent>
         <p>Meet new friends, give back to the community.</p>
         <p>Win-win.</p>
@@ -30,7 +33,7 @@ export default LandingPage;
 
 const StyledHeroDiv = styled.div`
   height: 50vh;
-  width: 100vw;
+  width: ${({loggedIn}) => loggedIn && '100vw'};
   display: flex;
   position: relative;
   justify-content: center;

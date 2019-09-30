@@ -106,12 +106,15 @@ function App() {
               />
             )}
           </HeaderDiv>
-          <StyledContent width={dimensions.width}>
+          <StyledContent
+            width={dimensions.width}
+            loggedIn={state.auth.loggedIn}
+          >
             <Switch>
-              <Route exact path={'/'} component={LandingPage} />
-              <ProtectedRoute path={'/dashboard'} component={MainDashboard} />
               <LoginRoute path={'/login'} component={Login} />
               <LoginRoute path={'/signup'} component={Login} />
+              <Route exact path={'/'} component={LandingPage} />
+              <ProtectedRoute path={'/dashboard'} component={MainDashboard} />
               <RegisteredAndLoggedInRoute
                 path={'/create-org'}
                 component={CreateOrg}
@@ -163,7 +166,8 @@ const StyledApp = styled.div`
 
 const StyledContent = styled(Content)`
   && {
-    padding-right: ${props => (props.width > 900 ? '15rem' : 0)};
+    padding-right: ${props =>
+      props.width > 900 && props.loggedIn ? '15rem' : 0};
     padding-bottom: ${props => props.theme.footerPadding};
   }
 `;
