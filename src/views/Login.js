@@ -22,7 +22,7 @@ export const Login = props => {
   }, [props.location.pathname]);
 
   return (
-    <StyledLogin loggedIn = {state.auth.loggedIn}>
+    <StyledLogin loggedIn={state.auth.loggedIn}>
       <h3>
         {pathName === '/login'
           ? 'Welcome Back!'
@@ -67,7 +67,7 @@ export const Login = props => {
           }}
           layout={'vertical'}
           buttonType="primary"
-          buttonText={pathName === `/login` ? 'Login' : 'Signup'}
+          buttonText={pathName === `/login` ? 'Login' : 'Sign Up'}
           buttonLoading={state.auth.isLoading}
         >
           {pathName === '/signup' && (
@@ -127,7 +127,7 @@ const StyledLogin = styled.div`
   flex-direction: column;
   min-height: 100vh;
   margin-bottom: 4rem;
-  width: ${({loggedIn}) => loggedIn && '100vw'};
+  width: ${({ loggedIn }) => loggedIn && '100vw'};
 
   h3 {
     margin-top: 3.9rem;
