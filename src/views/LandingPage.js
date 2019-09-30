@@ -19,9 +19,7 @@ export const LandingPage = () => {
   const [{ auth }] = useStateValue();
   const [location, setLocation] = useState('');
 
-  const handleSearch = e => {
-    
-  };
+  const handleSearch = e => {};
 
   const handleChange = e => {
     setLocation(e.target.value);
@@ -57,7 +55,7 @@ export const LandingPage = () => {
           <p>
             Compete with friends, meet new ones, give back to the community.
           </p>
-          <p>Win-win.</p>
+          <p style={{ marginBottom: '80px', marginTop: '20px' }}>Win-win.</p>
           <Search
             placeholder="Enter your city, state"
             onSearch={handleSearch}
@@ -72,7 +70,6 @@ export const LandingPage = () => {
               </Link>
             }
             size="large"
-            style={{ width: '25%' }}
             onChange={handleChange}
             value={location}
           />
@@ -133,27 +130,29 @@ const HeroContent = styled.div`
     color: white;
     margin: 0;
     font-size: 24px;
+    padding: 0 20px;
+  }
+  
+  .ant-input-search {
+    width: 50%;
+    min-width: 250px
+    max-width: 350px;
   }
 
   button {
     background: ${({ theme }) => theme.accent};
     border-radius: inherit;
-    padding: 10px 20px;
     border: 0;
     cursor: pointer;
-    font-family: 'Arvo', serif;
-    width: 165px;
 
     .anticon {
       font-size: 25px;
+      padding-top: 5px;
     }
     &:hover {
       background: ${({ theme }) => theme.accent7};
     }
 
-    a {
-      color: white;
-    }
   }
 `;
 
