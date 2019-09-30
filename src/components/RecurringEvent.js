@@ -7,8 +7,9 @@ import {
   AntInputNumber,
   AntSelect,
 } from '../styled';
-
+import { formLayouts } from '../utility/formLayouts';
 import moment from 'moment';
+import styled from 'styled-components';
 
 const { Option } = Select;
 
@@ -23,7 +24,7 @@ export const RecurringEvent = props => {
 
   const monthlyOptions = [
     `Monthly on day ${dynamicNumber}`,
-    `Monthly on the ${dynamicNth} ${dynamicDay}`,
+    `Monthly on ${dynamicNth} ${dynamicDay}`,
   ];
 
   const repeatTimePeriodOptions = [
@@ -160,102 +161,115 @@ export const RecurringEvent = props => {
   });
 
   return (
-    <div>
-      <Radio.Group onChange={handleCheckBox} disabled={!localState.dynamicDay}>
-        <Radio value={'Yes'}>Yes</Radio>
-        <Radio value={'No'}>No</Radio>
-      </Radio.Group>
-      {localState.recurringEvent === 'Yes' && (
-        <div>
-          <StyledSelect
-            style={{ width: 200 }}
-            name={'Repeat Time Period'}
-            onChange={handleRepeatPeriod}
-          >
-            {repeatTimePeriod}
-          </StyledSelect>
-
-          <label>Ends</label>
-          <Radio.Group name={'Occurrence Ends'} onChange={handleOccurrences}>
-            <Radio value={'Never'}>Never</Radio>
-            <Radio value={'On'}>On</Radio>
-            <Radio value={'After'}>After</Radio>
-          </Radio.Group>
-          <DatePicker
-            name={'Occurrence End Date'}
-            onChange={handleDatePicker}
-            disabledDate={current => current && current < moment().endOf('day')}
-            disabled={
-              localState.recurringInfo.occurrenceEnds === 'On' ? false : true
-            }
-          />
-          <InputNumber
-            style={{ width: 50 }}
-            name={'Occurrence Ends After'}
-            min={0}
-            onChange={handleOccurrencesEndsAfter}
-            disabled={
-              localState.recurringInfo.occurrenceEnds === 'After' ? false : true
-            }
-          />
-        </div>
-      )}
-
-      <Modal
-        title="Add a recurring event"
-        width={720}
-        onClose={closeModal}
-        visible={formState.recurringBoolean}
-        footer={[
-          <StyledButton key="cancel" onClick={closeModal}>
-            Cancel
-          </StyledButton>,
-          <StyledButton key="submit" onClick={handleSubmit}>
-            Submit
-          </StyledButton>,
-        ]}
-      >
-        <WrappedAntForm
-          buttonText="Submit"
-          buttonType="primary"
-          onSubmit={handleSubmit}
-          noButton={true}
+    <StyledRecurringEvent>
+      <label>
+        <Radio.Group
+          onChange={handleCheckBox}
+          disabled={!localState.dynamicDay}
         >
-          <AntInputNumber
-            name={'Repeat every'}
-            style={{ width: 100 }}
-            onChange={handleRepeatEvery}
-            min={0}
-          />
-          <AntSelect
-            style={{ width: 100 }}
-            name={'Repeat every value'}
-            onChange={handleEveryValue}
+          <Radio value={'Yes'}>Yes</Radio>
+          <Radio value={'No'}>No</Radio>
+        </Radio.Group>
+        {localState.recurringEvent === 'Yes' && (
+          <label>
+            <div className={'repeatWrapper'}>
+              <StyledSelect
+                style={{ width: 200 }}
+                name={'Repeat Time Period'}
+                onChange={handleRepeatPeriod}
+                layout={formLayouts.formItemLayoutEventForm}
+              >
+                {repeatTimePeriod}
+              </StyledSelect>
+            </div>
+            <label>Ends</label>
+            <Radio.Group name={'Occurrence Ends'} onChange={handleOccurrences}>
+              <Radio value={'Never'}>Never</Radio>
+              <Radio value={'On'}>On</Radio>
+              <Radio value={'After'}>After</Radio>
+            </Radio.Group>
+            <DatePicker
+              name={'Occurrence End Date'}
+              onChange={handleDatePicker}
+              disabledDate={current =>
+                current && current < moment().endOf('day')
+              }
+              disabled={
+                localState.recurringInfo.occurrenceEnds === 'On' ? false : true
+              }
+            />
+            <InputNumber
+              style={{ width: 50 }}
+              name={'Occurrence Ends After'}
+              min={0}
+              onChange={handleOccurrencesEndsAfter}
+              disabled={
+                localState.recurringInfo.occurrenceEnds === 'After'
+                  ? false
+                  : true
+              }
+            />
+          </label>
+        )}
+
+        <Modal
+          title="Add a recurring event"
+          width={720}
+          onClose={closeModal}
+          visible={formState.recurringBoolean}
+          footer={[
+            <StyledButton key="cancel" onClick={closeModal}>
+              Cancel
+            </StyledButton>,
+            <StyledButton key="submit" onClick={handleSubmit}>
+              Submit
+            </StyledButton>,
+          ]}
+        >
+          <WrappedAntForm
+            buttonText="Submit"
+            buttonType="primary"
+            onSubmit={handleSubmit}
+            noButton={true}
           >
-            {periodOfTime}
-          </AntSelect>
-
-          {localState.recurringInfo.repeatEveryValue === 'Week' && (
-            <Checkbox.Group name={'Days'} options={dayOptions} notRequired />
-          )}
-          {localState.recurringInfo.repeatEveryValue === 'Weeks' && (
-            <Checkbox.Group name={'Days'} options={dayOptions} notRequired />
-          )}
-
-          {localState.recurringInfo.repeatEveryValue === 'Month' && (
-            <AntSelect name={'Monthly Period'} notRequired>
-              {monthlyPeriod}
+            <AntInputNumber
+              name={'Repeat every'}
+              style={{ width: 100 }}
+              onChange={handleRepeatEvery}
+              min={0}
+            />
+            <AntSelect
+              style={{ width: 100 }}
+              name={'Repeat every value'}
+              onChange={handleEveryValue}
+            >
+              {periodOfTime}
             </AntSelect>
-          )}
-          {localState.recurringInfo.repeatEveryValue === 'Months' && (
-            <AntSelect name={'Monthly Period'} notRequired>
-              {monthlyPeriod}
-            </AntSelect>
-          )}
-        </WrappedAntForm>
-      </Modal>
-    </div>
+
+            {localState.recurringInfo.repeatEveryValue === 'Week' && (
+              <Checkbox.Group name={'Days'} options={dayOptions} notRequired />
+            )}
+            {localState.recurringInfo.repeatEveryValue === 'Weeks' && (
+              <Checkbox.Group name={'Days'} options={dayOptions} notRequired />
+            )}
+
+            {localState.recurringInfo.repeatEveryValue === 'Month' && (
+              <AntSelect name={'Monthly Period'} notRequired>
+                {monthlyPeriod}
+              </AntSelect>
+            )}
+            {localState.recurringInfo.repeatEveryValue === 'Months' && (
+              <AntSelect name={'Monthly Period'} notRequired>
+                {monthlyPeriod}
+              </AntSelect>
+            )}
+          </WrappedAntForm>
+        </Modal>
+      </label>
+    </StyledRecurringEvent>
   );
 };
+
+const StyledRecurringEvent = styled.div``;
 
 export default RecurringEvent;
