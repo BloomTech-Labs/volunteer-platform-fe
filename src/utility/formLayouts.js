@@ -29,4 +29,14 @@ export const formLayouts = {
       sm: { span: 15 },
     },
   },
+  formItemLayoutEventForm: {
+    labelCol: {
+      xs: { span: 24 },
+      sm: { span: 24, offset: 0 },
+    },
+    wrapperCol: {
+      xs: { span: 24 },
+      sm: { span: 22, offset: 2 },
+    },
+  },
 };
