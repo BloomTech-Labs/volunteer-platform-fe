@@ -61,7 +61,6 @@ function App() {
   }, [state.auth.googleAuthUser]);
 
   const updateDimensions = () => {
-    debugger;
     setDimensions({
       width: window.innerWidth,
       height: document.body.scrollHeight,
