@@ -189,7 +189,7 @@ export const CreateEvent = props => {
                 <AntInput
                   name={'Name of Event'}
                   type="text"
-                  layout={formLayouts.formItemLayout}
+                  layout={formLayouts.formItemLayoutEventForm}
                 />
               </div>
               <div className={'inline invisible'}>
@@ -244,7 +244,7 @@ export const CreateEvent = props => {
                     disabledDate={current =>
                       current && current < moment().endOf('day')
                     }
-                    // layout={formLayouts.formItemLayoutEventForm}
+                    layout={formLayouts.formItemLayoutEventForm}
                   />
                 </div>
                 <div className={'inline flex'}>
@@ -269,9 +269,7 @@ export const CreateEvent = props => {
                     layout={formLayouts.formItemLayoutEventForm}
                   />
                 </div>
-                <div className={''}>
-                  <p>to</p>
-                </div>
+                <p>to</p>
                 <div className={'inline hidden'}>
                   <AntTimePicker
                     name={'End Time'}
@@ -404,7 +402,6 @@ const StyledCreateEvent = styled.div`
     border-radius: 3px;
     padding: 3rem;
     margin-bottom: 3rem;
-    margin-top: 3rem;
     display: flex;
     flex-direction: column;
     align-items: center;
