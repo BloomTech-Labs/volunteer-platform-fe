@@ -76,7 +76,7 @@ function App() {
       <Layout style={{ background: 'white' }}>
         {state.auth.loggedIn && (
           <StyledSider
-            height={dimensions.height}
+            height={'100%'}
             breakpoint="md"
             collapsedWidth="0"
             theme={'light'}
@@ -96,17 +96,17 @@ function App() {
           </StyledSider>
         )}
         <Layout style={{ background: 'white' }}>
+          <HeaderDiv loggedIn={state.auth.loggedIn}>
+            {state.auth.loggedIn && (
+              <StyledMenuButton
+                collapsed={collapsed ? 1 : 0}
+                className="trigger"
+                type={collapsed ? 'menu-fold' : 'menu-unfold'}
+                onClick={() => setCollapsed(!collapsed)}
+              />
+            )}
+          </HeaderDiv>
           <StyledContent width={dimensions.width}>
-            <HeaderDiv loggedIn={state.auth.loggedIn}>
-              {state.auth.loggedIn && (
-                <StyledMenuButton
-                  collapsed={collapsed ? 1 : 0}
-                  className="trigger"
-                  type={collapsed ? 'menu-fold' : 'menu-unfold'}
-                  onClick={() => setCollapsed(!collapsed)}
-                />
-              )}
-            </HeaderDiv>
             <Switch>
               <Route exact path={'/'} component={LandingPage} />
               <ProtectedRoute path={'/dashboard'} component={MainDashboard} />
