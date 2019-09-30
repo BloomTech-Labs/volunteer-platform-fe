@@ -75,7 +75,7 @@ function App() {
       <Layout style={{ background: 'white' }}>
         {state.auth.loggedIn && (
           <StyledSider
-            height={dimensions.height}
+            height={'100%'}
             breakpoint="md"
             collapsedWidth="0"
             theme={'light'}
@@ -95,22 +95,25 @@ function App() {
           </StyledSider>
         )}
         <Layout style={{ background: 'white' }}>
-          <StyledContent width={dimensions.width}>
-            <HeaderDiv loggedIn={state.auth.loggedIn}>
-              {state.auth.loggedIn && (
-                <StyledMenuButton
-                  collapsed={collapsed ? 1 : 0}
-                  className="trigger"
-                  type={collapsed ? 'menu-fold' : 'menu-unfold'}
-                  onClick={() => setCollapsed(!collapsed)}
-                />
-              )}
-            </HeaderDiv>
+          <HeaderDiv loggedIn={state.auth.loggedIn}>
+            {state.auth.loggedIn && (
+              <StyledMenuButton
+                collapsed={collapsed ? 1 : 0}
+                className="trigger"
+                type={collapsed ? 'menu-fold' : 'menu-unfold'}
+                onClick={() => setCollapsed(!collapsed)}
+              />
+            )}
+          </HeaderDiv>
+          <StyledContent
+            width={dimensions.width}
+            loggedIn={state.auth.loggedIn}
+          >
             <Switch>
-              <Route exact path={'/'} component={LandingPage} />
-              <ProtectedRoute path={'/dashboard'} component={MainDashboard} />
               <LoginRoute path={'/login'} component={Login} />
               <LoginRoute path={'/signup'} component={Login} />
+              <Route exact path={'/'} component={LandingPage} />
+              <ProtectedRoute path={'/dashboard'} component={MainDashboard} />
               <RegisteredAndLoggedInRoute
                 path={'/create-org'}
                 component={CreateOrg}
@@ -162,7 +165,8 @@ const StyledApp = styled.div`
 
 const StyledContent = styled(Content)`
   && {
-    padding-right: ${props => (props.width > 900 ? '15rem' : 0)};
+    padding-right: ${props =>
+      props.width > 900 && props.loggedIn ? '15rem' : 0};
     padding-bottom: ${props => props.theme.footerPadding};
   }
 `;

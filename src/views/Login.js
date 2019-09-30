@@ -1,12 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import {Icon} from 'antd';
-import {
-  WrappedAntForm,
-  AntInput,
-  StyledLine,
-  StyledLink,
-} from '../styled';
+import { Icon } from 'antd';
+import { WrappedAntForm, AntInput, StyledLine, StyledLink } from '../styled';
 import {
   signIn,
   GOOGLE_PROVIDER,
@@ -14,29 +9,29 @@ import {
   TWITTER_PROVIDER,
   EMAIL_PROVIDER,
 } from '../actions';
-import {formLayouts} from '../utility/formLayouts';
-import {useStateValue} from '../hooks/useStateValue';
-import {device} from '../styled/deviceBreakpoints';
+import { formLayouts } from '../utility/formLayouts';
+import { useStateValue } from '../hooks/useStateValue';
+import { device } from '../styled/deviceBreakpoints';
 
 export const Login = props => {
   const [state, dispatch] = useStateValue();
   const [pathName, setPathName] = useState(props.location.pathname);
-  
+
   useEffect(() => {
     setPathName(props.location.pathname);
   }, [props.location.pathname]);
-  
+
   return (
-    <StyledLogin>
+    <StyledLogin loggedIn={state.auth.loggedIn}>
       <h3>
         {pathName === '/login'
           ? 'Welcome Back!'
           : 'Lets do some good in the' + ' world. Sign up below.'}
       </h3>
       <div className={'line-box'}>
-        <StyledLine big width={'53%'}/>
+        <StyledLine big width={'53%'} />
       </div>
-      
+
       <h5>
         {pathName === `/login`
           ? 'Sign in with any of the following'
@@ -48,35 +43,58 @@ export const Login = props => {
           type="twitter"
           onClick={() => signIn(TWITTER_PROVIDER, dispatch)}
         />
-        <Icon type="google" onClick={() => signIn(GOOGLE_PROVIDER, dispatch)}/>
+        <Icon type="google" onClick={() => signIn(GOOGLE_PROVIDER, dispatch)} />
         <Icon
           type="facebook"
           onClick={() => signIn(FACEBOOK_PROVIDER, dispatch)}
         />
       </Inline>
       <div className={'line-box'}>
-        <StyledLine big width={'53%'}/>
+        <StyledLine big width={'53%'} />
       </div>
       <StyledCenter>
         <h4>OR</h4>
         <WrappedAntForm
           onSubmit={values => {
-            signIn(EMAIL_PROVIDER, dispatch, values.email, values.password);
+            signIn(
+              EMAIL_PROVIDER,
+              dispatch,
+              values.email,
+              values.password,
+              values.firstName,
+              values.lastName
+            );
           }}
           layout={'vertical'}
           buttonType="primary"
-          buttonText={pathName === `/login` ? 'Login' : 'Signup'}
-          buttonLoading={state.auth.isLoading} 
+          buttonText={pathName === `/login` ? 'Login' : 'Sign Up'}
+          buttonLoading={state.auth.isLoading}
         >
+          {pathName === '/signup' && (
+            <div>
+              <AntInput
+                name={'First Name'}
+                placeholder={'First Name'}
+                layout={formItemLayout}
+                style={{ backgroundColor: '#e8f0fe' }}
+              />
+              <AntInput
+                name={'Last Name'}
+                placeholder={'Last Name'}
+                layout={formItemLayout}
+                style={{ backgroundColor: '#e8f0fe' }}
+              />
+            </div>
+          )}
           <AntInput
             name={'Email'}
-            prefix={<Icon type="user" style={{color: 'rgba(0,0,0,.25)'}}/>}
+            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
             placeholder="Email"
             layout={formItemLayout}
           />
           <AntInput
             name={'Password'}
-            prefix={<Icon type="lock" style={{color: 'rgba(0,0,0,.25)'}}/>}
+            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
             placeholder="Password"
             type="password"
             layout={formItemLayout}
@@ -85,12 +103,12 @@ export const Login = props => {
         {state.auth.signInError && <div>{state.auth.signInError}</div>}
         {state.auth.signUpError && <div>{state.auth.signUpError}</div>}
         <div className={'line-box'}>
-          <StyledLine big width={'53%'}/>
+          <StyledLine big width={'53%'} />
         </div>
         <StyledCenter>
           <h4>
             {pathName === '/login'
-              ? 'Don\'t have an account?'
+              ? "Don't have an account?"
               : 'Already have an account?'}
           </h4>
           <CustomStyledLink to={pathName === '/login' ? '/signup' : '/login'}>
@@ -107,11 +125,10 @@ export default Login;
 const StyledLogin = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100vw;
   min-height: 100vh;
   margin-bottom: 4rem;
+  width: ${({ loggedIn }) => loggedIn && '100vw'};
 
-  
   h3 {
     margin-top: 3.9rem;
     margin-bottom: 2.3rem;
@@ -153,7 +170,7 @@ const StyledCenter = styled.div`
     flex-direction: column;
     align-items: center;
     margin: 2rem auto;
-    width: 280px; 
+    width: 280px;
   }
 
   .buttonStyles {
@@ -169,7 +186,6 @@ const StyledCenter = styled.div`
     color: ${props => props.theme.primary};
     font-size: 18px;
     line-height: 22px;
-    margin-bottom: 
   }
 `;
 
@@ -183,12 +199,9 @@ const CustomStyledLink = styled(StyledLink)`
 
 const formItemLayout = {
   labelCol: {
-    span: 24
+    span: 24,
   },
   wrapperCol: {
-    span: 24
+    span: 24,
   },
 };
-
-
-

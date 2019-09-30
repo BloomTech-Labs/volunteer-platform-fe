@@ -8,3 +8,5 @@ export * from './HeaderDiv';
 export * from './UploadImage';
 export * from './FilteredComponent';
 export * from './FilterTopbar';
+export * from './NoEventsFound';
+export { StyledLoader as Loader } from './StyledLoader';

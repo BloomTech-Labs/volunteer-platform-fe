@@ -38,21 +38,24 @@ export const CreateOrg = props => {
             name={'First Name'}
             layout={formLayouts.formItemLayoutInline}
             key={'firstName'}
+            placeholder={'Johnny'}
           />
         </div>
         <div className={'inline'}>
           <AntInput
-            name={'Last name'}
+            name={'Last Name'}
             layout={formLayouts.formItemLayoutInline}
             key={'lastName'}
+            placeholder={'Appleseed'}
           />
         </div>
         <div className={'inline'}>
           <AntInput
-            name={'Email'}
+            name={'Email for contact'}
             type={'email'}
             layout={formLayouts.formItemLayoutInline}
             key={'email'}
+            placeholder={'johnnyappleseed@gmail.com'}
           />
         </div>
       </div>,
@@ -73,7 +76,7 @@ export const CreateOrg = props => {
           <div className={'inline'}>
             <AntInput
               name={'Last Name 2'}
-              label={'First Name'}
+              label={'Last Name'}
               notRequired={'false'}
               key={'lastName2'}
               layout={formLayouts.formItemLayoutInline}
@@ -158,8 +161,9 @@ export const CreateOrg = props => {
                 <div className={'inline'}>
                   <AntInput
                     name={'Organization Name'}
-                    label={'Name of Organization'}
+                    label={'Organization'}
                     layout={formLayouts.formItemLayout}
+                    placeholder={'Enter your Organization Name'}
                   />
                 </div>
                 <div className={'inline'}>
@@ -193,6 +197,7 @@ export const CreateOrg = props => {
                     name={'City'}
                     notRequired={'false'}
                     layout={formLayouts.formItemLayout}
+                    placeholder={'City of operations'}
                   />
                 </div>
                 <div className={'inline'}>
@@ -210,6 +215,7 @@ export const CreateOrg = props => {
                     name={'Phone'}
                     notRequired={'false'}
                     layout={formLayouts.formItemLayout}
+                    placeholder={'Organization Phone Number'}
                   />
                 </div>
               </div>
@@ -264,26 +270,31 @@ export const CreateOrg = props => {
                 name={'Days of the week'}
                 options={days}
                 style={{ width: '100%' }}
-                layout={formLayouts.formItemLayoutFullLength}
+                layout={formLayouts.formItemLayoutDaysOfWeek}
+                className= 'DaysOfWeek'
               />
               <div className={'flex'}>
                 <div className={'inline'}>
-                  <AntTimePicker
-                    name={'Start Time'}
-                    label={'What Time?'}
-                    use12Hours
-                    format={'h:mm a'}
-                    layout={formLayouts.formItemLayoutInline}
-                  />
+                  <div className='time'>
+                    <AntTimePicker
+                      name={'Start Time'}
+                      label={'From'}
+                      use12Hours
+                      format={'h:mm a'}
+                      layout={formLayouts.formItemLayoutInline}
+                    />
+                  </div>
                 </div>
                 <div className={'inline'}>
-                  <AntTimePicker
-                    name={'End Time'}
-                    use12Hours
-                    label={'To'}
-                    format={'h:mm a'}
-                    layout={formLayouts.formItemLayoutInline}
-                  />
+                  <div className='time'>
+                    <AntTimePicker
+                      name={'End Time'}
+                      use12Hours
+                      label={'To'}
+                      format={'h:mm a'}
+                      layout={formLayouts.formItemLayoutInline}
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -319,11 +330,25 @@ const StyledCreateOrgForm = styled.div`
     width: 50%;
   }
 
+  .time {
+    display: flex;
+    justify-content: space-around;
+  }
+
   .styledGroup {
     margin: 3rem;
     background-color: #e8e8e8;
     border-radius: 3px;
-    padding: 3rem;
+    padding: 2rem;
+  }
+
+  .DaysOfWeek {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
   }
 
   .mg-tp-lg {

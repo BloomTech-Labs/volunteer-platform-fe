@@ -5,9 +5,9 @@ import { Icon } from 'antd';
 import directions from '../../assets/directions.svg';
 import searching from '../../assets/searching.svg';
 import selfie from '../../assets/selfie.svg';
+import { device } from '../../styled/deviceBreakpoints';
 
 export const HowItWorks = () => {
-    
   return (
     <StyledDiv>
       <h2>How it Works</h2>
@@ -35,25 +35,38 @@ export const HowItWorks = () => {
 };
 
 const StyledIcon = styled(Icon)`
-    font-size: 24px;
-    color: ${({theme}) => theme.primary}
-`
+  font-size: 24px;
+  color: ${({ theme }) => theme.primary};
+`;
 
 const StyledDiv = styled.div`
   display: flex;
   flex-direction: column;
   margin: 40px auto;
-  padding: 0px 10px;
+  padding: 0px 30px;
   h2 {
     font-size: 24px;
     color: ${({ theme }) => theme.primary8};
     margin-bottom: 25px;
+
+    @media ${device.tablet} {
+      text-align: center;
+    }
   }
 
   .how-it-works-cards {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    @media ${device.laptop} {
+      i {
+        display: none;
+      }
+    }
+    @media ${device.tablet} {
+      flex-direction: column;
+    }
   }
 `;
 export default HowItWorks;

@@ -32,4 +32,30 @@ export const formLayouts = {
   empty: {
     labelCol: {},
   },
+  formItemLayoutDaysOfWeek: {
+    labelCol: {
+      xs: '480px',
+      sm: '576px',
+      md: '768px',
+      lg: '992px',
+      xl: '1200px',
+    },
+    wrapperCol: {
+      xs: '480px',
+      sm: '576px',
+      md: '768px',
+      lg: '992px',
+      xl: '1200px',
+    },
+  },
+  formItemLayoutEventForm: {
+    labelCol: {
+      xs: { span: 24 },
+      sm: { span: 24, offset: 10 },
+    },
+    wrapperCol: {
+      xs: { span: 24 },
+      sm: { span: 22, offset: 2 },
+    },
+  },
 };
