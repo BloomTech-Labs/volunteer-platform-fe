@@ -127,10 +127,9 @@ export default Login;
 const StyledLogin = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100vw;
   min-height: 100vh;
   margin-bottom: 4rem;
-
+padding-bottom: ${({theme}) => theme.footerPadding}
   
   h3 {
     margin-top: 3.9rem;

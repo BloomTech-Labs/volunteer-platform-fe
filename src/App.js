@@ -106,12 +106,12 @@ function App() {
               />
             )}
           </HeaderDiv>
-          <StyledContent width={dimensions.width}>
-            <Switch>
+          <Switch>
+            <LoginRoute path={'/login'} component={Login} />
+            <LoginRoute path={'/signup'} component={Login} />
+            <StyledContent width={dimensions.width}>
               <Route exact path={'/'} component={LandingPage} />
               <ProtectedRoute path={'/dashboard'} component={MainDashboard} />
-              <LoginRoute path={'/login'} component={Login} />
-              <LoginRoute path={'/signup'} component={Login} />
               <RegisteredAndLoggedInRoute
                 path={'/create-org'}
                 component={CreateOrg}
@@ -126,8 +126,8 @@ function App() {
               />
               <RegisterRoute path={'/register'} component={Signup} />
               <Route component={NotFound} />
-            </Switch>
-          </StyledContent>
+            </StyledContent>
+          </Switch>
           <FooterDiv />
         </Layout>
       </Layout>
