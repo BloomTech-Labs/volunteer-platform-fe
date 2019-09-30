@@ -264,7 +264,8 @@ export const CreateOrg = props => {
                 name={'Days of the week'}
                 options={days}
                 style={{ width: '100%' }}
-                layout={formLayouts.formItemLayoutFullLength}
+                layout={formLayouts.formItemLayoutDaysOfWeek}
+                className= 'DaysOfWeek'
               />
               <div className={'flex'}>
                 <div className={'inline'}>
@@ -323,7 +324,17 @@ const StyledCreateOrgForm = styled.div`
     margin: 3rem;
     background-color: #e8e8e8;
     border-radius: 3px;
-    padding: 3rem;
+    padding: 2rem;
+  }
+
+  .DaysOfWeek {
+    //border: 1px red solid;
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
   }
 
   .mg-tp-lg {
