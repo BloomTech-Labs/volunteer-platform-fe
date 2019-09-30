@@ -184,19 +184,21 @@ export const CreateEvent = props => {
             buttonText={'Submit'}
           >
             <div className={'nameCauseWrapper'}>
-              <div className={'inlineDouble'}>
+              <div className={''}>
                 <AntInput
                   name={'Name of Event'}
                   type="text"
                   layout={formLayouts.empty}
+                  style={{ width: 240 }}
                 />
               </div>
-              <div className={'inlineDouble'}>
+              <div className={''}>
                 <AntSelect
                   name={'Types of Causes'}
                   placeholder="Types of Causes"
                   mode="multiple"
                   layout={formLayouts.empty}
+                  style={{ width: 240 }}
                 >
                   {causeAreaTags}
                 </AntSelect>
@@ -245,7 +247,7 @@ export const CreateEvent = props => {
                   layout={formLayouts.empty}
                 />
               </div>
-              <div className={''}>
+              <div className={'recurringWrapper'}>
                 <RecurringEvent
                   name={'Is This a Recurring Event ?'}
                   localState={localState}
@@ -287,6 +289,7 @@ export const CreateEvent = props => {
                   name={'First Name'}
                   type="text"
                   layout={formLayouts.empty}
+                  style={{ width: 240 }}
                 />
               </div>
               <div className={'inline'}>
@@ -294,6 +297,7 @@ export const CreateEvent = props => {
                   name={'Last Name'}
                   type="text"
                   layout={formLayouts.empty}
+                  style={{ width: 240 }}
                 />
               </div>
               <div className={'inline'}>
@@ -301,6 +305,7 @@ export const CreateEvent = props => {
                   name={'Email'}
                   type="email"
                   layout={formLayouts.empty}
+                  style={{ width: 240 }}
                 />
               </div>
             </div>
@@ -314,6 +319,7 @@ export const CreateEvent = props => {
                     placeholder="Type here and a tag will appear"
                     mode="multiple"
                     layout={formLayouts.empty}
+                    style={{ width: 240 }}
                   >
                     {requirementTags}
                   </AntSelect>
@@ -324,6 +330,7 @@ export const CreateEvent = props => {
                     placeholder="All"
                     mode="multiple"
                     layout={formLayouts.empty}
+                    style={{ width: 240 }}
                   >
                     {interestTags}
                   </AntSelect>
@@ -331,13 +338,24 @@ export const CreateEvent = props => {
               </div>
             </div>
             <div className={'eventDetailsWrapper'}>
-              <AntTextArea name={'Event Details'} layout={formLayouts.empty} />
+              <AntTextArea
+                name={'Event Details'}
+                placeholder={
+                  'What the volunteer would do at the event would go here.'
+                }
+                layout={formLayouts.empty}
+                style={{ height: 115 }}
+              />
             </div>
 
             <div className={'styledGroup'}>
               <div className={'volunteerNumberWebsiteWrapper'}>
                 <div className={''}>
-                  <AntInput name={'Website'} layout={formLayouts.empty} />
+                  <AntInput
+                    name={'Website'}
+                    layout={formLayouts.empty}
+                    style={{ width: 240 }}
+                  />
                 </div>
                 <div className={''}>
                   <label style={{ width: 250 }}>
@@ -350,6 +368,7 @@ export const CreateEvent = props => {
                     type="number"
                     min={0}
                     layout={formLayouts.empty}
+                    style={{ width: 240 }}
                   />
                 </div>
                 <small>We recommend adding +5 to your need</small>
@@ -363,6 +382,7 @@ export const CreateEvent = props => {
                   'Any additional helpful tips for the event go here.'
                 }
                 layout={formLayouts.empty}
+                style={{ height: 115 }}
                 notRequired
               />
             </div>
@@ -397,6 +417,7 @@ const StyledCreateEvent = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
   }
   .nameCauseWrapper {
     display: flex;
@@ -409,6 +430,10 @@ const StyledCreateEvent = styled.div`
     input {
       width: 625px;
     }
+  }
+  .recurringWrapper {
+    display: flex;
+    margin-left: 40px;
   }
   .locationWrapper {
     display: flex;
@@ -439,12 +464,15 @@ const StyledCreateEvent = styled.div`
     }
   }
   .requirementsInterestWrapper {
-    width: 100%;
     display: flex;
     flex-direction: column;
+    align-items: center;
   }
   .volunteerNumberWebsiteWrapper {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   .eventDetailsWrapper {
     width: 200%;

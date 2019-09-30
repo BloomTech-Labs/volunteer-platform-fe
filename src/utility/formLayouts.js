@@ -6,7 +6,7 @@ export const formLayouts = {
     },
     wrapperCol: {
       xs: { span: 24 },
-      sm: { span: 20, offset: 2 },
+      sm: { span: 20 },
     },
   },
   formItemLayoutInline: {
@@ -30,7 +30,10 @@ export const formLayouts = {
     },
   },
   empty: {
-    labelCol: {},
+    labelCol: {
+      xs: { span: 0 },
+      sm: { span: 0 },
+    },
   },
   formItemLayoutDaysOfWeek: {
     labelCol: {
