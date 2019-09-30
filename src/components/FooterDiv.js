@@ -1,9 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Layout } from 'antd';
+import {Link} from 'react-router-dom';
+import {Layout} from 'antd';
 import styled from 'styled-components';
 
-const { Footer } = Layout;
+const {Footer} = Layout;
 
 export const FooterDiv = () => {
   return (
@@ -42,6 +42,7 @@ const StyledFooter = styled(Footer)`
   bottom: 0;
   width: 100%;
   height: ${props => props.theme.footerHeight};
+  z-index: 100;
 
   .container {
     display: flex;
@@ -88,8 +89,8 @@ const StyledFooter = styled(Footer)`
       a {
         font-size: 12px;
         cursor: pointer;
-        font-family: ${({ theme }) => theme.titleText};
-        color: ${({ theme }) => theme.primary8};
+        font-family: ${({theme}) => theme.titleText};
+        color: ${({theme}) => theme.primary8};
 
         &:hover {
           text-decoration: none;
@@ -100,12 +101,12 @@ const StyledFooter = styled(Footer)`
     .Logo {
       margin-right: 5%;
       display: flex;
-      font-family: ${({ theme }) => theme.titleText};
+      font-family: ${({theme}) => theme.titleText};
       z-index: 20 !important;
       height: 100%;
 
       h5 {
-        color: ${({ theme }) => theme.primary};
+        color: ${({theme}) => theme.primary};
         z-index: 20;
         height: 100%;
         margin-right: 10px;
