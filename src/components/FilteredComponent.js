@@ -28,7 +28,6 @@ export const FilteredComponent = Component => {
       (a, b) => a.nextDate - b.nextDate
     );
 
-    console.log(allEvents);
     if (!events || !filterCount) {
       return <Component events={allEvents} {...props} />;
     }

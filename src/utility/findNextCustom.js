@@ -15,15 +15,17 @@ export const findNextCustom = (date, info) => {
     case 'Week':
     case 'Weeks':
       let createdDate = moment.unix(date);
+ 
       let eventFirstWeek = days.map(day => {
         let possibleFirst = moment
           .unix(date)
           .startOf('week')
           .day(day)
           .add('23', 'hours');
-        if (possibleFirst.diff(createdDate) >= 0) return possibleFirst;
+        if (possibleFirst.diff(createdDate) >= 0 && possibleFirst.diff(moment()) >=0) return possibleFirst;
         else return null;
       });
+      
       let firstDate = eventFirstWeek.find(date => date !== null);
       let firstOccurrence = moment
         .unix(date)
