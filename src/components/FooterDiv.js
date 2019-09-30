@@ -50,7 +50,7 @@ const StyledFooter = styled(Footer)`
     justify-content: space-between;
     align-items: center;
     font-size: 14px;
-    width: 100vw;
+    width: 100%;
 
     .sitemap {
       display: flex;
