@@ -32,6 +32,7 @@ The goal of this project is to connect volunteers and non-profits together, stre
 
 ### 4️⃣ Key Features
 
+-   feature one [Initial user onboarding (one type of user); user can create a nonprofit organization; CRUD functionality on events for the nonprofit]
 -   feature two
 -   feature three
 
