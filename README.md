@@ -22,24 +22,18 @@
 
 ## Project Overview
 
- [Trello Board](https://trello.com/b/d9Ut99fr/labs-16-crime-statistics-for-travelers)
-\-insert an image of the trello here
- [Product Canvas](https://www.notion.so/Crime-Statistics-for-Travelers-a7e69847024d4cdc85aaf85cb413df71)
- [UX Design files](https://www.figma.com/file/HjoxfuYoel2otaeDTOPP8F/Labs16_LambdaCrime-Stats-for-Travelers)
+ [Trello Board](https://trello.com/b/8l9hDu3i/volunteer-platform-16)
 
-The goal of this project is to make the world a safer place
+ [Product Canvas](https://www.notion.so/Volunteer-Platform-fcfbaf6317e548de9a310052ad278e6c)
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+ [UX Design files](https://www.figma.com/file/cLBm5ArTmCT91X2rNbdSeq/Labs16_Volunteer-Platform?node-id=0%3A1)
 
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+The goal of this project is to connect volunteers and non-profits together, streamlining the validation process of volunteers to events.
 
 ### 4️⃣ Key Features
 
--   feature one
 -   feature two
 -   feature three
--   feature four
--   feature five
 
 ## 1️⃣ Tech Stack
 
