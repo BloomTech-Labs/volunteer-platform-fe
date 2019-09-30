@@ -60,8 +60,11 @@ export const SIGNUP_FAILED = 'SIGNUP_FAILED';
  * @param {Dispatch} dispatch
  * @param {string} [email]
  * @param {string} [password]
+ * @param {string} [firstName]
+ * @param {string} [lastName]
  */
-export const signIn = (authType, dispatch, email, password) => {
+export const signIn = (authType, dispatch, email, password, firstName,
+  lastName) => {
   dispatch({type: SIGNIN_INIT});
   if (authType === EMAIL_PROVIDER){
     firebase
@@ -72,7 +75,9 @@ export const signIn = (authType, dispatch, email, password) => {
           .auth()
           .signInWithEmailAndPassword(email, password)
           .then(res => {
-            signedIn(res.user, dispatch);
+            const user = {...res.user};
+            user.displayName = firstName + ' ' + lastName;
+            signedIn(user, dispatch);
           });
       })
       .catch(error => {

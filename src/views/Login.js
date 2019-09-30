@@ -61,13 +61,33 @@ export const Login = props => {
         <h4>OR</h4>
         <WrappedAntForm
           onSubmit={values => {
-            signIn(EMAIL_PROVIDER, dispatch, values.email, values.password);
+            signIn(
+              EMAIL_PROVIDER,
+              dispatch,
+              values.email,
+              values.password,
+              values.firstName,
+              values.lastName);
           }}
           layout={'vertical'}
           buttonType="primary"
           buttonText={pathName === `/login` ? 'Login' : 'Signup'}
-          buttonLoading={state.auth.isLoading} 
+          buttonLoading={state.auth.isLoading}
         >
+          {pathName === '/signup' &&
+          <div>
+            <AntInput name={'First Name'}
+                      placeholder={'First Name'}
+                      layout={formItemLayout}
+                      style={{backgroundColor: '#e8f0fe'}}
+            />
+            <AntInput name={'Last Name'}
+                      placeholder={'Last Name'}
+                      layout={formItemLayout}
+                      style={{backgroundColor: '#e8f0fe'}}
+            />
+          </div>
+          }
           <AntInput
             name={'Email'}
             prefix={<Icon type="user" style={{color: 'rgba(0,0,0,.25)'}}/>}
@@ -153,7 +173,7 @@ const StyledCenter = styled.div`
     flex-direction: column;
     align-items: center;
     margin: 2rem auto;
-    width: 280px; 
+    width: 280px;
   }
 
   .buttonStyles {
@@ -169,7 +189,6 @@ const StyledCenter = styled.div`
     color: ${props => props.theme.primary};
     font-size: 18px;
     line-height: 22px;
-    margin-bottom: 
   }
 `;
 
@@ -183,10 +202,10 @@ const CustomStyledLink = styled(StyledLink)`
 
 const formItemLayout = {
   labelCol: {
-    span: 24
+    span: 24,
   },
   wrapperCol: {
-    span: 24
+    span: 24,
   },
 };
 
