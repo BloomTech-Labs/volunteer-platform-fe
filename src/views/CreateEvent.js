@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {Select} from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Select } from 'antd';
 import styled from 'styled-components';
 import {
   AntInput,
@@ -9,17 +9,16 @@ import {
   AntInputNumber,
   AntDatePicker,
   WrappedAntForm,
-  StyledButton,
   StyledCard,
 } from '../styled';
-import {useStateValue} from '../hooks/useStateValue';
-import {createEvent, createRecurringEvent} from '../actions';
+import { useStateValue } from '../hooks/useStateValue';
+import { createEvent, createRecurringEvent } from '../actions';
 import RecurringEvent from '../components/RecurringEvent';
 import moment from 'moment';
 import createEventImg from '../assets/undraw_blooming_jtv6.svg';
-import {formLayouts} from '../utility/formLayouts';
+import { formLayouts } from '../utility/formLayouts';
 
-const {Option} = Select;
+const { Option } = Select;
 
 export const CreateEvent = props => {
   const initialEvent = {
@@ -37,33 +36,33 @@ export const CreateEvent = props => {
     recurringInfo: {},
   };
   const [localState, setState] = useState(initialEvent);
-  
+
   const [state, dispatch] = useStateValue();
-  
+
   //Destructuring
-  const {recurringInfo, recurringEvent, volunteerRequirements} = localState;
-  
+  const { recurringInfo, recurringEvent, volunteerRequirements } = localState;
+
   useEffect(() => {
-    if (props.location.state.org){
+    if (props.location.state.org) {
       setState({
         ...localState,
         orgId: props.location.state.org.orgId,
       });
     }
   }, [props.location.state.org]);
-  
+
   //Date Format
   const dateFormat = 'MM/DD/YYYY';
-  
+
   const removeUndefinied = event => {
     Object.keys(event).forEach(key => {
-      if (event[ key ] === undefined){
-        delete event[ key ];
+      if (event[key] === undefined) {
+        delete event[key];
       }
       return event;
     });
   };
-  
+
   //Handle Submit for Form
   const handleSubmit = values => {
     console.log('values', values);
@@ -77,10 +76,10 @@ export const CreateEvent = props => {
       startTime: values.startTime.format('LT'),
       endTime: values.endTime.format('LT'),
       startTimeStamp: moment(
-        values.date.format('LL') + ' ' + values.startTime.format('LT'),
+        values.date.format('LL') + ' ' + values.startTime.format('LT')
       ).unix(),
       endTimeSTamp: moment(
-        values.date.format('LL') + ' ' + values.endTime.format('LT'),
+        values.date.format('LL') + ' ' + values.endTime.format('LT')
       ).unix(),
       volunteerRequirements: volunteerRequirements,
       pointOfcontact: {
@@ -89,28 +88,28 @@ export const CreateEvent = props => {
         email: values.email,
       },
     };
-    
-    if (recurringEvent === 'Yes'){
+
+    if (recurringEvent === 'Yes') {
       event.recurringInfo = recurringInfo;
-      if (event.recurringInfo.occurrenceEnds === 'On'){
+      if (event.recurringInfo.occurrenceEnds === 'On') {
         event.recurringInfo.occurrenceEndDate = event.recurringInfo.occurrenceEndDate.unix();
         event.recurringInfo.occurrenceEndsAfter = '';
       }
-      if (event.recurringInfo.occurrenceEnds === 'After'){
+      if (event.recurringInfo.occurrenceEnds === 'After') {
         event.recurringInfo.occurrenceEndDate = '';
       }
       removeUndefinied(event);
       createRecurringEvent(event, dispatch);
-    }else{
+    } else {
       removeUndefinied(event);
       createEvent(event, dispatch);
     }
-    
+
     props.history.push('/org-dashboard');
   };
-  
+
   const handleDynmaicDate = date => {
-    const dynamicDay = date._d.toString().split(' ')[ 0 ];
+    const dynamicDay = date._d.toString().split(' ')[0];
     const dynamicYear = date._d
       .toString()
       .split(' ')
@@ -121,24 +120,24 @@ export const CreateEvent = props => {
       .split(' ')
       .slice(2, 3)
       .join(' ');
-    let dayAsNum = date._d.toString().split(' ')[ 2 ];
-    
+    let dayAsNum = date._d.toString().split(' ')[2];
+
     let count = 1;
-    while (dayAsNum > 7){
+    while (dayAsNum > 7) {
       dayAsNum -= 7;
       count++;
     }
-    let nth = {1: 'First', 2: 'Second', 3: 'Third', 4: 'Fourth', 5: 'Fifth'};
-    
+    let nth = { 1: 'First', 2: 'Second', 3: 'Third', 4: 'Fourth', 5: 'Fifth' };
+
     setState({
       ...localState,
       dynamicDay: dynamicDay,
       dynamicYear: dynamicYear,
       dynamicNumber: dynamicNumber,
-      dynamicNth: nth[ count ],
+      dynamicNth: nth[count],
     });
   };
-  
+
   //Options for tags
   const causeAreaTags = state.tags.causeAreas.map(tag => {
     return (
@@ -147,34 +146,34 @@ export const CreateEvent = props => {
       </Option>
     );
   });
-  
+
   let requirementTags = [];
-  
-  if (state.tags.requirements){
+
+  if (state.tags.requirements) {
     requirementTags = state.tags.requirements.map(tag => {
       return <Option key={tag}>{tag}</Option>;
     });
   }
-  
+
   const interestTags = state.tags.interests.map(tag => {
     return <Option key={tag}>{tag}</Option>;
   });
-  
+
   ///Cancel Form
-  
+
   const cancelForm = () => {
     props.history.push('/org-dashboard');
   };
-  
+
   return (
     <StyledDiv className={'flex center'}>
       <CustomStyledCard
         className={'flex center'}
-        style={{maxWidth: '900px', margin: '2rem 0 5rem 0'}}
+        style={{ maxWidth: '900px', margin: '2rem 0 5rem 0' }}
       >
         <h1>Let's Create An Event</h1>
-        <StyledImg src={createEventImg} alt="undraw unexpected friends"/>
-        <StyledCreateEvent style={{marginRight: '1rem'}}>
+        <StyledImg src={createEventImg} alt="undraw unexpected friends" />
+        <StyledCreateEvent style={{ marginRight: '1rem' }}>
           <WrappedAntForm
             cancelButton={true}
             cancelButtonText={'Cancel'}
@@ -190,7 +189,7 @@ export const CreateEvent = props => {
                 <AntInput
                   name={'Name of Event'}
                   type="text"
-                  layout={formLayouts.formItemLayout}
+                  layout={formLayouts.formItemLayoutEventForm}
                 />
               </div>
               <div className={'inline invisible'}>
@@ -198,7 +197,7 @@ export const CreateEvent = props => {
                   name={'Types of Causes'}
                   placeholder="Types of Causes"
                   mode="multiple"
-                  layout={formLayouts.formItemLayout}
+                  layout={formLayouts.formItemLayoutEventForm}
                 >
                   {causeAreaTags}
                 </AntSelect>
@@ -206,20 +205,21 @@ export const CreateEvent = props => {
             </div>
             <AntInput
               name={'Street Address'}
-              layout={formLayouts.formItemLayout}
+              style={{ width: 550, marginLeft: 10 }}
+              layout={formLayouts.formItemLayoutEventForm}
             />
             <div className={'flex'}>
               <div className={'inline'}>
                 <AntInput
                   name={'City'}
-                  layout={formLayouts.formItemLayout}
+                  layout={formLayouts.formItemLayoutEventForm}
                   placeholder="City"
                 ></AntInput>
               </div>
               <div className={'inline'}>
                 <AntInput
                   name={'State'}
-                  layout={formLayouts.formItemLayout}
+                  layout={formLayouts.formItemLayoutEventForm}
                   placeholder="State"
                 ></AntInput>
               </div>
@@ -228,15 +228,15 @@ export const CreateEvent = props => {
                   name={'Phone Number'}
                   pattern={'[0-9]{3}-[0-9]{3}-[0-9]{4}'}
                   placeholder={'000-000-0000'}
-                  layout={formLayouts.formItemLayout}
+                  layout={formLayouts.formItemLayoutEventForm}
                 />
               </div>
             </div>
-            
+
             <label>When is the event?</label>
             <div className={'styledGroup'}>
-              <div className={'flex'}>
-                <div className={'inline'}>
+              <div className={'flex column center'}>
+                <div className={'inline textCenter'}>
                   <AntDatePicker
                     name={'Date'}
                     format={dateFormat}
@@ -244,74 +244,69 @@ export const CreateEvent = props => {
                     disabledDate={current =>
                       current && current < moment().endOf('day')
                     }
-                    layout={formLayouts.formItemLayout}
+                    layout={formLayouts.formItemLayoutEventForm}
                   />
                 </div>
-                <div className={'inline'}>
+                <div className={'inline flex'}>
                   <RecurringEvent
                     name={'Is This a Recurring Event ?'}
                     localState={localState}
                     setState={setState}
-                    layout={formLayouts.formItemLayout}
+                    layout={formLayouts.formItemLayoutEventForm}
                     notRequired
                   />
                 </div>
               </div>
-              
+
               <label>What time ?</label>
-              <div className={'flex center'}>
+              <div className={'timeWrapper'}>
                 <div className={'inline hidden'}>
                   <AntTimePicker
                     name={'Start Time'}
                     use12Hours
                     format={'h:mm a'}
                     defaultOpenValue={moment('00:00:00', 'HH:mm')}
-                    layout={formLayouts.formItemLayout}
+                    layout={formLayouts.formItemLayoutEventForm}
                   />
                 </div>
-                <div className={'flex'}>
-                  <p>to</p>
-                </div>
+                <p>to</p>
                 <div className={'inline hidden'}>
                   <AntTimePicker
                     name={'End Time'}
                     use12Hours
                     format={'h:mm a'}
                     defaultOpenValue={moment('00:00:00', 'HH:mm')}
-                    // layout={formLayouts.formItemLayout}
+                    layout={formLayouts.formItemLayoutEventForm}
                   />
                 </div>
               </div>
             </div>
-            
+
             <label>Who is the point of Contact?</label>
-            
-            <div className={'flex'}>
+
+            <div className={' pocWrapper'}>
               <div className={'inline'}>
                 <AntInput
                   name={'First Name'}
                   type="text"
-                  layout={formLayouts.formItemLayout}
+                  layout={formLayouts.formItemLayoutEventForm}
                 />
               </div>
               <div className={'inline'}>
                 <AntInput
                   name={'Last Name'}
                   type="text"
-                  layout={formLayouts.formItemLayout}
+                  layout={formLayouts.formItemLayoutEventForm}
                 />
               </div>
               <div className={'inline'}>
                 <AntInput
                   name={'Email'}
                   type="email"
-                  layout={formLayouts.formItemLayout}
+                  layout={formLayouts.formItemLayoutEventForm}
                 />
               </div>
             </div>
-            
-            {/* <AntTextArea name={'Description'} type="text" /> */}
-            
             <label>What are the requirements?</label>
             <div className={'styledGroup'}>
               <label>List Requirements here</label>
@@ -320,7 +315,7 @@ export const CreateEvent = props => {
                   name={'Volunteer Requirements'}
                   placeholder="Type here and a tag will appear"
                   mode="multiple"
-                  layout={formLayouts.formItemLayout}
+                  layout={formLayouts.formItemLayoutEventForm}
                 >
                   {requirementTags}
                 </AntSelect>
@@ -330,45 +325,55 @@ export const CreateEvent = props => {
                   name={'Interest'}
                   placeholder="All"
                   mode="multiple"
-                  layout={formLayouts.formItemLayout}
+                  layout={formLayouts.formItemLayoutEventForm}
                 >
                   {interestTags}
                 </AntSelect>
               </div>
             </div>
-            
-            <div className={'flex'}>
+
+            <div className={'flex styledGroup'}>
               <div className={'inline'}>
                 <AntInput
                   name={'Website'}
-                  layout={formLayouts.formItemLayout}
+                  layout={formLayouts.formItemLayoutEventForm}
                 />
               </div>
-              <div className={'flex'}>
+              <div className={'flex volunteerNumberWrapper'}>
                 <div className={'flex column'}>
-                  <label style={{width: 215}}>
+                  <label style={{ width: 250 }}>
                     How many volunteers do you need?
                   </label>
-                  <small>We recommend adding +5 to your need</small>
                 </div>
-                <div className={'inline hidden'} style={{width: 106}}>
+                <div className={'inline hidden'} style={{ width: 106 }}>
                   <AntInputNumber
                     name={'Number of Volunteers'}
                     type="number"
                     min={0}
+                    style={{ width: 260 }}
+                    layout={formLayouts.formItemLayoutEventForm}
                   />
                 </div>
+                <small>We recommend adding +5 to your need</small>
               </div>
             </div>
-            <AntTextArea name={'Event Details'} type="text"/>
+            <div>
+              <AntTextArea
+                name={'Event Details'}
+                type="text"
+                style={{ width: 700, height: 115 }}
+                layout={formLayouts.formItemLayoutEventForm}
+              />
+            </div>
+
             <div className={'inline'}>
               <AntTextArea
                 name={'Other Notes'}
-                style={{width: 423, height: 115}}
+                style={{ width: 423, height: 115 }}
                 placeholder={
                   'Any additional helpful tips for the event go here.'
                 }
-                layout={formLayouts.formItemLayout}
+                layout={formLayouts.formItemLayoutEventForm}
                 notRequired
               />
             </div>
@@ -380,16 +385,12 @@ export const CreateEvent = props => {
 };
 
 const StyledCreateEvent = styled.div`
-  margin: 2rem;
   width: 100%;
   font-weight: bold;
   text-align: left;
-
+  padding: 8rem;
   .inline {
     width: 50%;
-  }
-  label {
-    margin-left: 25px;
   }
   .buttonStyles {
     display: flex;
@@ -397,10 +398,21 @@ const StyledCreateEvent = styled.div`
   }
 
   .styledGroup {
-    margin: 3rem;
     background-color: #e8e8e8;
     border-radius: 3px;
     padding: 3rem;
+    margin-bottom: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .pocWrapper {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .volunteerNumberWrapper {
+    display: flex;
+    flex-direction: column;
   }
 
   .hidden {
@@ -413,9 +425,8 @@ const StyledCreateEvent = styled.div`
       visibility: hidden;
     }
   }
-
-  .mg-tp-lg {
-    margin-top: 4rem;
+  .timeWrapper {
+    display: flex;
   }
   label {
     color: ${props => props.theme.primary8};
@@ -441,6 +452,7 @@ const StyledDiv = styled.div`
 const CustomStyledCard = styled(StyledCard)`
   &&& {
     background: #fafafa;
+    margin: 3rem;
     text-align: center;
     cursor: default;
     transition: none;
