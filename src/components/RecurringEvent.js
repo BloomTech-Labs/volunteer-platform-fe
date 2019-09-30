@@ -162,28 +162,35 @@ export const RecurringEvent = props => {
 
   return (
     <StyledRecurringEvent>
-      <label>
+      <div>
         <Radio.Group
           onChange={handleCheckBox}
           disabled={!localState.dynamicDay}
+          className={'radioWrapper'}
+          style={{ marginLeft: 100 }}
+          layout={formLayouts.empty}
         >
           <Radio value={'Yes'}>Yes</Radio>
           <Radio value={'No'}>No</Radio>
         </Radio.Group>
         {localState.recurringEvent === 'Yes' && (
-          <label>
+          <div>
             <div className={'repeatWrapper'}>
               <StyledSelect
                 style={{ width: 200 }}
                 name={'Repeat Time Period'}
                 onChange={handleRepeatPeriod}
-                layout={formLayouts.formItemLayoutEventForm}
+                layout={formLayouts.empty}
               >
                 {repeatTimePeriod}
               </StyledSelect>
             </div>
             <label>Ends</label>
-            <Radio.Group name={'Occurrence Ends'} onChange={handleOccurrences}>
+            <Radio.Group
+              name={'Occurrence Ends'}
+              onChange={handleOccurrences}
+              className={'radioWrapper'}
+            >
               <Radio value={'Never'}>Never</Radio>
               <Radio value={'On'}>On</Radio>
               <Radio value={'After'}>After</Radio>
@@ -209,7 +216,7 @@ export const RecurringEvent = props => {
                   : true
               }
             />
-          </label>
+          </div>
         )}
 
         <Modal
@@ -265,11 +272,16 @@ export const RecurringEvent = props => {
             )}
           </WrappedAntForm>
         </Modal>
-      </label>
+      </div>
     </StyledRecurringEvent>
   );
 };
 
-const StyledRecurringEvent = styled.div``;
+const StyledRecurringEvent = styled.div`
+  .radioWrapper {
+    display: flex;
+    justify-content: center;
+  }
+`;
 
 export default RecurringEvent;
