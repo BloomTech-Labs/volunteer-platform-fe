@@ -24,6 +24,7 @@ export const LandingPage = () => {
   const handleChange = e => {
     setLocation(e.target.value);
   };
+
   useEffect(() => {
     axios
       .get(`https://geoip-db.com/json/${process.env.REACT_APP_ipinfoKey}`)
@@ -66,7 +67,7 @@ export const LandingPage = () => {
                   state: { userLocation: location },
                 }}
               >
-                <Icon type="search" />
+                Find Events
               </Link>
             }
             size="large"
@@ -134,9 +135,7 @@ const HeroContent = styled.div`
   }
   
   .ant-input-search {
-    width: 50%;
-    min-width: 250px
-    max-width: 350px;
+    width: 350px;
   }
 
   button {
