@@ -3,13 +3,16 @@ import styled from 'styled-components';
 
 export const ProgressBar = ({percentage}) => {
   return (
-    <ProgressBar>
+      <>
+      <h5>{`Progress Made: ${percentage}%`}</h5>
+    <ProgressBarStyled>
       <FillerBar percentage={percentage} />
-    </ProgressBar>
+    </ProgressBarStyled>
+    </>
   );
 };
 
-const ProgressBar = styled.div`
+const ProgressBarStyled = styled.div`
   height: 20px;
   width: 75%;
   border-radius: 50px;
