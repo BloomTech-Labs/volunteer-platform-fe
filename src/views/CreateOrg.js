@@ -328,7 +328,6 @@ const StyledCreateOrgForm = styled.div`
   }
 
   .DaysOfWeek {
-    //border: 1px red solid;
     width: 100%;
     max-width: 100%;
     display: flex;
