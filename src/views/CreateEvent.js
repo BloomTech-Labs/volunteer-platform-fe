@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Select } from 'antd';
+import { Select, Row, Col } from 'antd';
 import styled from 'styled-components';
 import {
   AntInput,
@@ -173,110 +173,107 @@ export const CreateEvent = props => {
       >
         <h1>Let's Create An Event</h1>
         <StyledImg src={createEventImg} alt="undraw unexpected friends" />
-        <StyledCreateEvent style={{ marginRight: '1rem' }}>
+        <StyledCreateEvent>
           <WrappedAntForm
             cancelButton={true}
             cancelButtonText={'Cancel'}
             handleCancel={cancelForm}
-            layout={'vertical'}
             onSubmit={handleSubmit}
+            layout={'vertical'}
             buttonType={'primary'}
             buttonText={'Submit'}
-            className={'flex center'}
           >
-            <div className={'flex'}>
-              <div className={'inline'}>
+            <div className={'nameCauseWrapper'}>
+              <div className={'inlineDouble'}>
                 <AntInput
                   name={'Name of Event'}
                   type="text"
-                  layout={formLayouts.formItemLayoutEventForm}
+                  layout={formLayouts.empty}
                 />
               </div>
-              <div className={'inline invisible'}>
+              <div className={'inlineDouble'}>
                 <AntSelect
                   name={'Types of Causes'}
                   placeholder="Types of Causes"
                   mode="multiple"
-                  layout={formLayouts.formItemLayoutEventForm}
+                  layout={formLayouts.empty}
                 >
                   {causeAreaTags}
                 </AntSelect>
               </div>
             </div>
-            <AntInput
-              name={'Street Address'}
-              style={{ width: 550, marginLeft: 10 }}
-              layout={formLayouts.formItemLayoutEventForm}
-            />
-            <div className={'flex'}>
-              <div className={'inline'}>
+            <div className={'addressWrapper'}>
+              <AntInput name={'Street Address'} layout={formLayouts.empty} />
+            </div>
+
+            <div className={'locationWrapper'}>
+              <div className={'inlineTriple'}>
                 <AntInput
                   name={'City'}
-                  layout={formLayouts.formItemLayoutEventForm}
+                  layout={formLayouts.empty}
                   placeholder="City"
                 ></AntInput>
               </div>
-              <div className={'inline'}>
+              <div className={'inlineTriple'}>
                 <AntInput
                   name={'State'}
-                  layout={formLayouts.formItemLayoutEventForm}
+                  layout={formLayouts.empty}
                   placeholder="State"
                 ></AntInput>
               </div>
-              <div className={'inline'}>
+              <div className={'inlineTriple'}>
                 <AntInput
                   name={'Phone Number'}
                   pattern={'[0-9]{3}-[0-9]{3}-[0-9]{4}'}
                   placeholder={'000-000-0000'}
-                  layout={formLayouts.formItemLayoutEventForm}
+                  layout={formLayouts.empty}
                 />
               </div>
             </div>
 
             <label>When is the event?</label>
             <div className={'styledGroup'}>
-              <div className={'flex column center'}>
-                <div className={'inline textCenter'}>
-                  <AntDatePicker
-                    name={'Date'}
-                    format={dateFormat}
-                    onChange={handleDynmaicDate}
-                    disabledDate={current =>
-                      current && current < moment().endOf('day')
-                    }
-                    layout={formLayouts.formItemLayoutEventForm}
-                  />
-                </div>
-                <div className={'inline flex'}>
-                  <RecurringEvent
-                    name={'Is This a Recurring Event ?'}
-                    localState={localState}
-                    setState={setState}
-                    layout={formLayouts.formItemLayoutEventForm}
-                    notRequired
-                  />
-                </div>
+              <label>Date*</label>
+              <div className={'dateWrapper hidden'}>
+                <AntDatePicker
+                  name={'Date'}
+                  format={dateFormat}
+                  onChange={handleDynmaicDate}
+                  disabledDate={current =>
+                    current && current < moment().endOf('day')
+                  }
+                  layout={formLayouts.empty}
+                />
+              </div>
+              <div className={''}>
+                <RecurringEvent
+                  name={'Is This a Recurring Event ?'}
+                  localState={localState}
+                  setState={setState}
+                  layout={formLayouts.empty}
+                  notRequired
+                />
               </div>
 
               <label>What time ?</label>
               <div className={'timeWrapper'}>
-                <div className={'inline hidden'}>
+                <div className={'hidden'}>
                   <AntTimePicker
                     name={'Start Time'}
                     use12Hours
                     format={'h:mm a'}
                     defaultOpenValue={moment('00:00:00', 'HH:mm')}
-                    layout={formLayouts.formItemLayoutEventForm}
+                    layout={formLayouts.empty}
                   />
                 </div>
-                <p>to</p>
-                <div className={'inline hidden'}>
+                <p className="to">to</p>
+                <div className={'hidden'}>
                   <AntTimePicker
                     name={'End Time'}
                     use12Hours
                     format={'h:mm a'}
                     defaultOpenValue={moment('00:00:00', 'HH:mm')}
-                    layout={formLayouts.formItemLayoutEventForm}
+                    layout={formLayouts.empty}
                   />
                 </div>
               </div>
@@ -284,96 +281,88 @@ export const CreateEvent = props => {
 
             <label>Who is the point of Contact?</label>
 
-            <div className={' pocWrapper'}>
+            <div className={'pocWrapper'}>
               <div className={'inline'}>
                 <AntInput
                   name={'First Name'}
                   type="text"
-                  layout={formLayouts.formItemLayoutEventForm}
+                  layout={formLayouts.empty}
                 />
               </div>
               <div className={'inline'}>
                 <AntInput
                   name={'Last Name'}
                   type="text"
-                  layout={formLayouts.formItemLayoutEventForm}
+                  layout={formLayouts.empty}
                 />
               </div>
               <div className={'inline'}>
                 <AntInput
                   name={'Email'}
                   type="email"
-                  layout={formLayouts.formItemLayoutEventForm}
+                  layout={formLayouts.empty}
                 />
               </div>
             </div>
             <label>What are the requirements?</label>
             <div className={'styledGroup'}>
               <label>List Requirements here</label>
-              <div className={'inline hidden'}>
-                <AntSelect
-                  name={'Volunteer Requirements'}
-                  placeholder="Type here and a tag will appear"
-                  mode="multiple"
-                  layout={formLayouts.formItemLayoutEventForm}
-                >
-                  {requirementTags}
-                </AntSelect>
-              </div>
-              <div className={'inline'}>
-                <AntSelect
-                  name={'Interest'}
-                  placeholder="All"
-                  mode="multiple"
-                  layout={formLayouts.formItemLayoutEventForm}
-                >
-                  {interestTags}
-                </AntSelect>
+              <div className={'requirementsInterestWrapper'}>
+                <div className={'hidden requirementsWrapper'}>
+                  <AntSelect
+                    name={'Volunteer Requirements'}
+                    placeholder="Type here and a tag will appear"
+                    mode="multiple"
+                    layout={formLayouts.empty}
+                  >
+                    {requirementTags}
+                  </AntSelect>
+                </div>
+                <div className={''}>
+                  <AntSelect
+                    name={'Interest'}
+                    placeholder="All"
+                    mode="multiple"
+                    layout={formLayouts.empty}
+                  >
+                    {interestTags}
+                  </AntSelect>
+                </div>
               </div>
             </div>
+            <div className={'eventDetailsWrapper'}>
+              <AntTextArea name={'Event Details'} layout={formLayouts.empty} />
+            </div>
 
-            <div className={'flex styledGroup'}>
-              <div className={'inline'}>
-                <AntInput
-                  name={'Website'}
-                  layout={formLayouts.formItemLayoutEventForm}
-                />
-              </div>
-              <div className={'flex volunteerNumberWrapper'}>
-                <div className={'flex column'}>
+            <div className={'styledGroup'}>
+              <div className={'volunteerNumberWebsiteWrapper'}>
+                <div className={''}>
+                  <AntInput name={'Website'} layout={formLayouts.empty} />
+                </div>
+                <div className={''}>
                   <label style={{ width: 250 }}>
                     How many volunteers do you need?
                   </label>
                 </div>
-                <div className={'inline hidden'} style={{ width: 106 }}>
+                <div className={'hidden'} style={{ width: 106 }}>
                   <AntInputNumber
                     name={'Number of Volunteers'}
                     type="number"
                     min={0}
-                    style={{ width: 260 }}
-                    layout={formLayouts.formItemLayoutEventForm}
+                    layout={formLayouts.empty}
                   />
                 </div>
                 <small>We recommend adding +5 to your need</small>
               </div>
             </div>
-            <div>
-              <AntTextArea
-                name={'Event Details'}
-                type="text"
-                style={{ width: 700, height: 115 }}
-                layout={formLayouts.formItemLayoutEventForm}
-              />
-            </div>
 
-            <div className={'inline'}>
+            <div className={'otherNotesWrapper'}>
               <AntTextArea
                 name={'Other Notes'}
-                style={{ width: 423, height: 115 }}
                 placeholder={
                   'Any additional helpful tips for the event go here.'
                 }
-                layout={formLayouts.formItemLayoutEventForm}
+                layout={formLayouts.empty}
                 notRequired
               />
             </div>
@@ -392,6 +381,9 @@ const StyledCreateEvent = styled.div`
   .inline {
     width: 50%;
   }
+  .inlineTriple {
+    width: 35%;
+  }
   .buttonStyles {
     display: flex;
     justify-content: space-around;
@@ -400,34 +392,72 @@ const StyledCreateEvent = styled.div`
   .styledGroup {
     background-color: #e8e8e8;
     border-radius: 3px;
-    padding: 3rem;
+    padding: 2rem;
     margin-bottom: 3rem;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
-  .pocWrapper {
+  .nameCauseWrapper {
     display: flex;
-    flex-wrap: wrap;
+    width: 100%;
+    justify-content: space-between;
   }
-  .volunteerNumberWrapper {
-    display: flex;
-    flex-direction: column;
-  }
+  .addressWrapper {
+    width: 100%;
 
-  .hidden {
-    label {
-      display: none;
+    input {
+      width: 625px;
     }
   }
-  .invisible {
-    label {
-      visibility: hidden;
+  .locationWrapper {
+    display: flex;
+    flex-direction: space-between;
+
+    input {
+      width: 200px;
+    }
+  }
+  .dateWrapper {
+    text-align: center;
+    input {
+      width: 175px;
     }
   }
   .timeWrapper {
     display: flex;
   }
+  .to {
+    margin: 15px;
+  }
+  .pocWrapper {
+    display: flex;
+    flex-wrap: wrap;
+
+    input {
+      width: 175px;
+    }
+  }
+  .requirementsInterestWrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .volunteerNumberWebsiteWrapper {
+    width: 100%;
+  }
+  .eventDetailsWrapper {
+    width: 200%;
+  }
+  .otherNotesWrapper {
+    width: 200%;
+  }
+  .hidden {
+    label {
+      display: none;
+    }
+  }
+
   label {
     color: ${props => props.theme.primary8};
   }

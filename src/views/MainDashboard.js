@@ -7,12 +7,14 @@ import {
   FilteredComponent,
   FilterTopbar,
   NoEventsFound,
+  Loader,
 } from '../components';
 import { getAllEventsByState, getAllRecurringEventsByState } from '../actions';
 import { stateConversion } from '../utility/stateConversion';
 
 export const MainDashboard = () => {
   const [state, dispatch] = useStateValue();
+  const [loadingEvents, setLoadingEvents] = useState(true);
   const [filtersTouched, setFiltersTouched] = useState(false);
   const [tagFilterState, setTagFilterState] = useState({
     interests: {},
@@ -70,7 +72,8 @@ export const MainDashboard = () => {
         message.warning(
           'Unable to get your location. Please enter your state below.'
         );
-      });
+      })
+      .finally(() => setLoadingEvents(false));
   }, []);
 
   useEffect(() => {
@@ -120,16 +123,20 @@ export const MainDashboard = () => {
         activeTab={activeTabKey}
         setActiveTabKey={setActiveTabKey}
       />
-      {filtersTouched && !state.events.events.length ? (
-        <NoEventsFound filtersTouched={true} />
-      ) : (
-        <FilteredEventList
-          events={state.events.events}
-          recurringEvents={state.events.recurringEvents}
-          filter={inputState}
-          tagFilter={tagFilterState}
-        />
-      )}
+      <div style={{ minHeight: 400, margin: '0 auto' }}>
+        {loadingEvents ? (
+          <Loader />
+        ) : filtersTouched && !state.events.events.length ? (
+          <NoEventsFound filtersTouched={true} />
+        ) : (
+          <FilteredEventList
+            events={state.events.events}
+            recurringEvents={state.events.recurringEvents}
+            filter={inputState}
+            tagFilter={tagFilterState}
+          />
+        )}
+      </div>
     </div>
   );
 };

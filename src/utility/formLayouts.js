@@ -29,6 +29,9 @@ export const formLayouts = {
       sm: { span: 15 },
     },
   },
+  empty: {
+    labelCol: {},
+  },
   formItemLayoutDaysOfWeek: {
     labelCol: {
       xs: '480px',
