@@ -151,7 +151,7 @@ const StyledCenter = styled.div`
     display: flex;
     flex-direction: column;
     margin: 2rem auto;
-    align-items: center:
+    align-items: center;
   }
 
   
