@@ -331,12 +331,7 @@ export const CreateEvent = props => {
               </div>
             </div>
             <div className={'eventDetailsWrapper'}>
-              <AntTextArea
-                name={'Event Details'}
-                type="text"
-                style={{ width: 700, height: 115 }}
-                layout={formLayouts.empty}
-              />
+              <AntTextArea name={'Event Details'} layout={formLayouts.empty} />
             </div>
 
             <div className={'styledGroup'}>
@@ -344,17 +339,16 @@ export const CreateEvent = props => {
                 <div className={''}>
                   <AntInput name={'Website'} layout={formLayouts.empty} />
                 </div>
-                <div className={'flex column'}>
+                <div className={''}>
                   <label style={{ width: 250 }}>
                     How many volunteers do you need?
                   </label>
                 </div>
-                <div className={'inline hidden'} style={{ width: 106 }}>
+                <div className={'hidden'} style={{ width: 106 }}>
                   <AntInputNumber
                     name={'Number of Volunteers'}
                     type="number"
                     min={0}
-                    style={{ width: 260 }}
                     layout={formLayouts.empty}
                   />
                 </div>
@@ -365,7 +359,6 @@ export const CreateEvent = props => {
             <div className={'otherNotesWrapper'}>
               <AntTextArea
                 name={'Other Notes'}
-                style={{ width: 423, height: 115 }}
                 placeholder={
                   'Any additional helpful tips for the event go here.'
                 }
@@ -409,10 +402,6 @@ const StyledCreateEvent = styled.div`
     display: flex;
     width: 100%;
     justify-content: space-between;
-
-    input {
-      width: 400px;
-    }
   }
   .addressWrapper {
     width: 100%;
