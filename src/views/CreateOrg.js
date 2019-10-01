@@ -4,6 +4,7 @@ import { StyledCard } from '../styled';
 import { useStateValue } from '../hooks/useStateValue';
 import { registerOrganization, updateOrganization } from '../actions';
 import createOrgImg from '../assets/undraw_unexpected_friends.svg';
+import { ProgressBar } from '../components';
 import {
   FirstPart,
   SecondPart,
@@ -38,9 +39,19 @@ export const CreateOrg = props => {
     3: ThirdPart,
     4: LastPart,
   };
-  const clickNext = values => {};
+
+  const RenderedPart = possibleParts[partCount];
+
+  const clickNext = values => {
+    setLocalState({ ...localState, [partCount]: values });
+    setPartCount(partCount => partCount + 1);
+  };
 
   const cancelForm = e => {};
+
+  const clickPrevious = () => {
+    setPartCount(partCount => partCount - 1);
+  };
   const onSubmit = values => {
     let POC = [];
     POC.push({
@@ -72,16 +83,24 @@ export const CreateOrg = props => {
     // } else {
     //   registerOrganization(org, dispatch);
     // }
-    registerOrganization(org, dispatch)
+    registerOrganization(org, dispatch);
     props.history.push('/org-dashboard');
   };
-console.log(possibleParts[partCount])
+  
   return (
     <StyledDiv className={'flex center'}>
       <CustomStyledCard style={{ maxWidth: '900px', margin: '2rem 0 5rem 0' }}>
-        <StyledImg src={createOrgImg} alt="undraw unexpected friends" />
+        <ProgressBar percentage={(partCount / 4) * 100} />
         <h1>{possibleHeaders[partCount]}</h1>
-        <div>{possibleParts[partCount]}<FirstPart /></div>
+        <StyledImg src={createOrgImg} alt="undraw unexpected friends" />
+        <div>
+          <RenderedPart
+            clickNext={clickNext}
+            storedData={localState[partCount]}
+            cancelForm={cancelForm}
+            clickPrevious={clickPrevious}
+          />
+        </div>
       </CustomStyledCard>
     </StyledDiv>
   );

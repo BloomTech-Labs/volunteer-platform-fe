@@ -11,11 +11,8 @@ import { causeAreas } from '../../reducers/initialState';
 
 const Option = Select.Option;
 
-export const FirstPart = ({
-  clickNext,
-  storedData,
-  cancelForm,
-}) => {
+export const FirstPart = ({ clickNext, storedData, cancelForm }) => {
+  
   return (
     <WrappedAntForm
       layout={'vertical'}
@@ -23,7 +20,9 @@ export const FirstPart = ({
       handleCancel={cancelForm}
       autofill={storedData}
       buttonText={'Next'}
+      cancelButton
       cancelButtonText={'Cancel'}
+      noFormLayout
     >
       <AntInput
         name={'Name of Organization'}
@@ -50,6 +49,7 @@ export const FirstPart = ({
       <h4>What type of cause is your organization serving?</h4>
       <AntSelect
         name={'Type of Causes'}
+        showArrow
         label={
           <>
             Types of causes <Icon type="question-circle-o" />
