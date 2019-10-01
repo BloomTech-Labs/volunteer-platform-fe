@@ -17,6 +17,7 @@ import RecurringEvent from '../components/RecurringEvent';
 import moment from 'moment';
 import createEventImg from '../assets/undraw_blooming_jtv6.svg';
 import { formLayouts } from '../utility/formLayouts';
+import CreateEventPartOne from '../components/CreateEvent/CreateEventPartOne';
 
 const { Option } = Select;
 
@@ -34,8 +35,9 @@ export const CreateEvent = props => {
     volunteerRequirements: [],
     website: '',
     recurringInfo: {},
+    pageNumber: 1,
   };
-  const [localState, setState] = useState(initialEvent);
+  const [localState, setLocalState] = useState(initialEvent);
 
   const [state, dispatch] = useStateValue();
 
@@ -44,7 +46,7 @@ export const CreateEvent = props => {
 
   useEffect(() => {
     if (props.location.state.org) {
-      setState({
+      setLocalState({
         ...localState,
         orgId: props.location.state.org.orgId,
       });
@@ -129,7 +131,7 @@ export const CreateEvent = props => {
     }
     let nth = { 1: 'First', 2: 'Second', 3: 'Third', 4: 'Fourth', 5: 'Fifth' };
 
-    setState({
+    setLocalState({
       ...localState,
       dynamicDay: dynamicDay,
       dynamicYear: dynamicYear,
@@ -166,230 +168,187 @@ export const CreateEvent = props => {
   };
 
   return (
-    <StyledDiv className={'flex center'}>
-      <CustomStyledCard
-        className={'flex center'}
-        style={{ maxWidth: '900px', margin: '2rem 0 5rem 0' }}
-      >
-        <h1>Let's Create An Event</h1>
-        <StyledImg src={createEventImg} alt="undraw unexpected friends" />
-        <StyledCreateEvent>
-          <WrappedAntForm
-            cancelButton={true}
-            cancelButtonText={'Cancel'}
-            handleCancel={cancelForm}
-            onSubmit={handleSubmit}
-            layout={'vertical'}
-            buttonType={'primary'}
-            buttonText={'Submit'}
-          >
-            <div className={'nameCauseWrapper'}>
-              <div className={''}>
-                <AntInput
-                  name={'Name of Event'}
-                  type="text"
-                  layout={formLayouts.empty}
-                  style={{ width: 240 }}
-                />
-              </div>
-              <div className={''}>
-                <AntSelect
-                  name={'Types of Causes'}
-                  placeholder="Types of Causes"
-                  mode="multiple"
-                  layout={formLayouts.empty}
-                  style={{ width: 240 }}
-                >
-                  {causeAreaTags}
-                </AntSelect>
-              </div>
-            </div>
-            <div className={'addressWrapper'}>
-              <AntInput name={'Street Address'} layout={formLayouts.empty} />
-            </div>
+    <CreateEventPartOne
+      state={state}
+      localState={localState}
+      setState={setLocalState}
+      cancel={props.history}
+    />
 
-            <div className={'locationWrapper'}>
-              <div className={'inlineTriple'}>
-                <AntInput
-                  name={'City'}
-                  layout={formLayouts.empty}
-                  placeholder="City"
-                ></AntInput>
-              </div>
-              <div className={'inlineTriple'}>
-                <AntInput
-                  name={'State'}
-                  layout={formLayouts.empty}
-                  placeholder="State"
-                ></AntInput>
-              </div>
-              <div className={'inlineTriple'}>
-                <AntInput
-                  name={'Phone Number'}
-                  pattern={'[0-9]{3}-[0-9]{3}-[0-9]{4}'}
-                  placeholder={'000-000-0000'}
-                  layout={formLayouts.empty}
-                />
-              </div>
-            </div>
+    // <StyledDiv className={'flex center'}>
+    //   <CustomStyledCard
+    //     className={'flex center'}
+    //     style={{ maxWidth: '900px', margin: '2rem 0 5rem 0' }}
+    //   >
+    //     <h1>Let's Create An Event</h1>
+    //     <StyledImg src={createEventImg} alt="undraw unexpected friends" />
+    //     <StyledCreateEvent>
+    //       <WrappedAntForm
+    //         cancelButton={true}
+    //         cancelButtonText={'Cancel'}
+    //         handleCancel={cancelForm}
+    //         onSubmit={handleSubmit}
+    //         layout={'vertical'}
+    //         buttonType={'primary'}
+    //         buttonText={'Submit'}
+    //       >
+    //         <label>When is the event?</label>
+    //         <div className={'styledGroup'}>
+    //           <label>Date*</label>
+    //           <div className={'dateWrapper hidden'}>
+    //             <AntDatePicker
+    //               name={'Date'}
+    //               format={dateFormat}
+    //               onChange={handleDynmaicDate}
+    //               disabledDate={current =>
+    //                 current && current < moment().endOf('day')
+    //               }
+    //               layout={formLayouts.empty}
+    //             />
+    //           </div>
+    //           <div className={'recurringWrapper'}>
+    //             <RecurringEvent
+    //               name={'Is This a Recurring Event ?'}
+    //               localState={localState}
+    //               setState={setState}
+    //               layout={formLayouts.empty}
+    //               notRequired
+    //             />
+    //           </div>
 
-            <label>When is the event?</label>
-            <div className={'styledGroup'}>
-              <label>Date*</label>
-              <div className={'dateWrapper hidden'}>
-                <AntDatePicker
-                  name={'Date'}
-                  format={dateFormat}
-                  onChange={handleDynmaicDate}
-                  disabledDate={current =>
-                    current && current < moment().endOf('day')
-                  }
-                  layout={formLayouts.empty}
-                />
-              </div>
-              <div className={'recurringWrapper'}>
-                <RecurringEvent
-                  name={'Is This a Recurring Event ?'}
-                  localState={localState}
-                  setState={setState}
-                  layout={formLayouts.empty}
-                  notRequired
-                />
-              </div>
+    //           <label>What time ?</label>
+    //           <div className={'timeWrapper'}>
+    //             <div className={'hidden'}>
+    //               <AntTimePicker
+    //                 name={'Start Time'}
+    //                 use12Hours
+    //                 format={'h:mm a'}
+    //                 defaultOpenValue={moment('00:00:00', 'HH:mm')}
+    //                 layout={formLayouts.empty}
+    //               />
+    //             </div>
+    //             <p className="to">to</p>
+    //             <div className={'hidden'}>
+    //               <AntTimePicker
+    //                 name={'End Time'}
+    //                 use12Hours
+    //                 format={'h:mm a'}
+    //                 defaultOpenValue={moment('00:00:00', 'HH:mm')}
+    //                 layout={formLayouts.empty}
+    //               />
+    //             </div>
+    //           </div>
+    //         </div>
 
-              <label>What time ?</label>
-              <div className={'timeWrapper'}>
-                <div className={'hidden'}>
-                  <AntTimePicker
-                    name={'Start Time'}
-                    use12Hours
-                    format={'h:mm a'}
-                    defaultOpenValue={moment('00:00:00', 'HH:mm')}
-                    layout={formLayouts.empty}
-                  />
-                </div>
-                <p className="to">to</p>
-                <div className={'hidden'}>
-                  <AntTimePicker
-                    name={'End Time'}
-                    use12Hours
-                    format={'h:mm a'}
-                    defaultOpenValue={moment('00:00:00', 'HH:mm')}
-                    layout={formLayouts.empty}
-                  />
-                </div>
-              </div>
-            </div>
+    //         <label>Who is the point of Contact?</label>
 
-            <label>Who is the point of Contact?</label>
+    //         <div className={'pocWrapper'}>
+    //           <div className={'inline'}>
+    //             <AntInput
+    //               name={'First Name'}
+    //               type="text"
+    //               layout={formLayouts.empty}
+    //               style={{ width: 240 }}
+    //             />
+    //           </div>
+    //           <div className={'inline'}>
+    //             <AntInput
+    //               name={'Last Name'}
+    //               type="text"
+    //               layout={formLayouts.empty}
+    //               style={{ width: 240 }}
+    //             />
+    //           </div>
+    //           <div className={'inline'}>
+    //             <AntInput
+    //               name={'Email'}
+    //               type="email"
+    //               layout={formLayouts.empty}
+    //               style={{ width: 240 }}
+    //             />
+    //           </div>
+    //         </div>
+    //         <label>What are the requirements?</label>
+    //         <div className={'styledGroup'}>
+    //           <label>List Requirements here</label>
+    //           <div className={'requirementsInterestWrapper'}>
+    //             <div className={'hidden requirementsWrapper'}>
+    //               <AntSelect
+    //                 name={'Volunteer Requirements'}
+    //                 placeholder="Type here and a tag will appear"
+    //                 mode="multiple"
+    //                 layout={formLayouts.empty}
+    //                 style={{ width: 240 }}
+    //               >
+    //                 {requirementTags}
+    //               </AntSelect>
+    //             </div>
+    //             <div className={''}>
+    //               <AntSelect
+    //                 name={'Interest'}
+    //                 placeholder="All"
+    //                 mode="multiple"
+    //                 layout={formLayouts.empty}
+    //                 style={{ width: 240 }}
+    //               >
+    //                 {interestTags}
+    //               </AntSelect>
+    //             </div>
+    //           </div>
+    //         </div>
+    //         <div className={'eventDetailsWrapper'}>
+    //           <AntTextArea
+    //             name={'Event Details'}
+    //             placeholder={
+    //               'What the volunteer would do at the event would go here.'
+    //             }
+    //             layout={formLayouts.empty}
+    //             style={{ height: 115 }}
+    //           />
+    //         </div>
 
-            <div className={'pocWrapper'}>
-              <div className={'inline'}>
-                <AntInput
-                  name={'First Name'}
-                  type="text"
-                  layout={formLayouts.empty}
-                  style={{ width: 240 }}
-                />
-              </div>
-              <div className={'inline'}>
-                <AntInput
-                  name={'Last Name'}
-                  type="text"
-                  layout={formLayouts.empty}
-                  style={{ width: 240 }}
-                />
-              </div>
-              <div className={'inline'}>
-                <AntInput
-                  name={'Email'}
-                  type="email"
-                  layout={formLayouts.empty}
-                  style={{ width: 240 }}
-                />
-              </div>
-            </div>
-            <label>What are the requirements?</label>
-            <div className={'styledGroup'}>
-              <label>List Requirements here</label>
-              <div className={'requirementsInterestWrapper'}>
-                <div className={'hidden requirementsWrapper'}>
-                  <AntSelect
-                    name={'Volunteer Requirements'}
-                    placeholder="Type here and a tag will appear"
-                    mode="multiple"
-                    layout={formLayouts.empty}
-                    style={{ width: 240 }}
-                  >
-                    {requirementTags}
-                  </AntSelect>
-                </div>
-                <div className={''}>
-                  <AntSelect
-                    name={'Interest'}
-                    placeholder="All"
-                    mode="multiple"
-                    layout={formLayouts.empty}
-                    style={{ width: 240 }}
-                  >
-                    {interestTags}
-                  </AntSelect>
-                </div>
-              </div>
-            </div>
-            <div className={'eventDetailsWrapper'}>
-              <AntTextArea
-                name={'Event Details'}
-                placeholder={
-                  'What the volunteer would do at the event would go here.'
-                }
-                layout={formLayouts.empty}
-                style={{ height: 115 }}
-              />
-            </div>
+    //         <div className={'styledGroup'}>
+    //           <div className={'volunteerNumberWebsiteWrapper'}>
+    //             <div className={''}>
+    //               <AntInput
+    //                 name={'Website'}
+    //                 layout={formLayouts.empty}
+    //                 style={{ width: 240 }}
+    //               />
+    //             </div>
+    //             <div className={''}>
+    //               <label style={{ width: 250 }}>
+    //                 How many volunteers do you need?
+    //               </label>
+    //             </div>
+    //             <div className={'hidden'} style={{ width: 106 }}>
+    //               <AntInputNumber
+    //                 name={'Number of Volunteers'}
+    //                 type="number"
+    //                 min={0}
+    //                 layout={formLayouts.empty}
+    //                 style={{ width: 240 }}
+    //               />
+    //             </div>
+    //             <small>We recommend adding +5 to your need</small>
+    //           </div>
+    //         </div>
 
-            <div className={'styledGroup'}>
-              <div className={'volunteerNumberWebsiteWrapper'}>
-                <div className={''}>
-                  <AntInput
-                    name={'Website'}
-                    layout={formLayouts.empty}
-                    style={{ width: 240 }}
-                  />
-                </div>
-                <div className={''}>
-                  <label style={{ width: 250 }}>
-                    How many volunteers do you need?
-                  </label>
-                </div>
-                <div className={'hidden'} style={{ width: 106 }}>
-                  <AntInputNumber
-                    name={'Number of Volunteers'}
-                    type="number"
-                    min={0}
-                    layout={formLayouts.empty}
-                    style={{ width: 240 }}
-                  />
-                </div>
-                <small>We recommend adding +5 to your need</small>
-              </div>
-            </div>
-
-            <div className={'otherNotesWrapper'}>
-              <AntTextArea
-                name={'Other Notes'}
-                placeholder={
-                  'Any additional helpful tips for the event go here.'
-                }
-                layout={formLayouts.empty}
-                style={{ height: 115 }}
-                notRequired
-              />
-            </div>
-          </WrappedAntForm>
-        </StyledCreateEvent>
-      </CustomStyledCard>
-    </StyledDiv>
+    //         <div className={'otherNotesWrapper'}>
+    //           <AntTextArea
+    //             name={'Other Notes'}
+    //             placeholder={
+    //               'Any additional helpful tips for the event go here.'
+    //             }
+    //             layout={formLayouts.empty}
+    //             style={{ height: 115 }}
+    //             notRequired
+    //           />
+    //         </div>
+    //       </WrappedAntForm>
+    //     </StyledCreateEvent>
+    //   </CustomStyledCard>
+    // </StyledDiv>
   );
 };
 
