@@ -78,9 +78,15 @@ export const MainDashboard = () => {
 
   useEffect(() => {
     if (inputState.location.state.length === 2) {
-      setFiltersTouched(true);
+      setLoadingEvents(true);
       getAllEventsByState(inputState.location.state, dispatch);
       getAllRecurringEventsByState(inputState.location.state, dispatch);
+      setTimeout(() => {
+        setLoadingEvents(false);
+      }, 500);
+      setTimeout(() => {
+        setFiltersTouched(true);
+      }, 500);
     }
   }, [inputState.location.state]);
 
@@ -95,6 +101,7 @@ export const MainDashboard = () => {
   };
 
   const onTagsChange = (e, name, collection) => {
+    setFiltersTouched(true);
     setTagFilterState({
       ...tagFilterState,
       [collection]: { ...tagFilterState[collection], [name]: e },
