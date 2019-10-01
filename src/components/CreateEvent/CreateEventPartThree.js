@@ -18,7 +18,13 @@ import { AntDatePicker } from '../../styled';
 const { Option } = Select;
 
 export const CreateEventPartThree = props => {
-  const { state, handleSubmit, handlePageBack } = props;
+  const {
+    state,
+    handleSubmit,
+    handlePageBack,
+    autoFillState,
+    pageNumber,
+  } = props;
   let requirementTags = [];
 
   if (state.tags.requirements) {
@@ -47,6 +53,7 @@ export const CreateEventPartThree = props => {
             layout={'vertical'}
             buttonType={'primary'}
             buttonText={'Next'}
+            autofill={autoFillState[pageNumber]}
           >
             <label>What are the requirements?</label>
             <div className={'styledGroup'}>
@@ -84,45 +91,6 @@ export const CreateEventPartThree = props => {
                 }
                 layout={formLayouts.empty}
                 style={{ height: 115 }}
-              />
-            </div>
-
-            <div className={'styledGroup'}>
-              <div className={'volunteerNumberWebsiteWrapper'}>
-                <div className={''}>
-                  <AntInput
-                    name={'Website'}
-                    layout={formLayouts.empty}
-                    style={{ width: 240 }}
-                  />
-                </div>
-                <div className={''}>
-                  <label style={{ width: 250 }}>
-                    How many volunteers do you need?
-                  </label>
-                </div>
-                <div className={'hidden'} style={{ width: 106 }}>
-                  <AntInputNumber
-                    name={'Number of Volunteers'}
-                    type="number"
-                    min={0}
-                    layout={formLayouts.empty}
-                    style={{ width: 240 }}
-                  />
-                </div>
-                <small>We recommend adding +5 to your need</small>
-              </div>
-            </div>
-
-            <div className={'otherNotesWrapper'}>
-              <AntTextArea
-                name={'Other Notes'}
-                placeholder={
-                  'Any additional helpful tips for the event go here.'
-                }
-                layout={formLayouts.empty}
-                style={{ height: 115 }}
-                notRequired
               />
             </div>
           </WrappedAntForm>

@@ -36,7 +36,14 @@ export const CreateEvent = props => {
     website: '',
     recurringInfo: {},
   };
+  const autoFillParts = {
+    1: {},
+    2: {},
+    3: {},
+    4: {},
+  };
   const [localState, setLocalState] = useState(initialEvent);
+  const [autoFillState, setAutoFillState] = useState(autoFillParts);
   let [pageNumberState, setPageNumberState] = useState({
     pageNumber: 1,
   });
@@ -107,6 +114,9 @@ export const CreateEvent = props => {
       removeUndefinied(event);
       // createEvent(event, dispatch);
     }
+    setPageNumberState({
+      pageNumber: 1,
+    });
 
     props.history.push('/org-dashboard');
   };
@@ -118,9 +128,17 @@ export const CreateEvent = props => {
     props.history.push('/org-dashboard');
   };
 
+  console.log(autoFillState);
+
   //Handle Form Parts Submit
   const handleFormPartSubmit = values => {
     console.log('parts', values);
+    if (pageNumberState.pageNumber) {
+      setAutoFillState({
+        ...autoFillState,
+        [pageNumberState.pageNumber]: values,
+      });
+    }
     setLocalState({
       ...localState,
       ...values,
@@ -138,171 +156,56 @@ export const CreateEvent = props => {
     });
   };
 
-  return (
-    <div>
+  const renderParts = {
+    1: (
       <CreateEventPartOne
-        state={state}
-        localState={localState}
-        setState={setLocalState}
-        handleSubmit={handleFormPartSubmit}
-        cancelForm={cancelForm}
-      />
-      <CreateEventPartTwo
         state={state}
         localState={localState}
         setLocalState={setLocalState}
         handleSubmit={handleFormPartSubmit}
-        handlePageBack={handlePageBack}
+        cancelForm={cancelForm}
+        pageNumber={pageNumberState.pageNumber}
+        autoFillState={autoFillState}
       />
+    ),
+    2: (
+      <CreateEventPartTwo
+        localState={localState}
+        setLocalState={setLocalState}
+        handleSubmit={handleFormPartSubmit}
+        handlePageBack={handlePageBack}
+        pageNumber={pageNumberState.pageNumber}
+        autoFillState={autoFillState}
+      />
+    ),
+    3: (
       <CreateEventPartThree
         state={state}
         localState={localState}
         setState={setLocalState}
         handleSubmit={handleFormPartSubmit}
         handlePageBack={handlePageBack}
+        pageNumber={pageNumberState.pageNumber}
+        autoFillState={autoFillState}
       />
+    ),
+    4: (
       <CreateEventPartFour
-        state={state}
         localState={localState}
         setState={setLocalState}
         handleSubmit={handleFormPartSubmit}
         handlePageBack={handlePageBack}
+        pageNumber={pageNumberState.pageNumber}
+        autoFillState={autoFillState}
       />
+    ),
+  };
+
+  return (
+    <div>
+      {pageNumberState.pageNumber && renderParts[pageNumberState.pageNumber]}
     </div>
   );
 };
-
-const StyledCreateEvent = styled.div`
-  width: 100%;
-  font-weight: bold;
-  text-align: left;
-  padding: 8rem;
-  .inline {
-    width: 50%;
-  }
-  .inlineTriple {
-    width: 35%;
-  }
-  .buttonStyles {
-    display: flex;
-    justify-content: space-around;
-  }
-
-  .styledGroup {
-    background-color: #e8e8e8;
-    border-radius: 3px;
-    padding: 2rem;
-    margin-bottom: 3rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-  .nameCauseWrapper {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-  }
-  .addressWrapper {
-    width: 100%;
-
-    input {
-      width: 625px;
-    }
-  }
-  .recurringWrapper {
-    display: flex;
-    margin-left: 40px;
-  }
-  .locationWrapper {
-    display: flex;
-    flex-direction: space-between;
-
-    input {
-      width: 200px;
-    }
-  }
-  .dateWrapper {
-    text-align: center;
-    input {
-      width: 175px;
-    }
-  }
-  .timeWrapper {
-    display: flex;
-  }
-  .to {
-    margin: 15px;
-  }
-  .pocWrapper {
-    display: flex;
-    flex-wrap: wrap;
-
-    input {
-      width: 175px;
-    }
-  }
-  .requirementsInterestWrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .volunteerNumberWebsiteWrapper {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .eventDetailsWrapper {
-    width: 200%;
-  }
-  .otherNotesWrapper {
-    width: 200%;
-  }
-  .hidden {
-    label {
-      display: none;
-    }
-  }
-
-  label {
-    color: ${props => props.theme.primary8};
-  }
-  small {
-    color: #bfbfbf;
-  }
-`;
-
-const StyledDiv = styled.div`
-  background: #003d61;
-
-  h1 {
-    color: ${props => props.theme.primary8};
-  }
-
-  h4 {
-    color: ${props => props.theme.primary8};
-  }
-  padding: 2rem;
-`;
-
-const CustomStyledCard = styled(StyledCard)`
-  &&& {
-    background: #fafafa;
-    margin: 3rem;
-    text-align: center;
-    cursor: default;
-    transition: none;
-    max-width: 1088px;
-    &:hover {
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-    }
-  }
-`;
-
-const StyledImg = styled.img`
-  width: 211px;
-  margin: 2rem auto;
-`;
 
 export default CreateEvent;

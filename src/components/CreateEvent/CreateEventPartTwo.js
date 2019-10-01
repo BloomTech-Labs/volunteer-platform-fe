@@ -20,7 +20,14 @@ import { AntDatePicker } from '../../styled';
 const { Option } = Select;
 
 export const CreateEventPartTwo = props => {
-  const { localState, setLocalState, handlePageBack, handleSubmit } = props;
+  const {
+    localState,
+    setLocalState,
+    handlePageBack,
+    handleSubmit,
+    autoFillState,
+    pageNumber,
+  } = props;
   const [dynamicState, setDynmaicState] = useState({
     dynmaicDay: '',
     dynamicYear: '',
@@ -78,6 +85,7 @@ export const CreateEventPartTwo = props => {
             layout={'vertical'}
             buttonType={'primary'}
             buttonText={'Next'}
+            autofill={autoFillState[pageNumber]}
           >
             <label>Who is your point of contact?</label>
             <div className={'pocWrapper'}>

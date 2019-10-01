@@ -25,6 +25,24 @@ export class AntForm extends React.Component {
       }
     }
   }
+  componentDidMount() {
+    for (let key in this.props.autofill) {
+      const field = this.props.form.getFieldInstance(key);
+      if (field) {
+        if (key === 'startTime' || key === 'endTime') {
+          if (typeof this.props.autofill[key] === 'string') {
+            const oldTime = moment(this.props.autofill[key], 'HH:MM A');
+            this.props.form.setFieldsValue({ [key]: oldTime });
+          } else {
+            const time = moment.unix(this.props.autofill[key], 'HH:MM A');
+            this.props.form.setFieldsValue({ [key]: time });
+          }
+        } else {
+          this.props.form.setFieldsValue({ [key]: this.props.autofill[key] });
+        }
+      }
+    }
+  }
 
   handleSubmit = e => {
     e.preventDefault();
@@ -70,8 +88,13 @@ export class AntForm extends React.Component {
       const camelCase = this.getCamelCase(child.props.name);
       const required = !child.props.notRequired;
       const rules = this.getRules(child.props.type, required);
-      let label = child.props.label ? ( child.props.notRequired ? child.props.label : child.props.label + '*' ) : 
-      ( child.props.notRequired ? child.props.name : child.props.name + '*' );
+      let label = child.props.label
+        ? child.props.notRequired
+          ? child.props.label
+          : child.props.label + '*'
+        : child.props.notRequired
+        ? child.props.name
+        : child.props.name + '*';
       if (child.props.tooltipTitle) {
         label = (
           <Tooltip title={child.props.tooltipTitle}>
@@ -143,8 +166,8 @@ export class AntForm extends React.Component {
         {this.renderChildren(this.props.children)}
         <div className={'buttonStyles'}>
           {this.props.cancelButton && (
-            <StyledCancelButton                    //use different style for cancel button
-              onClick={this.props.handleCancel}    //fix: changed this to this.props.handleCancel
+            <StyledCancelButton //use different style for cancel button
+              onClick={this.props.handleCancel} //fix: changed this to this.props.handleCancel
               type={this.props.buttonType}
             >
               {this.props.cancelButtonText}

@@ -18,7 +18,7 @@ import { AntDatePicker } from '../../styled';
 const { Option } = Select;
 
 export const CreateEventPartFour = props => {
-  const { handleSubmit, handlePageBack } = props;
+  const { handleSubmit, handlePageBack, pageNumber, autoFillState } = props;
 
   return (
     <StyledDiv className={'flex center'}>
@@ -37,6 +37,7 @@ export const CreateEventPartFour = props => {
             layout={'vertical'}
             buttonType={'primary'}
             buttonText={'Next'}
+            autofill={autoFillState[pageNumber]}
           >
             <div className={'styledGroup'}>
               <div className={'volunteerNumberWebsiteWrapper'}>

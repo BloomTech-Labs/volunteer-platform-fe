@@ -12,12 +12,11 @@ import {
 import styled from 'styled-components';
 import createEventImg from '../../assets/undraw_blooming_jtv6.svg';
 import { formLayouts } from '../../utility/formLayouts';
-import { AntDatePicker } from '../../styled';
 
 const { Option } = Select;
 
 export const CreateEventPartOne = props => {
-  const { state, handleSubmit, cancelForm } = props;
+  const { state, handleSubmit, cancelForm, autoFillState, pageNumber } = props;
 
   //Mapping through tags for antd select
   const causeAreaTags = state.tags.causeAreas.map(tag => {
@@ -29,7 +28,7 @@ export const CreateEventPartOne = props => {
   });
 
   //Handle Submit push values to parent state
-
+  console.log(autoFillState.partOne);
   //   };
   return (
     <StyledDiv className={'flex center'}>
@@ -48,6 +47,7 @@ export const CreateEventPartOne = props => {
             layout={'vertical'}
             buttonType={'primary'}
             buttonText={'Next'}
+            autofill={autoFillState[pageNumber]}
           >
             <div className={'nameCauseWrapper'}>
               <div className={''}>
