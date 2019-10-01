@@ -1,71 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { WrappedAntForm, AntInput } from '../../styled';
-import { Icon } from 'antd';
+import { Icon, Form } from 'antd';
+import { POC } from './POC';
+import {StyledButton, StyledCancelButton} from '../../styled'
 
 export const SecondPart = ({ clickNext, storedData, clickPrevious }) => {
-  const [numberOfPOC, setNumberOfPOC] = useState(2);
-  const [allPOCs, setAllPOCs] = useState([createPOC(1)]);
-
-  function createPOC(i) {
-    return (
-      <div className="fullPOCDiv">
-        <span>{i}</span>
-        <>
-          {i > 1 && (
-            <Icon type="delete" onClick={() => changePOC('delete', i)} />
-          )}
-        </>
-        <div className="pocInfo">
-          <AntInput
-            name={`fullName${i}`}
-            label={'Full Name'}
-            key={`fullName${i}`}
-            placeholder={'Jane Done'}
-          />
-          <AntInput
-            name={`email${i}`}
-            label={'Email'}
-            key={`email${i}`}
-            placeholder={'jane.doe@gmail.com'}
-          />
-          <AntInput
-            name={`phone${i}`}
-            label={'Phone'}
-            key={`phone${i}`}
-            placeholder={'(202) 213-1234'}
-          />
-        </div>
-      </div>
-    );
-  }
+  const [allPOCs, setAllPOCs] = useState([1]);
 
   const changePOC = (action, i) => {
     if (action === 'add') {
-      setAllPOCs([...allPOCs, createPOC(numberOfPOC)]);
-      setNumberOfPOC(numberOfPOC => numberOfPOC + 1);
+      setAllPOCs([...allPOCs, allPOCs.length+1]);
     } else {
-      let fullPOCs = returnAllPOCs();
-      console.log(fullPOCs);
+      let removed = allPOCs.splice(allPOCs.indexOf(i), 1);
+      setAllPOCs([...allPOCs]);
     }
   };
 
-  const returnAllPOCs = () => allPOCs;
-
-  console.log(allPOCs);
-  
   return (
-    <WrappedAntForm
+    <Form
       layout={'vertical'}
       onSubmit={clickNext}
-      cancelButton
-      handleCancel={clickPrevious}
       autofill={storedData}
-      buttonText={'Next'}
-      cancelButtonText={'Previous'}
     >
       <h4>Who is the point of contact?</h4>
-      {allPOCs}
+      {allPOCs.map(poc => (
+        <POC key={poc} i={poc} changePOC={changePOC} />
+      ))}
       <>
         <Icon
           type="plus-circle"
@@ -80,8 +40,14 @@ export const SecondPart = ({ clickNext, storedData, clickPrevious }) => {
       <span style={{ color: '#005A87' }} onClick={() => changePOC('add')}>
         Add another point of contact.
       </span>
-    </WrappedAntForm>
+
+      <div className = "buttonStyles">
+          <StyledCancelButton onClick={clickPrevious} type='primary'>Previous</StyledCancelButton>
+          <StyledButton onClick={clickNext} type='primary'>Next</StyledButton>
+      </div>
+    </Form>
   );
 };
 
+const DivForStyling = styled.div``;
 export default SecondPart;

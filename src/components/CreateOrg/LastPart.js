@@ -2,15 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 import { WrappedAntForm, AntTextArea, AntInput } from '../../styled';
 
-export const LastPart = ({ handleSubmit, storedData, clickPrevious }) => {
+export const LastPart = ({ clickNext, storedData, clickPrevious }) => {
   return (
     <WrappedAntForm
       layout={'vertical'}
-      onSubmit={handleSubmit}
+      onSubmit={clickNext}
       cancelButton
       handleCancel={clickPrevious}
       autofill={storedData}
-      buttonText={'Next'}
+      submitButton
+      submitButtonText={'Submit'}
       cancelButtonText={'Previous'}
     >
       <h4>Tell Us about Your Organization</h4>

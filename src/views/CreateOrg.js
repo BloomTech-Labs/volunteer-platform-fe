@@ -15,6 +15,7 @@ export const CreateOrg = props => {
   const [state, dispatch] = useStateValue();
   const [localState, setLocalState] = useState({ 1: {}, 2: {}, 3: {}, 4: {} });
   const [partCount, setPartCount] = useState(1);
+
   // Need to revisit how we want to edit the form
   //   const [orgToEdit, setOrgToEdit] = useState();
   //   useEffect(() => {
@@ -52,6 +53,7 @@ export const CreateOrg = props => {
   const clickPrevious = () => {
     setPartCount(partCount => partCount - 1);
   };
+
   const onSubmit = values => {
     let POC = [];
     POC.push({
@@ -86,70 +88,29 @@ export const CreateOrg = props => {
     registerOrganization(org, dispatch);
     props.history.push('/org-dashboard');
   };
-  
+
   return (
     <StyledDiv className={'flex center'}>
-      <CustomStyledCard style={{ maxWidth: '900px', margin: '2rem 0 5rem 0' }}>
-        <ProgressBar percentage={(partCount / 4) * 100} />
-        <h1>{possibleHeaders[partCount]}</h1>
+      <CustomStyledCard margin="2rem 0 5rem 0" maxWidth="900px">
+        <h1 className="create-org-header">{possibleHeaders[partCount]}</h1>
         <StyledImg src={createOrgImg} alt="undraw unexpected friends" />
-        <div>
+        <ProgressBar percentage={((partCount) / 5) * 100} />
+        <StyledRenderDiv>
           <RenderedPart
             clickNext={clickNext}
             storedData={localState[partCount]}
             cancelForm={cancelForm}
             clickPrevious={clickPrevious}
           />
-        </div>
+        </StyledRenderDiv>
       </CustomStyledCard>
     </StyledDiv>
   );
 };
 
-const StyledCreateOrgForm = styled.div`
-  margin-top: 2rem;
-  width: 100%;
-  font-weight: bold;
-  .inline {
-    width: 50%;
-  }
-
-  .time {
-    display: flex;
-    justify-content: space-around;
-  }
-
-  .styledGroup {
-    margin: 3rem;
-    background-color: #e8e8e8;
-    border-radius: 3px;
-    padding: 2rem;
-  }
-
-  .DaysOfWeek {
-    width: 100%;
-    max-width: 100%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-
-  .mg-tp-lg {
-    margin-top: 4rem;
-  }
-  label {
-    color: ${props => props.theme.primary8};
-  }
-`;
-
 const StyledDiv = styled.div`
   background: white;
-  h1 {
-    color: ${props => props.theme.primary8};
-  }
-
-  h4 {
+  .create-org-header {
     color: ${props => props.theme.primary8};
   }
 `;
@@ -160,16 +121,31 @@ const CustomStyledCard = styled(StyledCard)`
     text-align: center;
     cursor: default;
     transition: none;
-
-    &:hover {
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-    }
   }
 `;
 
-const StyledLine = styled.div`
-  border-bottom: 1px solid lightgrey;
-  margin-bottom: 1rem;
+const StyledRenderDiv = styled.div`
+  background: ${({ theme }) => theme.gray4};
+  width: 75%;
+  margin: 0 auto;
+  font-weight: bold;
+  padding: 1.5rem 3rem;
+  border-radius: ${({ theme }) => theme.borderRadiusDefault};
+
+  label {
+    color: ${({ theme }) => theme.primary8};
+
+    &::before {
+      color: ${({ theme }) => theme.primary8};
+    }
+  }
+
+  .buttonStyles {
+    display: flex;
+    width: 60%;
+    margin: 50px auto;
+    justify-content: space-between;
+  }
 `;
 
 const StyledImg = styled.img`
