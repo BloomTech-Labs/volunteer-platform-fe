@@ -35,7 +35,7 @@ export const Navigation = props => {
       );
     };
     return disabled ? (
-      <Tooltip placement="left" title="Coming soon!">
+      <Tooltip placement="left" trigger="click" title="Coming soon!">
         <NavbarLink style={{ color: '#00000033' }} />
       </Tooltip>
     ) : (
