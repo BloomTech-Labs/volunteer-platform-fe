@@ -36,6 +36,7 @@ The goal of this project is to connect volunteers and non-profits together, stre
 -   feature two
 -   feature three
 
+
 ## 1️⃣ Tech Stack
 
 ### Front end built using:
@@ -46,9 +47,11 @@ The goal of this project is to connect volunteers and non-profits together, stre
 -   React JS has a really great ways to manage component state. Our team is a huge fan of hooks and the power of Context Api(which is built in the box for react)
 -   There is this styling library called Chakra.UI which works really well for our UX vision that is really compatible with react
 
+
 🚫List the rest of the front end features and libraries in the same format as the framework above.
 
 #### Front end deployed to `🚫insert service here`
+
 
 #### [Back end](<🚫link to back end repo here>) built using:
 
@@ -57,6 +60,7 @@ The goal of this project is to connect volunteers and non-profits together, stre
 -   point one
 -   point two
 -   point three
+
 
 🚫 List the rest of the back end end features and libraries in the same format as the framework above
 
@@ -148,7 +152,7 @@ Please note we have a [code of conduct](./CODE_OF_CONDUCT.md). Please follow it 
 -   Check first to see if your issue has already been reported.
 -   Check to see if the issue has recently been fixed by attempting to reproduce the issue using the latest master branch in the repository.
 -   Create a live example of the problem.
--   Submit a detailed bug report including your environment & browser, steps to reproduce the issue, actual and expected outcomes,  where you believe the issue is originating from, and any potential solutions you have considered.
+
 
 ### Feature Requests
 
@@ -168,10 +172,13 @@ Remember that this project is licensed under the MIT license, and by submitting 
 -   Include the relevant issue number, if applicable.
 -   You may merge the Pull Request in once you have the sign-off of two other developers, or if you do not have permission to do that, you may request the second reviewer to merge it for you.
 
+
 ### Attribution
 
 These contribution guidelines have been adapted from [this good-Contributing.md-template](https://gist.github.com/PurpleBooth/b24679402957c63ec426).
 
 ## Documentation
 
+
 See [Backend Documentation](<🚫_link to your backend readme here_>) for details on the backend of our project.
+
