@@ -10,6 +10,7 @@ export const ThirdPart = ({ clickNext, storedData, clickPrevious }) => {
     <WrappedAntForm
       layout={'vertical'}
       onSubmit={clickNext}
+      cancelButton
       handleCancel={clickPrevious}
       autofill={storedData}
       buttonText={'Next'}
@@ -17,13 +18,13 @@ export const ThirdPart = ({ clickNext, storedData, clickPrevious }) => {
     >
       <h4>What are your hours of operation?</h4>
       <div className="daysOfWeekPicker">
-        <Checkbox.Group options={weekdays} />
-        <Checkbox.Group options={weekends} />
+        <Checkbox.Group name="weekdays" noLabel options={weekdays} />
+        <Checkbox.Group name='weekends' noLabel options={weekends} />
       </div>
       <div className="timeOfDayPicker">
-        <AntTimePicker name={'Start Time'} use12Hours format={'h:mm a'} />
-        to
-        <AntTimePicker name={'End Time'} use12Hours format={'h:mm a'} />
+        <AntTimePicker  name='Start Time' noLabel use12Hours format={'h:mm a'} />
+        <span>to</span>
+        <AntTimePicker name='End Time' noLabel use12Hours format={'h:mm a'} />
       </div>
     </WrappedAntForm>
   );

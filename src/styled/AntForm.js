@@ -86,6 +86,7 @@ export class AntForm extends React.Component {
 
   getDecorator = child => {
     if (child.type && child.type.name) {
+        console.log(child)
       const camelCase = this.getCamelCase(child.props.name);
       const required = !child.props.notRequired;
       const rules = this.getRules(child.props.type, required);

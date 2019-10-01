@@ -7,6 +7,7 @@ export const LastPart = ({ handleSubmit, storedData, clickPrevious }) => {
     <WrappedAntForm
       layout={'vertical'}
       onSubmit={handleSubmit}
+      cancelButton
       handleCancel={clickPrevious}
       autofill={storedData}
       buttonText={'Next'}

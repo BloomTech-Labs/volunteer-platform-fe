@@ -3,8 +3,7 @@ import styled from 'styled-components';
 import {
   WrappedAntForm,
   AntInput,
-  AntSelect,
-  StyledCheckableTag,
+  AntSelect
 } from '../../styled';
 import { Icon, Select } from 'antd';
 import { causeAreas } from '../../reducers/initialState';
@@ -12,7 +11,6 @@ import { causeAreas } from '../../reducers/initialState';
 const Option = Select.Option;
 
 export const FirstPart = ({ clickNext, storedData, cancelForm }) => {
-  
   return (
     <WrappedAntForm
       layout={'vertical'}
@@ -26,25 +24,12 @@ export const FirstPart = ({ clickNext, storedData, cancelForm }) => {
     >
       <AntInput
         name={'Name of Organization'}
-        notRequired={'false'}
         placeholder={'Community Helper'}
       />
-      <AntInput
-        name={'Street Address'}
-        notRequired={'false'}
-        placeholder={'123 Bruce Willis Dr.'}
-      />
+      <AntInput name={'Street Address'} placeholder={'123 Bruce Willis Dr.'} />
       <div className="inline">
-        <AntInput
-          name={'City'}
-          notRequired={'false'}
-          placeholder={'Los Angeles'}
-        />
-        <AntInput
-          name={'State'}
-          notRequired={'false'}
-          placeholder={'California'}
-        />
+        <AntInput name={'City'} placeholder={'Los Angeles'} />
+        <AntInput name={'State'} placeholder={'California'} />
       </div>
       <h4>What type of cause is your organization serving?</h4>
       <AntSelect
@@ -63,7 +48,7 @@ export const FirstPart = ({ clickNext, storedData, cancelForm }) => {
           <Option key={cause}>{cause}</Option>
         ))}
       </AntSelect>
-      {/* Need to render selected tags here */}
+      
     </WrappedAntForm>
   );
 };
