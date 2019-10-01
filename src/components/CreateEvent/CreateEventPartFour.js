@@ -17,19 +17,9 @@ import { AntDatePicker } from '../../styled';
 
 const { Option } = Select;
 
-export const CreateEventPartThree = props => {
-  const { state, handleSubmit, handlePageBack } = props;
-  let requirementTags = [];
+export const CreateEventPartFour = props => {
+  const { handleSubmit, handlePageBack } = props;
 
-  if (state.tags.requirements) {
-    requirementTags = state.tags.requirements.map(tag => {
-      return <Option key={tag}>{tag}</Option>;
-    });
-  }
-
-  const interestTags = state.tags.interests.map(tag => {
-    return <Option key={tag}>{tag}</Option>;
-  });
   return (
     <StyledDiv className={'flex center'}>
       <CustomStyledCard
@@ -48,45 +38,6 @@ export const CreateEventPartThree = props => {
             buttonType={'primary'}
             buttonText={'Next'}
           >
-            <label>What are the requirements?</label>
-            <div className={'styledGroup'}>
-              <label>List Requirements here</label>
-              <div className={'requirementsInterestWrapper'}>
-                <div className={'hidden requirementsWrapper'}>
-                  <AntSelect
-                    name={'Volunteer Requirements'}
-                    placeholder="Type here and a tag will appear"
-                    mode="multiple"
-                    layout={formLayouts.empty}
-                    style={{ width: 240 }}
-                  >
-                    {requirementTags}
-                  </AntSelect>
-                </div>
-                <div className={''}>
-                  <AntSelect
-                    name={'Interest'}
-                    placeholder="All"
-                    mode="multiple"
-                    layout={formLayouts.empty}
-                    style={{ width: 240 }}
-                  >
-                    {interestTags}
-                  </AntSelect>
-                </div>
-              </div>
-            </div>
-            <div className={'eventDetailsWrapper'}>
-              <AntTextArea
-                name={'Event Details'}
-                placeholder={
-                  'What the volunteer would do at the event would go here.'
-                }
-                layout={formLayouts.empty}
-                style={{ height: 115 }}
-              />
-            </div>
-
             <div className={'styledGroup'}>
               <div className={'volunteerNumberWebsiteWrapper'}>
                 <div className={''}>
@@ -197,4 +148,4 @@ const StyledImg = styled.img`
   margin: 2rem auto;
 `;
 
-export default CreateEventPartThree;
+export default CreateEventPartFour;

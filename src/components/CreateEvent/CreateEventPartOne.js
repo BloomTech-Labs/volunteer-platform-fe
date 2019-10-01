@@ -17,7 +17,7 @@ import { AntDatePicker } from '../../styled';
 const { Option } = Select;
 
 export const CreateEventPartOne = props => {
-  const { state, localState, setLocalState } = props;
+  const { state, handleSubmit, cancelForm } = props;
 
   //Mapping through tags for antd select
   const causeAreaTags = state.tags.causeAreas.map(tag => {
@@ -28,19 +28,9 @@ export const CreateEventPartOne = props => {
     );
   });
 
-  const cancelForm = () => {
-    props.history.push('/org-dashboard');
-  };
-
   //Handle Submit push values to parent state
 
-  const handleSubmit = values => {
-    console.log('part1', values);
-    setLocalState({
-      ...localState,
-      values,
-    });
-  };
+  //   };
   return (
     <StyledDiv className={'flex center'}>
       <CustomStyledCard

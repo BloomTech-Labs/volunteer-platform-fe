@@ -14,8 +14,8 @@ import styled from 'styled-components';
 const { Option } = Select;
 
 export const RecurringEvent = props => {
-  const { setState, localState } = props;
-  const { dynamicDay, dynamicYear, dynamicNth, dynamicNumber } = localState;
+  const { localState, setLocalState, dynamicState } = props;
+  const { dynamicNumber, dynamicNth, dynamicDay, dynamicYear } = dynamicState;
   const [formState, setFormState] = useState({});
 
   const dayOptions = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -48,7 +48,7 @@ export const RecurringEvent = props => {
   };
 
   const handleCheckBox = checked => {
-    setState({
+    setLocalState({
       ...localState,
       recurringEvent: checked.target.value,
     });
@@ -61,7 +61,7 @@ export const RecurringEvent = props => {
         recurringBoolean: true,
       });
     }
-    setState({
+    setLocalState({
       ...localState,
       recurringInfo: {
         ...localState.recurringInfo,
@@ -71,7 +71,7 @@ export const RecurringEvent = props => {
   };
 
   const handleDatePicker = date => {
-    setState({
+    setLocalState({
       ...localState,
       recurringInfo: {
         ...localState.recurringInfo,
@@ -80,7 +80,7 @@ export const RecurringEvent = props => {
     });
   };
   const handleOccurrences = occurrence => {
-    setState({
+    setLocalState({
       ...localState,
       recurringInfo: {
         ...localState.recurringInfo,
@@ -89,7 +89,7 @@ export const RecurringEvent = props => {
     });
   };
   const handleOccurrencesEndsAfter = number => {
-    setState({
+    setLocalState({
       ...localState,
       recurringInfo: {
         ...localState.recurringInfo,
@@ -98,7 +98,7 @@ export const RecurringEvent = props => {
     });
   };
   const handleEveryValue = value => {
-    setState({
+    setLocalState({
       ...localState,
       recurringInfo: {
         ...localState.recurringInfo,
@@ -107,7 +107,7 @@ export const RecurringEvent = props => {
     });
   };
   const handleRepeatEvery = value => {
-    setState({
+    setLocalState({
       ...localState,
       recurringInfo: {
         ...localState.recurringInfo,
@@ -116,7 +116,7 @@ export const RecurringEvent = props => {
     });
   };
   const handleSubmit = values => {
-    setState({
+    setLocalState({
       ...localState,
       recurringInfo: {
         ...localState.recurringInfo,
@@ -165,7 +165,7 @@ export const RecurringEvent = props => {
       <div>
         <Radio.Group
           onChange={handleCheckBox}
-          disabled={!localState.dynamicDay}
+          disabled={!dynamicState.dynamicDay}
           className={'radioWrapper'}
           style={{ marginLeft: 100 }}
           layout={formLayouts.empty}
