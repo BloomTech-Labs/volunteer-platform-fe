@@ -44,10 +44,11 @@ export const CreateOrg = props => {
     4: LastPart,
   };
 
+  const steps = [0, 1, 2, 3];
+
   const RenderedPart = possibleParts[partCount];
 
   const clickNext = values => {
-    console.log(values);
     setLocalState({ ...localState, [partCount]: values });
     setPartCount(partCount => partCount + 1);
   };
@@ -98,12 +99,10 @@ export const CreateOrg = props => {
       <CustomStyledCard margin="2rem 0 5rem 0" maxWidth="900px">
         <h1 className="create-org-header">{possibleHeaders[partCount]}</h1>
         <StyledImg src={createOrgImg} alt="undraw unexpected friends" />
-        <ProgressBar percentage={(partCount / 5) * 100} />
-        <Steps current={partCount}>
-            <Step />
-            <Step />
-            <Step />
-            <Step />
+        <Steps current={partCount - 1} progressDot size="small">
+          {steps.map(step => (
+            <Step key={step} />
+          ))}
         </Steps>
         <StyledRenderDiv>
           <RenderedPart
@@ -131,6 +130,22 @@ const CustomStyledCard = styled(StyledCard)`
     text-align: center;
     cursor: default;
     transition: none;
+
+    .ant-steps {
+      text-align: left;
+      margin-bottom: 40px;
+
+      .ant-steps-item-finish
+        > .ant-steps-item-container
+        > .ant-steps-item-tail {
+        &::after {
+          background: ${({ theme }) => theme.primary8};
+        }
+      }
+      span.ant-steps-icon-dot {
+        background: ${({ theme }) => theme.primary8};
+      }
+    }
   }
 `;
 

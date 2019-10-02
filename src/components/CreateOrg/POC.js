@@ -1,30 +1,28 @@
 import React, { useState } from 'react';
 import { Icon, Input, Form } from 'antd';
-import {StyledLine} from '../../styled'
-export const POC = ({ i, changePOC }) => {
-  const [localState, setLocalState] = useState({});
+import { StyledLine } from '../../styled';
+export const POC = ({ i, changePOC, setValues, values,  }) => {
 
   const changeHandler = e => {
-    setLocalState({ ...localState, [e.target.name]: e.target.value });
+    setValues({ ...values, [e.target.name]: e.target.value });
   };
 
   return (
     <div className="fullPOCDiv">
       {i > 1 && <StyledLine />}
-      <span>{i}</span>
-        {i > 1 && (
-          <span>
-            <Icon type="delete" onClick={() => changePOC('delete', i)} />
-          </span>
-        )}
-      
+      {i > 1 && (
+        <span>
+          <Icon type="delete" onClick={() => changePOC('delete', i)} />
+        </span>
+      )}
+
       <div className="pocInfo">
         <Form.Item label={'Full Name'} required>
           <Input
             name={`fullName${i}`}
             label={'Full Name'}
             onChange={e => changeHandler(e)}
-            value={localState[`fullName${i}`]}
+            value={values[`fullName${i}`]}
             key={`fullName${i}`}
             placeholder={'Jane Done'}
             required
@@ -34,7 +32,7 @@ export const POC = ({ i, changePOC }) => {
           <Input
             name={`email${i}`}
             onChange={e => changeHandler(e)}
-            value={localState[`email${i}`]}
+            value={values[`email${i}`]}
             key={`email${i}`}
             placeholder={'jane.doe@gmail.com'}
             required
@@ -45,7 +43,7 @@ export const POC = ({ i, changePOC }) => {
           <Input
             name={`phone${i}`}
             onChange={e => changeHandler(e)}
-            value={localState[`phone${i}`]}
+            value={values[`phone${i}`]}
             key={`phone${i}`}
             placeholder={'(202) 213-1234'}
             required

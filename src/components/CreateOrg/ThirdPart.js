@@ -19,6 +19,7 @@ export const ThirdPart = ({ clickNext, storedData, clickPrevious }) => {
         cancelButtonText={'Previous'}
       >
         <h4>What are your hours of operation?</h4>
+        <h5>1. Days of the week</h5>
         <div className="daysOfWeekPicker">
           <Checkbox.Group
             notRequired
@@ -31,11 +32,13 @@ export const ThirdPart = ({ clickNext, storedData, clickPrevious }) => {
           <Checkbox.Group
             notRequired
             noLabel
+            className="weekend-group"
             name="weekends"
             noLabel
             options={weekends}
           />
         </div>
+        <h5>2. Operating Hours</h5>
         <div className="timeOfDayPicker">
           <AntTimePicker
             notRequired
@@ -61,13 +64,45 @@ export const ThirdPart = ({ clickNext, storedData, clickPrevious }) => {
 };
 
 const DivForStyling = styled.div`
+  h5 {
+    color: ${({ theme }) => theme.primary8};
+    text-align: left;
+    margin-left: 25%;
+  }
   .daysOfWeekPicker {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
+    width: 50%;
+    margin: 0 auto;
+    height: 200px;
 
-    .weekdays-group {
+    .weekdays-group,
+    .weekend-group {
       display: flex;
+      height: 150px;
       flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .weekend-group {
+      justify-content: space-between;
+      height: 54px;
+    }
+  }
+
+  .timeOfDayPicker {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 350px;
+    margin: 0 auto;
+    .ant-row {
+      padding-bottom: 8px;
+      margin: 0;
+    }
+    span {
+      color: ${({ theme }) => theme.primary8};
     }
   }
 `;

@@ -1,6 +1,6 @@
-import {store} from '../firebase/FirebaseConfig';
-import {action} from './action';
-import {arrayUnion} from 'firebase';
+import { store } from '../firebase/FirebaseConfig';
+import { action } from './action';
+import { arrayUnion } from 'firebase';
 import firebase from '../firebase/FirebaseConfig';
 
 export const MESSAGE_CREATED_SUCESSFULLY = 'MESSAGE_CREATED_SUCESSFULLY';
@@ -10,27 +10,27 @@ export const MESSAGE_CREATED_SUCESSFULLY = 'MESSAGE_CREATED_SUCESSFULLY';
  * @function
  * @param {Message} message
  */
-export const sendMessage = (message) => {
-  debugger;
+export const sendMessage = message => {
   attachMessageToUsersMessages(message.to, message.from, message);
   attachMessageToUsersMessages(message.from, message.to, message);
 };
 
 const attachMessageToUsersMessages = (to, from, message) => {
-  debugger;
-  store.collection('users')
+   
+  store
+    .collection('users')
     .doc(to)
     .collection('messages')
     .doc(from)
     .get()
     .then(res => {
-      
       // message thread does not exist.
-      if (!res.exists){
+      if (!res.exists) {
         createNewMessageThread(to, from, message);
-      }else{
-        res.ref.update({
-            'messages': firebase.firestore.FieldValue.arrayUnion(message),
+      } else {
+        res.ref
+          .update({
+            messages: firebase.firestore.FieldValue.arrayUnion(message),
           })
           .then(result => {
             console.log(result);
@@ -46,31 +46,35 @@ const attachMessageToUsersMessages = (to, from, message) => {
 };
 
 const createNewMessageThread = (to, from, message) => {
-  debugger;
-  store.collection('users').doc(from).get().then(res => {
-    const user = res.data();
-    
-    // create messageThread in users messages
-    store.collection('users')
-      .doc(to)
-      .collection('messages')
-      .doc(from)
-      .set({
-        firstName: user.firstName,
-        lastName: user.lastName,
-        messages: [message],
-      })
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-    
-  }).catch(err => {
-    console.log(err);
-  });
-  
+   
+  store
+    .collection('users')
+    .doc(from)
+    .get()
+    .then(res => {
+      const user = res.data();
+
+      // create messageThread in users messages
+      store
+        .collection('users')
+        .doc(to)
+        .collection('messages')
+        .doc(from)
+        .set({
+          firstName: user.firstName,
+          lastName: user.lastName,
+          messages: [message],
+        })
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    })
+    .catch(err => {
+      console.log(err);
+    });
 };
 
 export const USER_HAS_NO_MESSAGES = 'USER_HAS_NO_MESSAGES';
@@ -84,13 +88,14 @@ export const COLLECTING_USER_MESSAGES_INIT = 'COLLECTING_USER_MESSAGES_INIT';
  * @param dispatch
  */
 export const subscribeToMessages = (uid, dispatch) => {
-  debugger;
+   
   dispatch(action(COLLECTING_USER_MESSAGES_INIT));
-  store.collection('users')
+  store
+    .collection('users')
     .doc(uid)
     .collection('messages')
     .onSnapshot(snapshot => {
-      if (snapshot.empty){
+      if (snapshot.empty) {
         dispatch(action(USER_HAS_NO_MESSAGES));
         return;
       }
@@ -103,4 +108,3 @@ export const subscribeToMessages = (uid, dispatch) => {
       dispatch(action(COLLECTED_USER_MESSAGES, messageThreads));
     });
 };
-
