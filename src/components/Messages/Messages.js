@@ -8,11 +8,11 @@ import { sendMessage } from '../../actions';
 const Messages = ({ messageId }) => {
   const [{ auth, messages }, dispatch] = useStateValue();
   const messageThread = messages.messageThreads.filter(
-    messageThread => messageThread.id === messageId
-  );
-  const { Search } = Input;
-
-  const send = value => {
+    messageThread => messageThread.id === messageId);
+  const {Search} = Input;
+  
+  const send = (value) => {
+    
     const message = {
       createdAt: moment().unix(),
       from: auth.googleAuthUser.uid,
@@ -20,33 +20,40 @@ const Messages = ({ messageId }) => {
       text: value,
       read: false,
     };
-    sendMessage(message);
+    
+    const to = {
+      type: messageThread[ 0 ].contactType,
+      uid: messageThread[ 0 ].id,
+    };
+    
+    const from = {
+      type: 'users',
+      uid: auth.googleAuthUser.uid,
+    };
+    
+    sendMessage(to, from, message);
   };
 
   return (
     <StyledMessages>
       <StyledMessageThread>
         {messageThread.length > 0 &&
-          messageThread[0].messages.map(message => {
-            return (
-              <div
-                className={
-                  message.to === auth.googleAuthUser.uid ? 'other' : 'me'
-                }
-              >
-                {message.to === auth.googleAuthUser.uid && (
-                  <p>
-                    {messageThread[0].firstName}:{' '}
-                    {moment.unix(message.createdAt).format('LT')}
-                  </p>
-                )}
-                {message.to !== auth.googleAuthUser.uid && (
-                  <p>Me: {moment.unix(message.createdAt).format('LT')}</p>
-                )}
-                <p className={'message'}>{message.text} </p>
-              </div>
-            );
-          })}
+        messageThread[ 0 ].messages.map((message, i) => {
+          return (
+            <div key={message + ' ' + i}
+                 className={message.to === auth.googleAuthUser.uid ? 'other' :
+                   'me'}
+            >
+              {message.to === auth.googleAuthUser.uid &&
+              <p>{messageThread[ 0 ].firstName}: {moment.unix(message.createdAt)
+                .format('LT')}</p>}
+              {message.to !== auth.googleAuthUser.uid &&
+              <p>Me: {moment.unix(message.createdAt)
+                .format('LT')}</p>}
+              <p className={'message'}>{message.text} </p>
+            </div>
+          );
+        })}
       </StyledMessageThread>
       <Search
         placeholder={'Message'}

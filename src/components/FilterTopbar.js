@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {useStateValue} from '../hooks/useStateValue';
 import {Card, Form, Row, Input, Icon, Divider} from 'antd';
 import {StyledCheckableTag as CheckableTag} from '../styled';
+import OrganizationsList from './OrganizationsList';
 
 const tabList = [
   {
@@ -156,7 +157,7 @@ export const FilterTopbar = ({
         </div>
       </Form>
     ),
-    Organizations: <div>Coming Soon</div>,
+    Organizations: <OrganizationsList state={inputState.location.state}/>,
   };
   
   const onTabChange = key => {

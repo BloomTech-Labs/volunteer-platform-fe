@@ -102,6 +102,11 @@ export const OrganizationDashboard = () => {
     setSelectedDate(null);
     setCalendarValue(moment());
   };
+
+  const deleteImage = (org) => {
+    deleteOrganizationImage(org)
+  }
+
   return (
     <StyledDashboard>
       <h4 className={'org-title'}>Dashboard of</h4>
@@ -124,8 +129,8 @@ export const OrganizationDashboard = () => {
         <div className={'left-col'}>
           <OrgPhoto
             imageUrl={imageUrl}
-            displayOrg={displayOrg}
-            deleteOrganizationImage={deleteOrganizationImage}
+            imageOwner={displayOrg}
+            deleteImage={deleteImage}
             onFileUpload={onFileUpload}
           />
           <div className="calendar">

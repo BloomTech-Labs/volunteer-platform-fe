@@ -39,18 +39,16 @@
  * @typedef Organization
  * @type {Object}
  * @property {String} [orgId] Id of the organization.
- * @property {String} organizationType Type of none profit organization.
  * @property {String} aboutUs Story about the organization.
  * @property {String} website Url of the organization website.
  * @property {String} organizationName Organization name.
  * @property {String} organizationOwnerUID UID of the user who created the org.
  * @property {String} city City where the org is located.
  * @property {String} phone Organization phone number.
- * @property {String} missionStatement Organization mission statement.
  * @property {String} state State the organization is located.
- * @property {SocialMedia[]} socialMedia Array of social media objects.
  * @property {String} email Organizations email
  * @property {String} [imagePath] Org image path to be changed into url.
+ * @property {String} [imageUrl] Org image url.
  * @property {PointOfContact[]} POC Points of contact for the org.
  * @property {String[]} causeAreas Array of cause areas the org is associated with.
  * @property {String} startTime Time the organization opens.
@@ -124,7 +122,7 @@
  * @property {String} from Uid of the user the message is from.
  * @property {String} text The message to be sent.
  * @property {Number} createdAt Unix time stamp the moment it was created.
- * @property {boolean} [read]  Rather or not the message has been read.
+ * @property {Boolean} [read]  Rather or not the message has been read.
  */
 
 /**
@@ -134,4 +132,11 @@
  * @property {String} firstName First Name the message thread is to or from.
  * @property {String} lastName Last name the message thread is to or from.
  * @property {Message[]} messages Array of messages back and forth.
+ */
+
+/**
+ *@typedef MessageContact
+ * @type {Object}
+ * @property {String} type Either users or organizations
+ * @property {String} uid Unique identifier for the contact.
  */
