@@ -44,6 +44,7 @@ export const CreateOrg = props => {
   const RenderedPart = possibleParts[partCount];
 
   const clickNext = values => {
+      console.log(values)
     setLocalState({ ...localState, [partCount]: values });
     setPartCount(partCount => partCount + 1);
   };
