@@ -8,9 +8,7 @@ import moment from 'moment';
 import { Tag } from 'antd';
 
 export const Event = ({ event }) => {
-  //logic
   const [{ org, events }, dispatch] = useStateValue();
-  //const [clickState, setClickState] = useState(false);
 
   let ableToDelete = false;
 
@@ -32,12 +30,6 @@ export const Event = ({ event }) => {
     return <Tag>{(item = [item])}</Tag>;
   });
 
-  // const clickHandler = e => {
-  //   e.preventDefault();
-  //   setClickState(true)
-  //   console.log('card clicked')
-  // };
-
   return (
     
       <StyledEventCard margin={'0 0 20px 0'}>
@@ -58,7 +50,7 @@ export const Event = ({ event }) => {
           </div>
           {ableToDelete && <StyledButton type="danger">Delete</StyledButton>}
         </div>
-        <button><Link to={{pathname: `/dashboard/${event.eventId}`}}> View More </Link></button>
+        <button><Link to={{pathname: `/events/${event.eventId}`}}> View More </Link></button>
       </StyledEventCard>
   );
 };

@@ -11,13 +11,13 @@ export const MESSAGE_CREATED_SUCESSFULLY = 'MESSAGE_CREATED_SUCESSFULLY';
  * @param {Message} message
  */
 export const sendMessage = (message) => {
-  debugger;
+  //debugger;
   attachMessageToUsersMessages(message.to, message.from, message);
   attachMessageToUsersMessages(message.from, message.to, message);
 };
 
 const attachMessageToUsersMessages = (to, from, message) => {
-  debugger;
+  //debugger;
   store.collection('users')
     .doc(to)
     .collection('messages')
@@ -46,7 +46,7 @@ const attachMessageToUsersMessages = (to, from, message) => {
 };
 
 const createNewMessageThread = (to, from, message) => {
-  debugger;
+  //debugger;
   store.collection('users').doc(from).get().then(res => {
     const user = res.data();
     
@@ -84,7 +84,7 @@ export const COLLECTING_USER_MESSAGES_INIT = 'COLLECTING_USER_MESSAGES_INIT';
  * @param dispatch
  */
 export const subscribeToMessages = (uid, dispatch) => {
-  debugger;
+  //debugger;
   dispatch(action(COLLECTING_USER_MESSAGES_INIT));
   store.collection('users')
     .doc(uid)

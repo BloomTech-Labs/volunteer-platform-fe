@@ -134,10 +134,9 @@ function App(){
                 component={OrganizationDashboard}
               />
 
-                      
-            <Route 
-            path={'/dashbord/:id'}
-            component={EventCard}
+          <Route 
+            path={'/events/:id'}
+            render = {(props) => <EventCard {...props} state={state} /> }
           />
           
           <RegisterRoute path={'/register'} component={Signup}/>

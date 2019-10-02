@@ -13,7 +13,7 @@ const Messages = ({messageId}) => {
   const {Search} = Input;
   
   const send = (value) => {
-    debugger;
+    //debugger;
     const message = {
       createdAt: moment().unix(),
       from: auth.googleAuthUser.uid,
