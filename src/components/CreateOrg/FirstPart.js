@@ -69,8 +69,8 @@ const DivForStyling = styled.div`
   }
 
   .ant-select-causes {
-    .ant-col.ant-form-item-control-wrapper{
-        width: 50%;
+    .ant-col.ant-form-item-control-wrapper {
+      width: 50%;
     }
   }
 `;

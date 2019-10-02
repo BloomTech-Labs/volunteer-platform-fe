@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Icon, Input, Form } from 'antd';
 import { StyledLine } from '../../styled';
-export const POC = ({ i, changePOC, setValues, values,  }) => {
-
+export const POC = ({ i, changePOC, setValues, values }) => {
   const changeHandler = e => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
@@ -11,8 +10,13 @@ export const POC = ({ i, changePOC, setValues, values,  }) => {
     <div className="fullPOCDiv">
       {i > 1 && <StyledLine />}
       {i > 1 && (
-        <span>
-          <Icon type="delete" onClick={() => changePOC('delete', i)} />
+        <span className="trash-icon">
+          <Icon
+            type="delete"
+            onClick={() => changePOC('delete', i)}
+            theme="twoTone"
+            twoToneColor="#005a87"
+          />
         </span>
       )}
 

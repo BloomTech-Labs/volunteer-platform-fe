@@ -25,7 +25,7 @@ export const SecondPart = ({ clickNext, storedData, clickPrevious }) => {
   };
 
   return (
-    <Form layout={'vertical'} onSubmit={() => clickNext(values)}>
+    <StyledForm layout={'vertical'} onSubmit={() => clickNext(values)}>
       <h4>Who is the point of contact?</h4>
       {allPOCs.map(poc => (
         <POC
@@ -59,9 +59,18 @@ export const SecondPart = ({ clickNext, storedData, clickPrevious }) => {
           Next
         </StyledButton>
       </div>
-    </Form>
+    </StyledForm>
   );
 };
 
-const DivForStyling = styled.div``;
+const StyledForm = styled(Form)`
+  .trash-icon {
+    i {
+      font-size: 25px;
+      margin-left: 94%;
+      margin-top: 20px;
+      margin-bottom: -15px;
+    }
+  }
+`;
 export default SecondPart;

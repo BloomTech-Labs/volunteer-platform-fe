@@ -69,7 +69,9 @@ export const CreateOrg = props => {
       values.POC = POC;
     }
     if (partCount === 3) {
-      values.daysOfTheWeek = [...values.weekdays, ...values.weekends];
+      let weekends = values.weekends || [];
+      let weekdays = values.weekdays || [];
+      values.daysOfTheWeek = [...weekdays, ...weekends];
     }
     setLocalState({ ...localState, [partCount]: values });
     setPartCount(partCount => partCount + 1);
@@ -96,7 +98,7 @@ export const CreateOrg = props => {
     //   registerOrganization(org, dispatch);
     // }
     // props.history.push('/org-dashboard');
-    console.log(values)
+    console.log(values);
   };
 
   return (
