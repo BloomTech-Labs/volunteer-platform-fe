@@ -5,8 +5,8 @@ import {
   WrappedAntForm,
   AntInputNumber,
   AntSelect,
-} from '../styled';
-import { formLayouts } from '../utility/formLayouts';
+} from '../../styled';
+import { formLayouts } from '../../utility/formLayouts';
 import moment from 'moment';
 import styled from 'styled-components';
 
@@ -169,6 +169,7 @@ export const RecurringEvent = props => {
         <Radio.Group
           onChange={handleCheckBox}
           disabled={!dynamicState.dynamicDay}
+          defaultValue={localState.recurringEvent === 'Yes' ? 'Yes' : 'No'}
           className={'radioWrapper'}
           style={{ marginLeft: 100 }}
           layout={formLayouts.empty}
@@ -191,12 +192,19 @@ export const RecurringEvent = props => {
             <label>Ends</label>
             <Radio.Group
               name={'Occurrence Ends'}
+              defaultValue={
+                localState.recurringInfo.occurrenceEnds === 'On'
+                  ? 'On'
+                  : localState.recurringInfo.occurrenceEnds === 'After'
+                  ? 'After'
+                  : 'Never'
+              }
               onChange={handleOccurrences}
               className={'radioWrapper'}
             >
-              <Radio value={'Never'}>Never</Radio>
               <Radio value={'On'}>On</Radio>
               <Radio value={'After'}>After</Radio>
+              <Radio value={'Never'}>Never</Radio>
             </Radio.Group>
             <DatePicker
               name={'Occurrence End Date'}

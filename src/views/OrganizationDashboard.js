@@ -112,7 +112,7 @@ export const OrganizationDashboard = () => {
         defaultValue="select"
         onChange={changeHandler}
         value={displayOrg ? displayOrg.orgId : ''}
-        style = {{width: '300px', marginBottom: '40px'}}
+        style={{ width: '300px', marginBottom: '40px' }}
       >
         {org.userOrganizations.map(item => (
           <Select.Option key={item.orgId} value={item.orgId}>

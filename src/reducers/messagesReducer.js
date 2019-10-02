@@ -1,10 +1,11 @@
 import {
-  USER_HAS_NO_MESSAGES, COLLECTED_USER_MESSAGES, COLLECTING_USER_MESSAGES_INIT,
+  USER_HAS_NO_MESSAGES,
+  COLLECTED_USER_MESSAGES,
+  COLLECTING_USER_MESSAGES_INIT,
 } from '../actions/messaging';
 
 export const messageReducer = (state, action) => {
-  debugger;
-  switch (action.type){
+  switch (action.type) {
     case COLLECTING_USER_MESSAGES_INIT:
       return {
         ...state,

@@ -5,7 +5,7 @@ import {
   AntTimePicker,
   StyledCard,
 } from '../../styled';
-import RecurringEvent from '../RecurringEvent';
+import RecurringEvent from './RecurringEvent';
 import moment from 'moment';
 import styled from 'styled-components';
 import createEventImg from '../../assets/undraw_blooming_jtv6.svg';
@@ -72,12 +72,6 @@ export const CreateEventPartTwo = props => {
       date: values.date.unix(),
       startTime: values.startTime.format('LT'),
       endTime: values.endTime.format('LT'),
-      startTimeStamp: moment(
-        values.date.format('LL') + ' ' + values.startTime.format('LT')
-      ).unix(),
-      endTimeSTamp: moment(
-        values.date.format('LL') + ' ' + values.endTime.format('LT')
-      ).unix(),
     });
     setAutoFillState({
       ...autoFillState,

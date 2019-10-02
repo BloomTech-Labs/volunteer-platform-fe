@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 
 import { useStateValue } from '../hooks/useStateValue';
 import { createEvent, createRecurringEvent } from '../actions';
+import moment from 'moment';
 
 import CreateEventPartOne from '../components/CreateEvent/CreateEventPartOne';
 import CreateEventPartTwo from '../components/CreateEvent/CreateEventPartTwo';
 import CreateEventPartThree from '../components/CreateEvent/CreateEventPartThree';
 import CreateEventPartFour from '../components/CreateEvent/CreateEventPartFour';
-import CreateEventReview from '../components/CreateEvent/CreateEventReview';
+import CreateEventReview from '../components/CreateEvent/CreateEventReview/CreateEventReview';
 
 export const CreateEvent = props => {
   const initialEvent = {
@@ -17,7 +18,6 @@ export const CreateEvent = props => {
     numberOfVolunteers: '',
     phoneNumber: '',
     pointOfcontact: '',
-    description: '',
     volunteerRequirements: [],
     website: '',
     recurringInfo: {
@@ -74,10 +74,14 @@ export const CreateEvent = props => {
       orgImagePath: props.location.state.org.imagePath,
       orgPage: '',
       date: localState.date,
-      startTime: localState.startTime,
-      endTime: localState.endTime,
-      startTimeStamp: localState.startTimeStamp,
-      endTimeSTamp: localState.endTimeSTamp,
+      startTime: localState.startTime.format('LT'),
+      endTime: localState.endTime.format('LT'),
+      startTimeStamp: moment(
+        localState.date.format('LL') + ' ' + localState.startTime.format('LT')
+      ).unix(),
+      endTimeSTamp: moment(
+        localState.date.format('LL') + ' ' + localState.endTime.format('LT')
+      ).unix(),
       volunteerRequirements: localState.volunteerRequirements,
       pointOfcontact: {
         firstName: localState.firstName,
@@ -108,7 +112,6 @@ export const CreateEvent = props => {
 
     props.history.push('/org-dashboard');
   };
-  console.log('localState', localState);
 
   ///Cancel Form
   const cancelForm = () => {
@@ -117,12 +120,14 @@ export const CreateEvent = props => {
 
   //Handle Form Parts Submit
   const handleFormPartSubmit = values => {
+    console.log(values);
     if (pageNumberState.pageNumber) {
       setAutoFillState({
         ...autoFillState,
         [pageNumberState.pageNumber]: values,
       });
     }
+
     setLocalState({
       ...localState,
       ...values,
@@ -198,10 +203,21 @@ export const CreateEvent = props => {
       />
     ),
   };
+  console.log('localState', localState);
 
   return (
     <div>
       {pageNumberState.pageNumber && renderParts[pageNumberState.pageNumber]}
+      <CreateEventReview
+        localState={localState}
+        setLocalState={setLocalState}
+        handleSubmit={handleFormPartSubmit}
+        handlePageBack={handlePageBack}
+        pageNumber={pageNumberState.pageNumber}
+        autoFillState={autoFillState}
+        handleReviewSubmit={handleReviewSubmit}
+        cancelForm={cancelForm}
+      />
     </div>
   );
 };
