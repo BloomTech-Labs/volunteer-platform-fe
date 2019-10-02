@@ -67,7 +67,8 @@ export const Login = props => {
           }}
           layout={'vertical'}
           buttonType="primary"
-          buttonText={pathName === `/login` ? 'Login' : 'Sign Up'}
+          submitButton
+          submitButtonText={pathName === `/login` ? 'Login' : 'Sign Up'}
           buttonLoading={state.auth.isLoading}
         >
           {pathName === '/signup' && (
