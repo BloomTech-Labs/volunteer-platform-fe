@@ -1,33 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import { checkUserRegistered, signOut } from '../actions';
-import { Menu, Tooltip } from 'antd';
+import React, {useState, useEffect} from 'react';
+import {Link, withRouter} from 'react-router-dom';
+import {checkUserRegistered, signOut} from '../actions';
+import {Menu, Tooltip} from 'antd';
 import styled from 'styled-components';
-import { useStateValue } from '../hooks/useStateValue';
+import {useStateValue} from '../hooks/useStateValue';
 
 export const Navigation = props => {
   const [state, dispatch] = useStateValue();
   const [current, setCurrent] = useState('Home');
-
+  
   const pathNames = {
     '/dashboard': 'Home',
     '/create-org': 'Create Org',
     '/org-dashboard': 'Org Dashboard',
     '/login': state.auth.loggedIn ? 'Logout' : 'Login',
   };
-
+  
   useEffect(() => {
-    setCurrent(pathNames[props.location.pathname]);
+    setCurrent(pathNames[ props.location.pathname ]);
   }, [props.location.pathname]);
-
+  
   const handleClick = e => {
-    if (e.key === 'Logout') {
+    if (e.key === 'Logout'){
       signOut(dispatch);
     }
   };
-
-  const NavbarMenuLink = ({ to, disabled, children, ...rest }) => {
-    const NavbarLink = ({ ...props }) => {
+  
+  const NavbarMenuLink = ({to, disabled, children, ...rest}) => {
+    const NavbarLink = ({...props}) => {
       return (
         <Link to={to} {...props}>
           {children}
@@ -36,32 +36,32 @@ export const Navigation = props => {
     };
     return disabled ? (
       <Tooltip placement="left" trigger="click" title="Coming soon!">
-        <NavbarLink style={{ color: '#00000033' }} />
+        <NavbarLink style={{color: '#00000033'}}/>
       </Tooltip>
     ) : (
-      <NavbarLink />
+      <NavbarLink/>
     );
   };
-
+  
   return (
     <StyledNavigation>
       <Menu onClick={handleClick} selectedKeys={[current]} mode="inline">
         <Menu.Item className="nav-name">
           {state.auth.registeredUser &&
-            (state.auth.registeredUser.firstName
-              ? `${state.auth.registeredUser.firstName} ${
-                  state.auth.registeredUser.lastName[0]
-                }.`
-              : 'Welcome!')}
+          (state.auth.registeredUser.firstName
+            ? `${state.auth.registeredUser.firstName} ${
+              state.auth.registeredUser.lastName[ 0 ]
+              }.`
+            : 'Welcome!')}
         </Menu.Item>
-        <Menu.Divider />
+        <Menu.Divider/>
         <Menu.Item>
           <NavbarMenuLink to="#" disabled>
             Profile
           </NavbarMenuLink>
         </Menu.Item>
         <Menu.Item>
-          <NavbarMenuLink to="#" disabled>
+          <NavbarMenuLink to="/messages">
             Messages
           </NavbarMenuLink>
         </Menu.Item>
@@ -79,13 +79,13 @@ export const Navigation = props => {
           </Menu.Item>
         )}
         {state.auth.loggedIn &&
-          (state.auth.registeredUser &&
-            state.auth.registeredUser.firstName) && (
-            <Menu.Item key={'Create Org'}>
-              <Link to={'/create-org'}>Create Organization</Link>
-            </Menu.Item>
-          )}
-        <Menu.Divider />
+        (state.auth.registeredUser &&
+          state.auth.registeredUser.firstName) && (
+          <Menu.Item key={'Create Org'}>
+            <Link to={'/create-org'}>Create Organization</Link>
+          </Menu.Item>
+        )}
+        <Menu.Divider/>
         <Menu.Item
           className="nav-bottom"
           key={state.auth.loggedIn ? 'Logout' : 'Login'}

@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { Switch, Route } from 'react-router';
+import React, {useEffect, useState} from 'react';
+import {Switch, Route} from 'react-router';
 import styled from 'styled-components';
 import firebase from './firebase/FirebaseConfig';
-import { Layout, Icon, Affix } from 'antd';
-import { useStateValue } from './hooks/useStateValue';
-import { subscribeToUserOrganizations, signedIn, signedOut } from './actions';
-import { StyledUploadImage, HeaderDiv, FooterDiv } from './components';
+import {Layout, Icon, Affix} from 'antd';
+import {useStateValue} from './hooks/useStateValue';
+import {
+  subscribeToUserOrganizations, signedIn, signedOut, subscribeToMessages,
+} from './actions';
+import {StyledUploadImage, HeaderDiv, FooterDiv} from './components';
 import Navigation from './components/Navigation';
 import {
   MainDashboard,
@@ -16,6 +18,7 @@ import {
   Login,
   LandingPage,
   NotFound,
+  UserProfile
 } from './views';
 
 import EventCard from './components/EventCard'
@@ -27,25 +30,26 @@ import {
   ProtectedRoute,
   RegisterRoute,
 } from './routes/index';
+import Message from './views/Message';
 
-const { Sider, Content } = Layout;
+const {Sider, Content} = Layout;
 
-function App() {
+function App(){
   const [state, dispatch] = useStateValue();
   const [collapsed, setCollapsed] = useState(false);
   const [dimensions, setDimensions] = useState({
     width: window.innerWidth,
     height: document.body.scrollHeight,
   });
-
+  
   /**
    * Set up google auth on change event handler.
    */
   useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
-      if (user) {
+      if (user){
         signedIn(user, dispatch);
-      } else {
+      }else{
         signedOut(dispatch);
       }
     });
@@ -54,26 +58,28 @@ function App() {
     window.addEventListener('resize', updateDimensions);
     updateDimensions();
   }, []);
-
+  
   useEffect(() => {
-    if (state.auth.googleAuthUser && state.auth.googleAuthUser.uid) {
+    if (state.auth.googleAuthUser && state.auth.googleAuthUser.uid){
       subscribeToUserOrganizations(state.auth.googleAuthUser.uid, dispatch);
+      subscribeToMessages(state.auth.googleAuthUser.uid, dispatch);
+      
     }
   }, [state.auth.googleAuthUser]);
-
+  
   const updateDimensions = () => {
     setDimensions({
       width: window.innerWidth,
       height: document.body.scrollHeight,
     });
-    if (window.innerWidth < 900) {
+    if (window.innerWidth < 900){
       setCollapsed(true);
     }
   };
-
+  
   return (
     <StyledApp className="App">
-      <Layout style={{ background: 'white' }}>
+      <Layout style={{background: 'white'}}>
         {state.auth.loggedIn && (
           <StyledSider
             height={'100%'}
@@ -91,11 +97,11 @@ function App() {
             reverseArrow={true}
           >
             <Affix>
-              <Navigation />
+              <Navigation/>
             </Affix>
           </StyledSider>
         )}
-        <Layout style={{ background: 'white' }}>
+        <Layout style={{background: 'white'}}>
           <HeaderDiv loggedIn={state.auth.loggedIn}>
             {state.auth.loggedIn && (
               <StyledMenuButton
@@ -111,10 +117,10 @@ function App() {
             loggedIn={state.auth.loggedIn}
           >
             <Switch>
-              <LoginRoute path={'/login'} component={Login} />
-              <LoginRoute path={'/signup'} component={Login} />
-              <Route exact path={'/'} component={LandingPage} />
-              <ProtectedRoute path={'/dashboard'} component={MainDashboard} />
+              <LoginRoute path={'/login'} component={Login}/>
+              <LoginRoute path={'/signup'} component={Login}/>
+              <Route exact path={'/'} component={LandingPage}/>
+              <ProtectedRoute path={'/dashboard'} component={MainDashboard}/>
               <RegisteredAndLoggedInRoute
                 path={'/create-org'}
                 component={CreateOrg}
@@ -128,16 +134,22 @@ function App() {
                 component={OrganizationDashboard}
               />
 
-              <Route 
-                path={'/dashbord/:id'}
-                component={EventCard}
-              />
-              
-              <RegisterRoute path={'/register'} component={Signup} />
-              <Route component={NotFound} />
+                      
+            <Route 
+            path={'/dashbord/:id'}
+            component={EventCard}
+          />
+          
+          <RegisterRoute path={'/register'} component={Signup}/>
+          <Route path={'/messages'} component={Message}/>
+          
+          <RegisteredAndLoggedInRoute
+            path={'/profile'}
+            component={UserProfile}
+          />              <Route component={NotFound} />
             </Switch>
           </StyledContent>
-          <FooterDiv />
+          <FooterDiv/>
         </Layout>
       </Layout>
     </StyledApp>
@@ -173,7 +185,7 @@ const StyledApp = styled.div`
 const StyledContent = styled(Content)`
   && {
     padding-right: ${props =>
-      props.width > 900 && props.loggedIn ? '15rem' : 0};
+  props.width > 900 && props.loggedIn ? '15rem' : 0};
     padding-bottom: ${props => props.theme.footerPadding};
   }
 `;
