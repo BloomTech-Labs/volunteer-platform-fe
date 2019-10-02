@@ -16,12 +16,12 @@ import { createEvent, createRecurringEvent } from '../actions';
 
 import moment from 'moment';
 import createEventImg from '../assets/undraw_blooming_jtv6.svg';
-import { formLayouts } from '../utility/formLayouts';
+
 import CreateEventPartOne from '../components/CreateEvent/CreateEventPartOne';
 import CreateEventPartTwo from '../components/CreateEvent/CreateEventPartTwo';
 import CreateEventPartThree from '../components/CreateEvent/CreateEventPartThree';
 import CreateEventPartFour from '../components/CreateEvent/CreateEventPartFour';
-const { Option } = Select;
+import CreateEventReview from '../components/CreateEvent/CreateEventReview';
 
 export const CreateEvent = props => {
   const initialEvent = {
@@ -34,7 +34,12 @@ export const CreateEvent = props => {
     description: '',
     volunteerRequirements: [],
     website: '',
-    recurringInfo: {},
+    recurringInfo: {
+      repeatTimePeriod: '',
+      occurrenceEnds: '',
+      occurrenceEndDate: '',
+      occurrenceEndsAfter: '',
+    },
   };
   const autoFillParts = {
     1: {},
@@ -51,7 +56,7 @@ export const CreateEvent = props => {
   const [state, dispatch] = useStateValue();
 
   //Destructuring
-  const { recurringInfo, recurringEvent, volunteerRequirements } = localState;
+  const { recurringInfo, recurringEvent } = localState;
 
   useEffect(() => {
     if (props.location.state.org) {
@@ -74,45 +79,42 @@ export const CreateEvent = props => {
   };
 
   //Handle Submit for Form
-  const handleReviewSubmit = values => {
-    console.log('values', values);
+  const handleReviewSubmit = () => {
+    console.log('firred');
     const event = {
-      ...values,
+      ...localState,
       orgId: localState.orgId,
       orgName: props.location.state.org.organizationName,
       orgImagePath: props.location.state.org.imagePath,
       orgPage: '',
-      date: values.date.unix(),
-      startTime: values.startTime.format('LT'),
-      endTime: values.endTime.format('LT'),
-      startTimeStamp: moment(
-        values.date.format('LL') + ' ' + values.startTime.format('LT')
-      ).unix(),
-      endTimeSTamp: moment(
-        values.date.format('LL') + ' ' + values.endTime.format('LT')
-      ).unix(),
-      volunteerRequirements: volunteerRequirements,
+      date: localState.date,
+      startTime: localState.startTime,
+      endTime: localState.endTime,
+      startTimeStamp: localState.startTimeStamp,
+      endTimeSTamp: localState.endTimeSTamp,
+      volunteerRequirements: localState.volunteerRequirements,
       pointOfcontact: {
-        firstName: values.firstName,
-        lastName: values.lastName,
-        email: values.email,
+        firstName: localState.firstName,
+        lastName: localState.lastName,
+        email: localState.email,
       },
     };
 
     if (recurringEvent === 'Yes') {
       event.recurringInfo = recurringInfo;
       if (event.recurringInfo.occurrenceEnds === 'On') {
-        event.recurringInfo.occurrenceEndDate = event.recurringInfo.occurrenceEndDate.unix();
         event.recurringInfo.occurrenceEndsAfter = '';
       }
       if (event.recurringInfo.occurrenceEnds === 'After') {
         event.recurringInfo.occurrenceEndDate = '';
       }
       removeUndefinied(event);
+      console.log('recurring', event);
       // createRecurringEvent(event, dispatch);
     } else {
       removeUndefinied(event);
-      // createEvent(event, dispatch);
+      console.log('regular', event);
+      createEvent(event, dispatch);
     }
     setPageNumberState({
       pageNumber: 1,
@@ -123,16 +125,12 @@ export const CreateEvent = props => {
   console.log('localState', localState);
 
   ///Cancel Form
-
   const cancelForm = () => {
     props.history.push('/org-dashboard');
   };
 
-  console.log(autoFillState);
-
   //Handle Form Parts Submit
   const handleFormPartSubmit = values => {
-    console.log('parts', values);
     if (pageNumberState.pageNumber) {
       setAutoFillState({
         ...autoFillState,
@@ -174,15 +172,17 @@ export const CreateEvent = props => {
         setLocalState={setLocalState}
         handleSubmit={handleFormPartSubmit}
         handlePageBack={handlePageBack}
-        pageNumber={pageNumberState.pageNumber}
+        pageNumberState={pageNumberState}
+        setPageNumberState={setPageNumberState}
         autoFillState={autoFillState}
+        setAutoFillState={setAutoFillState}
       />
     ),
     3: (
       <CreateEventPartThree
         state={state}
         localState={localState}
-        setState={setLocalState}
+        setLocalState={setLocalState}
         handleSubmit={handleFormPartSubmit}
         handlePageBack={handlePageBack}
         pageNumber={pageNumberState.pageNumber}
@@ -192,11 +192,23 @@ export const CreateEvent = props => {
     4: (
       <CreateEventPartFour
         localState={localState}
-        setState={setLocalState}
+        setLocalState={setLocalState}
         handleSubmit={handleFormPartSubmit}
         handlePageBack={handlePageBack}
         pageNumber={pageNumberState.pageNumber}
         autoFillState={autoFillState}
+      />
+    ),
+    5: (
+      <CreateEventReview
+        localState={localState}
+        setLocalState={setLocalState}
+        handleSubmit={handleFormPartSubmit}
+        handlePageBack={handlePageBack}
+        pageNumber={pageNumberState.pageNumber}
+        autoFillState={autoFillState}
+        handleReviewSubmit={handleReviewSubmit}
+        cancelForm={cancelForm}
       />
     ),
   };

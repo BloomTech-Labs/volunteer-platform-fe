@@ -10,28 +10,29 @@ import {
   AntSelect,
   StyledCard,
 } from '../../styled';
-import RecurringEvent from '../../components/RecurringEvent';
+import RecurringEvent from '../RecurringEvent';
 import moment from 'moment';
 import styled from 'styled-components';
 import createEventImg from '../../assets/undraw_blooming_jtv6.svg';
 import { formLayouts } from '../../utility/formLayouts';
 import { AntDatePicker } from '../../styled';
 
-const { Option } = Select;
-
 export const CreateEventPartTwo = props => {
   const {
     localState,
     setLocalState,
     handlePageBack,
-    handleSubmit,
     autoFillState,
-    pageNumber,
+    setAutoFillState,
+    pageNumberState,
+    setPageNumberState,
   } = props;
+
+  const { pageNumber } = pageNumberState;
   const [dynamicState, setDynmaicState] = useState({
-    dynmaicDay: '',
+    dynamicDay: '',
     dynamicYear: '',
-    dyanmicNumber: '',
+    dynamicNumber: '',
   });
   const dateFormat = 'MM/DD/YYYY';
 
@@ -60,13 +61,38 @@ export const CreateEventPartTwo = props => {
 
     setDynmaicState({
       ...dynamicState,
-      dynamicDay: dynamicDay,
-      dynamicYear: dynamicYear,
-      dynamicNumber: dynamicNumber,
+      dynamicDay,
+      dynamicYear,
+      dynamicNumber,
       dynamicNth: nth[count],
     });
   };
   //Handle Submit push values to parent state
+
+  const hanldePartTwoSubmit = values => {
+    console.log('part2', values);
+    setLocalState({
+      ...localState,
+      ...values,
+      values,
+      date: values.date.unix(),
+      startTime: values.startTime.format('LT'),
+      endTime: values.endTime.format('LT'),
+      startTimeStamp: moment(
+        values.date.format('LL') + ' ' + values.startTime.format('LT')
+      ).unix(),
+      endTimeSTamp: moment(
+        values.date.format('LL') + ' ' + values.endTime.format('LT')
+      ).unix(),
+    });
+    setAutoFillState({
+      ...autoFillState,
+      [pageNumber]: values,
+    });
+    setPageNumberState({
+      pageNumber: pageNumberState.pageNumber + 1,
+    });
+  };
 
   return (
     <StyledDiv className={'flex center'}>
@@ -81,7 +107,7 @@ export const CreateEventPartTwo = props => {
             cancelButton={true}
             cancelButtonText={'Back'}
             handleCancel={handlePageBack}
-            onSubmit={handleSubmit}
+            onSubmit={hanldePartTwoSubmit}
             layout={'vertical'}
             buttonType={'primary'}
             buttonText={'Next'}

@@ -27,9 +27,6 @@ export const CreateEventPartOne = props => {
     );
   });
 
-  //Handle Submit push values to parent state
-  console.log(autoFillState.partOne);
-  //   };
   return (
     <StyledDiv className={'flex center'}>
       <CustomStyledCard
