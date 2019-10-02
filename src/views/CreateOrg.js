@@ -47,9 +47,9 @@ export const CreateOrg = props => {
     5: Review,
   };
 
-  const steps = [0, 1, 2, 3];
+  const steps = [0, 1, 2, 3, 4];
 
-  const RenderedPart = possibleParts[partCount];
+  const RenderedPart = possibleParts[3];
 
   const clickNext = values => {
     if (values.startTime) values.startTime = moment(values.startTime).unix();
@@ -85,7 +85,7 @@ export const CreateOrg = props => {
     const cancelOrgFormModal = deleteModal({
       title: 'Are you sure you want to cancel? All data will be lost.',
       content: 'This cannot be undone',
-      onOk: () => props.history.push('/org-dashboard'),
+      onOk: () => props.history.push('/dashboard'),
     });
 
     e.preventDefault();

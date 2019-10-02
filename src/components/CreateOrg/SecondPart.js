@@ -15,6 +15,7 @@ export const SecondPart = ({ clickNext, storedData, clickPrevious }) => {
       setAllPOCs(temp);
     }
   }, [storedData]);
+  
   const changePOC = (action, i) => {
     if (action === 'add') {
       setAllPOCs([...allPOCs, allPOCs.length + 1]);

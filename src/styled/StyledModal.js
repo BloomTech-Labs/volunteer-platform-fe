@@ -12,9 +12,7 @@ export const confirmModal = content => {
   return () => {
     confirm({
       ...content,
-      onOk() {
-        content.onOk || console.log('OK', content.title || '');
-      },
+      onOk: content.onOk || console.log('OK', content.title || ''),
       onCancel() {
         content.onCancel || console.log('Cancel', content.title || '');
       },

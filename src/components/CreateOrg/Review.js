@@ -3,24 +3,30 @@ import styled from 'styled-components';
 import { Icon, Tag } from 'antd';
 import { setDaysOpen } from '../../utility/setDaysOpen';
 import moment from 'moment';
-import { StyledButton, StyledCancelButton } from '../../styled';
+import { StyledButton, StyledCancelButton, confirmModal } from '../../styled';
 export const Review = ({ storedData, cancelForm, submitForm, setEdit }) => {
   const onSubmit = e => {
     e.preventDefault();
     let values = {
-      POC: storedData[2].POC,
-      aboutUs: storedData[4].aboutUs,
-      causeAreas: storedData[1].typeOfCauses,
-      city: storedData[1].city,
-      streetAddress: storedData[1].streetAddress,
-      state: storedData[1].state,
-      daysOfTheWeek: storedData[3].daysOfTheWeek,
-      startTime: storedData[3].startTime,
-      endTime: storedData[3].endTime,
-      organizationName: storedData[1].nameOfOrganization,
-      website: storedData[4].website,
+      POC: storedData[2].POC || [],
+      aboutUs: storedData[4].aboutUs || '',
+      causeAreas: storedData[1].typeOfCauses || [],
+      city: storedData[1].city || '',
+      streetAddress: storedData[1].streetAddress || '',
+      state: storedData[1].state || '',
+      daysOfTheWeek: storedData[3].daysOfTheWeek || [],
+      startTime: storedData[3].startTime || '',
+      endTime: storedData[3].endTime || '',
+      organizationName: storedData[1].nameOfOrganization || '',
+      website: storedData[4].website || '',
     };
-    submitForm(values);
+
+    const confirmSubmit = confirmModal({
+        title: 'Creating Your Organization',
+        content: 'Please ensure all the information is correct.',
+        onOk: () => submitForm(values)
+    })
+    confirmSubmit()
   };
 
   return (

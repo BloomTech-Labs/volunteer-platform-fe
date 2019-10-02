@@ -1,68 +1,99 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { WrappedAntForm, AntTimePicker } from '../../styled';
-import { Checkbox } from 'antd';
-import moment from 'moment';
+import { Checkbox, Form, TimePicker } from 'antd';
+import { StyledButton, StyledCancelButton } from '../../styled';
 
 export const ThirdPart = ({ clickNext, storedData, clickPrevious }) => {
-  const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-  const weekends = ['Saturday', 'Sunday'];
+  const weekdaysArr = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+  const weekendsArr = ['Saturday', 'Sunday'];
+  const [localState, setLocalState] = useState({ weekdays: [], weekends: [] });
+  const [toggle, setToggle] = useState({ weekdays: false, weekends: false });
+  useEffect(() => {
+    if (toggle.weekdays)
+      setLocalState({
+        ...localState,
+        weekdays: weekdaysArr,
+      });
+    else setLocalState({ ...localState, weekdays: [] });
+  }, [toggle.weekdays]);
+
+  useEffect(() => {
+    if (toggle.weekends)
+      setLocalState({
+        ...localState,
+        weekends: weekendsArr,
+      });
+    else setLocalState({ ...localState, weekends: [] });
+  }, [toggle.weekends]);
+
+  const handleChange = (name, value) => {
+    setLocalState({ ...localState, [name]: value });
+  };
 
   return (
     <DivForStyling>
-      <WrappedAntForm
-        layout={'vertical'}
-        onSubmit={clickNext}
-        cancelButton
-        handleCancel={clickPrevious}
-        autofill={storedData}
-        submitButton
-        submitButtonText={'Next'}
-        cancelButtonText={'Previous'}
-      >
+      <Form layout={'vertical'} onSubmit={() => clickNext(localState)}>
         <h4>What are your hours of operation?</h4>
         <h5>1. Days of the week</h5>
         <div className="daysOfWeekPicker">
           <Checkbox.Group
-            notRequired
             className="weekdays-group"
-            noLabel
+            value={localState.weekdays}
+            onChange={value => handleChange('weekdays', value)}
             name="weekdays"
-            noLabel
-            options={weekdays}
+            options={weekdaysArr}
           />
           <Checkbox.Group
-            noLabel
-            notRequired
             className="weekend-group"
+            value={localState.weekends}
+            onChange={value => handleChange('weekends', value)}
             name="weekends"
-            noLabel
-            options={weekends}
+            options={weekendsArr}
           />
+        </div>
+        <div className="special-options-div">
+          <button
+            type="button"
+            onClick={() => setToggle({ ...toggle, weekdays: !toggle.weekdays })}
+          >
+            Weekdays
+          </button>
+          <button
+            type="button"
+            onClick={() => setToggle({ ...toggle, weekends: !toggle.weekends })}
+          >
+            Weekends
+          </button>
         </div>
         <h5>2. Operating Hours</h5>
         <div className="timeOfDayPicker">
-          <AntTimePicker
-            noLabel
-            notRequired
-            name="Start Time"
-            noLabel
+          <TimePicker
+            name="startTime"
+            value={localState['startTime']}
+            onChange={value => handleChange('startTime', value)}
             use12Hours
             format={'h:mm a'}
             minuteStep={15}
           />
           <span>to</span>
-          <AntTimePicker
-            noLabel
-            notRequired
-            name="End Time"
-            noLabel
+          <TimePicker
+            name="endTime"
+            value={localState['endTime']}
+            onChange={value => handleChange('endTime', value)}
             use12Hours
             format={'h:mm a'}
             minuteStep={15}
           />
         </div>
-      </WrappedAntForm>
+        <div className="buttonStyles">
+          <StyledCancelButton onClick={clickPrevious} type="primary">
+            Previous
+          </StyledCancelButton>
+          <StyledButton onClick={() => clickNext(localState)} type="primary">
+            Next
+          </StyledButton>
+        </div>
+      </Form>
     </DivForStyling>
   );
 };
@@ -109,6 +140,27 @@ const DivForStyling = styled.div`
     }
     span {
       color: ${({ theme }) => theme.primary8};
+    }
+  }
+  .special-options-div {
+    width: 70%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-evenly;
+
+    button {
+      background: ${({ theme, standard }) => !standard && theme.primary8};
+      color: white;
+      border-radius: 4px;
+      font-family: Arvo;
+      border: 0;
+      font-size: 12px;
+      padding: 5px 8px;
+      cursor: pointer;
+
+      :hover {
+        background: ${props => props.theme.primary7};
+      }
     }
   }
 `;
