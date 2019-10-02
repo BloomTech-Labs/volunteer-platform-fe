@@ -1,78 +1,80 @@
 import React from 'react';
-import { Form, Icon, Tooltip, Button } from 'antd';
-import { StyledButton, StyledCancelButton } from '../styled';
+import {Form, Icon, Tooltip, Button} from 'antd';
+import {StyledButton, StyledCancelButton} from '../styled';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 
-export class AntForm extends React.Component {
-  componentDidUpdate(prevProps) {
-    if (prevProps.autofill !== this.props.autofill) {
-      for (let key in this.props.autofill) {
+export class AntForm extends React.Component{
+  componentDidUpdate(prevProps){
+    if (prevProps.autofill !== this.props.autofill){
+      for (let key in this.props.autofill){
         const field = this.props.form.getFieldInstance(key);
-        if (field) {
-          if (key === 'startTime' || key === 'endTime') {
-            if (typeof this.props.autofill[key] === 'string') {
-              const oldTime = moment(this.props.autofill[key], 'HH:MM A');
-              this.props.form.setFieldsValue({ [key]: oldTime });
-            } else {
-              const time = moment.unix(this.props.autofill[key], 'HH:MM A');
-              this.props.form.setFieldsValue({ [key]: time });
+        if (field){
+          if (key === 'startTime' || key === 'endTime'){
+            if (typeof this.props.autofill[ key ] === 'string'){
+              const oldTime = moment(this.props.autofill[ key ], 'HH:MM A');
+              this.props.form.setFieldsValue({[ key ]: oldTime});
+            }else{
+              const time = moment.unix(this.props.autofill[ key ], 'HH:MM A');
+              this.props.form.setFieldsValue({[ key ]: time});
             }
-          } else {
-            this.props.form.setFieldsValue({ [key]: this.props.autofill[key] });
+          }else{
+            this.props.form.setFieldsValue({[ key ]: this.props.autofill[ key ]});
           }
         }
       }
     }
   }
-
+  
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
-      if (!err) {
+      if (!err){
         this.props.onSubmit(values);
       }
     });
   };
-
+  
   getCamelCase = name => {
     let camelCase = name.split(' ');
-    for (let i = 0; i < camelCase.length; i++) {
-      camelCase[i] = camelCase[i].toLowerCase();
-      if (i > 0) {
-        camelCase[i] =
-          camelCase[i].charAt(0).toUpperCase() + camelCase[i].slice(1);
+    for (let i = 0; i < camelCase.length; i++){
+      camelCase[ i ] = camelCase[ i ].toLowerCase();
+      if (i > 0){
+        camelCase[ i ] =
+          camelCase[ i ].charAt(0).toUpperCase() + camelCase[ i ].slice(1);
       }
     }
     camelCase = camelCase.join('');
-
+    
     return camelCase;
   };
-
+  
   getRules = (type, required = true) => {
     const rules = [];
-
-    if (type === 'email') {
-      rules.push({ type: 'email', message: 'Please enter a valid E-mail.' });
-    } else if (type === 'url') {
-      rules.push({ type: 'url', message: 'Please enter a valid url.' });
+    
+    if (type === 'email'){
+      rules.push({type: 'email', message: 'Please enter a valid E-mail.'});
+    }else if (type === 'url'){
+      rules.push({type: 'url', message: 'Please enter a valid url.'});
     }
-
-    if (required) {
-      rules.push({ required: true, message: 'This field is required.' });
+    
+    if (required){
+      rules.push({required: true, message: 'This field is required.'});
     }
-
+    
     return rules;
   };
-
+  
   getDecorator = child => {
-    if (child.type && child.type.name) {
+    if (child.type && child.type.name){
       const camelCase = this.getCamelCase(child.props.name);
       const required = !child.props.notRequired;
       const rules = this.getRules(child.props.type, required);
-      let label = child.props.label ? ( child.props.notRequired ? child.props.label : child.props.label + '*' ) : 
-      ( child.props.notRequired ? child.props.name : child.props.name + '*' );
-      if (child.props.tooltipTitle) {
+      let label = child.props.label ?
+        (child.props.notRequired ? child.props.label :
+          child.props.label + '*') :
+        (child.props.notRequired ? child.props.name : child.props.name + '*');
+      if (child.props.tooltipTitle){
         label = (
           <Tooltip title={child.props.tooltipTitle}>
             <span>
@@ -83,13 +85,13 @@ export class AntForm extends React.Component {
       }
       return (
         <Form.Item label={label} key={camelCase} {...child.props.layout}>
-          {this.props.form.getFieldDecorator(camelCase, { rules })(child)}
+          {this.props.form.getFieldDecorator(camelCase, {rules})(child)}
         </Form.Item>
       );
     }
     return child;
   };
-
+  
   wrapInDiv = (child, i = 0) => {
     return (
       <div
@@ -100,39 +102,39 @@ export class AntForm extends React.Component {
       </div>
     );
   };
-
+  
   renderChildren = children => {
     //console.log(children)
-    if (!Array.isArray(children)) {
-      if (children.type === 'div') {
+    if (!Array.isArray(children)){
+      if (children.type === 'div'){
         return this.wrapInDiv(children);
       }
       return this.getDecorator(children);
     }
     return children.map((child, i) => {
-      if (child.type === 'div') {
+      if (child.type === 'div'){
         return this.wrapInDiv(child, i);
       }
-      if (Array.isArray(child)) {
+      if (Array.isArray(child)){
         return this.renderChildren(child);
       }
-
+      
       return this.getDecorator(child);
     });
   };
-
-  render() {
+  
+  render(){
     const formItemLayout = {
       labelCol: {
-        xs: { span: 24 },
-        sm: { span: 8 },
+        xs: {span: 24},
+        sm: {span: 8},
       },
       wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 12 },
+        xs: {span: 24},
+        sm: {span: 12},
       },
     };
-
+    
     return (
       <Form
         {...formItemLayout}
@@ -166,7 +168,9 @@ export class AntForm extends React.Component {
   }
 }
 
-AntForm.propTypes = {
+export const WrappedAntForm = Form.create({name: 'register'})(AntForm);
+
+WrappedAntForm.propTypes = {
   buttonText: PropTypes.string.isRequired,
   buttonType: PropTypes.string,
   autofill: PropTypes.object,
@@ -176,5 +180,3 @@ AntForm.propTypes = {
   handleCancel: PropTypes.func,
   cancelButtonText: PropTypes.string,
 };
-
-export const WrappedAntForm = Form.create({ name: 'register' })(AntForm);

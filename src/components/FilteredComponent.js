@@ -1,6 +1,7 @@
 import React from 'react';
 import { findNext } from '../utility/findNextRecurEvent';
 import moment from 'moment';
+
 export const FilteredComponent = Component => {
   return ({ events, filter, tagFilter, recurringEvents }, ...props) => {
     const { location } = filter;

@@ -93,6 +93,11 @@ export const initialState = {
     isGetting: false,
     errorMessage: '',
   },
+  messages: {
+    messageThreads: [],
+    isLoading: false,
+    error: '',
+  },
 };
 
 /**
@@ -140,4 +145,12 @@ export const initialState = {
  * @property {String} createEventFailedError Create Event Error Message
  * @property {String} editEventFailedError Edit Event Error Message
  * @property {String} getEventsFailedError Get Events Error Message
+ */
+
+/**
+ * @typedef messages
+ * @type {Object}
+ * @property {MessageThread[]} messageThread Array of message threads.
+ * @property {Boolean} isLoading Boolean indicating if we are collecting the user messages.
+ * @property {String} error Error message if there is one.
  */

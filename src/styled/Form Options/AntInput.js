@@ -16,6 +16,9 @@ export class AntInput extends Component{
 AntInput.propTypes = {
   notRequired: PropTypes.string,
   tooltipTitle: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  type: PropTypes.string,
+  label: PropTypes.string,
 };
 
 const StyledInput = styled(Input)``;
