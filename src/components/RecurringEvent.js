@@ -118,22 +118,13 @@ export const RecurringEvent = props => {
     });
   };
 
-  const handleCustomWeek = values => {
-    setFormState({
-      days: [...values, values],
-    });
-  };
-  const handleCustomMonth = values => {
-    setFormState({
-      values,
-    });
-  };
-  const handleSubmit = () => {
+  const handleSubmit = values => {
+    console.log(values);
     setLocalState({
       ...localState,
       recurringInfo: {
         ...localState.recurringInfo,
-        ...formLayouts,
+        ...values,
       },
     });
     setFormState({
@@ -237,62 +228,45 @@ export const RecurringEvent = props => {
           width={720}
           onClose={closeModal}
           visible={formState.recurringBoolean}
-          footer={[
-            <StyledButton key="cancel" onClick={closeModal}>
-              Cancel
-            </StyledButton>,
-            <StyledButton key="submit" onClick={handleSubmit}>
-              Submit
-            </StyledButton>,
-          ]}
         >
-          <AntInputNumber
-            name={'Repeat every'}
-            style={{ width: 100 }}
-            onChange={handleRepeatEvery}
-            min={0}
-          />
-          <AntSelect
-            style={{ width: 100 }}
-            name={'Repeat every value'}
-            onChange={handleEveryValue}
+          <WrappedAntForm
+            cancelButton={true}
+            cancelButtonText={'Cancel'}
+            onSubmit={handleSubmit}
+            layout={'vertical'}
+            buttonType={'primary'}
+            buttonText={'Submit'}
           >
-            {periodOfTime}
-          </AntSelect>
-          {localState.recurringInfo.repeatEveryValue === 'Week' && (
-            <Checkbox.Group
-              name={'Days'}
-              options={dayOptions}
-              onChange={handleCustomWeek}
-              notRequired
+            <AntInputNumber
+              name={'Repeat every'}
+              style={{ width: 100 }}
+              onChange={handleRepeatEvery}
+              min={0}
             />
-          )}
-          {localState.recurringInfo.repeatEveryValue === 'Weeks' && (
-            <Checkbox.Group
-              name={'Days'}
-              onChange={handleCustomWeek}
-              options={dayOptions}
-              notRequired
-            />
-          )}
-          {localState.recurringInfo.repeatEveryValue === 'Month' && (
             <AntSelect
-              name={'Monthly Period'}
-              onChange={handleCustomMonth}
-              notRequired
+              style={{ width: 100 }}
+              name={'Repeat every value'}
+              onChange={handleEveryValue}
             >
-              {monthlyPeriod}
+              {periodOfTime}
             </AntSelect>
-          )}
-          {localState.recurringInfo.repeatEveryValue === 'Months' && (
-            <AntSelect
-              name={'Monthly Period'}
-              onChange={handleCustomMonth}
-              notRequired
-            >
-              {monthlyPeriod}
-            </AntSelect>
-          )}
+            {localState.recurringInfo.repeatEveryValue === 'Week' && (
+              <Checkbox.Group name={'Days'} options={dayOptions} notRequired />
+            )}
+            {localState.recurringInfo.repeatEveryValue === 'Weeks' && (
+              <Checkbox.Group name={'Days'} options={dayOptions} notRequired />
+            )}
+            {localState.recurringInfo.repeatEveryValue === 'Month' && (
+              <AntSelect name={'Monthly Period'} notRequired>
+                {monthlyPeriod}
+              </AntSelect>
+            )}
+            {localState.recurringInfo.repeatEveryValue === 'Months' && (
+              <AntSelect name={'Monthly Period'} notRequired>
+                {monthlyPeriod}
+              </AntSelect>
+            )}
+          </WrappedAntForm>
         </Modal>
       </div>
     </StyledRecurringEvent>
