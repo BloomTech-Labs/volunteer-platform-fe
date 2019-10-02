@@ -82,7 +82,7 @@ export const getOrganizationByOrgId = (orgId, dispatch) => {
     .then(res => {
       if (res.exists){
         const org = res.data();
-        org.id = res.id;
+        org.orgId = res.id;
         dispatch(action(GET_ORG_BY_ID, org));
       }
     });
@@ -182,4 +182,37 @@ export const getTopOrganizations = (dispatch) => {
     console.log(err);
     dispatch(action(GET_TOP_ORGANIZATIONS_FAILED, err.message));
   });
+};
+
+export const GET_ORGANIZATIONS_BY_STATE_INIT = 'GET_ORGANIZATIONS_BY_STATE_INIT';
+export const GET_ORGANIZATIONS_BY_STATE_SUCCESS = 'GET_ORGANIZATIONS_BY_STATE_SUCCESS';
+export const GET_ORGANIZATIONS_BY_STATE_EMPTY = 'GET_ORGANIZATIONS_BY_STATE_EMPTY';
+
+export const GET_ORGANIZATIONS_BY_STATE_FAILED = 'GET_ORGANIZATIONS_BY_STATE_FAILED';
+
+export const getOrganizationsByState = (state, dispatch) => {
+  dispatch(action(GET_ORGANIZATIONS_BY_STATE_INIT));
+  store.collection('organizations')
+    .where('state', '==', state)
+    .get()
+    .then(res => {
+      if (res.empty){
+        dispatch(action(GET_ORGANIZATIONS_BY_STATE_EMPTY));
+        return;
+      }
+      
+      const organizations = [];
+      res.forEach(org => {
+        const data = org.data();
+        data.orgId = org.id;
+        organizations.push(data);
+      });
+      
+      dispatch(action(GET_ORGANIZATIONS_BY_STATE_SUCCESS, organizations));
+      
+    })
+    .catch(err => {
+      console.log(err);
+      dispatch(action(GET_ORGANIZATIONS_BY_STATE_FAILED, err.message));
+    });
 };

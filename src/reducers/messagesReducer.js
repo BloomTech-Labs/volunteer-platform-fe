@@ -3,6 +3,7 @@ import {
 } from '../actions/messaging';
 
 export const messageReducer = (state, action) => {
+  
   switch (action.type){
     case COLLECTING_USER_MESSAGES_INIT:
       return {
