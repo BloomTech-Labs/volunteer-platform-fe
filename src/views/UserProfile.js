@@ -44,9 +44,14 @@ export const UserProfile = () => {
     setImageUrl(null);
   }
 
+  const updateUser = (user) => {
+    updateRegisteredUser(user, dispatch);
+  }
+
   return (
     <StyledDiv>
       <h3>Welcome {user.firstName},</h3>
+      
       <div className='profile-top'>
         <OrgPhoto 
           imageUrl={imageUrl}
@@ -54,7 +59,9 @@ export const UserProfile = () => {
           deleteImage={deleteImage}
           onFileUpload={onFileUpload}
         />
-        <UserBio bio={user.bio}/>
+        <UserBio 
+          user={user}
+          updateUser={updateUser}/>
       </div>
       <div className='profile-middle'>
         <UserInfo user={user} />
