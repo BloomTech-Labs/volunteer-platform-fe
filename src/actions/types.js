@@ -118,5 +118,20 @@
  */
 
 /**
- * @type {String}
+ * @typedef Message
+ * @type {Object}
+ * @property {String} to Uid of the user the message is to.
+ * @property {String} from Uid of the user the message is from.
+ * @property {String} text The message to be sent.
+ * @property {Number} createdAt Unix time stamp the moment it was created.
+ * @property {boolean} [read]  Rather or not the message has been read.
+ */
+
+/**
+ * @typedef MessageThread
+ * @type {Object}
+ * @property {String} id Uid of the other user.
+ * @property {String} firstName First Name the message thread is to or from.
+ * @property {String} lastName Last name the message thread is to or from.
+ * @property {Message[]} messages Array of messages back and forth.
  */
