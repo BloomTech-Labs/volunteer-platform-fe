@@ -1,14 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Select } from 'antd';
-import {
-  StyledButton,
-  StyledSelect,
-  WrappedAntForm,
-  AntInputNumber,
-  AntInput,
-  AntSelect,
-  StyledCard,
-} from '../../styled';
+import { WrappedAntForm, AntInput, AntSelect, StyledCard } from '../../styled';
 import styled from 'styled-components';
 import createEventImg from '../../assets/undraw_blooming_jtv6.svg';
 import { formLayouts } from '../../utility/formLayouts';

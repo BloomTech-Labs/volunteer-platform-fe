@@ -1,21 +1,14 @@
-import React, { useState } from 'react';
-import { Select } from 'antd';
+import React from 'react';
 import {
-  StyledButton,
-  StyledSelect,
   WrappedAntForm,
   AntInputNumber,
   AntInput,
-  AntSelect,
   AntTextArea,
   StyledCard,
 } from '../../styled';
 import styled from 'styled-components';
 import createEventImg from '../../assets/undraw_blooming_jtv6.svg';
 import { formLayouts } from '../../utility/formLayouts';
-import { AntDatePicker } from '../../styled';
-
-const { Option } = Select;
 
 export const CreateEventPartFour = props => {
   const { handleSubmit, handlePageBack, pageNumber, autoFillState } = props;
