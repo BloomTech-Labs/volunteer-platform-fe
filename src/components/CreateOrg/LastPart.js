@@ -26,6 +26,7 @@ export const LastPart = ({ clickNext, storedData, clickPrevious }) => {
           />
           <AntInput
             name={'Website'}
+            notRequired
             type={'url'}
             placeholder={'https://nonprofit.org'}
           />

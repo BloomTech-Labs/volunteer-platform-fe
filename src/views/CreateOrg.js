@@ -13,6 +13,7 @@ import {
   Review,
 } from '../components/CreateOrg';
 import { Steps } from 'antd';
+import { deleteModal } from '../styled';
 
 const { Step } = Steps;
 export const CreateOrg = props => {
@@ -80,7 +81,16 @@ export const CreateOrg = props => {
   const clickPrevious = () => {
     setPartCount(partCount => partCount - 1);
   };
-  const cancelForm = e => {};
+  const cancelForm = e => {
+    const cancelOrgFormModal = deleteModal({
+      title: 'Are you sure you want to cancel? All data will be lost.',
+      content: 'This cannot be undone',
+      onOk: () => props.history.push('/org-dashboard'),
+    });
+
+    e.preventDefault();
+    cancelOrgFormModal();
+  };
 
   const submitForm = values => {
     const org = {

@@ -20,8 +20,8 @@ export class AntForm extends React.Component {
       const field = this.props.form.getFieldInstance(key);
       if (field) {
         if (key === 'startTime' || key === 'endTime') {
-          const time = moment.unix(values[key], 'HH:MM A');
-          this.props.form.setFieldsValue({ [key]: time });
+          const time = values[key] && moment.unix(values[key], 'HH:MM A');
+          time && this.props.form.setFieldsValue({ [key]: time });
         } else {
           this.props.form.setFieldsValue({ [key]: values[key] });
         }
