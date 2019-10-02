@@ -16,6 +16,7 @@ import {
   Login,
   LandingPage,
   NotFound,
+  UserProfile
 } from './views';
 
 import {
@@ -127,6 +128,10 @@ function App() {
                 component={OrganizationDashboard}
               />
               <RegisterRoute path={'/register'} component={Signup} />
+              <RegisteredAndLoggedInRoute
+                path={'/profile'}
+                component={UserProfile}
+              />
               <Route component={NotFound} />
             </Switch>
           </StyledContent>
