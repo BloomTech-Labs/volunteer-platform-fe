@@ -38,7 +38,7 @@ export const OrgButtons = ({ displayOrg, deleteOrg }) => {
           </div>
         </Link>
         <Link>
-          <div className={'action'}>
+          <div onClick={deleteOrg} className={'action'}>
             <div className={'action-icon'}>
               <Icon type="delete" />
             </div>
