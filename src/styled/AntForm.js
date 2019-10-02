@@ -160,7 +160,7 @@ export class AntForm extends React.Component {
 export const WrappedAntForm = Form.create({name: 'register'})(AntForm);
 
 WrappedAntForm.propTypes = {
-  buttonText: PropTypes.string.isRequired,
+  submitButtonText: PropTypes.string.isRequired,
   buttonType: PropTypes.string,
   autofill: PropTypes.object,
   onSubmit: PropTypes.func.isRequired,

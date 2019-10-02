@@ -1,11 +1,49 @@
 import React, { useState } from 'react';
 import { Icon, Input, Form } from 'antd';
 import { StyledLine, deleteModal } from '../../styled';
+
+const phoneRegex = /^\(([0-9]{3})\)[ ]?([0-9]{0,3})[-. ]?([0-9]{0,4})$/;
+const partOnePhoneRegex = /^\(?([0-9]{0,3})\)?(\d)/;
+const partTwoPhoneRegex = /^\(([0-9]{3})\)[ ]?([0-9]{0,3})[-. ]?(\d)/;
 export const POC = ({ i, changePOC, setValues, values }) => {
   const changeHandler = e => {
-    setValues({ ...values, [e.target.name]: e.target.value });
+    e.preventDefault();
+    if (/phone/.test(e.target.name)) {
+      let formattedPhone = '';
+      if(e.target.value.length>14)
+        formattedPhone=values[e.target.name]
+      else if (e.target.value.length > 10)
+        formattedPhone = e.target.value.replace(phoneRegex, '($1) $2-$3');
+      else if (e.target.value.length < 6)
+        formattedPhone = e.target.value.replace(partOnePhoneRegex, '($1$2)');
+      else
+        formattedPhone = e.target.value.replace(
+          partTwoPhoneRegex,
+          '($1) $2$3-'
+        );
+      setValues({ ...values, [e.target.name]: formattedPhone });
+    } else setValues({ ...values, [e.target.name]: e.target.value });
   };
 
+  //   const formatPhone = (num, name) => {
+  //     let firstThree = values[name]
+  //       ? num.match(/\((\d{1,3})\)( |\d)/)
+  //       : num.match(/\d/) || '';
+  //     let secondThree = num.match(/(?<=\(\d{3}\) )\d{1,3}/) || '';
+  //     let finalFour = num.match(/(?<=\(\d{3}\) \d{3}-?)\d{1,4}/) || '';
+  //     console.log(secondThree);
+  //     if (firstThree) {
+  //       if (firstThree[1] && firstThree[1].length === 3)
+  //         firstThree = `(${firstThree[1]}) `;
+  //       else
+  //         firstThree = values[name]
+  //           ? `(${firstThree[1]}${firstThree[2]})`
+  //           : `(${firstThree[0]})`;
+  //     }
+  //     if (secondThree) secondThree = `${secondThree}`;
+  //     if (finalFour) finalFour = `-${finalFour}`;
+  //     return `${firstThree}${secondThree}${finalFour}`;
+  //   };
   const deletePOC = e => {
     e.preventDefault();
     const deletePOCModal = deleteModal({
@@ -16,6 +54,8 @@ export const POC = ({ i, changePOC, setValues, values }) => {
 
     deletePOCModal();
   };
+
+  console.log(values);
   return (
     <div className="fullPOCDiv">
       {i > 1 && <StyledLine />}
@@ -57,6 +97,7 @@ export const POC = ({ i, changePOC, setValues, values }) => {
             onChange={e => changeHandler(e)}
             value={values[`phone${i}`]}
             key={`phone${i}`}
+            pattern="[0-9]"
             placeholder={'(202) 213-1234'}
           />
         </Form.Item>

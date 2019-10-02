@@ -15,8 +15,8 @@ export const Review = ({ storedData, cancelForm, submitForm, setEdit }) => {
       streetAddress: storedData[1].streetAddress || '',
       state: storedData[1].state || '',
       daysOfTheWeek: storedData[3].daysOfTheWeek || [],
-      startTime: storedData[3].startTime || '',
-      endTime: storedData[3].endTime || '',
+      startTime: storedData[3].startTime.unix() || '',
+      endTime: storedData[3].endTime.unix() || '',
       organizationName: storedData[1].nameOfOrganization || '',
       website: storedData[4].website || '',
     };
@@ -52,7 +52,7 @@ export const Review = ({ storedData, cancelForm, submitForm, setEdit }) => {
       </p>
       <h4>Cause(s)</h4>
       {storedData[1].typeOfCauses.map(cause => (
-        <Tag>{cause}</Tag>
+        <Tag key={cause}>{cause}</Tag>
       ))}
       <h4>Point of Contact</h4>
       {storedData[2].POC.map((poc, i) => {
@@ -71,8 +71,8 @@ export const Review = ({ storedData, cancelForm, submitForm, setEdit }) => {
       })}
       <h4>Hours of Operation</h4>
       {setDaysOpen(storedData[3].daysOfTheWeek)}
-      {moment.unix(storedData[3].startTime).format('LT')} -{' '}
-      {moment.unix(storedData[3].endTime).format('LT')}
+      {storedData[3].startTime.format('LT')} -{' '}
+      {storedData[3].endTime.format('LT')}
       <h4>About Your Organization</h4>
       <p>{storedData[4].aboutUs}</p>
       <h4>Website</h4>

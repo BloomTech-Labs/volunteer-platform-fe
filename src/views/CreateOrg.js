@@ -49,11 +49,9 @@ export const CreateOrg = props => {
 
   const steps = [0, 1, 2, 3, 4];
 
-  const RenderedPart = possibleParts[3];
+  const RenderedPart = possibleParts[2];
 
   const clickNext = values => {
-    if (values.startTime) values.startTime = moment(values.startTime).unix();
-    if (values.endTime) values.endTime = moment(values.endTime).unix();
     if (partCount === 2) {
       let contactCount = 0;
       let POC = [];

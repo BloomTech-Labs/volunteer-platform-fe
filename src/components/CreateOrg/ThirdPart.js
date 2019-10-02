@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Checkbox, Form, TimePicker } from 'antd';
 import { StyledButton, StyledCancelButton } from '../../styled';
-
+import moment from 'moment';
 export const ThirdPart = ({ clickNext, storedData, clickPrevious }) => {
   const weekdaysArr = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
   const weekendsArr = ['Saturday', 'Sunday'];
-  const [localState, setLocalState] = useState({ weekdays: [], weekends: [] });
+  const [localState, setLocalState] = useState({ ...storedData });
   const [toggle, setToggle] = useState({ weekdays: false, weekends: false });
   useEffect(() => {
     if (toggle.weekdays)
@@ -29,12 +29,25 @@ export const ThirdPart = ({ clickNext, storedData, clickPrevious }) => {
   const handleChange = (name, value) => {
     setLocalState({ ...localState, [name]: value });
   };
-
   return (
     <DivForStyling>
       <Form layout={'vertical'} onSubmit={() => clickNext(localState)}>
         <h4>What are your hours of operation?</h4>
         <h5>1. Days of the week</h5>
+        <div className="special-options-div">
+          <button
+            type="button"
+            onClick={() => setToggle({ ...toggle, weekdays: !toggle.weekdays })}
+          >
+            Weekdays
+          </button>
+          <button
+            type="button"
+            onClick={() => setToggle({ ...toggle, weekends: !toggle.weekends })}
+          >
+            Weekends
+          </button>
+        </div>
         <div className="daysOfWeekPicker">
           <Checkbox.Group
             className="weekdays-group"
@@ -51,20 +64,7 @@ export const ThirdPart = ({ clickNext, storedData, clickPrevious }) => {
             options={weekendsArr}
           />
         </div>
-        <div className="special-options-div">
-          <button
-            type="button"
-            onClick={() => setToggle({ ...toggle, weekdays: !toggle.weekdays })}
-          >
-            Weekdays
-          </button>
-          <button
-            type="button"
-            onClick={() => setToggle({ ...toggle, weekends: !toggle.weekends })}
-          >
-            Weekends
-          </button>
-        </div>
+
         <h5>2. Operating Hours</h5>
         <div className="timeOfDayPicker">
           <TimePicker
@@ -147,6 +147,7 @@ const DivForStyling = styled.div`
     margin: 0 auto;
     display: flex;
     justify-content: space-evenly;
+    margin-bottom: 10px;
 
     button {
       background: ${({ theme, standard }) => !standard && theme.primary8};
