@@ -71,6 +71,7 @@ export const initialState = {
     createdOrg: false,
     userOrganizations: [],
     topOrganizations: [],
+    organizations: [],
     getOrganizationFailedError: '',
     organization: {},
     deleteOrgFailedError: '',
@@ -134,6 +135,7 @@ export const initialState = {
  * @property {String} getOrganizationFailedError Error message
  * @property {Organization} organization Organization from get org by id action.
  * @property {String} deleteOrgFailedError Error message
+ * @property {Organization[]} organizations Organizations by state
  */
 
 /**
