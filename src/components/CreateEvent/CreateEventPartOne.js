@@ -35,7 +35,8 @@ export const CreateEventPartOne = props => {
             onSubmit={handleSubmit}
             layout={'vertical'}
             buttonType={'primary'}
-            buttonText={'Next'}
+            submitButton
+            submitButtonText={'Next'}
             autofill={autoFillState[pageNumber]}
           >
             <div className={'nameCauseWrapper'}>
@@ -131,7 +132,11 @@ const StyledCreateEvent = styled.div`
   }
 
   label {
-    color: ${props => props.theme.primary8};
+    color: ${({ theme }) => theme.primary8};
+
+    &::before {
+      color: ${({ theme }) => theme.primary8};
+    }
   }
   small {
     color: #bfbfbf;

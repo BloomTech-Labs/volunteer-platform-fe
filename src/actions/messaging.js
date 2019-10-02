@@ -1,6 +1,6 @@
-import {store} from '../firebase/FirebaseConfig';
-import {action} from './action';
-import {arrayUnion} from 'firebase';
+import { store } from '../firebase/FirebaseConfig';
+import { action } from './action';
+import { arrayUnion } from 'firebase';
 import firebase from '../firebase/FirebaseConfig';
 import moment from 'moment';
 
@@ -27,7 +27,6 @@ const attachMessageToUsersMessages = (to, from, message) => {
     .doc(from.uid)
     .get()
     .then(res => {
-      
       // message thread does not exist.
       if (!res.exists){
         createNewMessageThread(from, to, message);
@@ -116,11 +115,12 @@ export const COLLECTING_USER_MESSAGES_INIT = 'COLLECTING_USER_MESSAGES_INIT';
 export const subscribeToMessages = (uid, dispatch) => {
   
   dispatch(action(COLLECTING_USER_MESSAGES_INIT));
-  store.collection('users')
+  store
+    .collection('users')
     .doc(uid)
     .collection('messages')
     .onSnapshot(snapshot => {
-      if (snapshot.empty){
+      if (snapshot.empty) {
         dispatch(action(USER_HAS_NO_MESSAGES));
         return;
       }
