@@ -13,38 +13,54 @@ import {
 } from '../styled';
 import { useStateValue } from '../hooks/useStateValue';
 import { createEvent, createRecurringEvent } from '../actions';
-import RecurringEvent from '../components/RecurringEvent';
+
 import moment from 'moment';
 import createEventImg from '../assets/undraw_blooming_jtv6.svg';
-import { formLayouts } from '../utility/formLayouts';
 
-const { Option } = Select;
+import CreateEventPartOne from '../components/CreateEvent/CreateEventPartOne';
+import CreateEventPartTwo from '../components/CreateEvent/CreateEventPartTwo';
+import CreateEventPartThree from '../components/CreateEvent/CreateEventPartThree';
+import CreateEventPartFour from '../components/CreateEvent/CreateEventPartFour';
+import CreateEventReview from '../components/CreateEvent/CreateEventReview';
 
 export const CreateEvent = props => {
   const initialEvent = {
     nameOfEvent: '',
     typeOfCause: [],
     date: '',
-    dynmaicDay: '',
-    dynamicYear: '',
     numberOfVolunteers: '',
     phoneNumber: '',
     pointOfcontact: '',
     description: '',
     volunteerRequirements: [],
     website: '',
-    recurringInfo: {},
+    recurringInfo: {
+      repeatTimePeriod: '',
+      occurrenceEnds: '',
+      occurrenceEndDate: '',
+      occurrenceEndsAfter: '',
+    },
   };
-  const [localState, setState] = useState(initialEvent);
+  const autoFillParts = {
+    1: {},
+    2: {},
+    3: {},
+    4: {},
+  };
+  const [localState, setLocalState] = useState(initialEvent);
+  const [autoFillState, setAutoFillState] = useState(autoFillParts);
+  let [pageNumberState, setPageNumberState] = useState({
+    pageNumber: 1,
+  });
 
   const [state, dispatch] = useStateValue();
 
   //Destructuring
-  const { recurringInfo, recurringEvent, volunteerRequirements } = localState;
+  const { recurringInfo, recurringEvent } = localState;
 
   useEffect(() => {
     if (props.location.state.org) {
-      setState({
+      setLocalState({
         ...localState,
         orgId: props.location.state.org.orgId,
       });
@@ -52,7 +68,6 @@ export const CreateEvent = props => {
   }, [props.location.state.org]);
 
   //Date Format
-  const dateFormat = 'MM/DD/YYYY';
 
   const removeUndefinied = event => {
     Object.keys(event).forEach(key => {
@@ -64,466 +79,145 @@ export const CreateEvent = props => {
   };
 
   //Handle Submit for Form
-  const handleSubmit = values => {
-    console.log('values', values);
+  const handleReviewSubmit = () => {
+    console.log('firred');
     const event = {
-      ...values,
+      ...localState,
       orgId: localState.orgId,
       orgName: props.location.state.org.organizationName,
       orgImagePath: props.location.state.org.imagePath,
       orgPage: '',
-      date: values.date.unix(),
-      startTime: values.startTime.format('LT'),
-      endTime: values.endTime.format('LT'),
-      startTimeStamp: moment(
-        values.date.format('LL') + ' ' + values.startTime.format('LT')
-      ).unix(),
-      endTimeSTamp: moment(
-        values.date.format('LL') + ' ' + values.endTime.format('LT')
-      ).unix(),
-      volunteerRequirements: volunteerRequirements,
+      date: localState.date,
+      startTime: localState.startTime,
+      endTime: localState.endTime,
+      startTimeStamp: localState.startTimeStamp,
+      endTimeSTamp: localState.endTimeSTamp,
+      volunteerRequirements: localState.volunteerRequirements,
       pointOfcontact: {
-        firstName: values.firstName,
-        lastName: values.lastName,
-        email: values.email,
+        firstName: localState.firstName,
+        lastName: localState.lastName,
+        email: localState.email,
       },
     };
 
     if (recurringEvent === 'Yes') {
       event.recurringInfo = recurringInfo;
       if (event.recurringInfo.occurrenceEnds === 'On') {
-        event.recurringInfo.occurrenceEndDate = event.recurringInfo.occurrenceEndDate.unix();
         event.recurringInfo.occurrenceEndsAfter = '';
       }
       if (event.recurringInfo.occurrenceEnds === 'After') {
         event.recurringInfo.occurrenceEndDate = '';
       }
       removeUndefinied(event);
-      createRecurringEvent(event, dispatch);
+      console.log('recurring', event);
+      // createRecurringEvent(event, dispatch);
     } else {
       removeUndefinied(event);
+      console.log('regular', event);
       createEvent(event, dispatch);
     }
+    setPageNumberState({
+      pageNumber: 1,
+    });
 
     props.history.push('/org-dashboard');
   };
-
-  const handleDynmaicDate = date => {
-    const dynamicDay = date._d.toString().split(' ')[0];
-    const dynamicYear = date._d
-      .toString()
-      .split(' ')
-      .slice(1, 3)
-      .join(' ');
-    const dynamicNumber = date._d
-      .toString()
-      .split(' ')
-      .slice(2, 3)
-      .join(' ');
-    let dayAsNum = date._d.toString().split(' ')[2];
-
-    let count = 1;
-    while (dayAsNum > 7) {
-      dayAsNum -= 7;
-      count++;
-    }
-    let nth = { 1: 'First', 2: 'Second', 3: 'Third', 4: 'Fourth', 5: 'Fifth' };
-
-    setState({
-      ...localState,
-      dynamicDay: dynamicDay,
-      dynamicYear: dynamicYear,
-      dynamicNumber: dynamicNumber,
-      dynamicNth: nth[count],
-    });
-  };
-
-  //Options for tags
-  const causeAreaTags = state.tags.causeAreas.map(tag => {
-    return (
-      <Option key={tag} value={tag}>
-        {tag}
-      </Option>
-    );
-  });
-
-  let requirementTags = [];
-
-  if (state.tags.requirements) {
-    requirementTags = state.tags.requirements.map(tag => {
-      return <Option key={tag}>{tag}</Option>;
-    });
-  }
-
-  const interestTags = state.tags.interests.map(tag => {
-    return <Option key={tag}>{tag}</Option>;
-  });
+  console.log('localState', localState);
 
   ///Cancel Form
-
   const cancelForm = () => {
     props.history.push('/org-dashboard');
   };
 
+  //Handle Form Parts Submit
+  const handleFormPartSubmit = values => {
+    if (pageNumberState.pageNumber) {
+      setAutoFillState({
+        ...autoFillState,
+        [pageNumberState.pageNumber]: values,
+      });
+    }
+    setLocalState({
+      ...localState,
+      ...values,
+      values,
+    });
+    setPageNumberState({
+      pageNumber: pageNumberState.pageNumber + 1,
+    });
+  };
+
+  //Go Back a Page Number
+  const handlePageBack = () => {
+    setPageNumberState({
+      pageNumber: pageNumberState.pageNumber - 1,
+    });
+  };
+
+  const renderParts = {
+    1: (
+      <CreateEventPartOne
+        state={state}
+        localState={localState}
+        setLocalState={setLocalState}
+        handleSubmit={handleFormPartSubmit}
+        cancelForm={cancelForm}
+        pageNumber={pageNumberState.pageNumber}
+        autoFillState={autoFillState}
+      />
+    ),
+    2: (
+      <CreateEventPartTwo
+        localState={localState}
+        setLocalState={setLocalState}
+        handleSubmit={handleFormPartSubmit}
+        handlePageBack={handlePageBack}
+        pageNumberState={pageNumberState}
+        setPageNumberState={setPageNumberState}
+        autoFillState={autoFillState}
+        setAutoFillState={setAutoFillState}
+      />
+    ),
+    3: (
+      <CreateEventPartThree
+        state={state}
+        localState={localState}
+        setLocalState={setLocalState}
+        handleSubmit={handleFormPartSubmit}
+        handlePageBack={handlePageBack}
+        pageNumber={pageNumberState.pageNumber}
+        autoFillState={autoFillState}
+      />
+    ),
+    4: (
+      <CreateEventPartFour
+        localState={localState}
+        setLocalState={setLocalState}
+        handleSubmit={handleFormPartSubmit}
+        handlePageBack={handlePageBack}
+        pageNumber={pageNumberState.pageNumber}
+        autoFillState={autoFillState}
+      />
+    ),
+    5: (
+      <CreateEventReview
+        localState={localState}
+        setLocalState={setLocalState}
+        handleSubmit={handleFormPartSubmit}
+        handlePageBack={handlePageBack}
+        pageNumber={pageNumberState.pageNumber}
+        autoFillState={autoFillState}
+        handleReviewSubmit={handleReviewSubmit}
+        cancelForm={cancelForm}
+      />
+    ),
+  };
+
   return (
-    <StyledDiv className={'flex center'}>
-      <CustomStyledCard
-        className={'flex center'}
-        style={{ maxWidth: '900px', margin: '2rem 0 5rem 0' }}
-      >
-        <h1>Let's Create An Event</h1>
-        <StyledImg src={createEventImg} alt="undraw unexpected friends" />
-        <StyledCreateEvent>
-          <WrappedAntForm
-            cancelButton={true}
-            cancelButtonText={'Cancel'}
-            handleCancel={cancelForm}
-            onSubmit={handleSubmit}
-            layout={'vertical'}
-            buttonType={'primary'}
-            buttonText={'Submit'}
-          >
-            <div className={'nameCauseWrapper'}>
-              <div className={''}>
-                <AntInput
-                  name={'Name of Event'}
-                  type="text"
-                  layout={formLayouts.empty}
-                  style={{ width: 240 }}
-                />
-              </div>
-              <div className={''}>
-                <AntSelect
-                  name={'Types of Causes'}
-                  placeholder="Types of Causes"
-                  mode="multiple"
-                  layout={formLayouts.empty}
-                  style={{ width: 240 }}
-                >
-                  {causeAreaTags}
-                </AntSelect>
-              </div>
-            </div>
-            <div className={'addressWrapper'}>
-              <AntInput name={'Street Address'} layout={formLayouts.empty} />
-            </div>
-
-            <div className={'locationWrapper'}>
-              <div className={'inlineTriple'}>
-                <AntInput
-                  name={'City'}
-                  layout={formLayouts.empty}
-                  placeholder="City"
-                ></AntInput>
-              </div>
-              <div className={'inlineTriple'}>
-                <AntInput
-                  name={'State'}
-                  layout={formLayouts.empty}
-                  placeholder="State"
-                ></AntInput>
-              </div>
-              <div className={'inlineTriple'}>
-                <AntInput
-                  name={'Phone Number'}
-                  pattern={'[0-9]{3}-[0-9]{3}-[0-9]{4}'}
-                  placeholder={'000-000-0000'}
-                  layout={formLayouts.empty}
-                />
-              </div>
-            </div>
-
-            <label>When is the event?</label>
-            <div className={'styledGroup'}>
-              <label>Date*</label>
-              <div className={'dateWrapper hidden'}>
-                <AntDatePicker
-                  name={'Date'}
-                  format={dateFormat}
-                  onChange={handleDynmaicDate}
-                  disabledDate={current =>
-                    current && current < moment().endOf('day')
-                  }
-                  layout={formLayouts.empty}
-                />
-              </div>
-              <div className={'recurringWrapper'}>
-                <RecurringEvent
-                  name={'Is This a Recurring Event ?'}
-                  localState={localState}
-                  setState={setState}
-                  layout={formLayouts.empty}
-                  notRequired
-                />
-              </div>
-
-              <label>What time ?</label>
-              <div className={'timeWrapper'}>
-                <div className={'hidden'}>
-                  <AntTimePicker
-                    name={'Start Time'}
-                    use12Hours
-                    format={'h:mm a'}
-                    defaultOpenValue={moment('00:00:00', 'HH:mm')}
-                    layout={formLayouts.empty}
-                  />
-                </div>
-                <p className="to">to</p>
-                <div className={'hidden'}>
-                  <AntTimePicker
-                    name={'End Time'}
-                    use12Hours
-                    format={'h:mm a'}
-                    defaultOpenValue={moment('00:00:00', 'HH:mm')}
-                    layout={formLayouts.empty}
-                  />
-                </div>
-              </div>
-            </div>
-
-            <label>Who is the point of Contact?</label>
-
-            <div className={'pocWrapper'}>
-              <div className={'inline'}>
-                <AntInput
-                  name={'First Name'}
-                  type="text"
-                  layout={formLayouts.empty}
-                  style={{ width: 240 }}
-                />
-              </div>
-              <div className={'inline'}>
-                <AntInput
-                  name={'Last Name'}
-                  type="text"
-                  layout={formLayouts.empty}
-                  style={{ width: 240 }}
-                />
-              </div>
-              <div className={'inline'}>
-                <AntInput
-                  name={'Email'}
-                  type="email"
-                  layout={formLayouts.empty}
-                  style={{ width: 240 }}
-                />
-              </div>
-            </div>
-            <label>What are the requirements?</label>
-            <div className={'styledGroup'}>
-              <label>List Requirements here</label>
-              <div className={'requirementsInterestWrapper'}>
-                <div className={'hidden requirementsWrapper'}>
-                  <AntSelect
-                    name={'Volunteer Requirements'}
-                    placeholder="Type here and a tag will appear"
-                    mode="multiple"
-                    layout={formLayouts.empty}
-                    style={{ width: 240 }}
-                  >
-                    {requirementTags}
-                  </AntSelect>
-                </div>
-                <div className={''}>
-                  <AntSelect
-                    name={'Interest'}
-                    placeholder="All"
-                    mode="multiple"
-                    layout={formLayouts.empty}
-                    style={{ width: 240 }}
-                  >
-                    {interestTags}
-                  </AntSelect>
-                </div>
-              </div>
-            </div>
-            <div className={'eventDetailsWrapper'}>
-              <AntTextArea
-                name={'Event Details'}
-                placeholder={
-                  'What the volunteer would do at the event would go here.'
-                }
-                layout={formLayouts.empty}
-                style={{ height: 115 }}
-              />
-            </div>
-
-            <div className={'styledGroup'}>
-              <div className={'volunteerNumberWebsiteWrapper'}>
-                <div className={''}>
-                  <AntInput
-                    name={'Website'}
-                    layout={formLayouts.empty}
-                    style={{ width: 240 }}
-                  />
-                </div>
-                <div className={''}>
-                  <label style={{ width: 250 }}>
-                    How many volunteers do you need?
-                  </label>
-                </div>
-                <div className={'hidden'} style={{ width: 106 }}>
-                  <AntInputNumber
-                    name={'Number of Volunteers'}
-                    type="number"
-                    min={0}
-                    layout={formLayouts.empty}
-                    style={{ width: 240 }}
-                  />
-                </div>
-                <small>We recommend adding +5 to your need</small>
-              </div>
-            </div>
-
-            <div className={'otherNotesWrapper'}>
-              <AntTextArea
-                name={'Other Notes'}
-                placeholder={
-                  'Any additional helpful tips for the event go here.'
-                }
-                layout={formLayouts.empty}
-                style={{ height: 115 }}
-                notRequired
-              />
-            </div>
-          </WrappedAntForm>
-        </StyledCreateEvent>
-      </CustomStyledCard>
-    </StyledDiv>
+    <div>
+      {pageNumberState.pageNumber && renderParts[pageNumberState.pageNumber]}
+    </div>
   );
 };
-
-const StyledCreateEvent = styled.div`
-  width: 100%;
-  font-weight: bold;
-  text-align: left;
-  padding: 8rem;
-  .inline {
-    width: 50%;
-  }
-  .inlineTriple {
-    width: 35%;
-  }
-  .buttonStyles {
-    display: flex;
-    justify-content: space-around;
-  }
-
-  .styledGroup {
-    background-color: #e8e8e8;
-    border-radius: 3px;
-    padding: 2rem;
-    margin-bottom: 3rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-  .nameCauseWrapper {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-  }
-  .addressWrapper {
-    width: 100%;
-
-    input {
-      width: 625px;
-    }
-  }
-  .recurringWrapper {
-    display: flex;
-    margin-left: 40px;
-  }
-  .locationWrapper {
-    display: flex;
-    flex-direction: space-between;
-
-    input {
-      width: 200px;
-    }
-  }
-  .dateWrapper {
-    text-align: center;
-    input {
-      width: 175px;
-    }
-  }
-  .timeWrapper {
-    display: flex;
-  }
-  .to {
-    margin: 15px;
-  }
-  .pocWrapper {
-    display: flex;
-    flex-wrap: wrap;
-
-    input {
-      width: 175px;
-    }
-  }
-  .requirementsInterestWrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .volunteerNumberWebsiteWrapper {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .eventDetailsWrapper {
-    width: 200%;
-  }
-  .otherNotesWrapper {
-    width: 200%;
-  }
-  .hidden {
-    label {
-      display: none;
-    }
-  }
-
-  label {
-    color: ${props => props.theme.primary8};
-  }
-  small {
-    color: #bfbfbf;
-  }
-`;
-
-const StyledDiv = styled.div`
-  background: #003d61;
-
-  h1 {
-    color: ${props => props.theme.primary8};
-  }
-
-  h4 {
-    color: ${props => props.theme.primary8};
-  }
-  padding: 2rem;
-`;
-
-const CustomStyledCard = styled(StyledCard)`
-  &&& {
-    background: #fafafa;
-    margin: 3rem;
-    text-align: center;
-    cursor: default;
-    transition: none;
-    max-width: 1088px;
-    &:hover {
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-    }
-  }
-`;
-
-const StyledImg = styled.img`
-  width: 211px;
-  margin: 2rem auto;
-`;
 
 export default CreateEvent;

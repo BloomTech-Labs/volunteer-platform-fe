@@ -14,9 +14,11 @@ import styled from 'styled-components';
 const { Option } = Select;
 
 export const RecurringEvent = props => {
-  const { setState, localState } = props;
-  const { dynamicDay, dynamicYear, dynamicNth, dynamicNumber } = localState;
-  const [formState, setFormState] = useState({});
+  const { localState, setLocalState, dynamicState } = props;
+  const { dynamicNumber, dynamicNth, dynamicDay, dynamicYear } = dynamicState;
+  const [formState, setFormState] = useState({
+    days: [],
+  });
 
   const dayOptions = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
@@ -48,7 +50,7 @@ export const RecurringEvent = props => {
   };
 
   const handleCheckBox = checked => {
-    setState({
+    setLocalState({
       ...localState,
       recurringEvent: checked.target.value,
     });
@@ -61,7 +63,7 @@ export const RecurringEvent = props => {
         recurringBoolean: true,
       });
     }
-    setState({
+    setLocalState({
       ...localState,
       recurringInfo: {
         ...localState.recurringInfo,
@@ -70,17 +72,17 @@ export const RecurringEvent = props => {
     });
   };
 
-  const handleDatePicker = date => {
-    setState({
+  const handleOccurrenceEndDate = date => {
+    setLocalState({
       ...localState,
       recurringInfo: {
         ...localState.recurringInfo,
-        occurrenceEndDate: date,
+        occurrenceEndDate: date.unix(),
       },
     });
   };
   const handleOccurrences = occurrence => {
-    setState({
+    setLocalState({
       ...localState,
       recurringInfo: {
         ...localState.recurringInfo,
@@ -89,7 +91,7 @@ export const RecurringEvent = props => {
     });
   };
   const handleOccurrencesEndsAfter = number => {
-    setState({
+    setLocalState({
       ...localState,
       recurringInfo: {
         ...localState.recurringInfo,
@@ -98,7 +100,7 @@ export const RecurringEvent = props => {
     });
   };
   const handleEveryValue = value => {
-    setState({
+    setLocalState({
       ...localState,
       recurringInfo: {
         ...localState.recurringInfo,
@@ -107,7 +109,7 @@ export const RecurringEvent = props => {
     });
   };
   const handleRepeatEvery = value => {
-    setState({
+    setLocalState({
       ...localState,
       recurringInfo: {
         ...localState.recurringInfo,
@@ -115,8 +117,10 @@ export const RecurringEvent = props => {
       },
     });
   };
+
   const handleSubmit = values => {
-    setState({
+    console.log(values);
+    setLocalState({
       ...localState,
       recurringInfo: {
         ...localState.recurringInfo,
@@ -165,7 +169,7 @@ export const RecurringEvent = props => {
       <div>
         <Radio.Group
           onChange={handleCheckBox}
-          disabled={!localState.dynamicDay}
+          disabled={!dynamicState.dynamicDay}
           className={'radioWrapper'}
           style={{ marginLeft: 100 }}
           layout={formLayouts.empty}
@@ -197,7 +201,7 @@ export const RecurringEvent = props => {
             </Radio.Group>
             <DatePicker
               name={'Occurrence End Date'}
-              onChange={handleDatePicker}
+              onChange={handleOccurrenceEndDate}
               disabledDate={current =>
                 current && current < moment().endOf('day')
               }
@@ -224,20 +228,14 @@ export const RecurringEvent = props => {
           width={720}
           onClose={closeModal}
           visible={formState.recurringBoolean}
-          footer={[
-            <StyledButton key="cancel" onClick={closeModal}>
-              Cancel
-            </StyledButton>,
-            <StyledButton key="submit" onClick={handleSubmit}>
-              Submit
-            </StyledButton>,
-          ]}
         >
           <WrappedAntForm
-            buttonText="Submit"
-            buttonType="primary"
+            cancelButton={true}
+            cancelButtonText={'Cancel'}
             onSubmit={handleSubmit}
-            noButton={true}
+            layout={'vertical'}
+            buttonType={'primary'}
+            buttonText={'Submit'}
           >
             <AntInputNumber
               name={'Repeat every'}
@@ -252,14 +250,12 @@ export const RecurringEvent = props => {
             >
               {periodOfTime}
             </AntSelect>
-
             {localState.recurringInfo.repeatEveryValue === 'Week' && (
               <Checkbox.Group name={'Days'} options={dayOptions} notRequired />
             )}
             {localState.recurringInfo.repeatEveryValue === 'Weeks' && (
               <Checkbox.Group name={'Days'} options={dayOptions} notRequired />
             )}
-
             {localState.recurringInfo.repeatEveryValue === 'Month' && (
               <AntSelect name={'Monthly Period'} notRequired>
                 {monthlyPeriod}
