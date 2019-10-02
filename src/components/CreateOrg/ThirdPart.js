@@ -32,8 +32,8 @@ export const ThirdPart = ({ clickNext, storedData, clickPrevious }) => {
             options={weekdays}
           />
           <Checkbox.Group
-            notRequired
             noLabel
+            notRequired
             className="weekend-group"
             name="weekends"
             noLabel
@@ -43,8 +43,8 @@ export const ThirdPart = ({ clickNext, storedData, clickPrevious }) => {
         <h5>2. Operating Hours</h5>
         <div className="timeOfDayPicker">
           <AntTimePicker
-            notRequired
             noLabel
+            notRequired
             name="Start Time"
             noLabel
             use12Hours
@@ -53,8 +53,8 @@ export const ThirdPart = ({ clickNext, storedData, clickPrevious }) => {
           />
           <span>to</span>
           <AntTimePicker
-            notRequired
             noLabel
+            notRequired
             name="End Time"
             noLabel
             use12Hours

@@ -4,12 +4,13 @@ import { StyledCard } from '../styled';
 import { useStateValue } from '../hooks/useStateValue';
 import { registerOrganization, updateOrganization } from '../actions';
 import createOrgImg from '../assets/undraw_unexpected_friends.svg';
-import moment from 'moment'
+import moment from 'moment';
 import {
   FirstPart,
   SecondPart,
   ThirdPart,
   LastPart,
+  Review,
 } from '../components/CreateOrg';
 import { Steps } from 'antd';
 
@@ -42,47 +43,47 @@ export const CreateOrg = props => {
     2: SecondPart,
     3: ThirdPart,
     4: LastPart,
+    5: Review,
   };
 
   const steps = [0, 1, 2, 3];
 
-  const RenderedPart = possibleParts[3];
+  const RenderedPart = possibleParts[partCount];
 
   const clickNext = values => {
-    if (values.startTime) {
-      values.startTime = moment(values.startTime).unix();
-      values.endTime = moment(values.endTime).unix();
+    if (values.startTime) values.startTime = moment(values.startTime).unix();
+    if (values.endTime) values.endTime = moment(values.endTime).unix();
+    if (partCount === 2) {
+      let contactCount = 0;
+      let POC = [];
+      for (let key in values) {
+        if (/fullName/.test(key)) contactCount++;
+      }
+      for (let i = 1; i <= contactCount; i++) {
+        POC.push({
+          email: values[`email${i}`],
+          phone: values[`phone${i}`],
+          fullName: values[`fullName${i}`],
+        });
+      }
+      values.POC = POC;
+    }
+    if (partCount === 3) {
+      values.daysOfTheWeek = [...values.weekdays, ...values.weekends];
     }
     setLocalState({ ...localState, [partCount]: values });
     setPartCount(partCount => partCount + 1);
   };
 
-  const cancelForm = e => {};
-
   const clickPrevious = () => {
     setPartCount(partCount => partCount - 1);
   };
+  const cancelForm = e => {};
 
-  const onSubmit = values => {
-    let POC = [];
-    POC.push({
-      email: values.email,
-      firstName: values.firstName,
-      lastName: values.lastName,
-    });
-    if (values.email2) {
-      POC.push({
-        email: values.email2,
-        firstName: values.firstName2,
-        lastName: values.lastName2,
-      });
-    }
+  const submitForm = values => {
     const org = {
       ...values,
-      POC,
       organizationOwnerUID: state.auth.googleAuthUser.uid,
-      startTime: values.startTime.unix(),
-      endTime: values.endTime.unix(),
     };
     for (let key in org) {
       if (org[key] === undefined) {
@@ -94,8 +95,8 @@ export const CreateOrg = props => {
     // } else {
     //   registerOrganization(org, dispatch);
     // }
-    registerOrganization(org, dispatch);
-    props.history.push('/org-dashboard');
+    // props.history.push('/org-dashboard');
+    console.log(values)
   };
 
   return (
@@ -111,9 +112,11 @@ export const CreateOrg = props => {
         <StyledRenderDiv>
           <RenderedPart
             clickNext={clickNext}
-            storedData={localState[partCount]}
+            storedData={localState[partCount] || localState}
             cancelForm={cancelForm}
             clickPrevious={clickPrevious}
+            submitForm={submitForm}
+            // setEdit={setEdit}
           />
         </StyledRenderDiv>
       </CustomStyledCard>

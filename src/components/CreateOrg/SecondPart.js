@@ -7,7 +7,14 @@ import { StyledButton, StyledCancelButton } from '../../styled';
 export const SecondPart = ({ clickNext, storedData, clickPrevious }) => {
   const [allPOCs, setAllPOCs] = useState([1]);
   const [values, setValues] = useState({ ...storedData });
- 
+
+  useEffect(() => {
+    let temp = [];
+    if (storedData.POC) {
+      for (let i = 1; i <= storedData.POC.length; i++) temp.push(i);
+      setAllPOCs(temp);
+    }
+  }, [storedData]);
   const changePOC = (action, i) => {
     if (action === 'add') {
       setAllPOCs([...allPOCs, allPOCs.length + 1]);
@@ -16,7 +23,7 @@ export const SecondPart = ({ clickNext, storedData, clickPrevious }) => {
       setAllPOCs([...allPOCs]);
     }
   };
- 
+
   return (
     <Form layout={'vertical'} onSubmit={() => clickNext(values)}>
       <h4>Who is the point of contact?</h4>
