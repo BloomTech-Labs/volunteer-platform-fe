@@ -1,21 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Select, Row, Col } from 'antd';
-import styled from 'styled-components';
-import {
-  AntInput,
-  AntSelect,
-  AntTextArea,
-  AntTimePicker,
-  AntInputNumber,
-  AntDatePicker,
-  WrappedAntForm,
-  StyledCard,
-} from '../styled';
+
 import { useStateValue } from '../hooks/useStateValue';
 import { createEvent, createRecurringEvent } from '../actions';
-
-import moment from 'moment';
-import createEventImg from '../assets/undraw_blooming_jtv6.svg';
 
 import CreateEventPartOne from '../components/CreateEvent/CreateEventPartOne';
 import CreateEventPartTwo from '../components/CreateEvent/CreateEventPartTwo';
@@ -109,11 +95,11 @@ export const CreateEvent = props => {
         event.recurringInfo.occurrenceEndDate = '';
       }
       removeUndefinied(event);
-      console.log('recurring', event);
-      // createRecurringEvent(event, dispatch);
+
+      createRecurringEvent(event, dispatch);
     } else {
       removeUndefinied(event);
-      console.log('regular', event);
+
       createEvent(event, dispatch);
     }
     setPageNumberState({

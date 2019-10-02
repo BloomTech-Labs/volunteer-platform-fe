@@ -1,13 +1,8 @@
 import React, { useState } from 'react';
-import { Select } from 'antd';
 import {
-  StyledButton,
-  StyledSelect,
   WrappedAntForm,
-  AntInputNumber,
   AntInput,
   AntTimePicker,
-  AntSelect,
   StyledCard,
 } from '../../styled';
 import RecurringEvent from '../RecurringEvent';
@@ -70,7 +65,6 @@ export const CreateEventPartTwo = props => {
   //Handle Submit push values to parent state
 
   const hanldePartTwoSubmit = values => {
-    console.log('part2', values);
     setLocalState({
       ...localState,
       ...values,
