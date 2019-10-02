@@ -1,50 +1,41 @@
-
 ![MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)
 ![React](https://img.shields.io/badge/React-v16.9.0-blue.svg)
 ![Code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/b5c4db1c-b10d-42c3-b157-3746edd9e81d/deploy-status)](https://crime-statistics-master.netlify.com/)
 
-# 1️⃣ Crime Statistics For Travelers
+# 1️⃣ Volunteer Platform
 
-1️⃣ You can find the deployed project[Here](https://crime-statistics-master.netlify.com/).
+1️⃣ You can find the deployed project[Here](https://volunteer-platform.netlify.com/).
 
-## 4️⃣ Contributors
+## Contributors
 
-🚫Add contributor info below, make sure add images and edit the social links for each member. Add to or delete these place-holders as needed
-
-|                                       [Oscar Ortiz](https://github.com/CleverOscar)                                        |                                       [Student 2](https://github.com/)                                        |                                       [Student 3](https://github.com/)                                        |                                       [Student 4](https://github.com/)                                        |                                       [Student 5](https://github.com/)                                        |
-| :-----------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------: |
-|                      [<img src="https://www.dalesjewelers.com/wp-content/uploads/2018/10/placeholder-silhouette-male.png" width = "200" />](https://github.com/)                       |                      [<img src="https://pbs.twimg.com/profile_images/1131617955282866176/MsKS-5vG_400x400.jpg" width = "200" />](https://github.com/jengopockets)                       |                      [<img src="https://www.dalesjewelers.com/wp-content/uploads/2018/10/placeholder-silhouette-male.png" width = "200" />](https://github.com/)                       |                      [<img src="https://www.dalesjewelers.com/wp-content/uploads/2018/10/placeholder-silhouette-female.png" width = "200" />](https://github.com/)                       |                      [<img src="https://www.dalesjewelers.com/wp-content/uploads/2018/10/placeholder-silhouette-male.png" width = "200" />](https://github.com/)                       |
-|                 [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/)                 |            [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/jengopockets)             |           [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/Mister-Corn)            |          [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/NandoTheessen)           |            [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/wvandolah)             |
-| [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/) | [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/jacob-tharp-79382311b/) | [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/) | [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/) | [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/) |
+|                                       [Shane Gooch](https://github.com/shane-gooch)                                       |                                                     [Ethan Hickey](https://github.com/ehickey08)                                                     |                                    [Jeremiah Tenbrink](https://github.com/jeremiahtenbrink)                                    |                                                     [Kimberly Mai Ho](https://github.com/)                                                    |                                        [Max David](https://github.com/maxdavid)                                       | [Penny Lee ](https://github.com/mochibot)                                                                                                     | [Blake Goms](https://github.com/Blake-Goms)                                                                              | [Oscar Ortiz](https://github.com/CleverOscar)                                                                                 |
+| :-----------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------: | --------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
+| [<img src="https://avatars1.githubusercontent.com/u/43436342?s=460&v=4" width = "200" />](https://github.com/shane-gooch) | [<img src="https://www.dalesjewelers.com/wp-content/uploads/2018/10/placeholder-silhouette-male.png" width = "200" />](https://github.com/ehickey08) | [<img src="https://avatars1.githubusercontent.com/u/17443353?s=460&v=4" width = "200" />](https://github.com/jeremiahtenbrink) | [<img src="https://avatars1.githubusercontent.com/u/49884611?s=460&v=4" width = "200" />](https://github.com/iammaiho) | [<img src="https://avatars2.githubusercontent.com/u/1081567?s=460&v=4" width = "200" />](https://github.com/maxdavid) | [<img src="https://www.dalesjewelers.com/wp-content/uploads/2018/10/placeholder-silhouette-female.png" width = "200" />](https://github.com/) | [<img src="https://avatars3.githubusercontent.com/u/49797898?s=460&v=4" width = "200" />](https://github.com/Blake-Goms) | [<img src="https://avatars2.githubusercontent.com/u/22969581?s=460&v=4" width = "200" />](https://github.com/CleverOscar)     |
+|                       [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/)                       |                               [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/jengopockets)                              |                    [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/Mister-Corn)                    |                           [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/NandoTheessen)                          |                 [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/wvandolah)                | [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/mochibot)                                                         | [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/Blake-Goms)                                  | [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/CleverOscar)                                      |
+|       [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)       |        [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/jacob-tharp-79382311b/)        |          [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)         |                 [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)                 |     [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)     | [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)                                 | [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)            | [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/clever-oscar/) |
 
 <br>
 <br>
 
 🚫 4️⃣ Optional examples of using images with links for your tech stack, make sure to change these to fit your project
 
-
 ## Project Overview
 
- [Trello Board](https://trello.com/b/d9Ut99fr/labs-16-crime-statistics-for-travelers)
--insert an image of the trello here
- [Product Canvas](https://www.notion.so/Crime-Statistics-for-Travelers-a7e69847024d4cdc85aaf85cb413df71)
- [UX Design files](https://www.figma.com/file/HjoxfuYoel2otaeDTOPP8F/Labs16_LambdaCrime-Stats-for-Travelers) 
+ [Trello Board](https://trello.com/b/8l9hDu3i/volunteer-platform-16)
 
-The goal of this project is to make the world a safer place
+ [Product Canvas](https://www.notion.so/Volunteer-Platform-fcfbaf6317e548de9a310052ad278e6c)
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+ [UX Design files](https://www.figma.com/file/cLBm5ArTmCT91X2rNbdSeq/Labs16_Volunteer-Platform?node-id=0%3A1)
 
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
+The goal of this project is to connect volunteers and non-profits together, streamlining the validation process of volunteers to events.
 
 ### 4️⃣ Key Features
 
--    feature one
--    feature two
--    feature three
--    feature four
--    feature five
+-   feature one [Initial user onboarding (one type of user); user can create a nonprofit organization; CRUD functionality on events for the nonprofit]
+-   feature two
+-   feature three
+
 
 ## 1️⃣ Tech Stack
 
@@ -52,22 +43,24 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
 
 #### ReactJS
 
--    We chose React because everyone on the team knows it and we want to make use of the vast amount of npm packages built just for react.
--    React JS has a really great ways to manage component state. Our team is a huge fan of hooks and the power of Context Api(which is built in the box for react)
--  There is this styling library called Chakra.UI which works really well for our UX vision that is really compatible with react
+-   We chose React because everyone on the team knows it and we want to make use of the vast amount of npm packages built just for react.
+-   React JS has a really great ways to manage component state. Our team is a huge fan of hooks and the power of Context Api(which is built in the box for react)
+-   There is this styling library called Chakra.UI which works really well for our UX vision that is really compatible with react
 
 
 🚫List the rest of the front end features and libraries in the same format as the framework above.
 
 #### Front end deployed to `🚫insert service here`
 
-#### [Back end](🚫link to back end repo here) built using:
+
+#### [Back end](<🚫link to back end repo here>) built using:
 
 #### 🚫 back end framework goes here
 
--    point one
--    point two
--    point three
+-   point one
+-   point two
+-   point three
+
 
 🚫 List the rest of the back end end features and libraries in the same format as the framework above
 
@@ -153,12 +146,13 @@ When contributing to this repository, please first discuss the change you wish t
 Please note we have a [code of conduct](./CODE_OF_CONDUCT.md). Please follow it in all your interactions with the project.
 
 ## Issue/Bug Request
-   
+
  **If you are having an issue with the existing project code, please submit a bug report under the following guidelines:**
- - Check first to see if your issue has already been reported.
- - Check to see if the issue has recently been fixed by attempting to reproduce the issue using the latest master branch in the repository.
- - Create a live example of the problem.
- - Submit a detailed bug report including your environment & browser, steps to reproduce the issue, actual and expected outcomes,  where you believe the issue is originating from, and any potential solutions you have considered.
+
+-   Check first to see if your issue has already been reported.
+-   Check to see if the issue has recently been fixed by attempting to reproduce the issue using the latest master branch in the repository.
+-   Create a live example of the problem.
+
 
 ### Feature Requests
 
@@ -172,11 +166,12 @@ Remember that this project is licensed under the MIT license, and by submitting 
 
 #### Pull Request Guidelines
 
-- Ensure any install or build dependencies are removed before the end of the layer when doing a build.
-- Update the README.md with details of changes to the interface, including new plist variables, exposed ports, useful file locations and container parameters.
-- Ensure that your code conforms to our existing code conventions and test coverage.
-- Include the relevant issue number, if applicable.
-- You may merge the Pull Request in once you have the sign-off of two other developers, or if you do not have permission to do that, you may request the second reviewer to merge it for you.
+-   Ensure any install or build dependencies are removed before the end of the layer when doing a build.
+-   Update the README.md with details of changes to the interface, including new plist variables, exposed ports, useful file locations and container parameters.
+-   Ensure that your code conforms to our existing code conventions and test coverage.
+-   Include the relevant issue number, if applicable.
+-   You may merge the Pull Request in once you have the sign-off of two other developers, or if you do not have permission to do that, you may request the second reviewer to merge it for you.
+
 
 ### Attribution
 
@@ -184,4 +179,6 @@ These contribution guidelines have been adapted from [this good-Contributing.md-
 
 ## Documentation
 
-See [Backend Documentation](🚫_link to your backend readme here_) for details on the backend of our project.
+
+See [Backend Documentation](<🚫_link to your backend readme here_>) for details on the backend of our project.
+
