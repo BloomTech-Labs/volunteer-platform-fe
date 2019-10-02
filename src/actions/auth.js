@@ -1,5 +1,6 @@
-import {action} from './action';
-import firebase, {store} from '../firebase/FirebaseConfig';
+import { action } from './action';
+import firebase, { store } from '../firebase/FirebaseConfig';
+import { deleteFile } from './files';
 
 /**
  * Auth Actions
@@ -194,9 +195,13 @@ export const UPDATE_REGISTERED_USER = 'UPDATE_REGISTERED_USER';
  * @param {Dispatch} dispatch
  */
 export const updateRegisteredUser = (user, dispatch) => {
-  store.collection('users').doc(user.uid).set(user).then(res => {
-    dispatch(action(UPDATE_REGISTERED_USER, user));
-  }).catch(err => console.log(err));
+  store.collection('users')
+    .doc(user.uid)
+    .set(user)
+    .then(res => {
+      dispatch(action(UPDATE_REGISTERED_USER, user));
+    })
+    .catch(err => console.log(err));
 };
 
 export const GET_TOP_VOLUNTEERS = 'GET_TOP_VOLUNTEERS';
@@ -227,3 +232,22 @@ export const getTopVolunteers = (dispatch) => {
     dispatch(action(GET_TOP_VOLUNTEERS_FAILED, err.message));
   });
 };
+
+/**
+ * Delete an user's image from the db.
+ * @function
+ * @param {User} user User whose image to be deleted.
+ */
+export const deleteUserImage = ( user, dispatch ) => {
+  deleteFile( user.imagePath )
+  delete user.imagePath;
+  delete user.imageUrl;
+
+  store.collection('users')
+    .doc(user.uid)
+    .set(user)
+    .then(res => {
+      dispatch(action(UPDATE_REGISTERED_USER, user));
+    })
+    .catch(err => console.log(err));
+}

@@ -1,19 +1,8 @@
-import React, { useState } from 'react';
-import { Select } from 'antd';
-import {
-  StyledButton,
-  StyledSelect,
-  WrappedAntForm,
-  AntInputNumber,
-  AntInput,
-  AntSelect,
-  AntTextArea,
-  StyledCard,
-} from '../../styled';
+import React from 'react';
+import { StyledButton, StyledCard } from '../../styled';
 import styled from 'styled-components';
 import createEventImg from '../../assets/undraw_blooming_jtv6.svg';
 import RecurringInfoReview from './RecurringInfoReview';
-import { formLayouts } from '../../utility/formLayouts';
 
 export const CreateEventReview = props => {
   const { localState, handleReviewSubmit, handlePageBack } = props;

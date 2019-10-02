@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, Select, Checkbox, Radio, DatePicker, InputNumber } from 'antd';
 import {
-  StyledButton,
   StyledSelect,
   WrappedAntForm,
   AntInputNumber,
@@ -228,10 +227,12 @@ export const RecurringEvent = props => {
           width={720}
           onClose={closeModal}
           visible={formState.recurringBoolean}
+          footer={null}
         >
           <WrappedAntForm
             cancelButton={true}
             cancelButtonText={'Cancel'}
+            handleCancel={closeModal}
             onSubmit={handleSubmit}
             layout={'vertical'}
             buttonType={'primary'}

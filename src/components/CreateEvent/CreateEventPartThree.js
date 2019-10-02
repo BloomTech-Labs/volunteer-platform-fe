@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
 import { Select } from 'antd';
 import {
-  StyledButton,
-  StyledSelect,
   WrappedAntForm,
-  AntInputNumber,
-  AntInput,
   AntSelect,
   AntTextArea,
   StyledCard,
@@ -13,7 +9,6 @@ import {
 import styled from 'styled-components';
 import createEventImg from '../../assets/undraw_blooming_jtv6.svg';
 import { formLayouts } from '../../utility/formLayouts';
-import { AntDatePicker } from '../../styled';
 
 const { Option } = Select;
 
