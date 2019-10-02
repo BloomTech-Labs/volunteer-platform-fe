@@ -18,6 +18,7 @@ import {
   NotFound,
 } from './views';
 
+import EventCard from './components/EventCard'
 import {
   RegisteredAndLoggedInRoute,
   LoginRoute,
@@ -126,6 +127,12 @@ function App() {
                 path={'/org-dashboard'}
                 component={OrganizationDashboard}
               />
+
+              <Route 
+                path={'/dashbord/:id'}
+                component={EventCard}
+              />
+              
               <RegisterRoute path={'/register'} component={Signup} />
               <Route component={NotFound} />
             </Switch>

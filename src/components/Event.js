@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import EventCard from './EventCard';
+import { EventCard } from './EventCard';
 import { StyledCard, StyledButton } from '../styled';
 import { useStateValue } from '../hooks/useStateValue';
 import moment from 'moment';
@@ -10,7 +10,7 @@ import { Tag } from 'antd';
 export const Event = ({ event }) => {
   //logic
   const [{ org, events }, dispatch] = useStateValue();
-  const [clickState, setClickState] = useState(false);
+  //const [clickState, setClickState] = useState(false);
 
   let ableToDelete = false;
 
@@ -32,11 +32,11 @@ export const Event = ({ event }) => {
     return <Tag>{(item = [item])}</Tag>;
   });
 
-  const clickHandler = e => {
-    e.preventDefault();
-    setClickState(true)
-    console.log('card clicked')
-  };
+  // const clickHandler = e => {
+  //   e.preventDefault();
+  //   setClickState(true)
+  //   console.log('card clicked')
+  // };
 
   return (
     
@@ -58,8 +58,7 @@ export const Event = ({ event }) => {
           </div>
           {ableToDelete && <StyledButton type="danger">Delete</StyledButton>}
         </div>
-        {/* <Link to={"/eventcard"}><button type='button' onClick={clickHandler}> See more </button></Link> */}
-        <Link to={"/eventcard"}> Click me</Link>
+        <button><Link to={{pathname: `/dashboard/${event.eventId}`}}> View More </Link></button>
       </StyledEventCard>
   );
 };
