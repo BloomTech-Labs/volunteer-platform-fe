@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { WrappedAntForm, AntTimePicker } from '../../styled';
 import { Checkbox } from 'antd';
+import moment from 'moment';
 
 export const ThirdPart = ({ clickNext, storedData, clickPrevious }) => {
   const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
   const weekends = ['Saturday', 'Sunday'];
+
   return (
     <DivForStyling>
       <WrappedAntForm
@@ -47,6 +49,7 @@ export const ThirdPart = ({ clickNext, storedData, clickPrevious }) => {
             noLabel
             use12Hours
             format={'h:mm a'}
+            minuteStep={15}
           />
           <span>to</span>
           <AntTimePicker
@@ -56,6 +59,7 @@ export const ThirdPart = ({ clickNext, storedData, clickPrevious }) => {
             noLabel
             use12Hours
             format={'h:mm a'}
+            minuteStep={15}
           />
         </div>
       </WrappedAntForm>
@@ -90,7 +94,9 @@ const DivForStyling = styled.div`
       height: 54px;
     }
   }
-
+  .ant-checkbox-checked > .ant-checkbox-inner {
+    background: ${({ theme }) => theme.primary8};
+  }
   .timeOfDayPicker {
     display: flex;
     justify-content: space-evenly;

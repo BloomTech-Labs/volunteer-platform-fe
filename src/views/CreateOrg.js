@@ -4,7 +4,7 @@ import { StyledCard } from '../styled';
 import { useStateValue } from '../hooks/useStateValue';
 import { registerOrganization, updateOrganization } from '../actions';
 import createOrgImg from '../assets/undraw_unexpected_friends.svg';
-import { ProgressBar } from '../components';
+import moment from 'moment'
 import {
   FirstPart,
   SecondPart,
@@ -46,9 +46,13 @@ export const CreateOrg = props => {
 
   const steps = [0, 1, 2, 3];
 
-  const RenderedPart = possibleParts[partCount];
+  const RenderedPart = possibleParts[3];
 
   const clickNext = values => {
+    if (values.startTime) {
+      values.startTime = moment(values.startTime).unix();
+      values.endTime = moment(values.endTime).unix();
+    }
     setLocalState({ ...localState, [partCount]: values });
     setPartCount(partCount => partCount + 1);
   };
