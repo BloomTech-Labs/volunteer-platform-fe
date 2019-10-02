@@ -18,6 +18,7 @@ import {
   Login,
   LandingPage,
   NotFound,
+  UserProfile
 } from './views';
 
 import {
@@ -133,8 +134,12 @@ function App(){
               />
               <RegisterRoute path={'/register'} component={Signup}/>
               <Route path={'/messages'} component={Message}/>
-              <Route component={NotFound}/>
-            
+              
+              <RegisteredAndLoggedInRoute
+                path={'/profile'}
+                component={UserProfile}
+              />
+              <Route component={NotFound} />
             </Switch>
           </StyledContent>
           <FooterDiv/>
