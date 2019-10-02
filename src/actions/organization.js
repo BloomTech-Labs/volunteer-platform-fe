@@ -25,6 +25,7 @@ export const registerOrganization = (org, dispatch) => {
     .add(org)
     .then(res => {
       console.log(res);
+      console.log('testing');
       dispatch(action(CREATED_ORGANIZATION));
     })
     .catch(err => {

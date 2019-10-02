@@ -956,6 +956,441 @@
 
             
                 
+<h4 class="name" id="~Message">Message</h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>to</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Uid of the user the message is to.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>from</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Uid of the user the message is from.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>text</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The message to be sent.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>createdAt</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Unix time stamp the moment it was created.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>read</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Rather or not the message has been read.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="actions_types.js.html">actions/types.js</a>, <a href="actions_types.js.html#line120">line 120</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+            
+                
+<h4 class="name" id="~MessageThread">MessageThread</h4>
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Uid of the other user.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>firstName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>First Name the message thread is to or from.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>lastName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Last name the message thread is to or from.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>messages</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Message></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Array of messages back and forth.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="actions_types.js.html">actions/types.js</a>, <a href="actions_types.js.html#line130">line 130</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+            
+                
 <h4 class="name" id="~Organization">Organization</h4>
 
 
@@ -2734,13 +3169,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-actions_auth.html">actions/auth</a></li><li><a href="module-actions_events.html">actions/events</a></li><li><a href="module-actions_file.html">actions/file</a></li><li><a href="module-actions_organizations.html">actions/organizations</a></li><li><a href="module-State.html">State</a></li><li><a href="module-Types.html">Types</a></li></ul><h3>Global</h3><ul><li><a href="global.html#action">action</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-actions_auth.html">actions/auth</a></li><li><a href="module-actions_events.html">actions/events</a></li><li><a href="module-actions_file.html">actions/file</a></li><li><a href="module-actions_organizations.html">actions/organizations</a></li><li><a href="module-State.html">State</a></li><li><a href="module-Types.html">Types</a></li></ul><h3>Global</h3><ul><li><a href="global.html#action">action</a></li><li><a href="global.html#sendMessage">sendMessage</a></li><li><a href="global.html#subscribeToMessages">subscribeToMessages</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Mon Sep 30 2019 11:01:39 GMT-0600 (Mountain Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Tue Oct 01 2019 18:50:49 GMT-0600 (Mountain Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

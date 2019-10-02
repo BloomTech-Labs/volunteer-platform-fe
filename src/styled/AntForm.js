@@ -1,6 +1,6 @@
 import React from 'react';
-import { Form, Icon, Tooltip, Button } from 'antd';
-import { StyledButton, StyledCancelButton } from '../styled';
+import {Form, Icon, Tooltip, Button} from 'antd';
+import {StyledButton, StyledCancelButton} from '../styled';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 
@@ -32,42 +32,42 @@ export class AntForm extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
-      if (!err) {
+      if (!err){
         this.props.onSubmit(values);
       }
     });
   };
-
+  
   getCamelCase = name => {
     let camelCase = name.split(' ');
-    for (let i = 0; i < camelCase.length; i++) {
-      camelCase[i] = camelCase[i].toLowerCase();
-      if (i > 0) {
-        camelCase[i] =
-          camelCase[i].charAt(0).toUpperCase() + camelCase[i].slice(1);
+    for (let i = 0; i < camelCase.length; i++){
+      camelCase[ i ] = camelCase[ i ].toLowerCase();
+      if (i > 0){
+        camelCase[ i ] =
+          camelCase[ i ].charAt(0).toUpperCase() + camelCase[ i ].slice(1);
       }
     }
     camelCase = camelCase.join('');
-
+    
     return camelCase;
   };
-
+  
   getRules = (type, required = true) => {
     const rules = [];
-
-    if (type === 'email') {
-      rules.push({ type: 'email', message: 'Please enter a valid E-mail.' });
-    } else if (type === 'url') {
-      rules.push({ type: 'url', message: 'Please enter a valid url.' });
+    
+    if (type === 'email'){
+      rules.push({type: 'email', message: 'Please enter a valid E-mail.'});
+    }else if (type === 'url'){
+      rules.push({type: 'url', message: 'Please enter a valid url.'});
     }
-
-    if (required) {
-      rules.push({ required: true, message: 'This field is required.' });
+    
+    if (required){
+      rules.push({required: true, message: 'This field is required.'});
     }
-
+    
     return rules;
   };
-
+  
   getDecorator = child => {
     if (child.type && child.type.name && child.type.name !== 'POC') {
       const camelCase = this.getCamelCase(child.props.name);
@@ -95,7 +95,7 @@ export class AntForm extends React.Component {
     }
     return child;
   };
-
+  
   wrapInDiv = (child, i = 0) => {
     return (
       <div
@@ -106,7 +106,7 @@ export class AntForm extends React.Component {
       </div>
     );
   };
-
+  
   renderChildren = children => {
     if (!Array.isArray(children)) {
       if (children.type === 'div') {
@@ -115,10 +115,10 @@ export class AntForm extends React.Component {
       return this.getDecorator(children);
     }
     return children.map((child, i) => {
-      if (child.type === 'div') {
+      if (child.type === 'div'){
         return this.wrapInDiv(child, i);
       }
-      if (Array.isArray(child)) {
+      if (Array.isArray(child)){
         return this.renderChildren(child);
       }
       return this.getDecorator(child);
@@ -157,7 +157,9 @@ export class AntForm extends React.Component {
   }
 }
 
-AntForm.propTypes = {
+export const WrappedAntForm = Form.create({name: 'register'})(AntForm);
+
+WrappedAntForm.propTypes = {
   buttonText: PropTypes.string.isRequired,
   buttonType: PropTypes.string,
   autofill: PropTypes.object,
@@ -167,5 +169,3 @@ AntForm.propTypes = {
   handleCancel: PropTypes.func,
   cancelButtonText: PropTypes.string,
 };
-
-export const WrappedAntForm = Form.create({ name: 'register' })(AntForm);
