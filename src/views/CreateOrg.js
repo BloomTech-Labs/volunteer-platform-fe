@@ -11,6 +11,9 @@ import {
   ThirdPart,
   LastPart,
 } from '../components/CreateOrg';
+import { Steps } from 'antd';
+
+const { Step } = Steps;
 export const CreateOrg = props => {
   const [state, dispatch] = useStateValue();
   const [localState, setLocalState] = useState({ 1: {}, 2: {}, 3: {}, 4: {} });
@@ -44,7 +47,7 @@ export const CreateOrg = props => {
   const RenderedPart = possibleParts[partCount];
 
   const clickNext = values => {
-      console.log(values)
+    console.log(values);
     setLocalState({ ...localState, [partCount]: values });
     setPartCount(partCount => partCount + 1);
   };
@@ -95,7 +98,13 @@ export const CreateOrg = props => {
       <CustomStyledCard margin="2rem 0 5rem 0" maxWidth="900px">
         <h1 className="create-org-header">{possibleHeaders[partCount]}</h1>
         <StyledImg src={createOrgImg} alt="undraw unexpected friends" />
-        <ProgressBar percentage={((partCount) / 5) * 100} />
+        <ProgressBar percentage={(partCount / 5) * 100} />
+        <Steps current={partCount}>
+            <Step />
+            <Step />
+            <Step />
+            <Step />
+        </Steps>
         <StyledRenderDiv>
           <RenderedPart
             clickNext={clickNext}
