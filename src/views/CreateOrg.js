@@ -11,7 +11,7 @@ import {
   ThirdPart,
   LastPart,
   Review,
-  EditForm
+  EditForm,
 } from '../components/CreateOrg';
 import { Steps } from 'antd';
 import { deleteModal } from '../styled';
@@ -19,19 +19,26 @@ import { deleteModal } from '../styled';
 const { Step } = Steps;
 export const CreateOrg = props => {
   const [state, dispatch] = useStateValue();
-  const [localState, setLocalState] = useState({ 1: {}, 2: {}, 3: {}, 4: {} });
+  const [orgToEdit, setOrgToEdit] = useState();
+  const [localState, setLocalState] = useState({
+    1: {},
+    2: {},
+    3: {},
+    4: {},
+    6: {},
+  });
   const [partCount, setPartCount] = useState(1);
 
-  // Need to revisit how we want to edit the form
-  //   const [orgToEdit, setOrgToEdit] = useState();
-  //   useEffect(() => {
-  //     if (props.location.state) {
-  //       setOrgToEdit(props.location.state.org);
-  //       if (props.location.state.org.firstName2) {
-  //         setNumberOfPOC(2);
-  //       }
-  //     }
-  //   }, [props.location.state]);
+  useEffect(() => {
+    if (props.location.state) {
+      setLocalState({ ...localState, [6]: props.location.state.org });
+      setOrgToEdit({ ...props.location.state.org });
+    }
+  }, [props.location.state]);
+
+  useEffect(() => {
+    if (orgToEdit) setPartCount(6);
+  }, [orgToEdit]);
 
   const possibleHeaders = {
     1: "Let's Set Up Your Organization",
@@ -46,7 +53,7 @@ export const CreateOrg = props => {
     3: ThirdPart,
     4: LastPart,
     5: Review,
-    6: EditForm
+    6: EditForm,
   };
 
   const steps = [0, 1, 2, 3, 4];
@@ -93,6 +100,12 @@ export const CreateOrg = props => {
   const clickPrevious = () => {
     setPartCount(partCount => partCount - 1);
   };
+
+  const setBackToReview = values => {
+    setLocalState({ ...values });
+    setPartCount(5);
+  };
+
   const cancelForm = e => {
     const cancelOrgFormModal = deleteModal({
       title: 'Are you sure you want to cancel? All data will be lost.',
@@ -114,13 +127,12 @@ export const CreateOrg = props => {
         delete org[key];
       }
     }
-    // if (orgToEdit) {
-    //   updateOrganization(orgToEdit.orgId, org, dispatch);
-    // } else {
-    //   registerOrganization(org, dispatch);
-    // }
-    // props.history.push('/org-dashboard');
-    console.log(values);
+    if (orgToEdit) {
+      updateOrganization(orgToEdit.orgId, org, dispatch);
+    } else {
+      registerOrganization(org, dispatch);
+    }
+    props.history.push('/org-dashboard');
   };
 
   return (
@@ -140,6 +152,7 @@ export const CreateOrg = props => {
             cancelForm={cancelForm}
             clickPrevious={clickPrevious}
             submitForm={submitForm}
+            setBackToReview={setBackToReview}
             // setEdit={setEdit}
           />
         </StyledRenderDiv>
@@ -203,7 +216,7 @@ const StyledRenderDiv = styled.div`
     padding-right: 70px;
     padding-left: 70px;
     justify-content: space-between;
-    border-top: 2px solid ${({theme}) => theme.primary8};
+    border-top: 2px solid ${({ theme }) => theme.primary8};
   }
 `;
 

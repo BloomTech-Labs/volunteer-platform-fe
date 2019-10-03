@@ -29,7 +29,6 @@ export const Review = ({ storedData, cancelForm, submitForm, setEdit }) => {
     confirmSubmit();
   };
 
-  console.log(storedData);
   return (
     <>
       <ReviewDiv>
