@@ -9,7 +9,7 @@ const Option = Select.Option;
 export const FirstPart = ({ clickNext, storedData, cancelForm }) => {
   const [localState, setLocalState] = useState({ ...storedData });
   const [errorMessage, setErrorMessage] = useState({
-    nameOfOrganization: false,
+    organizationName: false,
     streetAddress: false,
     city: false,
     state: false,

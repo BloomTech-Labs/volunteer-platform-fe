@@ -169,6 +169,7 @@ export const EditForm = ({ storedData, cancelForm, setBackToReview }) => {
         <StyledButton
           onClick={() => setBackToReview(localState)}
           type="primary"
+          width='fit-content'
         >
           Save and Review
         </StyledButton>
