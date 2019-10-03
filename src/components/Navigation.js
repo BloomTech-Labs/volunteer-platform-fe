@@ -37,6 +37,7 @@ export const Navigation = props => {
       signOut(dispatch);
     }
   };
+<<<<<<< HEAD
 
   const getUnreadMessages = uid => {
     if (state.messages.messages[uid]) {
@@ -46,6 +47,15 @@ export const Navigation = props => {
         },
         0
       );
+=======
+  
+  const getUnreadMessages = (uid) => {
+    if (state.messages.messages[ uid ]){
+      const numberOfUnread = state.messages.messages[ uid ].reduce((acc,
+        thread) => {
+        return acc + thread.unreadMessages;
+      }, 0);
+>>>>>>> staging
       return numberOfUnread;
     }
     return 0;
@@ -99,6 +109,7 @@ export const Navigation = props => {
           }
         >
           <Menu.Item key={'Messages'}>
+<<<<<<< HEAD
             <Link to={'/messages'}>
               <span style={{ marginRight: '1rem' }}>User Messages</span>
               <Badge
@@ -112,10 +123,30 @@ export const Navigation = props => {
                   backgroundColor: '#fff',
                   boxShadow: '0 0 0 1px #d9d9d9 inset',
                 }}
+=======
+            <Link
+              to={{
+                pathname: '/messages',
+                state: {
+                  uid: state.auth.googleAuthUser ?
+                    state.auth.googleAuthUser.uid : null,
+                },
+              }}
+            >
+              <span style={{marginRight: '1rem'}}>User Messages</span>
+              <Badge className={'colorless-badge'}
+                     count={state.auth.googleAuthUser ?
+                       getUnreadMessages(state.auth.googleAuthUser.uid) : 0}
+                     style={{
+                       backgroundColor: '#fff',
+                       boxShadow: '0 0 0 1px #d9d9d9 inset',
+                     }}
+>>>>>>> staging
               />
             </Link>
           </Menu.Item>
           {state.org.userOrganizations &&
+<<<<<<< HEAD
             state.org.userOrganizations.map(org => {
               return (
                 <Menu.Item key={org.orgId}>
@@ -135,6 +166,24 @@ export const Navigation = props => {
                 </Menu.Item>
               );
             })}
+=======
+          state.org.userOrganizations.map(org => {
+            return <Menu.Item key={org.orgId}>
+              
+              <Link to={{pathname: '/messages', state: {uid: org.orgId}}}>
+                  <span
+                    style={{marginRight: '.2rem'}}>{org.organizationName}</span>
+                <Badge className={'colorless-badge'}
+                       count={getUnreadMessages(org.orgId)}
+                       style={{
+                         backgroundColor: '#fff',
+                         boxShadow: '0 0 0 1px #d9d9d9 inset',
+                       }}
+                />
+              </Link>
+            </Menu.Item>;
+          })}
+>>>>>>> staging
         </SubMenu>
         <Menu.Item key="Home">
           <Link to={'/dashboard'}>Browse</Link>

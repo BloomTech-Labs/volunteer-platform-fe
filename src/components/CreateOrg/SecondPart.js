@@ -6,7 +6,7 @@ import { StyledButton, StyledCancelButton } from '../../styled';
 
 export const SecondPart = ({ clickNext, storedData, clickPrevious }) => {
   const [allPOCs, setAllPOCs] = useState([1]);
-  const [values, setValues] = useState({ ...storedData });
+  const [localState, setLocalState] = useState({ ...storedData });
 
   useEffect(() => {
     let temp = [];
@@ -15,7 +15,7 @@ export const SecondPart = ({ clickNext, storedData, clickPrevious }) => {
       setAllPOCs(temp);
     }
   }, [storedData]);
-  
+
   const changePOC = (action, i) => {
     if (action === 'add') {
       setAllPOCs([...allPOCs, allPOCs.length + 1]);
@@ -26,41 +26,42 @@ export const SecondPart = ({ clickNext, storedData, clickPrevious }) => {
   };
 
   return (
-    <StyledForm layout={'vertical'} onSubmit={() => clickNext(values)}>
-      <h4>Who is the point of contact?</h4>
-      {allPOCs.map(poc => (
-        <POC
-          key={poc}
-          i={poc}
-          changePOC={changePOC}
-          values={values}
-          setValues={setValues}
-        />
-      ))}
-      <>
-        <Icon
-          type="plus-circle"
-          style={{
-            fontSize: '1.6rem',
-            marginRight: '1rem',
-            color: '#005A87',
-          }}
-          onClick={() => changePOC('add')}
-        />
-      </>
-      <span style={{ color: '#005A87' }} onClick={() => changePOC('add')}>
-        Add another point of contact.
-      </span>
-
+    <>
+      <StyledForm layout={'vertical'} onSubmit={() => clickNext(localState)}>
+        <h4>Who is the point of contact?</h4>
+        {allPOCs.map(poc => (
+          <POC
+            key={poc}
+            i={poc}
+            changePOC={changePOC}
+            values={localState}
+            setValues={setLocalState}
+          />
+        ))}
+        <>
+          <Icon
+            type="plus-circle"
+            style={{
+              fontSize: '1.6rem',
+              marginRight: '1rem',
+              color: '#005A87',
+            }}
+            onClick={() => changePOC('add')}
+          />
+        </>
+        <span style={{ color: '#005A87' }} onClick={() => changePOC('add')}>
+          Add another point of contact.
+        </span>
+      </StyledForm>
       <div className="buttonStyles">
         <StyledCancelButton onClick={clickPrevious} type="primary">
           Previous
         </StyledCancelButton>
-        <StyledButton onClick={() => clickNext(values)} type="primary">
+        <StyledButton onClick={() => clickNext(localState)} type="primary">
           Next
         </StyledButton>
       </div>
-    </StyledForm>
+    </>
   );
 };
 

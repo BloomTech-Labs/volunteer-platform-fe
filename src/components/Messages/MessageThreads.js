@@ -1,46 +1,71 @@
 import React, {useEffect, useState} from 'react';
 import {Menu, Layout, Badge} from 'antd';
 import Messages from './Messages';
-import {StyledCard} from '../../styled';
 import {useStateValue} from '../../hooks/useStateValue';
 import styled from 'styled-components';
 import {markMessagesRead} from '../../actions';
 
-const MessageThreads = () => {
+const MessageThreads = (props) => {
   
   const [selectedThread, setSelectedThread] = useState();
-  const [{messages, auth}, dispatch] = useStateValue();
+  const [{messages, auth, org}, dispatch] = useStateValue();
+  const [selectedUid, setSelectedUid] = useState();
   
   useEffect(() => {
     
-    if (!selectedThread && auth.googleAuthUser &&
-      messages.messages[ auth.googleAuthUser.uid ] &&
-      messages.messages[ auth.googleAuthUser.uid ][ 0 ]){
-      setSelectedThread(messages.messages[ auth.googleAuthUser.uid ][ 0 ]);
-      const contact = {
-        type: 'users',
-        uid: auth.googleAuthUser.uid,
-      };
-      markMessagesRead(
-        contact,
-        messages.messages[ auth.googleAuthUser.uid ][ 0 ]);
+    if (!selectedUid && auth.googleAuthUser){
+      setSelectedUid(auth.googleAuthUser.uid);
     }
-  }, [messages.messages]);
+  }, [auth.googleAuthUser]);
+  
+  useEffect(() => {
+    
+    if (selectedUid && messages.messages[ selectedUid ]){
+      
+      const messageThread = messages.messages[ selectedUid ][ 0 ];
+      setSelectedThread(messageThread);
+    }
+    
+  }, [selectedUid, messages.messages]);
+  
+  useEffect(() => {
+    if (selectedThread){
+      let contact = {
+        type: 'users',
+        uid: selectedUid,
+      };
+      if (selectedUid !== auth.googleAuthUser.uid){
+        contact.type = 'organizations';
+      }
+      markMessagesRead(contact, selectedThread);
+    }
+  }, [selectedThread]);
+  
+  useEffect(() => {
+    
+    if (props.location.state){
+      setSelectedUid(props.location.state.uid);
+    }
+  }, [props.location.state]);
   
   const handleClick = ({key}) => {
     const messageThread = messages.messages[ auth.googleAuthUser.uid ].filter(
       thread => thread.id === key)[ 0 ];
     setSelectedThread(messageThread);
-    const contact = {
-      type: 'users',
-      uid: auth.googleAuthUser.uid,
-    };
-    markMessagesRead(contact, messageThread);
+    
   };
   
   return (
     <Layout>
-      
+      {selectedUid && auth.googleAuthUser && selectedUid ===
+      auth.googleAuthUser.uid &&
+      <h1>Users Messages</h1>}
+      {selectedUid &&
+      org.userOrganizations.filter(org => org.orgId === selectedUid).length >
+      0 &&
+      <h1>{org.userOrganizations.filter(
+        org => org.orgId === selectedUid)[ 0 ].organizationName}'s
+        Messages</h1>}
       <div className={'row'}>
         <Menu
           onClick={handleClick}
@@ -48,9 +73,9 @@ const MessageThreads = () => {
           defaultSelectedKeys={['1']}
           mode="inline"
         >
-          {auth.googleAuthUser &&
-          messages.messages[ auth.googleAuthUser.uid ] &&
-          messages.messages[ auth.googleAuthUser.uid ].map(thread => {
+          {selectedUid &&
+          messages.messages[ selectedUid ] &&
+          messages.messages[ selectedUid ].map(thread => {
             return <StyledMenuItem key={thread.id}>
               <Badge style={{
                 color: '#fff',
@@ -65,7 +90,9 @@ const MessageThreads = () => {
             </StyledMenuItem>;
           })}
         </Menu>
-        {selectedThread && <Messages messageId={selectedThread.id}/>}
+        {selectedThread &&
+        <Messages messageId={selectedThread.id} selectedUid={selectedUid}/>}
+        {!selectedThread && <h2>No messages to display</h2>}
       </div>
     
     </Layout>
