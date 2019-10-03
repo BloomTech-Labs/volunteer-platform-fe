@@ -61,6 +61,8 @@ export const CreateEventPartTwo = props => {
       },
     });
   };
+
+  console.log('autoofil', autoFillState);
   //Handle Submit push values to parent state
 
   const hanldePartTwoSubmit = values => {
@@ -81,7 +83,7 @@ export const CreateEventPartTwo = props => {
       pageNumber: pageNumberState.pageNumber + 1,
     });
   };
-  console.log(autoFillState);
+
   return (
     <StyledDiv className={'flex center'}>
       <CustomStyledCard
