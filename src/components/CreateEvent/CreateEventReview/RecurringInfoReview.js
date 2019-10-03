@@ -14,7 +14,7 @@ export const RecurringInfoReview = props => {
       <h4>Occurence Ends After</h4>
       <p>{localState.occurrenceEnds}</p>
       {localState.recurringInfo.occurrenceEnds === 'On' && (
-        <p>{localState.recurringInfo.occurrenceEndDate}</p>
+        <p>{localState.recurringInfo.occurrenceEndDate.unix()}</p>
       )}
       {localState.recurringInfo.occurrenceEnds === 'After' && (
         <p>{localState.recurringInfo.occurrenceEndsAfter} occurrences</p>

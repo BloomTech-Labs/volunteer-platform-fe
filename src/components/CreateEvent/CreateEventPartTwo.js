@@ -25,8 +25,6 @@ export const CreateEventPartTwo = props => {
 
   const { pageNumber } = pageNumberState;
 
-  const dateFormat = 'MM/DD/YYYY';
-
   //Mapping through tags for antd select
 
   const handleDynmaicDate = date => {
@@ -71,9 +69,9 @@ export const CreateEventPartTwo = props => {
       ...localState,
       ...values,
       values,
-      date: values.date.unix(),
-      startTime: values.startTime.format('LT'),
-      endTime: values.endTime.format('LT'),
+      // date: values.date,
+      // startTime: values.startTime,
+      // endTime: values.endTime,
     });
     setAutoFillState({
       ...autoFillState,
@@ -134,7 +132,7 @@ export const CreateEventPartTwo = props => {
             <div className={'dateWrapper hidden'}>
               <AntDatePicker
                 name={'Date'}
-                format={dateFormat}
+                format={'MM/DD/YYYY'}
                 onChange={handleDynmaicDate}
                 disabledDate={current =>
                   current && current < moment().endOf('day')

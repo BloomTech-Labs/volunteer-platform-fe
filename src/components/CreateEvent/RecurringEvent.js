@@ -77,7 +77,7 @@ export const RecurringEvent = props => {
       ...localState,
       recurringInfo: {
         ...localState.recurringInfo,
-        occurrenceEndDate: date.unix(),
+        occurrenceEndDate: date,
       },
     });
   };
@@ -164,8 +164,6 @@ export const RecurringEvent = props => {
     );
   });
 
-  const addHidden = () => {};
-
   return (
     <StyledRecurringEvent>
       <div>
@@ -213,6 +211,7 @@ export const RecurringEvent = props => {
             </Radio.Group>
             <DatePicker
               name={'Occurrence End Date'}
+              format={'MM/DD/YYYY'}
               onChange={handleOccurrenceEndDate}
               defaultValue={localState.recurringInfo.occurrenceEndDate}
               disabledDate={current =>
@@ -221,6 +220,7 @@ export const RecurringEvent = props => {
               disabled={
                 localState.recurringInfo.occurrenceEnds === 'On' ? false : true
               }
+              notRequired
             />
             <InputNumber
               style={{ width: 50 }}
@@ -233,6 +233,7 @@ export const RecurringEvent = props => {
                   ? false
                   : true
               }
+              notRequired
             />
           </div>
         )}
@@ -240,6 +241,7 @@ export const RecurringEvent = props => {
         <Modal
           title="Add a recurring event"
           width={720}
+          closable
           onClose={closeModal}
           visible={formState.recurringBoolean}
           footer={null}

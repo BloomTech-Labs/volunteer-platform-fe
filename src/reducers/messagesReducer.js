@@ -5,12 +5,7 @@ import {
 } from '../actions/messaging';
 
 export const messageReducer = (state, action) => {
-<<<<<<< HEAD
   switch (action.type) {
-=======
-  
-  switch (action.type){
->>>>>>> staging
     case COLLECTING_USER_MESSAGES_INIT:
       return {
         ...state,

@@ -13,53 +13,31 @@ export const MESSAGE_CREATED_SUCESSFULLY = 'MESSAGE_CREATED_SUCESSFULLY';
  * @param {MessageContact} from Who the message is from
  * @param {Message} message Message to be sent.
  */
-<<<<<<< HEAD
-export const sendMessage = message => {
-  debugger;
-  attachMessageToUsersMessages(message.to, message.from, message);
-  attachMessageToUsersMessages(message.from, message.to, message);
-};
-
-const attachMessageToUsersMessages = (to, from, message) => {
-  debugger;
-  store
-    .collection('users')
-    .doc(to)
-=======
 export const sendMessage = (to, from, message) => {
-  
   attachMessageToUsersMessages(to, from, message);
   attachMessageToUsersMessages(from, to, message);
 };
 
 const attachMessageToUsersMessages = (to, from, message) => {
-  
-  store.collection(to.type)
+  store
+    .collection(to.type)
     .doc(to.uid)
->>>>>>> staging
     .collection('messages')
     .doc(from.uid)
     .get()
     .then(res => {
       // message thread does not exist.
-<<<<<<< HEAD
       if (!res.exists) {
-        createNewMessageThread(to, from, message);
+        createNewMessageThread(from, to, message);
       } else {
+        const data = res.data();
+
         res.ref
           .update({
-            messages: firebase.firestore.FieldValue.arrayUnion(message),
-=======
-      if (!res.exists){
-        createNewMessageThread(from, to, message);
-      }else{
-        const data = res.data();
-        
-        res.ref.update({
             updatedAt: moment().unix(),
-            unreadMessages: message.from === to.uid ? 0 : data.unreadMessages + 1,
-            'messages': firebase.firestore.FieldValue.arrayUnion(message),
->>>>>>> staging
+            unreadMessages:
+              message.from === to.uid ? 0 : data.unreadMessages + 1,
+            messages: firebase.firestore.FieldValue.arrayUnion(message),
           })
           .then(result => {
             console.log(result);
@@ -74,38 +52,6 @@ const attachMessageToUsersMessages = (to, from, message) => {
     });
 };
 
-<<<<<<< HEAD
-const createNewMessageThread = (to, from, message) => {
-  debugger;
-  store
-    .collection('users')
-    .doc(from)
-    .get()
-    .then(res => {
-      const user = res.data();
-
-      // create messageThread in users messages
-      store
-        .collection('users')
-        .doc(to)
-        .collection('messages')
-        .doc(from)
-        .set({
-          firstName: user.firstName,
-          lastName: user.lastName,
-          messages: [message],
-        })
-        .then(res => {
-          console.log(res);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    })
-    .catch(err => {
-      console.log(err);
-    });
-=======
 /**
  * Creates a new message thread for the desired contacts.
  * @function
@@ -114,48 +60,53 @@ const createNewMessageThread = (to, from, message) => {
  * @param {String} message
  */
 export const createNewMessageThread = (to, from, message = null) => {
-  
-  store.collection(from.type)
+  store
+    .collection(from.type)
     .doc(from.uid)
     .collection('messages')
     .doc(to.uid)
     .get()
     .then(res => {
-      
-      if (!res.exists){
-        
-        store.collection(to.type).doc(to.uid).get().then(res => {
-          const contact = res.data();
-          
-          const messageThread = {
-            name: to.type === 'organizations' ? contact.organizationName :
-              `${contact.firstName} ${contact.lastName}`,
-            contactType: to.type,
-            messages: message ? [message] : [],
-            updatedAt: moment().unix(),
-            unreadMessages: message ? 1 : 0,
-          };
-          // create messageThread in users messages
-          store.collection(from.type)
-            .doc(from.uid)
-            .collection('messages')
-            .doc(to.uid)
-            .set(messageThread)
-            .then(res => {
-              console.log(res);
-            })
-            .catch(err => {
-              console.log(err);
-            });
-          
-        }).catch(err => {
-          console.log(err);
-        });
+      if (!res.exists) {
+        store
+          .collection(to.type)
+          .doc(to.uid)
+          .get()
+          .then(res => {
+            const contact = res.data();
+
+            const messageThread = {
+              name:
+                to.type === 'organizations'
+                  ? contact.organizationName
+                  : `${contact.firstName} ${contact.lastName}`,
+              contactType: to.type,
+              messages: message ? [message] : [],
+              updatedAt: moment().unix(),
+              unreadMessages: message ? 1 : 0,
+            };
+            // create messageThread in users messages
+            store
+              .collection(from.type)
+              .doc(from.uid)
+              .collection('messages')
+              .doc(to.uid)
+              .set(messageThread)
+              .then(res => {
+                console.log(res);
+              })
+              .catch(err => {
+                console.log(err);
+              });
+          })
+          .catch(err => {
+            console.log(err);
+          });
       }
-    }).catch(err => {
-    console.log(err);
-  });
->>>>>>> staging
+    })
+    .catch(err => {
+      console.log(err);
+    });
 };
 
 export const USER_HAS_NO_MESSAGES = 'USER_HAS_NO_MESSAGES';
@@ -169,10 +120,6 @@ export const COLLECTING_USER_MESSAGES_INIT = 'COLLECTING_USER_MESSAGES_INIT';
  * @param dispatch
  */
 export const subscribeToMessages = (uid, dispatch) => {
-<<<<<<< HEAD
-=======
-  
->>>>>>> staging
   dispatch(action(COLLECTING_USER_MESSAGES_INIT));
   store
     .collection('users')
@@ -192,8 +139,6 @@ export const subscribeToMessages = (uid, dispatch) => {
       dispatch(action(COLLECTED_USER_MESSAGES, messageThreads));
     });
 };
-<<<<<<< HEAD
-=======
 
 /**
  * Marks the message thread as read.
@@ -203,16 +148,16 @@ export const subscribeToMessages = (uid, dispatch) => {
  */
 export const markMessagesRead = (contact, messageThread) => {
   debugger;
-  store.collection(contact.type)
+  store
+    .collection(contact.type)
     .doc(contact.uid)
     .collection('messages')
     .doc(messageThread.id)
-    .update({unreadMessages: 0})
+    .update({ unreadMessages: 0 })
     .then(res => {
       debugger;
-    }).catch(err => {
-    console.log(err);
-  });
+    })
+    .catch(err => {
+      console.log(err);
+    });
 };
-
->>>>>>> staging

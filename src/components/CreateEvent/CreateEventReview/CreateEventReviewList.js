@@ -48,9 +48,9 @@ export const CreateEventReviewList = props => {
             <p>{localState.typesOfCauses}</p>
             <h4>Volunteer Requirments</h4>
             <p>{localState.volunteerRequirements}</p>
-            <h4>Interests</h4>
             <h4>Volunteers Needed</h4>
             <p>{localState.numberOfVolunteers}</p>
+            <h4>Interests</h4>
             <p>{localState.interest}</p>
             <h4>Phone Number</h4>
             <p>{localState.phoneNumber}</p>
@@ -59,14 +59,14 @@ export const CreateEventReviewList = props => {
             <p>{localState.lastName}</p>
             <p>{localState.email}</p>
             <h4>Date</h4>
-            <p>{localState.date}</p>
+            <p>{localState.date.unix()}</p>
             {localState.recurringEvent === 'Yes' && (
               <RecurringInfoReview localState={localState} />
             )}
             <h4>Start Time</h4>
-            <p>{localState.startTime}</p>
+            <p>{localState.startTime.format('LT')}</p>
             <h4>End Time</h4>
-            <p>{localState.endTime}</p>
+            <p>{localState.endTime.format('LT')}</p>
             <h4>Event Details</h4>
             <p>{localState.eventDetails}</p>
             <h4>Website</h4>

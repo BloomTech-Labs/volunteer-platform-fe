@@ -24,6 +24,7 @@ export const CreateEventReview = props => {
           setLocalState={setLocalState}
           handleReviewSubmit={handleReviewSubmit}
           handlePageBack={handlePageBack}
+          setEdit={setEdit}
           edit={edit}
         />
       ) : (

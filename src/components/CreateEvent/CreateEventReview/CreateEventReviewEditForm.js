@@ -8,6 +8,7 @@ import {
   AntInputNumber,
   AntDatePicker,
   AntTimePicker,
+  WrappedAntForm,
 } from '../../../styled';
 import { Icon } from 'antd';
 import moment from 'moment';
@@ -16,17 +17,17 @@ import createEventImg from '../../../assets/undraw_blooming_jtv6.svg';
 import RecurringEvent from '../RecurringEvent';
 
 export const CreateEventReviewEditForm = props => {
-  const {
-    localState,
-    setLocalState,
-    handleReviewSubmit,
-    handlePageBack,
-  } = props;
+  const { localState, setLocalState, setEdit } = props;
 
-  const [edit, setEdit] = useState();
-  const [toEdit, setToEdit] = useState();
-
-  console.log('editstate', localState);
+  const handleSubmit = values => {
+    console.log('values', values);
+    setLocalState({
+      ...localState,
+      ...values,
+      values,
+    });
+    setEdit(false);
+  };
 
   return (
     <StyledDiv className={'flex center'}>
@@ -42,94 +43,75 @@ export const CreateEventReviewEditForm = props => {
               <Icon type="save" />
             </div>
             <div className="icon">
-              <Icon type="edit" />
+              <Icon type="edit" theme="twoTone" twoToneColor="#52c41a" />
             </div>
           </StyledButtons>
           <StyledForm>
-            <h4>Event Name</h4>
-            <AntInput name={'Name of Event'} value={localState.nameOfEvent} />
-            <h4>Location</h4>
-            <AntInput name={'Stree Address'} value={localState.streetAddress} />
-            <AntInput name={'City'} value={localState.city} />
-            <AntInput name={'State'} value={localState.state} />
-            <h4>Tyeps of Causes</h4>
-            <AntInput
-              name={'Types of Causes'}
-              mode="multiple"
-              value={localState.typesOfCauses}
-            />
-            <h4>Volunteer Requirments</h4>
-            <AntInput
-              name={'Volunteer Requirements'}
-              mode="multiple"
-              value={localState.volunteerRequirements}
-            />
-            <h4>Interests</h4>
-            <AntInput
-              name={'Interest'}
-              mode="multiple"
-              value={localState.interest}
-            />
-            <h4>Volunteers Needed</h4>
-            <p>{localState.numberOfVolunteers}</p>
-            <AntInputNumber
-              name={'Number of Volunteers'}
-              min={0}
-              value={localState.numberOfVolunteers}
-            />
-            <h4>Phone Number</h4>
-            <AntInput name={'Phone Number'} value={localState.phoneNumber} />
-            <h4>Point of Contact</h4>
-            <AntInput name="First Name" value={localState.firstName} />
-            <AntInput name="Last Name" value={localState.lastName} />
-            <AntInput name="Email" value={localState.email} />
-            <h4>When is the event?</h4>
-            <AntDatePicker name={'Date'} value={moment(localState.date)} />
-            {localState.recurringEvent === 'Yes' && (
+            <WrappedAntForm
+              cancelButton={true}
+              cancelButtonText={'Cancel'}
+              // handleCancel={cancelForm}
+              onSubmit={handleSubmit}
+              layout={'vertical'}
+              buttonType={'primary'}
+              submitButton
+              submitButtonText={'Save and Review'}
+              autofill={localState}
+            >
+              <h4>Event Name</h4>
+              <AntInput name={'Name of Event'} />
+              <h4>Location</h4>
+              <AntInput name={'Street Address'} />
+              <AntInput name={'City'} />
+              <AntInput name={'State'} />
+              <h4>Tyeps of Causes</h4>
+              <AntInput name={'Types of Causes'} mode="multiple" />
+              <h4>Volunteer Requirments</h4>
+              <AntInput name={'Volunteer Requirements'} mode="multiple" />
+              <h4>Interests</h4>
+              <AntInput name={'Interest'} mode="multiple" />
+              <h4>Volunteers Needed</h4>
+              <p>{localState.numberOfVolunteers}</p>
+              <AntInputNumber name={'Number of Volunteers'} min={0} />
+              <h4>Phone Number</h4>
+              <AntInput name={'Phone Number'} />
+              <h4>Point of Contact</h4>
+              <AntInput name="First Name" />
+              <AntInput name="Last Name" />
+              <AntInput name="Email" />
+              <h4>When is the event?</h4>
+              <AntDatePicker name={'Date'} format={'MM/DD/YYYY'} />
               <RecurringEvent
+                name={'Is this a recurring event ?'}
                 localState={localState}
                 setLocalState={setLocalState}
                 dynamicDates={localState.dynamicDates}
               />
-            )}
-            <h4>What time?</h4>
-            <AntTimePicker
-              name={'Start Time'}
-              use12Hours
-              format={'h:mm a'}
-              defaultOpenValue={moment('00:00:00', 'HH:mm')}
-              value={moment(localState.startTime)}
-            />
-            <AntTimePicker
-              name={'End Time'}
-              use12Hours
-              format={'h:mm a'}
-              defaultOpenValue={moment('00:00:00', 'HH:mm')}
-              value={moment(localState.endTime)}
-            />
-            <h4>Event Details</h4>
-            <AntTextArea
-              name={'Event Details'}
-              placeholder={
-                'What the volunteer would do at the event would go here.'
-              }
-              style={{ height: 115 }}
-              value={localState.eventDetails}
-            />
-            <h4>Website</h4>
-            <AntInput name={'Website'} value={localState.website} />
-            {localState.otherNotes && <h4>Other Notes</h4>}
-            {localState.otherNotes && (
+              <h4>What time?</h4>
+              <AntTimePicker name={'Start Time'} use12Hours format={'h:mm a'} />
+              <AntTimePicker name={'End Time'} use12Hours format={'h:mm a'} />
+              <h4>Event Details</h4>
               <AntTextArea
-                name={'Other Notes'}
+                name={'Event Details'}
                 placeholder={
-                  'Any additional helpful tips for the event go here.'
+                  'What the volunteer would do at the event would go here.'
                 }
                 style={{ height: 115 }}
-                value={localState.otherNotes}
-                notRequired
               />
-            )}
+              <h4>Website</h4>
+              <AntInput name={'Website'} />
+              {localState.otherNotes && <h4>Other Notes</h4>}
+              {localState.otherNotes && (
+                <AntTextArea
+                  name={'Other Notes'}
+                  placeholder={
+                    'Any additional helpful tips for the event go here.'
+                  }
+                  style={{ height: 115 }}
+                  notRequired
+                />
+              )}
+            </WrappedAntForm>
           </StyledForm>
         </StyledCreateEvent>
       </CustomStyledCard>
