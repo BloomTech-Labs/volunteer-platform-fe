@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import { useStateValue } from '../hooks/useStateValue';
 import { UserBio, UserInfo, UserEvents } from '../components/UserProfile/index';
-import { OrgPhoto, EventPanel } from '../components/OrgDashboard/index';
+import { OrgPhoto } from '../components/OrgDashboard/index';
 import { Calendar } from 'antd';
 import { updateRegisteredUser, getFileUrl, deleteUserImage, getAllEventsByUser } from '../actions';
 
-export const UserProfile = () => {
+export const UserProfile = (props) => {
   const [state, dispatch] = useStateValue();
   //const [loading, setLoading] = useState(true);
   const [user, setUser] = useState('');
@@ -22,11 +23,14 @@ export const UserProfile = () => {
       } else {
         setImageUrl(null);
       }
-      getAllEventsByUser(state.auth.registeredUser, dispatch);
     }
   }, [state.auth.registeredUser]);
 
-  console.log(state.events.events);
+  useEffect(() => {
+    if (user) {
+      getAllEventsByUser(user, dispatch);
+    }
+  }, [user, dispatch])
 
   const onFileUpload = path => {
     getFileUrl(path)
@@ -74,16 +78,14 @@ export const UserProfile = () => {
           <Calendar fullscreen={false} />
         </div>
         <div className='profile-bottom-right'>
-          <EventPanel 
-            events={state.events.events}
-            recurringEvents={state.events.recurringEvents} />
+          <UserEvents events={state.events.events}/>
         </div>
       </div>
     </StyledDiv>
   )
 }
 
-export default UserProfile;
+export default withRouter(UserProfile);
 
 const StyledDiv = styled.div`
   display: flex;
