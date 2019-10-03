@@ -7,11 +7,10 @@ import {
   FilteredComponent,
   FilterTopbar,
   NoEventsFound,
-  Loader,
+  StyledLoader,
 } from '../components';
 import {getAllEventsByState, getAllRecurringEventsByState} from '../actions';
 import {stateConversion} from '../utility/stateConversion';
-import OrganizationsList from '../components/OrganizationsList';
 
 export const MainDashboard = () => {
   const [state, dispatch] = useStateValue();
@@ -133,7 +132,7 @@ export const MainDashboard = () => {
       />
       <div style={{minHeight: 400, margin: '0 auto'}}>
         {loadingEvents ? (
-          <Loader/>
+          <StyledLoader/>
         ) : filtersTouched && !state.events.events.length ? (
           <NoEventsFound filtersTouched={true}/>
         ) : (
@@ -150,5 +149,6 @@ export const MainDashboard = () => {
     </div>
   );
 };
+
 
 export default MainDashboard;

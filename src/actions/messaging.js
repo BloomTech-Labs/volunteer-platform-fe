@@ -141,14 +141,14 @@ export const subscribeToMessages = (uid, dispatch) => {
  * @param {MessageThread} messageThread The message thread that has been read.
  */
 export const markMessagesRead = (contact, messageThread) => {
-  debugger;
+  
   store.collection(contact.type)
     .doc(contact.uid)
     .collection('messages')
     .doc(messageThread.id)
     .update({unreadMessages: 0})
     .then(res => {
-      debugger;
+    
     }).catch(err => {
     console.log(err);
   });
