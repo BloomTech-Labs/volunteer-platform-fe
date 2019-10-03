@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Menu, Layout, Badge} from 'antd';
 import Messages from './Messages';
+import {StyledCard} from '../../styled';
 import {useStateValue} from '../../hooks/useStateValue';
 import styled from 'styled-components';
 import {markMessagesRead} from '../../actions';
@@ -11,18 +12,23 @@ const MessageThreads = () => {
   const [{messages, auth}, dispatch] = useStateValue();
   
   useEffect(() => {
-    if (!selectedThread && messages.messageThreads[ 0 ]){
-      setSelectedThread(messages.messageThreads[ 0 ]);
+    
+    if (!selectedThread && auth.googleAuthUser &&
+      messages.messages[ auth.googleAuthUser.uid ] &&
+      messages.messages[ auth.googleAuthUser.uid ][ 0 ]){
+      setSelectedThread(messages.messages[ auth.googleAuthUser.uid ][ 0 ]);
       const contact = {
         type: 'users',
         uid: auth.googleAuthUser.uid,
       };
-      markMessagesRead(contact, messages.messageThreads[ 0 ]);
+      markMessagesRead(
+        contact,
+        messages.messages[ auth.googleAuthUser.uid ][ 0 ]);
     }
-  }, [messages.messageThreads]);
+  }, [messages.messages]);
   
   const handleClick = ({key}) => {
-    const messageThread = messages.messageThreads.filter(
+    const messageThread = messages.messages[ auth.googleAuthUser.uid ].filter(
       thread => thread.id === key)[ 0 ];
     setSelectedThread(messageThread);
     const contact = {
@@ -42,7 +48,9 @@ const MessageThreads = () => {
           defaultSelectedKeys={['1']}
           mode="inline"
         >
-          {messages.messageThreads.map(thread => {
+          {auth.googleAuthUser &&
+          messages.messages[ auth.googleAuthUser.uid ] &&
+          messages.messages[ auth.googleAuthUser.uid ].map(thread => {
             return <StyledMenuItem key={thread.id}>
               <Badge style={{
                 color: '#fff',
