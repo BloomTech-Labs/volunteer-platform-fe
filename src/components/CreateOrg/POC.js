@@ -2,25 +2,35 @@ import React from 'react';
 import { Icon, Input, Form } from 'antd';
 import { StyledLine, deleteModal } from '../../styled';
 
-const phoneRegex = /^\(([0-9]{3})\)[ ]?([0-9]{0,3})[-. ]?([0-9]{0,4})$/;
-const partOnePhoneRegex = /^\(?([0-9]{0,3})\)?(\d)/;
-const partTwoPhoneRegex = /^\(([0-9]{3})\)[ ]?([0-9]{0,3})[-. ]?(\d)/;
-
 export const POC = ({ i, changePOC, setValues, values }) => {
+  const formatPhone = (stored, input) => {
+    const regExes = {
+      '\\d?(\\d{3})(\\d{3})(\\d{4})$': '($1) $2-$3',
+      '^(\\d)': '($1)',
+      '\\((\\d{0,2})\\)(\\d)?$': '($1$2)',
+      '(\\(\\d{0,3}\\))(\\d)$': '$1 $2',
+      '(\\(\\d{0,3}\\)) (\\d{0,3})$': '$1 $2',
+      '(\\(\\d{0,3}\\)) (\\d{3})(\\d)$': '$1 $2-$3',
+      '(\\(\\d{0,3}\\)) (\\d{1,3}-)(\\d{0,4})$': '$1 $2$3',
+      '(\\(\\d{3}\\))$': '$1',
+      '(\\(\\d{0,3})$': '$1',
+      '(\\(\\d{3})(\\d)$': '$1) $2',
+    };
+    for (let key in regExes) {
+      let regex = new RegExp(key);
+      if (regex.test(input)) {
+        return input.replace(regex, regExes[key]);
+      }
+    }
+
+    return stored;
+  };
+
   const changeHandler = e => {
     e.preventDefault();
     if (/phone/.test(e.target.name)) {
-      let formattedPhone = '';
-      if (e.target.value.length > 14) formattedPhone = values[e.target.name];
-      else if (e.target.value.length > 10)
-        formattedPhone = e.target.value.replace(phoneRegex, '($1) $2-$3');
-      else if (e.target.value.length < 6)
-        formattedPhone = e.target.value.replace(partOnePhoneRegex, '($1$2)');
-      else
-        formattedPhone = e.target.value.replace(
-          partTwoPhoneRegex,
-          '($1) $2$3-'
-        );
+      let formattedPhone = formatPhone(values[e.target.name], e.target.value);
+
       setValues({ ...values, [e.target.name]: formattedPhone });
     } else setValues({ ...values, [e.target.name]: e.target.value });
   };
@@ -70,14 +80,12 @@ export const POC = ({ i, changePOC, setValues, values }) => {
             placeholder={'jane.doe@gmail.com'}
           />
         </Form.Item>
-
         <Form.Item label={'Phone'}>
           <Input
             name={`phone${i}`}
             onChange={e => changeHandler(e)}
             value={values[`phone${i}`]}
             key={`phone${i}`}
-            pattern="[0-9]"
             placeholder={'(202) 213-1234'}
           />
         </Form.Item>

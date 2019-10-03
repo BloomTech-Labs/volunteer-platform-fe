@@ -38,7 +38,6 @@ export const Navigation = props => {
   };
   
   const getUnreadMessages = (uid) => {
-    debugger;
     if (state.messages.messages[ uid ]){
       const numberOfUnread = state.messages.messages[ uid ].reduce((acc,
         thread) => {
