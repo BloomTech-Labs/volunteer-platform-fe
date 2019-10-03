@@ -9,5 +9,5 @@ export * from './UploadImage';
 export * from './FilteredComponent';
 export * from './FilterTopbar';
 export * from './NoEventsFound';
-export * from './ProgressBar'
-export { StyledLoader as Loader } from './StyledLoader';
+export * from './ProgressBar';
+export * from './StyledLoader';
