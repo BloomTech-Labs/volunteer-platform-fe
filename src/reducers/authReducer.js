@@ -20,7 +20,7 @@ import {
   SIGN_UP_FOR_EVENT_FAILURE,
   CANCEL_SIGNED_UP_EVENT_INIT,
   CANCELED_SIGNED_UP_EVENT,
-  CANCEL_SIGNED_UP_EVENT_FAILURE
+  CANCEL_SIGNED_UP_EVENT_FAILURE,
 } from '../actions/events';
 
 export const authReducer = (state, action) => {

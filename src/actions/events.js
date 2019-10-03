@@ -413,3 +413,29 @@ export const cancelSignedUpEvent = (event, user, dispatch) => {
       dispatch(action(CANCEL_SIGNED_UP_EVENT_FAILURE))
     })
 }
+
+export const USER_HAS_NO_EVENT = 'USER_HAS_NO_EVENT';
+export const GET_EVENTS_BY_USER = 'GET_EVENTS_BY_USER';
+export const GET_EVENTS_BY_USER_FAILURE = 'GET_EVENTS_BY_USER_FAILURE';
+
+export const getAllEventsByUser = (user, dispatch) => {
+  if (user.registeredEvents && user.registeredEvents.length > 0) {
+    console.log('hasEvents');
+    const events = []; 
+    user.registeredEvents.forEach(eventId => {
+      store.collection('events').doc(`/${eventId}`).get().then(res => {
+        let event = res.data();
+        event.eventId = res.id;
+        events.push(event);
+      })
+      .catch(error => {
+        dispatch(action(GET_EVENTS_BY_USER_FAILURE));
+      })
+    })
+    dispatch(action(GET_EVENTS_BY_USER, events));
+    console.log(events);
+  } else {
+    console.log('hasNoEvents');
+    dispatch(action(USER_HAS_NO_EVENT));
+  }
+}

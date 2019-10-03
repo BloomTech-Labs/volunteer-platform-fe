@@ -6,7 +6,7 @@ import {
   CREATE_RECURRING_EVENT_FAILED, GET_RECURRING_EVENTS_BY_STATE,
   RECURRING_EVENTS_BY_STATE_EMPTY, GET_RECURRING_EVENTS_BY_ORG,
   RECURRING_EVENTS_BY_ORG_EMPTY, SIGN_UP_FOR_EVENT_INIT, SIGNED_UP_VOLUNTEER_FOR_EVENT, SIGN_UP_FOR_EVENT_FAILURE, CANCEL_SIGNED_UP_EVENT_INIT, CANCELED_VOLUNTEER_FOR_EVENT,
-  CANCEL_SIGNED_UP_EVENT_FAILURE
+  CANCEL_SIGNED_UP_EVENT_FAILURE, USER_HAS_NO_EVENT, GET_EVENTS_BY_USER, GET_EVENTS_BY_USER_FAILURE
 } from '../actions/events';
 
 export const eventsReducer = ( state, action ) => {
@@ -111,6 +111,24 @@ export const eventsReducer = ( state, action ) => {
       return {
         ...state,
         cancelSignedUpVolunteerError: 'Error canceling signed up volunteer for the event'
+      }
+    case USER_HAS_NO_EVENT:
+      return {
+        ...state,
+        events: [],
+        getEventsFailedError: ''
+      }
+    case GET_EVENTS_BY_USER: 
+      return {
+        ...state,
+        events: action.payload,
+        getEventsFailedError: ''
+      }
+    case GET_EVENTS_BY_USER_FAILURE:
+      return {
+        ...state,
+        events: [],
+        getEventsFailedError: 'Failure to get events for user'
       }
     default:
       return state;

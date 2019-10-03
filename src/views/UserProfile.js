@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useStateValue } from '../hooks/useStateValue';
 import { UserBio, UserInfo, UserEvents } from '../components/UserProfile/index';
-import { OrgPhoto } from '../components/OrgDashboard/index';
+import { OrgPhoto, EventPanel } from '../components/OrgDashboard/index';
 import { Calendar } from 'antd';
-import { updateRegisteredUser, getFileUrl, deleteUserImage } from '../actions';
+import { updateRegisteredUser, getFileUrl, deleteUserImage, getAllEventsByUser } from '../actions';
 
 export const UserProfile = () => {
   const [state, dispatch] = useStateValue();
@@ -22,8 +22,11 @@ export const UserProfile = () => {
       } else {
         setImageUrl(null);
       }
+      getAllEventsByUser(state.auth.registeredUser, dispatch);
     }
   }, [state.auth.registeredUser]);
+
+  console.log(state.events.events);
 
   const onFileUpload = path => {
     getFileUrl(path)
@@ -71,7 +74,9 @@ export const UserProfile = () => {
           <Calendar fullscreen={false} />
         </div>
         <div className='profile-bottom-right'>
-          <UserEvents />
+          <EventPanel 
+            events={state.events.events}
+            recurringEvents={state.events.recurringEvents} />
         </div>
       </div>
     </StyledDiv>
