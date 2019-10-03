@@ -1,6 +1,6 @@
-import {store} from '../firebase/FirebaseConfig';
-import {action} from './action';
-import {arrayUnion} from 'firebase';
+import { store } from '../firebase/FirebaseConfig';
+import { action } from './action';
+import { arrayUnion } from 'firebase';
 import firebase from '../firebase/FirebaseConfig';
 import moment from 'moment';
 
@@ -14,29 +14,30 @@ export const MESSAGE_CREATED_SUCESSFULLY = 'MESSAGE_CREATED_SUCESSFULLY';
  * @param {Message} message Message to be sent.
  */
 export const sendMessage = (to, from, message) => {
-  
   attachMessageToUsersMessages(to, from, message);
   attachMessageToUsersMessages(from, to, message);
 };
 
 const attachMessageToUsersMessages = (to, from, message) => {
-  
-  store.collection(to.type)
+  store
+    .collection(to.type)
     .doc(to.uid)
     .collection('messages')
     .doc(from.uid)
     .get()
     .then(res => {
       // message thread does not exist.
-      if (!res.exists){
+      if (!res.exists) {
         createNewMessageThread(from, to, message);
-      }else{
+      } else {
         const data = res.data();
-        
-        res.ref.update({
+
+        res.ref
+          .update({
             updatedAt: moment().unix(),
-            unreadMessages: message.from === to.uid ? 0 : data.unreadMessages + 1,
-            'messages': firebase.firestore.FieldValue.arrayUnion(message),
+            unreadMessages:
+              message.from === to.uid ? 0 : data.unreadMessages + 1,
+            messages: firebase.firestore.FieldValue.arrayUnion(message),
           })
           .then(result => {
             console.log(result);
@@ -59,47 +60,53 @@ const attachMessageToUsersMessages = (to, from, message) => {
  * @param {String} message
  */
 export const createNewMessageThread = (to, from, message = null) => {
-  
-  store.collection(from.type)
+  store
+    .collection(from.type)
     .doc(from.uid)
     .collection('messages')
     .doc(to.uid)
     .get()
     .then(res => {
-      
-      if (!res.exists){
-        
-        store.collection(to.type).doc(to.uid).get().then(res => {
-          const contact = res.data();
-          
-          const messageThread = {
-            name: to.type === 'organizations' ? contact.organizationName :
-              `${contact.firstName} ${contact.lastName}`,
-            contactType: to.type,
-            messages: message ? [message] : [],
-            updatedAt: moment().unix(),
-            unreadMessages: message ? 1 : 0,
-          };
-          // create messageThread in users messages
-          store.collection(from.type)
-            .doc(from.uid)
-            .collection('messages')
-            .doc(to.uid)
-            .set(messageThread)
-            .then(res => {
-              console.log(res);
-            })
-            .catch(err => {
-              console.log(err);
-            });
-          
-        }).catch(err => {
-          console.log(err);
-        });
+      if (!res.exists) {
+        store
+          .collection(to.type)
+          .doc(to.uid)
+          .get()
+          .then(res => {
+            const contact = res.data();
+
+            const messageThread = {
+              name:
+                to.type === 'organizations'
+                  ? contact.organizationName
+                  : `${contact.firstName} ${contact.lastName}`,
+              contactType: to.type,
+              messages: message ? [message] : [],
+              updatedAt: moment().unix(),
+              unreadMessages: message ? 1 : 0,
+            };
+            // create messageThread in users messages
+            store
+              .collection(from.type)
+              .doc(from.uid)
+              .collection('messages')
+              .doc(to.uid)
+              .set(messageThread)
+              .then(res => {
+                console.log(res);
+              })
+              .catch(err => {
+                console.log(err);
+              });
+          })
+          .catch(err => {
+            console.log(err);
+          });
       }
-    }).catch(err => {
-    console.log(err);
-  });
+    })
+    .catch(err => {
+      console.log(err);
+    });
 };
 
 export const USER_HAS_NO_MESSAGES = 'USER_HAS_NO_MESSAGES';
@@ -113,7 +120,6 @@ export const COLLECTING_USER_MESSAGES_INIT = 'COLLECTING_USER_MESSAGES_INIT';
  * @param {Dispatch} dispatch
  */
 export const subscribeToMessages = (contact, dispatch) => {
-  
   dispatch(action(COLLECTING_USER_MESSAGES_INIT));
   return store
     .collection(contact.type)
@@ -121,7 +127,7 @@ export const subscribeToMessages = (contact, dispatch) => {
     .collection('messages')
     .orderBy('updatedAt', 'desc')
     .onSnapshot(snapshot => {
-      if (snapshot.empty){
+      if (snapshot.empty) {
         dispatch(action(USER_HAS_NO_MESSAGES));
         return;
       }
@@ -131,9 +137,9 @@ export const subscribeToMessages = (contact, dispatch) => {
         messageThread.id = doc.id;
         messageThreads.push(messageThread);
       });
-      
-      const messageObject = {[ contact.uid ]: messageThreads};
-      
+
+      const messageObject = { [contact.uid]: messageThreads };
+
       dispatch(action(COLLECTED_USER_MESSAGES, messageObject));
     });
 };
@@ -145,16 +151,14 @@ export const subscribeToMessages = (contact, dispatch) => {
  * @param {MessageThread} messageThread The message thread that has been read.
  */
 export const markMessagesRead = (contact, messageThread) => {
-  
-  store.collection(contact.type)
+  store
+    .collection(contact.type)
     .doc(contact.uid)
     .collection('messages')
     .doc(messageThread.id)
-    .update({unreadMessages: 0})
-    .then(res => {
-    
-    }).catch(err => {
-    console.log(err);
-  });
+    .update({ unreadMessages: 0 })
+    .then(res => {})
+    .catch(err => {
+      console.log(err);
+    });
 };
-

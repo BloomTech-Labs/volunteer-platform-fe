@@ -5,7 +5,7 @@ import {
   AntTimePicker,
   StyledCard,
 } from '../../styled';
-import RecurringEvent from '../RecurringEvent';
+import RecurringEvent from './RecurringEvent';
 import moment from 'moment';
 import styled from 'styled-components';
 import createEventImg from '../../assets/undraw_blooming_jtv6.svg';
@@ -24,12 +24,6 @@ export const CreateEventPartTwo = props => {
   } = props;
 
   const { pageNumber } = pageNumberState;
-  const [dynamicState, setDynmaicState] = useState({
-    dynamicDay: '',
-    dynamicYear: '',
-    dynamicNumber: '',
-  });
-  const dateFormat = 'MM/DD/YYYY';
 
   //Mapping through tags for antd select
 
@@ -54,30 +48,30 @@ export const CreateEventPartTwo = props => {
     }
     let nth = { 1: 'First', 2: 'Second', 3: 'Third', 4: 'Fourth', 5: 'Fifth' };
 
-    setDynmaicState({
-      ...dynamicState,
-      dynamicDay,
-      dynamicYear,
-      dynamicNumber,
-      dynamicNth: nth[count],
+    setLocalState({
+      ...localState,
+      dynamicDates: {
+        ...localState.dynamicDates,
+        dynamicDay,
+        dynamicYear,
+        dynamicNumber,
+        dynamicNth: nth[count],
+      },
     });
   };
+
+  console.log('autoofil', autoFillState);
   //Handle Submit push values to parent state
 
   const hanldePartTwoSubmit = values => {
+    console.log('values', values);
     setLocalState({
       ...localState,
       ...values,
       values,
-      date: values.date.unix(),
-      startTime: values.startTime.format('LT'),
-      endTime: values.endTime.format('LT'),
-      startTimeStamp: moment(
-        values.date.format('LL') + ' ' + values.startTime.format('LT')
-      ).unix(),
-      endTimeSTamp: moment(
-        values.date.format('LL') + ' ' + values.endTime.format('LT')
-      ).unix(),
+      // date: values.date,
+      // startTime: values.startTime,
+      // endTime: values.endTime,
     });
     setAutoFillState({
       ...autoFillState,
@@ -138,7 +132,7 @@ export const CreateEventPartTwo = props => {
             <div className={'dateWrapper hidden'}>
               <AntDatePicker
                 name={'Date'}
-                format={dateFormat}
+                format={'MM/DD/YYYY'}
                 onChange={handleDynmaicDate}
                 disabledDate={current =>
                   current && current < moment().endOf('day')
@@ -151,7 +145,7 @@ export const CreateEventPartTwo = props => {
                 name={'Is This a Recurring Event ?'}
                 localState={localState}
                 setLocalState={setLocalState}
-                dynamicState={dynamicState}
+                dynamicDates={localState.dynamicDates}
                 layout={formLayouts.empty}
                 notRequired
               />
