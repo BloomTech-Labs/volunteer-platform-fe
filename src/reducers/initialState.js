@@ -99,7 +99,8 @@ export const initialState = {
     errorMessage: '',
   },
   messages: {
-    messageThreads: [],
+    messages: {},
+    orgMessages: {},
     isLoading: false,
     error: '',
   },
@@ -156,7 +157,7 @@ export const initialState = {
 /**
  * @typedef messages
  * @type {Object}
- * @property {MessageThread[]} messageThread Array of message threads.
+ * @property {MessagesObject} messages Object of messages
  * @property {Boolean} isLoading Boolean indicating if we are collecting the user messages.
  * @property {String} error Error message if there is one.
  */
