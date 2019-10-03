@@ -24,11 +24,7 @@ export const CreateEventPartTwo = props => {
   } = props;
 
   const { pageNumber } = pageNumberState;
-  const [dynamicState, setDynmaicState] = useState({
-    dynamicDay: '',
-    dynamicYear: '',
-    dynamicNumber: '',
-  });
+
   const dateFormat = 'MM/DD/YYYY';
 
   //Mapping through tags for antd select
@@ -54,17 +50,21 @@ export const CreateEventPartTwo = props => {
     }
     let nth = { 1: 'First', 2: 'Second', 3: 'Third', 4: 'Fourth', 5: 'Fifth' };
 
-    setDynmaicState({
-      ...dynamicState,
-      dynamicDay,
-      dynamicYear,
-      dynamicNumber,
-      dynamicNth: nth[count],
+    setLocalState({
+      ...localState,
+      dynamicDates: {
+        ...localState.dynamicDates,
+        dynamicDay,
+        dynamicYear,
+        dynamicNumber,
+        dynamicNth: nth[count],
+      },
     });
   };
   //Handle Submit push values to parent state
 
   const hanldePartTwoSubmit = values => {
+    console.log('values', values);
     setLocalState({
       ...localState,
       ...values,
@@ -81,7 +81,7 @@ export const CreateEventPartTwo = props => {
       pageNumber: pageNumberState.pageNumber + 1,
     });
   };
-
+  console.log(autoFillState);
   return (
     <StyledDiv className={'flex center'}>
       <CustomStyledCard
@@ -144,7 +144,7 @@ export const CreateEventPartTwo = props => {
                 name={'Is This a Recurring Event ?'}
                 localState={localState}
                 setLocalState={setLocalState}
-                dynamicState={dynamicState}
+                dynamicDates={localState.dynamicDates}
                 layout={formLayouts.empty}
                 notRequired
               />

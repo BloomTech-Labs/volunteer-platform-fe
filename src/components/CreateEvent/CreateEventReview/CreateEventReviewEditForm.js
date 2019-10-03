@@ -13,15 +13,18 @@ import { Icon } from 'antd';
 import moment from 'moment';
 import styled from 'styled-components';
 import createEventImg from '../../../assets/undraw_blooming_jtv6.svg';
-import RecurringInfoReview from './RecurringInfoReview';
+import RecurringEvent from '../RecurringEvent';
 
 export const CreateEventReviewEditForm = props => {
-  const { localState, handleReviewSubmit, handlePageBack } = props;
+  const {
+    localState,
+    setLocalState,
+    handleReviewSubmit,
+    handlePageBack,
+  } = props;
 
   const [edit, setEdit] = useState();
   const [toEdit, setToEdit] = useState();
-
-  useEffect(() => {});
 
   console.log('editstate', localState);
 
@@ -76,7 +79,6 @@ export const CreateEventReviewEditForm = props => {
             />
             <h4>Phone Number</h4>
             <AntInput name={'Phone Number'} value={localState.phoneNumber} />
-
             <h4>Point of Contact</h4>
             <AntInput name="First Name" value={localState.firstName} />
             <AntInput name="Last Name" value={localState.lastName} />
@@ -84,7 +86,11 @@ export const CreateEventReviewEditForm = props => {
             <h4>When is the event?</h4>
             <AntDatePicker name={'Date'} value={moment(localState.date)} />
             {localState.recurringEvent === 'Yes' && (
-              <RecurringInfoReview localState={localState} />
+              <RecurringEvent
+                localState={localState}
+                setLocalState={setLocalState}
+                dynamicDates={localState.dynamicDates}
+              />
             )}
             <h4>What time?</h4>
             <AntTimePicker
@@ -111,7 +117,7 @@ export const CreateEventReviewEditForm = props => {
               value={localState.eventDetails}
             />
             <h4>Website</h4>
-            <AntInput name={'Website'} />
+            <AntInput name={'Website'} value={localState.website} />
             {localState.otherNotes && <h4>Other Notes</h4>}
             {localState.otherNotes && (
               <AntTextArea

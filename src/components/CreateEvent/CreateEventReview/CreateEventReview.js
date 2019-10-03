@@ -9,13 +9,19 @@ import CreateEventReviewEditForm from './CreateEventReviewEditForm';
 export const CreateEventReview = props => {
   const [edit, setEdit] = useState();
 
-  const { localState, handleReviewSubmit, handlePageBack } = props;
+  const {
+    localState,
+    setLocalState,
+    handleReviewSubmit,
+    handlePageBack,
+  } = props;
 
   return (
     <div>
       {edit ? (
         <CreateEventReviewEditForm
           localState={localState}
+          setLocalState={setLocalState}
           handleReviewSubmit={handleReviewSubmit}
           handlePageBack={handlePageBack}
           edit={edit}

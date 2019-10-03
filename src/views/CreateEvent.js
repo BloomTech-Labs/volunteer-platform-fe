@@ -20,6 +20,12 @@ export const CreateEvent = props => {
     pointOfcontact: '',
     volunteerRequirements: [],
     website: '',
+    dynamicDates: {
+      dynamicDay: '',
+      dynamicYear: '',
+      dynamicNumber: '',
+      dynamicNth: '',
+    },
     recurringInfo: {
       repeatTimePeriod: '',
       occurrenceEnds: '',
@@ -120,7 +126,7 @@ export const CreateEvent = props => {
 
   //Handle Form Parts Submit
   const handleFormPartSubmit = values => {
-    console.log(values);
+    console.log('part', values);
     if (pageNumberState.pageNumber) {
       setAutoFillState({
         ...autoFillState,
