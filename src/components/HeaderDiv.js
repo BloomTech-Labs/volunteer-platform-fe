@@ -5,33 +5,33 @@ import { Layout } from 'antd';
 
 const { Header } = Layout;
 
-export const HeaderDiv = ( { style, children, loggedIn } ) => {
-  return ( <StyledHeader style={ style }>
-      <Link to="/" style={ { marginLeft: '30px' } }>
-        <h2>
+export const HeaderDiv = ({ style, children, loggedIn }) => {
+  return (
+    <StyledHeader style={style}>
+      <Link to="/" style={{ marginLeft: '30px' }}>
+        <h2 className="branding">
           Volun<span>Tier</span>
         </h2>
       </Link>
       <div className="signup-links">
-        { loggedIn || <Link to="/login">Login</Link> }
-        { loggedIn || <Link to="/signup">Sign Up</Link> }
+        {loggedIn || <Link to="/login">Login</Link>}
+        {loggedIn || <Link to="/signup">Sign Up</Link>}
       </div>
-      { children }
-    </StyledHeader> );
+      {children}
+    </StyledHeader>
+  );
 };
-const StyledHeader = styled( Header )`
+const StyledHeader = styled(Header)`
   && {
     display: flex;
     justify-content: space-between;
-    background: ${ ( { theme } ) => theme.gray3 };
-    
+    background: ${({ theme }) => theme.gray3};
 
     h2 {
       margin-left: 40px;
-      font-family: ${ ( { theme } ) => theme.titleText };
       font-size: 24px;
       line-height: 22px;
-      color: ${ ( { theme } ) => theme.primary };
+      color: ${({ theme }) => theme.primary};
 
       span {
         font-style: italic;
@@ -48,8 +48,8 @@ const StyledHeader = styled( Header )`
       a {
         font-size: 14px;
         cursor: pointer;
-        font-family: ${ ( { theme } ) => theme.titleText };
-        color: ${ ( { theme } ) => theme.primary8 };
+        font-family: ${({ theme }) => theme.titleText};
+        color: ${({ theme }) => theme.primary8};
       }
     }
   }
