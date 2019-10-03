@@ -59,6 +59,7 @@ export const EditForm = ({ storedData, cancelForm, setBackToReview }) => {
             value={localState['state']}
             onChange={e => handleChange(e.target.name, e.target.value)}
             name={'state'}
+            placeholder="State"
           />
         </Form.Item>
         <Form.Item

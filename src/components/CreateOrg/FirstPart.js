@@ -28,14 +28,14 @@ export const FirstPart = ({ clickNext, storedData, cancelForm }) => {
         errorCount++;
         errors = {
           ...errors,
-          [key]: 'Please fill out required field.',
+          [key]: 'This field is required.',
         };
       }
     }
     setErrorMessage({ ...errorMessage, ...errors });
     if (!errorCount) clickNext(localState);
   };
- 
+
   return (
     <DivForStyling>
       <Form layout={'vertical'} onSubmit={() => clickNext(localState)}>
