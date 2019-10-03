@@ -11,6 +11,7 @@ import {
   ThirdPart,
   LastPart,
   Review,
+  EditForm,
 } from '../components/CreateOrg';
 import { Steps } from 'antd';
 import { deleteModal } from '../styled';
@@ -18,19 +19,33 @@ import { deleteModal } from '../styled';
 const { Step } = Steps;
 export const CreateOrg = props => {
   const [state, dispatch] = useStateValue();
-  const [localState, setLocalState] = useState({ 1: {}, 2: {}, 3: {}, 4: {} });
+  const [orgToEdit, setOrgToEdit] = useState();
+  const [localState, setLocalState] = useState({
+    1: {},
+    2: {},
+    3: {},
+    4: {},
+    6: {},
+  });
   const [partCount, setPartCount] = useState(1);
 
-  // Need to revisit how we want to edit the form
-  //   const [orgToEdit, setOrgToEdit] = useState();
-  //   useEffect(() => {
-  //     if (props.location.state) {
-  //       setOrgToEdit(props.location.state.org);
-  //       if (props.location.state.org.firstName2) {
-  //         setNumberOfPOC(2);
-  //       }
-  //     }
-  //   }, [props.location.state]);
+  useEffect(() => {
+    if (props.location.state) {
+      setLocalState({ ...localState, [6]: props.location.state.org });
+      setOrgToEdit({ ...props.location.state.org });
+    }
+  }, [props.location.state]);
+
+  useEffect(() => {
+    if (orgToEdit) {
+      if (typeof orgToEdit.startTime === 'number')
+        orgToEdit.startTime = moment.unix(orgToEdit.startTime);
+      if (typeof orgToEdit.endTime === 'number')
+        orgToEdit.endTime = moment.unix(orgToEdit.endTime);
+      setLocalState({ ...localState, [6]: orgToEdit });
+      setPartCount(6);
+    }
+  }, [orgToEdit]);
 
   const possibleHeaders = {
     1: "Let's Set Up Your Organization",
@@ -45,6 +60,7 @@ export const CreateOrg = props => {
     3: ThirdPart,
     4: LastPart,
     5: Review,
+    6: EditForm,
   };
 
   const steps = [0, 1, 2, 3, 4];
@@ -70,15 +86,37 @@ export const CreateOrg = props => {
     if (partCount === 3) {
       let weekends = values.weekends || [];
       let weekdays = values.weekdays || [];
+      switch (values['weekday-options']) {
+        case 'Weekdays':
+          weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+          break;
+        case 'Weekends (Fri, Sat, Sun)':
+          weekdays = ['Friday'];
+          weekends = ['Saturday, Sunday'];
+          break;
+        case 'Sat/Sun Only':
+          weekends = ['Saturday', 'Sunday'];
+          break;
+      }
       values.daysOfTheWeek = [...weekdays, ...weekends];
     }
-    setLocalState({ ...localState, [partCount]: values });
+    setLocalState({
+      ...localState,
+      [partCount]: values,
+      [5]: { ...localState[5], ...values },
+    });
     setPartCount(partCount => partCount + 1);
   };
 
   const clickPrevious = () => {
     setPartCount(partCount => partCount - 1);
   };
+
+  const setBackToReview = values => {
+    setLocalState({ ...localState, [5]: values });
+    setPartCount(5);
+  };
+
   const cancelForm = e => {
     const cancelOrgFormModal = deleteModal({
       title: 'Are you sure you want to cancel? All data will be lost.',
@@ -100,13 +138,12 @@ export const CreateOrg = props => {
         delete org[key];
       }
     }
-    // if (orgToEdit) {
-    //   updateOrganization(orgToEdit.orgId, org, dispatch);
-    // } else {
-    //   registerOrganization(org, dispatch);
-    // }
-    // props.history.push('/org-dashboard');
-    console.log(values);
+    if (orgToEdit) {
+      updateOrganization(orgToEdit.orgId, org, dispatch);
+    } else {
+      registerOrganization(org, dispatch);
+    }
+    props.history.push('/org-dashboard');
   };
 
   return (
@@ -122,11 +159,12 @@ export const CreateOrg = props => {
         <StyledRenderDiv>
           <RenderedPart
             clickNext={clickNext}
-            storedData={localState[partCount] || localState}
+            storedData={localState[partCount]}
             cancelForm={cancelForm}
             clickPrevious={clickPrevious}
             submitForm={submitForm}
-            // setEdit={setEdit}
+            setBackToReview={setBackToReview}
+            setEdit={setOrgToEdit}
           />
         </StyledRenderDiv>
       </CustomStyledCard>
@@ -184,9 +222,12 @@ const StyledRenderDiv = styled.div`
 
   .buttonStyles {
     display: flex;
-    width: 60%;
-    margin: 50px auto;
+    margin: 50px auto 0;
+    padding-top: 40px;
+    padding-right: 70px;
+    padding-left: 70px;
     justify-content: space-between;
+    border-top: 2px solid ${({ theme }) => theme.primary8};
   }
 `;
 

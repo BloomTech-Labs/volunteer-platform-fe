@@ -3,6 +3,7 @@ import moment from 'moment';
 export const findNthWeek = (date, info, period) => {
   let dayAbbrevs = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
   let unitConversion = { First: 1, Second: 2, Third: 3, Fourth: 4 };
+<<<<<<< HEAD
   let whichWeek = unitConversion[info.repeatTimePeriod.split(' ')[3]];
   let whichDay = dayAbbrevs[info.repeatTimePeriod.split(' ')[4]];
   //console.log(whichWeek, whichDay)
@@ -10,6 +11,13 @@ export const findNthWeek = (date, info, period) => {
     .startOf('month')
     .day(whichDay);
     //console.log(info)
+=======
+  let whichWeek = unitConversion[info.repeatTimePeriod.split(' ')[2]];
+  let whichDay = dayAbbrevs[info.repeatTimePeriod.split(' ')[3]];
+  let first_week = moment()
+    .startOf('month')
+    .day(whichDay);
+>>>>>>> staging
   let correct_week = first_week.add(7 * (whichWeek - 1), 'days');
   let firstOfNext;
   while (moment().diff(correct_week) > 0) {

@@ -6,8 +6,9 @@ import {Layout, Icon, Affix} from 'antd';
 import {useStateValue} from './hooks/useStateValue';
 import {
   subscribeToUserOrganizations, signedIn, signedOut, subscribeToMessages,
+  generateRandomEvents,
 } from './actions';
-import {StyledUploadImage, HeaderDiv, FooterDiv} from './components';
+import {HeaderDiv, FooterDiv} from './components';
 import Navigation from './components/Navigation';
 import {
   MainDashboard,
@@ -26,7 +27,6 @@ import EventCard from './components/EventCard'
 import {
   RegisteredAndLoggedInRoute,
   LoginRoute,
-  SignupRoute,
   OrganizationRoute,
   ProtectedRoute,
   RegisterRoute,
@@ -42,6 +42,7 @@ function App(){
     width: window.innerWidth,
     height: document.body.scrollHeight,
   });
+  const [subscriptions, setSubscriptions] = useState({});
   
   /**
    * Set up google auth on change event handler.
@@ -62,11 +63,29 @@ function App(){
   
   useEffect(() => {
     if (state.auth.googleAuthUser && state.auth.googleAuthUser.uid){
-      subscribeToUserOrganizations(state.auth.googleAuthUser.uid, dispatch);
-      subscribeToMessages(state.auth.googleAuthUser.uid, dispatch);
-      
+      const orgSub = subscribeToUserOrganizations(
+        state.auth.googleAuthUser.uid,
+        dispatch);
+      const messageSub = subscribeToMessages(
+        {type: 'users', uid: state.auth.googleAuthUser.uid},
+        dispatch);
+      setSubscriptions({orgSub, [ state.auth.googleAuthUser.uid ]: messageSub});
     }
+    
   }, [state.auth.googleAuthUser]);
+  
+  useEffect(() => {
+    
+    state.org.userOrganizations.forEach(org => {
+      if (!subscriptions[ org.orgId ]){
+        const messageSub = subscribeToMessages({
+          type: 'organizations',
+          uid: org.orgId,
+        }, dispatch);
+        setSubscriptions({...subscriptions, [ org.orgId ]: messageSub});
+      }
+    });
+  }, [state.org.userOrganizations]);
   
   const updateDimensions = () => {
     setDimensions({

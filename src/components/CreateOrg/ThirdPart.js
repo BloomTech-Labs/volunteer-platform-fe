@@ -1,69 +1,64 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Checkbox, Form, TimePicker } from 'antd';
+import { Checkbox, Form, TimePicker, Select } from 'antd';
 import { StyledButton, StyledCancelButton } from '../../styled';
-import moment from 'moment';
+
+const { Option } = Select;
+
 export const ThirdPart = ({ clickNext, storedData, clickPrevious }) => {
   const weekdaysArr = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
   const weekendsArr = ['Saturday', 'Sunday'];
   const [localState, setLocalState] = useState({ ...storedData });
-  const [toggle, setToggle] = useState({ weekdays: false, weekends: false });
+  const [showCustomOptions, setShowCustomOptions] = useState(false);
   useEffect(() => {
-    if (toggle.weekdays)
-      setLocalState({
-        ...localState,
-        weekdays: weekdaysArr,
-      });
-    else setLocalState({ ...localState, weekdays: [] });
-  }, [toggle.weekdays]);
-
-  useEffect(() => {
-    if (toggle.weekends)
-      setLocalState({
-        ...localState,
-        weekends: weekendsArr,
-      });
-    else setLocalState({ ...localState, weekends: [] });
-  }, [toggle.weekends]);
+    if (localState['weekday-options'] === 'Custom') setShowCustomOptions(true);
+    else setShowCustomOptions(false);
+  }, [localState['weekday-options']]);
+  const options = [
+    'Weekdays',
+    'Weekends (Fri, Sat, Sun)',
+    'Sat/Sun Only',
+    'Custom',
+  ];
 
   const handleChange = (name, value) => {
     setLocalState({ ...localState, [name]: value });
   };
+
   return (
     <DivForStyling>
       <Form layout={'vertical'} onSubmit={() => clickNext(localState)}>
         <h4>What are your hours of operation?</h4>
         <h5>1. Days of the week</h5>
-        <div className="special-options-div">
-          <button
-            type="button"
-            onClick={() => setToggle({ ...toggle, weekdays: !toggle.weekdays })}
-          >
-            Weekdays
-          </button>
-          <button
-            type="button"
-            onClick={() => setToggle({ ...toggle, weekends: !toggle.weekends })}
-          >
-            Weekends
-          </button>
-        </div>
-        <div className="daysOfWeekPicker">
-          <Checkbox.Group
-            className="weekdays-group"
-            value={localState.weekdays}
-            onChange={value => handleChange('weekdays', value)}
-            name="weekdays"
-            options={weekdaysArr}
-          />
-          <Checkbox.Group
-            className="weekend-group"
-            value={localState.weekends}
-            onChange={value => handleChange('weekends', value)}
-            name="weekends"
-            options={weekendsArr}
-          />
-        </div>
+
+        <Select
+          name="weekday-options"
+          className="weekday-select"
+          onChange={value => handleChange('weekday-options', value)}
+          value={localState['weekday-options']}
+        >
+          {options.map(option => (
+            <Option value={option}>{option}</Option>
+          ))}
+        </Select>
+        {showCustomOptions && (
+          <div className="daysOfWeekPicker">
+            <Checkbox.Group
+              className="weekdays-group"
+              value={localState.weekdays}
+              onChange={value => handleChange('weekdays', value)}
+              name="weekdays"
+              options={weekdaysArr}
+            />
+            <Checkbox.Group
+              className="weekend-group"
+              value={localState.weekends}
+              onChange={value => handleChange('weekends', value)}
+              name="weekends"
+              options={weekendsArr}
+            />
+          </div>
+        )}
 
         <h5>2. Operating Hours</h5>
         <div className="timeOfDayPicker">
@@ -85,15 +80,15 @@ export const ThirdPart = ({ clickNext, storedData, clickPrevious }) => {
             minuteStep={15}
           />
         </div>
-        <div className="buttonStyles">
-          <StyledCancelButton onClick={clickPrevious} type="primary">
-            Previous
-          </StyledCancelButton>
-          <StyledButton onClick={() => clickNext(localState)} type="primary">
-            Next
-          </StyledButton>
-        </div>
       </Form>
+      <div className="buttonStyles">
+        <StyledCancelButton onClick={clickPrevious} type="primary">
+          Previous
+        </StyledCancelButton>
+        <StyledButton onClick={() => clickNext(localState)} type="primary">
+          Next
+        </StyledButton>
+      </div>
     </DivForStyling>
   );
 };
@@ -104,10 +99,15 @@ const DivForStyling = styled.div`
     text-align: left;
     margin-left: 25%;
   }
+
+  .weekday-select {
+    width: 40%;
+    margin: 0 auto 20px;
+  }
   .daysOfWeekPicker {
     display: flex;
     justify-content: space-evenly;
-    width: 50%;
+    width: 70%;
     margin: 0 auto;
     height: 200px;
 

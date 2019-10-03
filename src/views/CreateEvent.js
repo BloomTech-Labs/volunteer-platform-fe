@@ -2,24 +2,32 @@ import React, { useState, useEffect } from 'react';
 
 import { useStateValue } from '../hooks/useStateValue';
 import { createEvent, createRecurringEvent } from '../actions';
+import moment from 'moment';
 
 import CreateEventPartOne from '../components/CreateEvent/CreateEventPartOne';
 import CreateEventPartTwo from '../components/CreateEvent/CreateEventPartTwo';
 import CreateEventPartThree from '../components/CreateEvent/CreateEventPartThree';
 import CreateEventPartFour from '../components/CreateEvent/CreateEventPartFour';
-import CreateEventReview from '../components/CreateEvent/CreateEventReview';
+import CreateEventReview from '../components/CreateEvent/CreateEventReview/CreateEventReview';
 
 export const CreateEvent = props => {
   const initialEvent = {
     nameOfEvent: '',
     typeOfCause: [],
-    date: '',
+    date: moment('00:00:00', 'HH:mm'),
+    startTime: moment('00:00:00', 'HH:mm'),
+    endTime: moment('00:00:00', 'HH:mm'),
     numberOfVolunteers: '',
     phoneNumber: '',
     pointOfcontact: '',
-    description: '',
     volunteerRequirements: [],
     website: '',
+    dynamicDates: {
+      dynamicDay: '',
+      dynamicYear: '',
+      dynamicNumber: '',
+      dynamicNth: '',
+    },
     recurringInfo: {
       repeatTimePeriod: '',
       occurrenceEnds: '',
@@ -66,40 +74,52 @@ export const CreateEvent = props => {
 
   //Handle Submit for Form
   const handleReviewSubmit = () => {
-    console.log('firred');
     const event = {
-      ...localState,
       orgId: localState.orgId,
       orgName: props.location.state.org.organizationName,
-      orgImagePath: props.location.state.org.imagePath,
+      orgImagePath: props.location.state.org.imagePath || '',
       orgPage: '',
-      date: localState.date,
-      startTime: localState.startTime,
-      endTime: localState.endTime,
-      startTimeStamp: localState.startTimeStamp,
-      endTimeSTamp: localState.endTimeSTamp,
+      nameOfEvent: localState.nameOfEvent,
+      city: localState.city,
+      email: localState.email,
+      phoneNumber: localState.phoneNumber,
+      date: localState.date.unix(),
+      startTime: localState.startTime.format('LT'),
+      endTime: localState.endTime.format('LT'),
+      startTimeStamp: moment(
+        localState.date.format('LL') + ' ' + localState.startTime.format('LT')
+      ).unix(),
+      endTimeSTamp: moment(
+        localState.date.format('LL') + ' ' + localState.endTime.format('LT')
+      ).unix(),
+      numberOfVolunteers: localState.numberOfVolunteers,
+      typesOfCauses: localState.typesOfCauses,
+      interest: localState.interest,
       volunteerRequirements: localState.volunteerRequirements,
       pointOfcontact: {
         firstName: localState.firstName,
         lastName: localState.lastName,
         email: localState.email,
       },
+      website: localState.website,
+      otherNotes: localState.otherNotes,
     };
 
     if (recurringEvent === 'Yes') {
       event.recurringInfo = recurringInfo;
       if (event.recurringInfo.occurrenceEnds === 'On') {
+        event.recurringInfo.occurrenceEndDate = event.recurringInfo.occurrenceEndDate.unix();
         event.recurringInfo.occurrenceEndsAfter = '';
       }
       if (event.recurringInfo.occurrenceEnds === 'After') {
         event.recurringInfo.occurrenceEndDate = '';
       }
-      removeUndefinied(event);
-
+      // removeUndefinied(event);
+      console.log('recurring', event);
       createRecurringEvent(event, dispatch);
     } else {
-      removeUndefinied(event);
-
+      // removeUndefinied(event);
+      console.log('regular', event);
       createEvent(event, dispatch);
     }
     setPageNumberState({
@@ -108,7 +128,6 @@ export const CreateEvent = props => {
 
     props.history.push('/org-dashboard');
   };
-  console.log('localState', localState);
 
   ///Cancel Form
   const cancelForm = () => {
@@ -117,6 +136,7 @@ export const CreateEvent = props => {
 
   //Handle Form Parts Submit
   const handleFormPartSubmit = values => {
+    console.log('part', values);
     if (pageNumberState.pageNumber) {
       setAutoFillState({
         ...autoFillState,
@@ -198,6 +218,7 @@ export const CreateEvent = props => {
       />
     ),
   };
+  console.log('localState', localState);
 
   return (
     <div>
