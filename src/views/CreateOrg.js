@@ -49,7 +49,7 @@ export const CreateOrg = props => {
 
   const steps = [0, 1, 2, 3, 4];
 
-  const RenderedPart = possibleParts[3];
+  const RenderedPart = possibleParts[2];
 
   const clickNext = values => {
     if (partCount === 2) {
