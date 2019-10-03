@@ -54,11 +54,9 @@ export const EditForm = ({ storedData, cancelForm, setBackToReview }) => {
       >
         <Form.Item label={'Name of Organization'}>
           <Input
-            value={
-              localState['nameOfOrganization'] || localState['organizationName']
-            }
+            value={localState['organizationName']}
             onChange={e => handleChange(e.target.name, e.target.value)}
-            name={'nameOfOrganization'}
+            name={'organizationName'}
           />
         </Form.Item>
         <Form.Item label={'Address'}>
@@ -89,9 +87,9 @@ export const EditForm = ({ storedData, cancelForm, setBackToReview }) => {
           }
         >
           <Select
-            name={'typeOfCauses'}
-            value={localState['typeOfCauses'] || localState['causeAreas']}
-            onChange={value => handleChange('typeOfCauses', value)}
+            name={'causeAreas'}
+            value={localState['causeAreas']}
+            onChange={value => handleChange('causeAreas', value)}
             showArrow
             mode={'multiple'}
           >

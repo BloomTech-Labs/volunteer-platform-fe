@@ -9,7 +9,7 @@ export const Review = ({
   cancelForm,
   submitForm,
   setEdit,
-  localState,
+  isEditing,
 }) => {
   const onSubmit = e => {
     e.preventDefault();
@@ -26,16 +26,20 @@ export const Review = ({
       endTime: storedData.endTime.unix() || '',
       organizationName: storedData.organizationName || '',
       website: storedData.website || '',
+      weekdays: storedData.weekdays || [],
+      weekends: storedData.weekends || [],
     };
 
     const confirmSubmit = confirmModal({
-      title: 'Creating Your Organization',
+      title: isEditing
+        ? 'Editing Your Organization'
+        : 'Creating Your Organization',
       content: 'Please ensure all the information is correct.',
       onOk: () => submitForm(values),
     });
     confirmSubmit();
   };
-  console.log(storedData);
+
   return (
     <>
       <ReviewDiv>
@@ -61,7 +65,7 @@ export const Review = ({
         </div>
         <InfoDiv>
           <h4>Name</h4>
-          <p>{storedData.nameOfOrganization}</p>
+          <p>{storedData.organizationName}</p>
           <h4>Location</h4>
           <p className="no-margin">{storedData.streetAddress}</p>
           <p>
@@ -118,7 +122,7 @@ export const Review = ({
                 {storedData.startTime && (
                   <p>{`${storedData.startTime.format(
                     'LT'
-                  )} - ${storedData.startTime.format('LT')}`}</p>
+                  )} - ${storedData.endTime.format('LT')}`}</p>
                 )}
               </div>
             </>

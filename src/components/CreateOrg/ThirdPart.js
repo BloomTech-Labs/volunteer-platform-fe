@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Checkbox, Form, TimePicker, Select } from 'antd';
 import { StyledButton, StyledCancelButton } from '../../styled';
-
+import moment from 'moment';
 const { Option } = Select;
 
 export const ThirdPart = ({ clickNext, storedData, clickPrevious }) => {
   const weekdaysArr = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
   const weekendsArr = ['Saturday', 'Sunday'];
-  const [localState, setLocalState] = useState({ ...storedData });
+  const [localState, setLocalState] = useState({ startTime: moment('9:00 A', 'H:mm A'), endTime: moment('5:00 P', 'H:mm A'), ...storedData });
   const [showCustomOptions, setShowCustomOptions] = useState(false);
   useEffect(() => {
     if (localState['weekdayOptions'] === 'Custom') setShowCustomOptions(true);
@@ -24,7 +24,6 @@ export const ThirdPart = ({ clickNext, storedData, clickPrevious }) => {
   const handleChange = (name, value) => {
     setLocalState({ ...localState, [name]: value });
   };
-
   return (
     <DivForStyling>
       <Form layout={'vertical'} onSubmit={() => clickNext(localState)}>

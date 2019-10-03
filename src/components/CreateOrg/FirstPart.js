@@ -41,15 +41,15 @@ export const FirstPart = ({ clickNext, storedData, cancelForm }) => {
       <Form layout={'vertical'} onSubmit={() => clickNext(localState)}>
         <Form.Item label={'Name of Organization'} required>
           <Input
-            value={localState['nameOfOrganization']}
+            value={localState['organizationName']}
             onChange={e => handleChange(e.target.name, e.target.value)}
-            name={'nameOfOrganization'}
+            name={'organizationName'}
             placeholder={'Community Helper'}
           />
         </Form.Item>
-        {errorMessage['nameOfOrganization'] && (
+        {errorMessage['organizationName'] && (
           <span className="error-message error-span left-aligned">
-            {errorMessage['nameOfOrganization']}
+            {errorMessage['organizationName']}
           </span>
         )}
         <Form.Item label="Street Address" required>

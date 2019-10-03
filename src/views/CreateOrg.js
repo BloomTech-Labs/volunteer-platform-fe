@@ -54,6 +54,8 @@ export const CreateOrg = props => {
     2: "Let's Set Up Your Organization",
     3: 'Almost Finished Setting Up',
     4: 'Last Part!',
+    5: 'Let\'s Review Your Information',
+    6: 'Edit Your Organization'
   };
 
   const possibleParts = {
@@ -171,6 +173,7 @@ export const CreateOrg = props => {
             submitForm={submitForm}
             setBackToReview={setBackToReview}
             setEdit={setOrgToEdit}
+            isEditing={isEditing}
           />
         </StyledRenderDiv>
       </CustomStyledCard>
