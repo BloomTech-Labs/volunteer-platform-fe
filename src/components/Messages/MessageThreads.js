@@ -49,8 +49,8 @@ const MessageThreads = () => {
                 backgroundColor: '#1890ff',
                 marginBottom: '30px',
               }}
-                     count={thread.unreadMessages}><span
-                style={{
+                     count={thread.unreadMessages}>
+                <span style={{
                   marginRight: '1rem',
                 }}>{thread.name}</span>
               </Badge>
