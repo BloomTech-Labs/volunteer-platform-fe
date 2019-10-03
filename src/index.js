@@ -1,19 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { ThemeProvider, createGlobalStyle } from 'styled-components';
-import { StateProvider } from './contexts/StateProvider';
+import {ThemeProvider, createGlobalStyle} from 'styled-components';
+import {StateProvider} from './contexts/StateProvider';
 import * as Sentry from '@sentry/browser';
 import * as reset from './styles/reset.css';
 import 'antd/dist/antd.css';
 import App from './App';
-import { BrowserRouter as Router } from 'react-router-dom';
+import {BrowserRouter as Router} from 'react-router-dom';
 import * as global from './styles/global.css';
-import { initialState } from './reducers/initialState';
-import { mainReducer } from './reducers/mainReducer';
+import {initialState} from './reducers/initialState';
+import {mainReducer} from './reducers/mainReducer';
 import ScrollToTop from './components/ScrollToTop';
 
 //enable Sentry only for production builds
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production'){
   Sentry.init({
     dsn: 'https://0ff73aa2b95c4b75b27ed6fff1c45dab@sentry.io/1728693',
   });
@@ -36,7 +36,7 @@ const theme = {
   primary8: '#005a87',
   primary9: '#003d61',
   primary10: '#00233b',
-
+  
   accent: '#fa8c16',
   accent1: '#fff7e6',
   accent2: '#ffe7ba',
@@ -48,7 +48,7 @@ const theme = {
   accent8: '#ad4e00',
   accent9: '#873800',
   accent10: '#612500',
-
+  
   gray: '#bfbfbf',
   gray1: '#ffffff',
   gray2: '#fafafa',
@@ -60,28 +60,28 @@ const theme = {
   gray8: '#595959',
   gray9: '#262626',
   gray10: '#000000',
-
+  
   bodytext:
-    "'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB','Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji','Segoe UI Emoji', 'Segoe UI Symbol'",
-  titletext: "'Arvo', sans-serif",
-
+    '\'Montserrat\', -apple-system, BlinkMacSystemFont, \'Segoe UI\', \'PingFang SC\', \'Hiragino Sans GB\',\'Microsoft YaHei\', \'Helvetica Neue\', Helvetica, Arial, sans-serif, \'Apple Color Emoji\',\'Segoe UI Emoji\', \'Segoe UI Symbol\'',
+  titletext: '\'Arvo\', sans-serif',
+  
   borderRadiusDefault: '10px',
   footerHeight: '130px',
-  footerPadding: '160px', // footer height plus extra
+  footerPadding: '130px', // footer height plus extra
 };
 
 ReactDOM.render(
   <ThemeProvider theme={theme}>
     <>
-      <GlobalStyle />
+      <GlobalStyle/>
       <StateProvider initialState={initialState} reducer={mainReducer}>
         <Router>
           <ScrollToTop>
-            <App />
+            <App/>
           </ScrollToTop>
         </Router>
       </StateProvider>
     </>
   </ThemeProvider>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );

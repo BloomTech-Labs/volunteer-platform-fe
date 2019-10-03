@@ -1,6 +1,6 @@
-import { store } from '../firebase/FirebaseConfig';
-import { action } from './action';
-import { arrayUnion } from 'firebase';
+import {store} from '../firebase/FirebaseConfig';
+import {action} from './action';
+import {arrayUnion} from 'firebase';
 import firebase from '../firebase/FirebaseConfig';
 import moment from 'moment';
 
@@ -116,17 +116,23 @@ export const COLLECTING_USER_MESSAGES_INIT = 'COLLECTING_USER_MESSAGES_INIT';
 /**
  * Subscribe to the users messages.
  * @function
- * @param uid
- * @param dispatch
+ * @param {MessageContact} contact
+ * @param {Dispatch} dispatch
  */
+<<<<<<< HEAD
 export const subscribeToMessages = (uid, dispatch) => {
+=======
+export const subscribeToMessages = (contact, dispatch) => {
+  
+>>>>>>> staging
   dispatch(action(COLLECTING_USER_MESSAGES_INIT));
-  store
-    .collection('users')
-    .doc(uid)
+  return store
+    .collection(contact.type)
+    .doc(contact.uid)
     .collection('messages')
+    .orderBy('updatedAt', 'desc')
     .onSnapshot(snapshot => {
-      if (snapshot.empty) {
+      if (snapshot.empty){
         dispatch(action(USER_HAS_NO_MESSAGES));
         return;
       }
@@ -136,7 +142,10 @@ export const subscribeToMessages = (uid, dispatch) => {
         messageThread.id = doc.id;
         messageThreads.push(messageThread);
       });
-      dispatch(action(COLLECTED_USER_MESSAGES, messageThreads));
+      
+      const messageObject = {[ contact.uid ]: messageThreads};
+      
+      dispatch(action(COLLECTED_USER_MESSAGES, messageObject));
     });
 };
 
@@ -147,17 +156,29 @@ export const subscribeToMessages = (uid, dispatch) => {
  * @param {MessageThread} messageThread The message thread that has been read.
  */
 export const markMessagesRead = (contact, messageThread) => {
+<<<<<<< HEAD
   debugger;
   store
     .collection(contact.type)
+=======
+  
+  store.collection(contact.type)
+>>>>>>> staging
     .doc(contact.uid)
     .collection('messages')
     .doc(messageThread.id)
     .update({ unreadMessages: 0 })
     .then(res => {
+<<<<<<< HEAD
       debugger;
     })
     .catch(err => {
       console.log(err);
     });
+=======
+    
+    }).catch(err => {
+    console.log(err);
+  });
+>>>>>>> staging
 };

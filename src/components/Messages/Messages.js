@@ -1,13 +1,13 @@
 import React from 'react';
-import { useStateValue } from '../../hooks/useStateValue';
+import {useStateValue} from '../../hooks/useStateValue';
 import styled from 'styled-components';
 import moment from 'moment';
-import { Input } from 'antd';
-import { sendMessage } from '../../actions';
+import {Input} from 'antd';
+import {sendMessage} from '../../actions';
 
-const Messages = ({ messageId }) => {
-  const [{ auth, messages }, dispatch] = useStateValue();
-  const messageThread = messages.messageThreads.filter(
+const Messages = ({messageId}) => {
+  const [{auth, messages}, dispatch] = useStateValue();
+  const messageThread = messages.messages[ auth.googleAuthUser.uid ].filter(
     messageThread => messageThread.id === messageId);
   const {Search} = Input;
   
@@ -16,7 +16,7 @@ const Messages = ({ messageId }) => {
     const message = {
       createdAt: moment().unix(),
       from: auth.googleAuthUser.uid,
-      to: messageThread[0].id,
+      to: messageThread[ 0 ].id,
       text: value,
       read: false,
     };
@@ -33,7 +33,7 @@ const Messages = ({ messageId }) => {
     
     sendMessage(to, from, message);
   };
-
+  
   return (
     <StyledMessages>
       <StyledMessageThread>
@@ -46,10 +46,10 @@ const Messages = ({ messageId }) => {
             >
               {message.to === auth.googleAuthUser.uid &&
               <p>{messageThread[ 0 ].firstName}: {moment.unix(message.createdAt)
-                .format('LT')}</p>}
+                .format('LLL')}</p>}
               {message.to !== auth.googleAuthUser.uid &&
               <p>Me: {moment.unix(message.createdAt)
-                .format('LT')}</p>}
+                .format('LLL')}</p>}
               <p className={'message'}>{message.text} </p>
             </div>
           );
@@ -66,47 +66,50 @@ const Messages = ({ messageId }) => {
 };
 
 const StyledMessages = styled.div`
-
-width: 100%;
-max-width: 600px;
-
-p {
-  margin: 0;
-}
-
-.me {
-  border-radius: 20px;
-  margin-top: 1rem;
-  max-width: 60%;
-  background-color: #3e999f;
-  padding: .5rem 2rem;
-  margin-left: 1rem;
-}
-
-.me:last-child {
-  margin-bottom: 3rem;
-}
-
-.other {
-  margin-left: 40%;
-  border-radius: 20px;
-  margin-top: 1rem;
-  max-width: 60%;
-  background-color: #0074D9;
-  padding: .5rem 2rem;
-}
-
-.other:last-child {
-  margin-bottom: 3rem;
-}
-
-.message {
-  margin: 0 0 0 2rem;
-`;
+                
+                width: 100%;
+                
+                
+                p {
+                margin: 0;
+                color: #cbcbcb;
+              }
+                
+                .me {
+                border-radius: 20px;
+                margin-top: 1rem;
+                max-width: 60%;
+                background-color: #3e999f;
+                padding: .5rem 2rem;
+                margin-left: 1rem;
+              }
+                
+                .me:last-child {
+                margin-bottom: 3rem;
+              }
+                
+                .other {
+                margin-left: 40%;
+                border-radius: 20px;
+                margin-top: 1rem;
+                max-width: 60%;
+                background-color: #0074D9;
+                padding: .5rem 2rem;
+              }
+                
+                .other:last-child {
+                margin-bottom: 3rem;
+              }
+                
+                .message {
+                margin: 0 0 0 2rem;
+                font-size: 1.5rem;
+                color: black;
+                `;
 
 const StyledMessageThread = styled.div`
-  height: 60vh;
-  overflow-y: scroll;
-`;
+                height: 70Vh;
+                overflow-y: scroll;
+                `;
 
 export default Messages;

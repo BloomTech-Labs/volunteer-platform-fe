@@ -273,6 +273,7 @@ export const generateRandomEvents = () => {
           typesOfCauses: getRandomCauses(),
           volunteerRequirements: getRandomRequirements(),
           website,
+          eventDetails: faker.lorem.paragraphs(),
           
         };
         

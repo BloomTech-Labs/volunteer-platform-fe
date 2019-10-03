@@ -135,6 +135,11 @@
  */
 
 /**
+ * @typedef MessagesObject
+ * @type {{id: string, messages: MessageThread[]}}
+ */
+
+/**
  *@typedef MessageContact
  * @type {Object}
  * @property {String} type Either users or organizations

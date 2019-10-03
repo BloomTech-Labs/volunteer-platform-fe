@@ -1,13 +1,24 @@
 import React, {useState, useEffect} from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import {checkUserRegistered, signOut} from '../actions';
-import {Menu, Tooltip} from 'antd';
+import {Menu, Tooltip, Badge} from 'antd';
 import styled from 'styled-components';
 import {useStateValue} from '../hooks/useStateValue';
 
 export const Navigation = props => {
   const [state, dispatch] = useStateValue();
   const [current, setCurrent] = useState('Home');
+  let numberOfUnreadMessages = 0;
+  if (Object.keys(state.messages.messages).length > 0){
+    Object.keys(state.messages.messages).forEach(key => {
+      
+      const unreadMessages = state.messages.messages[ key ].reduce((acc,
+        messageThread) => {
+        return acc + messageThread.unreadMessages;
+      }, 0);
+      numberOfUnreadMessages += unreadMessages;
+    });
+  }
   
   const pathNames = {
     '/dashboard': 'Home',
@@ -26,6 +37,18 @@ export const Navigation = props => {
     }
   };
   
+  const getUnreadMessages = (uid) => {
+    debugger;
+    if (state.messages.messages[ uid ]){
+      const numberOfUnread = state.messages.messages[ uid ].reduce((acc,
+        thread) => {
+        return acc + thread.unreadMessages;
+      }, 0);
+      return numberOfUnread;
+    }
+    return 0;
+  };
+  
   const NavbarMenuLink = ({to, disabled, children, ...rest}) => {
     const NavbarLink = ({...props}) => {
       return (
@@ -42,7 +65,7 @@ export const Navigation = props => {
       <NavbarLink/>
     );
   };
-  
+  const {SubMenu} = Menu;
   return (
     <StyledNavigation>
       <Menu onClick={handleClick} selectedKeys={[current]} mode="inline">
@@ -60,11 +83,45 @@ export const Navigation = props => {
             Profile
           </NavbarMenuLink>
         </Menu.Item>
-        <Menu.Item>
-          <NavbarMenuLink to="/messages">
-            Messages
-          </NavbarMenuLink>
-        </Menu.Item>
+        <SubMenu key={'sub1'} title={
+          <Badge count={numberOfUnreadMessages} style={{
+            color: '#fff',
+            backgroundColor: '#1890ff',
+            marginBottom: '30px',
+          }}>
+            <span style={{marginRight: '1rem'}}>Messages</span>
+          </Badge>}>
+          <Menu.Item key={'Messages'}>
+            <Link to={'/messages'}>
+              <span style={{marginRight: '1rem'}}>User Messages</span>
+              <Badge className={'colorless-badge'}
+                     count={state.auth.googleAuthUser ?
+                       getUnreadMessages(state.auth.googleAuthUser.uid) : 0}
+                     style={{
+                       backgroundColor: '#fff',
+                       boxShadow: '0 0 0 1px #d9d9d9 inset',
+                     }}
+              />
+            </Link>
+          </Menu.Item>
+          {state.org.userOrganizations &&
+          state.org.userOrganizations.map(org => {
+            return <Menu.Item key={org.orgId}>
+              
+              <Link to={'/messages'}>
+                  <span
+                    style={{marginRight: '.2rem'}}>{org.organizationName}</span>
+                <Badge className={'colorless-badge'}
+                       count={getUnreadMessages(org.orgId)}
+                       style={{
+                         backgroundColor: '#fff',
+                         boxShadow: '0 0 0 1px #d9d9d9 inset',
+                       }}
+                />
+              </Link>
+            </Menu.Item>;
+          })}
+        </SubMenu>
         <Menu.Item key="Home">
           <Link to={'/dashboard'}>Browse</Link>
         </Menu.Item>
@@ -105,7 +162,7 @@ export const Navigation = props => {
 };
 
 const StyledNavigation = styled.div`
-  text-align: center;
+  text-align: left;
   font-size: 14px;
 
   a {
@@ -131,6 +188,13 @@ const StyledNavigation = styled.div`
     display: flex;
     justify-content: center;
     margin: 3rem 0;
+  }
+  span > p {
+    color: white;
+  }
+  
+  .colorless-badge > sup > span > p {
+    color: #999;
   }
 `;
 

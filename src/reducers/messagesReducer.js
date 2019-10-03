@@ -21,7 +21,7 @@ export const messageReducer = (state, action) => {
     case COLLECTED_USER_MESSAGES:
       return {
         ...state,
-        messageThreads: action.payload,
+        messages: {...state.messages, ...action.payload},
         isLoading: false,
         error: '',
       };
