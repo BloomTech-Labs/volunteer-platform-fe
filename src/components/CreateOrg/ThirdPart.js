@@ -11,9 +11,9 @@ export const ThirdPart = ({ clickNext, storedData, clickPrevious }) => {
   const [localState, setLocalState] = useState({ ...storedData });
   const [showCustomOptions, setShowCustomOptions] = useState(false);
   useEffect(() => {
-    if (localState['weekday-options'] === 'Custom') setShowCustomOptions(true);
+    if (localState['weekdayOptions'] === 'Custom') setShowCustomOptions(true);
     else setShowCustomOptions(false);
-  }, [localState['weekday-options']]);
+  }, [localState['weekdayOptions']]);
   const options = [
     'Weekdays',
     'Weekends (Fri, Sat, Sun)',
@@ -32,10 +32,10 @@ export const ThirdPart = ({ clickNext, storedData, clickPrevious }) => {
         <h5>1. Days of the week</h5>
 
         <Select
-          name="weekday-options"
+          name="weekdayOptions"
           className="weekday-select"
-          onChange={value => handleChange('weekday-options', value)}
-          value={localState['weekday-options']}
+          onChange={value => handleChange('weekdayOptions', value)}
+          value={localState['weekdayOptions']}
         >
           {options.map(option => (
             <Option value={option}>{option}</Option>

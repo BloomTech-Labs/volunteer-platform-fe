@@ -13,7 +13,7 @@ export const FirstPart = ({ clickNext, storedData, cancelForm }) => {
     streetAddress: false,
     city: false,
     state: false,
-    typeOfCauses: false,
+    causeAreas: false,
   });
 
   const handleChange = (name, value) => {
@@ -110,9 +110,9 @@ export const FirstPart = ({ clickNext, storedData, cancelForm }) => {
             required
           >
             <Select
-              name={'typeOfCauses'}
-              value={localState['typeOfCauses']}
-              onChange={value => handleChange('typeOfCauses', value)}
+              name={'causeAreas'}
+              value={localState['causeAreas']}
+              onChange={value => handleChange('causeAreas', value)}
               showArrow
               mode={'multiple'}
               placeholder={'Please select all that apply.'}
@@ -122,9 +122,9 @@ export const FirstPart = ({ clickNext, storedData, cancelForm }) => {
               ))}
             </Select>
           </Form.Item>
-          {errorMessage['typeOfCauses'] && (
+          {errorMessage['causeAreas'] && (
             <span className="error-message error-span left-aligned">
-              {errorMessage['typeOfCauses']}
+              {errorMessage['causeAreas']}
             </span>
           )}
         </div>

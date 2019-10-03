@@ -16,14 +16,15 @@ export const Review = ({
     let values = {
       POC: storedData.POC || [],
       aboutUs: storedData.aboutUs || '',
-      causeAreas: storedData.typeOfCauses || [],
+      causeAreas: storedData.causeAreas || [],
       city: storedData.city || '',
       streetAddress: storedData.streetAddress || '',
       state: storedData.state || '',
+      weekdayOptions: storedData.weekdayOptions || '',
       daysOfTheWeek: storedData.daysOfTheWeek || [],
       startTime: storedData.startTime.unix() || '',
       endTime: storedData.endTime.unix() || '',
-      organizationName: storedData.nameOfOrganization || '',
+      organizationName: storedData.organizationName || '',
       website: storedData.website || '',
     };
 
@@ -34,7 +35,7 @@ export const Review = ({
     });
     confirmSubmit();
   };
-
+  console.log(storedData);
   return (
     <>
       <ReviewDiv>
@@ -68,7 +69,7 @@ export const Review = ({
           </p>
           <h4>Cause(s)</h4>
           <div className="cause-tags">
-            {storedData.typeOfCauses.map(cause => (
+            {storedData.causeAreas.map(cause => (
               <Tag key={cause}>{cause}</Tag>
             ))}
           </div>

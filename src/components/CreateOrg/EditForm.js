@@ -25,9 +25,26 @@ export const EditForm = ({ storedData, cancelForm, setBackToReview }) => {
   };
 
   useEffect(() => {
-    if (localState['weekday-options'] === 'Custom') setShowCustomOptions(true);
-    else setShowCustomOptions(false);
-  }, [localState['weekday-options']]);
+    if (localState['weekdayOptions'] === 'Custom') setShowCustomOptions(true);
+    else {
+      let weekends = [];
+      let weekdays = [];
+      switch (localState['weekdayOptions']) {
+        case 'Weekdays':
+          weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+          break;
+        case 'Weekends (Fri, Sat, Sun)':
+          weekdays = ['Friday'];
+          weekends = ['Saturday', 'Sunday'];
+          break;
+        case 'Sat/Sun Only':
+          weekends = ['Saturday', 'Sunday'];
+          break;
+      }
+      localState.daysOfTheWeek = [...weekdays, ...weekends];
+      setShowCustomOptions(false);
+    }
+  }, [localState['weekdayOptions']]);
 
   return (
     <>
@@ -86,10 +103,10 @@ export const EditForm = ({ storedData, cancelForm, setBackToReview }) => {
         <Form.Item label={'Point of Contacts'}></Form.Item>
         <Form.Item label={'Hours of Operation'}>
           <Select
-            name="weekday-options"
+            name="weekdayOptions"
             className="weekday-select"
-            onChange={value => handleChange('weekday-options', value)}
-            value={localState['weekday-options']}
+            onChange={value => handleChange('weekdayOptions', value)}
+            value={localState['weekdayOptions']}
           >
             {options.map(option => (
               <Option value={option}>{option}</Option>

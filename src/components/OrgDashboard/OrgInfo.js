@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import moment from 'moment';
 import { Icon } from 'antd';
 import { StyledCard } from '../../styled';
-import {setDaysOpen} from '../../utility/setDaysOpen'
+import { setDaysOpen } from '../../utility/setDaysOpen';
 
 export const OrgInfo = ({ displayOrg }) => {
   return (
@@ -40,7 +40,9 @@ export const OrgInfo = ({ displayOrg }) => {
             return (
               <div className="poc">
                 <div className="poc-name">
-                  {contact.firstName} {contact.lastName}
+                  {contact.fullName
+                    ? `${contact.fullName}`
+                    : `${contact.firstName} ${contact.lastName}`}
                 </div>
                 <div className="poc-info">
                   <Icon
@@ -51,6 +53,19 @@ export const OrgInfo = ({ displayOrg }) => {
                   />
                   {contact.email}
                 </div>
+                {contact.phone && (
+                  <>
+                    <div className="poc-info">
+                      <Icon
+                        type="phone"
+                        theme="twoTone"
+                        twoToneColor={'#005a87'}
+                        className="icon"
+                      />
+                      {contact.phone}
+                    </div>
+                  </>
+                )}
               </div>
             );
           })}
@@ -90,9 +105,9 @@ const OrgInfoDiv = styled(StyledCard)`
     .poc {
       display: flex;
       align-items: center;
+      
       .poc-name {
-        min-width: 50%;
-        padding-right: 20%;
+        min-width: 30%;
         margin-bottom: 5px;
       }
 

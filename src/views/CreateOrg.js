@@ -20,6 +20,7 @@ const { Step } = Steps;
 export const CreateOrg = props => {
   const [state, dispatch] = useStateValue();
   const [orgToEdit, setOrgToEdit] = useState();
+  const [isEditing, setIsEditing] = useState(false);
   const [localState, setLocalState] = useState({
     1: {},
     2: {},
@@ -33,6 +34,7 @@ export const CreateOrg = props => {
     if (props.location.state) {
       setLocalState({ ...localState, [6]: props.location.state.org });
       setOrgToEdit({ ...props.location.state.org });
+      setIsEditing(true);
     }
   }, [props.location.state]);
 
@@ -86,13 +88,13 @@ export const CreateOrg = props => {
     if (partCount === 3) {
       let weekends = values.weekends || [];
       let weekdays = values.weekdays || [];
-      switch (values['weekday-options']) {
+      switch (values['weekdayOptions']) {
         case 'Weekdays':
           weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
           break;
         case 'Weekends (Fri, Sat, Sun)':
           weekdays = ['Friday'];
-          weekends = ['Saturday, Sunday'];
+          weekends = ['Saturday', 'Sunday'];
           break;
         case 'Sat/Sun Only':
           weekends = ['Saturday', 'Sunday'];
@@ -113,6 +115,10 @@ export const CreateOrg = props => {
   };
 
   const setBackToReview = values => {
+    let weekends = values.weekends || [];
+    let weekdays = values.weekdays || [];
+    if (values.weekdayOptions === 'Custom')
+      values.daysOfTheWeek = [...weekdays, ...weekends];
     setLocalState({ ...localState, [5]: values });
     setPartCount(5);
   };
@@ -138,7 +144,7 @@ export const CreateOrg = props => {
         delete org[key];
       }
     }
-    if (orgToEdit) {
+    if (isEditing) {
       updateOrganization(orgToEdit.orgId, org, dispatch);
     } else {
       registerOrganization(org, dispatch);
