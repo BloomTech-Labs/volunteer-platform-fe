@@ -56,7 +56,7 @@ export const Navigation = props => {
         </Menu.Item>
         <Menu.Divider/>
         <Menu.Item>
-          <NavbarMenuLink to="#" disabled>
+          <NavbarMenuLink to='/profile'>
             Profile
           </NavbarMenuLink>
         </Menu.Item>

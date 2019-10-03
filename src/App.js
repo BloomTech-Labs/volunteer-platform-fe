@@ -18,7 +18,8 @@ import {
   Login,
   LandingPage,
   NotFound,
-  UserProfile
+  UserProfile,
+  Organization,
 } from './views';
 
 import {
@@ -119,6 +120,7 @@ function App(){
               <LoginRoute path={'/login'} component={Login}/>
               <LoginRoute path={'/signup'} component={Login}/>
               <Route exact path={'/'} component={LandingPage}/>
+              <Route path={'/organization/:id'} component={Organization}/>
               <ProtectedRoute path={'/dashboard'} component={MainDashboard}/>
               <RegisteredAndLoggedInRoute
                 path={'/create-org'}
@@ -139,7 +141,7 @@ function App(){
                 path={'/profile'}
                 component={UserProfile}
               />
-              <Route component={NotFound} />
+              <Route component={NotFound}/>
             </Switch>
           </StyledContent>
           <FooterDiv/>

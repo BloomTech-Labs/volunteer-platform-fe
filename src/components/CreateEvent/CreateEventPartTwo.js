@@ -100,7 +100,8 @@ export const CreateEventPartTwo = props => {
             onSubmit={hanldePartTwoSubmit}
             layout={'vertical'}
             buttonType={'primary'}
-            buttonText={'Next'}
+            submitButton
+            submitButtonText={'Next'}
             autofill={autoFillState[pageNumber]}
           >
             <label>Who is your point of contact?</label>
@@ -196,7 +197,11 @@ const StyledCreateEvent = styled.div`
   }
 
   label {
-    color: ${props => props.theme.primary8};
+    color: ${({ theme }) => theme.primary8};
+
+    &::before {
+      color: ${({ theme }) => theme.primary8};
+    }
   }
   small {
     color: #bfbfbf;

@@ -7,3 +7,4 @@ export * from './Signup';
 export * from './CreateOrg';
 export * from './NotFound';
 export * from './UserProfile';
+export * from './Organization';

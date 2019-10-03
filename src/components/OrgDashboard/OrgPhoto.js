@@ -5,8 +5,8 @@ import { Tooltip, Icon, Popconfirm, message } from 'antd';
 
 export const OrgPhoto = ({
   imageUrl,
-  displayOrg,
-  deleteOrganizationImage,
+  imageOwner,
+  deleteImage,
   onFileUpload,
 }) => {
   return (
@@ -23,7 +23,7 @@ export const OrgPhoto = ({
               <Popconfirm
                 onConfirm={() => {
                   message.success('Photo deleted.');
-                  deleteOrganizationImage(displayOrg);
+                  deleteImage(imageOwner);
                 }}
                 title={'Delete this photo?'}
                 okText={'Yes'}

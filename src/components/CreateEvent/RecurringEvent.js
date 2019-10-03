@@ -251,7 +251,8 @@ export const RecurringEvent = props => {
             onSubmit={handleSubmit}
             layout={'vertical'}
             buttonType={'primary'}
-            buttonText={'Submit'}
+            submitButtonText={'Submit'}
+            submitButton
           >
             <h4>hello</h4>
             <AntInputNumber

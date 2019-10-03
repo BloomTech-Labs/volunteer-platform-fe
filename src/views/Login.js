@@ -67,7 +67,8 @@ export const Login = props => {
           }}
           layout={'vertical'}
           buttonType="primary"
-          buttonText={pathName === `/login` ? 'Login' : 'Sign Up'}
+          submitButton
+          submitButtonText={pathName === `/login` ? 'Login' : 'Sign Up'}
           buttonLoading={state.auth.isLoading}
         >
           {pathName === '/signup' && (
@@ -128,7 +129,13 @@ const StyledLogin = styled.div`
   min-height: 100vh;
   margin-bottom: 4rem;
   width: ${({ loggedIn }) => loggedIn && '100vw'};
+  label {
+    color: ${({ theme }) => theme.primary8};
 
+    &::before {
+      color: ${({ theme }) => theme.primary8};
+    }
+  }
   h3 {
     margin-top: 3.9rem;
     margin-bottom: 2.3rem;
