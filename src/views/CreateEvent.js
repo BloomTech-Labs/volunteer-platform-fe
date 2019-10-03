@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-
 import { useStateValue } from '../hooks/useStateValue';
 import { createEvent, createRecurringEvent } from '../actions';
 import moment from 'moment';
-
-import CreateEventPartOne from '../components/CreateEvent/CreateEventPartOne';
-import CreateEventPartTwo from '../components/CreateEvent/CreateEventPartTwo';
-import CreateEventPartThree from '../components/CreateEvent/CreateEventPartThree';
-import CreateEventPartFour from '../components/CreateEvent/CreateEventPartFour';
+import {
+  CreateEventPartOne,
+  CreateEventPartTwo,
+  CreateEventPartThree,
+  CreateEventPartFour,
+} from '../components/CreateEvent';
 import CreateEventReview from '../components/CreateEvent/CreateEventReview/CreateEventReview';
 
 export const CreateEvent = props => {
