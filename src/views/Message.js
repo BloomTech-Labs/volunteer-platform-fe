@@ -1,11 +1,11 @@
 import React from 'react';
 import MessageThreads from '../components/Messages/MessageThreads';
 
-const Message = () => {
+const Message = (props) => {
   
   return (
     <div>
-      <MessageThreads/>
+      <MessageThreads {...props}/>
     </div>
   );
 };
