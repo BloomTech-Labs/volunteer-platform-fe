@@ -45,7 +45,8 @@ export const USER_HAS_NO_ORGANIZATIONS = 'USER_HAS_NO_ORGANIZATIONS';
  * @param {Dispatch} dispatch From useStateValue hook
  */
 export const subscribeToUserOrganizations = (uid, dispatch) => {
-  store
+  
+  return store
     .collection('organizations')
     .where('organizationOwnerUID', '==', uid)
     .onSnapshot(snapShot => {
