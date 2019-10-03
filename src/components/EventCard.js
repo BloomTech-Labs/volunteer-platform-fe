@@ -10,25 +10,41 @@ export const EventCard = (props) => {
 
     const [ localState, setLocalState ] = useState({
         interest: [], typesOfCauses: [] , volunteerRequirements: [],
-        nameOfEvent: '', date: '', numberOfVolunteers: null,
+        nameOfEvent: '', date: '', startTime: '', endTime: '' , numberOfVolunteers: null,
+        otherNotes: '', nextDate: '', recurringInfo: {}, 
     });
 
 // for setting events from state to our localState
 useEffect(() => {
     const id = props.match.params.id;
-    //future reference: use filter to filter between recurring and non-recurring events
-    props.state.events.events.forEach(event => {
-        if( id === event.eventId ) {
-            setLocalState(event)
-            console.log('set to state');
+    //Grab the array event objects to store for filtering
+    let NonRecurring = props.state.events.events;
+    let Recurring = props.state.events.recurringEvents;
+    console.log(NonRecurring, Recurring)
+    if(id) {
+        const EventN = NonRecurring.filter(event => {
+            if(id === event.eventId) {
+                return setLocalState(event);    
+            } else {
+                console.log('ID not equal to NonRecurring ID')
+            }
+        })
+
+        if(EventN.length < 1) {
+            const EventR = Recurring.filter(event => {
+                if(id === event.eventId) {
+                    return setLocalState(event)
+                }
+                else{
+                    console.log('ID not equal to Recurring ID')
+                }
+            })
         }
-        else {
-            console.log('not set to state')
-        }
-    })
+    }
 }, [props.match.params.id])
 
 console.log('LocalState', localState)
+
     return (
         <div>
             <h4>{localState.nameOfEvent}</h4>

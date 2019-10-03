@@ -5,11 +5,11 @@ export const findNthWeek = (date, info, period) => {
   let unitConversion = { First: 1, Second: 2, Third: 3, Fourth: 4 };
   let whichWeek = unitConversion[info.repeatTimePeriod.split(' ')[3]];
   let whichDay = dayAbbrevs[info.repeatTimePeriod.split(' ')[4]];
-  console.log(whichWeek, whichDay)
+  //console.log(whichWeek, whichDay)
   let first_week = moment()
     .startOf('month')
     .day(whichDay);
-    console.log(info)
+    //console.log(info)
   let correct_week = first_week.add(7 * (whichWeek - 1), 'days');
   let firstOfNext;
   while (moment().diff(correct_week) > 0) {
