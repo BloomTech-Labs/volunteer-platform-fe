@@ -12,11 +12,7 @@ const Messages = ({ messageId }) => {
   const {Search} = Input;
   
   const send = (value) => {
-<<<<<<< HEAD
-    //debugger;
-=======
     
->>>>>>> staging
     const message = {
       createdAt: moment().unix(),
       from: auth.googleAuthUser.uid,

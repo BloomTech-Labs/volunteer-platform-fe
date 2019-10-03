@@ -13,18 +13,6 @@ export const MESSAGE_CREATED_SUCESSFULLY = 'MESSAGE_CREATED_SUCESSFULLY';
  * @param {MessageContact} from Who the message is from
  * @param {Message} message Message to be sent.
  */
-<<<<<<< HEAD
-export const sendMessage = (message) => {
-  //debugger;
-  attachMessageToUsersMessages(message.to, message.from, message);
-  attachMessageToUsersMessages(message.from, message.to, message);
-};
-
-const attachMessageToUsersMessages = (to, from, message) => {
-  //debugger;
-  store.collection('users')
-    .doc(to)
-=======
 export const sendMessage = (to, from, message) => {
   
   attachMessageToUsersMessages(to, from, message);
@@ -35,7 +23,6 @@ const attachMessageToUsersMessages = (to, from, message) => {
   
   store.collection(to.type)
     .doc(to.uid)
->>>>>>> staging
     .collection('messages')
     .doc(from.uid)
     .get()
@@ -64,31 +51,6 @@ const attachMessageToUsersMessages = (to, from, message) => {
     });
 };
 
-<<<<<<< HEAD
-const createNewMessageThread = (to, from, message) => {
-  //debugger;
-  store.collection('users').doc(from).get().then(res => {
-    const user = res.data();
-    
-    // create messageThread in users messages
-    store.collection('users')
-      .doc(to)
-      .collection('messages')
-      .doc(from)
-      .set({
-        firstName: user.firstName,
-        lastName: user.lastName,
-        messages: [message],
-      })
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-    
-  }).catch(err => {
-=======
 /**
  * Creates a new message thread for the desired contacts.
  * @function
@@ -136,7 +98,6 @@ export const createNewMessageThread = (to, from, message = null) => {
         });
       }
     }).catch(err => {
->>>>>>> staging
     console.log(err);
   });
 };
@@ -152,11 +113,7 @@ export const COLLECTING_USER_MESSAGES_INIT = 'COLLECTING_USER_MESSAGES_INIT';
  * @param dispatch
  */
 export const subscribeToMessages = (uid, dispatch) => {
-<<<<<<< HEAD
-  //debugger;
-=======
   
->>>>>>> staging
   dispatch(action(COLLECTING_USER_MESSAGES_INIT));
   store
     .collection('users')

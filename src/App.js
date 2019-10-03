@@ -135,7 +135,6 @@ function App(){
                 path={'/org-dashboard'}
                 component={OrganizationDashboard}
               />
-<<<<<<< HEAD
 
           <Route 
             path={'/events/:id'}
@@ -149,16 +148,6 @@ function App(){
             path={'/profile'}
             component={UserProfile}
           />              <Route component={NotFound} />
-=======
-              <RegisterRoute path={'/register'} component={Signup}/>
-              <Route path={'/messages'} component={Message}/>
-              
-              <RegisteredAndLoggedInRoute
-                path={'/profile'}
-                component={UserProfile}
-              />
-              <Route component={NotFound}/>
->>>>>>> staging
             </Switch>
           </StyledContent>
           <FooterDiv/>
