@@ -7,6 +7,7 @@ import {
   CreateEventPartTwo,
   CreateEventPartThree,
   CreateEventPartFour,
+  SuccessModal,
 } from '../components/CreateEvent';
 import CreateEventReview from '../components/CreateEvent/CreateEventReview/CreateEventReview';
 
@@ -114,12 +115,8 @@ export const CreateEvent = props => {
       if (event.recurringInfo.occurrenceEnds === 'After') {
         event.recurringInfo.occurrenceEndDate = '';
       }
-      // removeUndefinied(event);
-      console.log('recurring', event);
       createRecurringEvent(event, dispatch);
     } else {
-      // removeUndefinied(event);
-      console.log('regular', event);
       createEvent(event, dispatch);
     }
     setPageNumberState({
@@ -217,12 +214,14 @@ export const CreateEvent = props => {
         cancelForm={cancelForm}
       />
     ),
+    6: <SuccessModal />,
   };
   console.log('localState', localState);
 
   return (
     <div>
       {pageNumberState.pageNumber && renderParts[pageNumberState.pageNumber]}
+      {/* <SuccessModal /> */}
     </div>
   );
 };
