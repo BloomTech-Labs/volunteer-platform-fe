@@ -4,10 +4,11 @@ import { StyledCard, StyledButton } from '../styled';
 import { useStateValue } from '../hooks/useStateValue';
 import moment from 'moment';
 import { Tag } from 'antd';
+import { signUpForEvent, cancelSignedUpEvent } from '../actions/events';
 
 export const Event = ({ event }) => {
   //logic
-  const [{ org, events }, dispatch] = useStateValue();
+  const [{ org, events, auth }, dispatch] = useStateValue();
 
   let ableToDelete = false;
 
@@ -29,9 +30,22 @@ export const Event = ({ event }) => {
     return <Tag>{(item = [item])}</Tag>;
   });
 
+  const register = () => {
+    signUpForEvent(event, auth.registeredUser, dispatch);
+  }
+
+  const cancel = () => {
+    cancelSignedUpEvent(event, auth.registeredUser, dispatch);
+  }
+
   return (
     <StyledEventCard margin={'0 0 20px 0'}>
       <div className="container">
+        {(event.registeredVolunteers && auth.registeredUser) && event.registeredVolunteers.includes(auth.registeredUser.uid) ? (
+          <button onClick={cancel}>Cancel</button>
+        ) : (
+          <button onClick={register}>Register</button>
+        )}
         <div className="head">
           <h4>{event.nameOfEvent}</h4>
           <h5>Host Organization: {event.orgName} </h5>

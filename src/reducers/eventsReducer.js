@@ -5,7 +5,8 @@ import {
   NO_EVENTS_FOR_THAT_STATE, CREATE_RECURRING_EVENT,
   CREATE_RECURRING_EVENT_FAILED, GET_RECURRING_EVENTS_BY_STATE,
   RECURRING_EVENTS_BY_STATE_EMPTY, GET_RECURRING_EVENTS_BY_ORG,
-  RECURRING_EVENTS_BY_ORG_EMPTY,
+  RECURRING_EVENTS_BY_ORG_EMPTY, SIGN_UP_FOR_EVENT_INIT, SIGNED_UP_VOLUNTEER_FOR_EVENT, SIGN_UP_FOR_EVENT_FAILURE, CANCEL_SIGNED_UP_EVENT_INIT, CANCELED_VOLUNTEER_FOR_EVENT,
+  CANCEL_SIGNED_UP_EVENT_FAILURE
 } from '../actions/events';
 
 export const eventsReducer = ( state, action ) => {
@@ -78,6 +79,39 @@ export const eventsReducer = ( state, action ) => {
       };
     case NO_EVENTS_FOR_THAT_STATE:
       return { ...state, events: [], getEventsFailedError: '' };
+    case SIGN_UP_FOR_EVENT_INIT:
+      return {
+        ...state,
+        signUpVolunteerError: '',
+      };
+    case SIGNED_UP_VOLUNTEER_FOR_EVENT:
+      return {
+        ...state,
+        events: state.events.map( event => {
+          return event.eventId === action.payload.eventId ? action.payload : event
+        }),
+      };
+    case SIGN_UP_FOR_EVENT_FAILURE:
+      return {
+        ...state,
+        signUpVolunteerError: 'Error signing up volunteer for the event'
+      };
+    case CANCEL_SIGNED_UP_EVENT_INIT:
+      return {
+        ...state,
+        cancelSignedUpVolunteerError: ''
+      };
+    case CANCELED_VOLUNTEER_FOR_EVENT:
+      return {
+        events: state.events.map( event => {
+          return event.eventId === action.payload.eventId ? action.payload : event
+        }),
+      };
+    case CANCEL_SIGNED_UP_EVENT_FAILURE:
+      return {
+        ...state,
+        cancelSignedUpVolunteerError: 'Error canceling signed up volunteer for the event'
+      }
     default:
       return state;
   }
