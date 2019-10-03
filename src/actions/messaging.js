@@ -1,6 +1,6 @@
-import {store} from '../firebase/FirebaseConfig';
-import {action} from './action';
-import {arrayUnion} from 'firebase';
+import { store } from '../firebase/FirebaseConfig';
+import { action } from './action';
+import { arrayUnion } from 'firebase';
 import firebase from '../firebase/FirebaseConfig';
 import moment from 'moment';
 
@@ -119,12 +119,7 @@ export const COLLECTING_USER_MESSAGES_INIT = 'COLLECTING_USER_MESSAGES_INIT';
  * @param {MessageContact} contact
  * @param {Dispatch} dispatch
  */
-<<<<<<< HEAD
-export const subscribeToMessages = (uid, dispatch) => {
-=======
 export const subscribeToMessages = (contact, dispatch) => {
-  
->>>>>>> staging
   dispatch(action(COLLECTING_USER_MESSAGES_INIT));
   return store
     .collection(contact.type)
@@ -132,7 +127,7 @@ export const subscribeToMessages = (contact, dispatch) => {
     .collection('messages')
     .orderBy('updatedAt', 'desc')
     .onSnapshot(snapshot => {
-      if (snapshot.empty){
+      if (snapshot.empty) {
         dispatch(action(USER_HAS_NO_MESSAGES));
         return;
       }
@@ -142,9 +137,9 @@ export const subscribeToMessages = (contact, dispatch) => {
         messageThread.id = doc.id;
         messageThreads.push(messageThread);
       });
-      
-      const messageObject = {[ contact.uid ]: messageThreads};
-      
+
+      const messageObject = { [contact.uid]: messageThreads };
+
       dispatch(action(COLLECTED_USER_MESSAGES, messageObject));
     });
 };
@@ -156,29 +151,14 @@ export const subscribeToMessages = (contact, dispatch) => {
  * @param {MessageThread} messageThread The message thread that has been read.
  */
 export const markMessagesRead = (contact, messageThread) => {
-<<<<<<< HEAD
-  debugger;
   store
     .collection(contact.type)
-=======
-  
-  store.collection(contact.type)
->>>>>>> staging
     .doc(contact.uid)
     .collection('messages')
     .doc(messageThread.id)
     .update({ unreadMessages: 0 })
-    .then(res => {
-<<<<<<< HEAD
-      debugger;
-    })
+    .then(res => {})
     .catch(err => {
       console.log(err);
     });
-=======
-    
-    }).catch(err => {
-    console.log(err);
-  });
->>>>>>> staging
 };
