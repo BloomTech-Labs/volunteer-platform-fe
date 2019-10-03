@@ -8,11 +8,34 @@ const Option = Select.Option;
 
 export const FirstPart = ({ clickNext, storedData, cancelForm }) => {
   const [localState, setLocalState] = useState({ ...storedData });
+  const [errorMessage, setErrorMessage] = useState({
+    nameOfOrganization: false,
+    streetAddress: false,
+    city: false,
+    state: false,
+    typeOfCauses: false,
+  });
 
   const handleChange = (name, value) => {
     setLocalState({ ...localState, [name]: value });
   };
 
+  const checkRequired = () => {
+    let errors = {};
+    let errorCount = 0;
+    for (let key in errorMessage) {
+      if (!(key in localState)) {
+        errorCount++;
+        errors = {
+          ...errors,
+          [key]: 'Please fill out required field.',
+        };
+      }
+    }
+    setErrorMessage({ ...errorMessage, ...errors });
+    if (!errorCount) clickNext(localState);
+  };
+  console.log(errorMessage);
   return (
     <DivForStyling>
       <Form layout={'vertical'} onSubmit={() => clickNext(localState)}>
@@ -24,6 +47,11 @@ export const FirstPart = ({ clickNext, storedData, cancelForm }) => {
             placeholder={'Community Helper'}
           />
         </Form.Item>
+        {errorMessage['nameOfOrganization'] && (
+          <span className="error-message error-span left-aligned">
+            {errorMessage['nameOfOrganization']}
+          </span>
+        )}
         <Form.Item label="Street Address" required>
           <Input
             value={localState['streetAddress']}
@@ -32,23 +60,42 @@ export const FirstPart = ({ clickNext, storedData, cancelForm }) => {
             placeholder={'123 Bruce Willis Dr.'}
           />
         </Form.Item>
+        {errorMessage['streetAddress'] && (
+          <span className="error-message error-span left-aligned">
+            {errorMessage['streetAddress']}
+          </span>
+        )}
         <div className="inline">
-          <Form.Item label={'City'} required>
-            <Input
-              value={localState['city']}
-              onChange={e => handleChange(e.target.name, e.target.value)}
-              name={'city'}
-              placeholder={'Los Angeles'}
-            />
-          </Form.Item>
-          <Form.Item label="State" required>
-            <Input
-              value={localState['state']}
-              onChange={e => handleChange(e.target.name, e.target.value)}
-              name={'state'}
-              placeholder={'California'}
-            />
-          </Form.Item>
+          <div className="col">
+            <Form.Item label={'City'} required>
+              <Input
+                value={localState['city']}
+                onChange={e => handleChange(e.target.name, e.target.value)}
+                name={'city'}
+                placeholder={'Los Angeles'}
+              />
+            </Form.Item>
+            {errorMessage['city'] && (
+              <span className="error-message error-span left-aligned">
+                {errorMessage['city']}
+              </span>
+            )}
+          </div>
+          <div className="col">
+            <Form.Item label="State" required>
+              <Input
+                value={localState['state']}
+                onChange={e => handleChange(e.target.name, e.target.value)}
+                name={'state'}
+                placeholder={'California'}
+              />
+            </Form.Item>
+            {errorMessage['state'] && (
+              <span className="error-message error-span left-aligned">
+                {errorMessage['state']}
+              </span>
+            )}
+          </div>
         </div>
         <h4>What type of cause is your organization serving?</h4>
         <div className="ant-select-causes">
@@ -75,13 +122,18 @@ export const FirstPart = ({ clickNext, storedData, cancelForm }) => {
               ))}
             </Select>
           </Form.Item>
+          {errorMessage['typeOfCauses'] && (
+            <span className="error-message error-span left-aligned">
+              {errorMessage['typeOfCauses']}
+            </span>
+          )}
         </div>
       </Form>
       <div className="buttonStyles">
         <StyledCancelButton onClick={cancelForm} type="primary">
           Cancel
         </StyledCancelButton>
-        <StyledButton onClick={() => clickNext(localState)} type="primary">
+        <StyledButton onClick={checkRequired} type="primary">
           Next
         </StyledButton>
       </div>
@@ -94,15 +146,26 @@ const DivForStyling = styled.div`
     display: flex;
     justify-content: space-between;
 
-    .ant-row.ant-form-item {
+    .col {
       width: 45%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
     }
   }
-
+  .ant-row {
+    margin-bottom: 0px;
+    margin-top: 8px;
+  }
   .ant-select-causes {
     .ant-col.ant-form-item-control-wrapper {
       width: 50%;
     }
+  }
+
+  .error-message.error-span.left-aligned {
+    color: red;
+    font-size: 12px;
   }
 `;
 export default FirstPart;
