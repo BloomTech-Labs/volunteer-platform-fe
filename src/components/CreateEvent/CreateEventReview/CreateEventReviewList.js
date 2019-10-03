@@ -1,11 +1,22 @@
-import React from 'react';
-import { StyledButton, StyledCard } from '../../styled';
+import React, { useState } from 'react';
+import { StyledButton, StyledCard } from '../../../styled';
+import { Icon } from 'antd';
 import styled from 'styled-components';
-import createEventImg from '../../assets/undraw_blooming_jtv6.svg';
+import createEventImg from '../../../assets/undraw_blooming_jtv6.svg';
 import RecurringInfoReview from './RecurringInfoReview';
 
-export const CreateEventReview = props => {
-  const { localState, handleReviewSubmit, handlePageBack } = props;
+export const CreateEventReviewList = props => {
+  const {
+    localState,
+    handleReviewSubmit,
+    handlePageBack,
+    setEdit,
+    edit,
+  } = props;
+
+  const editForm = () => {
+    setEdit(true);
+  };
 
   return (
     <StyledDiv className={'flex center'}>
@@ -16,41 +27,46 @@ export const CreateEventReview = props => {
         <h1>Let's Create An Event</h1>
         <StyledImg src={createEventImg} alt="undraw unexpected friends" />
         <StyledCreateEvent>
+          <StyledButtons>
+            <div className="icon" onClick={editForm}>
+              <Icon type="edit" />
+            </div>
+          </StyledButtons>
           <div>
-            <label>Name of Event</label>
+            <h4>Event Name</h4>
             <p>{localState.nameOfEvent}</p>
-            <label>Tyeps of Causes</label>
-            <p>{localState.typesOfCauses}</p>
-            <label>Location</label>
+            <h4>Location</h4>
             <p>{localState.streetAddress}</p>
             <p>{localState.city}</p>
             <p>{localState.state}</p>
-            <label>Phone Number</label>
+            <h4>Tyeps of Causes</h4>
+            <p>{localState.typesOfCauses}</p>
+            <h4>Volunteer Requirments</h4>
+            <p>{localState.volunteerRequirements}</p>
+            <h4>Volunteers Needed</h4>
+            <p>{localState.numberOfVolunteers}</p>
+            <h4>Interests</h4>
+            <p>{localState.interest}</p>
+            <h4>Phone Number</h4>
             <p>{localState.phoneNumber}</p>
-            <label>Point of Contact</label>
+            <h4>Point of Contact</h4>
             <p>{localState.firstName}</p>
             <p>{localState.lastName}</p>
             <p>{localState.email}</p>
-            <label>Date</label>
-            <p>{localState.date}</p>
-            <label>Start Time</label>
-            <p>{localState.startTime}</p>
-            <label>End Time</label>
-            <p>{localState.endTime}</p>
+            <h4>Date</h4>
+            <p>{localState.date.unix()}</p>
             {localState.recurringEvent === 'Yes' && (
               <RecurringInfoReview localState={localState} />
             )}
-            <label>Volunteer Requirments</label>
-            <p>{localState.volunteerRequirements}</p>
-            <label>Interests</label>
-            <p>{localState.interest}</p>
-            <label>Event Details</label>
+            <h4>Start Time</h4>
+            <p>{localState.startTime.format('LT')}</p>
+            <h4>End Time</h4>
+            <p>{localState.endTime.format('LT')}</p>
+            <h4>Event Details</h4>
             <p>{localState.eventDetails}</p>
-            <label>Website</label>
+            <h4>Website</h4>
             <p>{localState.website}</p>
-            <label>Volunteers Needed</label>
-            <p>{localState.numberOfVolunteers}</p>
-            {localState.otherNotes && <label>Other Notes</label>}
+            {localState.otherNotes && <h4>Other Notes</h4>}
             {localState.otherNotes && <p>{localState.otherNotes}</p>}
           </div>
           <StyledButton key="cancel" onClick={handlePageBack}>
@@ -58,13 +74,30 @@ export const CreateEventReview = props => {
           </StyledButton>
           ,
           <StyledButton key="submit" onClick={handleReviewSubmit}>
-            Submit
+            Confirm
           </StyledButton>
         </StyledCreateEvent>
       </CustomStyledCard>
     </StyledDiv>
   );
 };
+
+const StyledButtons = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+
+  .icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+  }
+`;
 const StyledCreateEvent = styled.div`
   width: 100%;
   font-weight: bold;
@@ -74,7 +107,6 @@ const StyledCreateEvent = styled.div`
   .inline {
     width: 50%;
   }
-
   .buttonStyles {
     display: flex;
     justify-content: space-around;
@@ -121,4 +153,4 @@ const StyledImg = styled.img`
   margin: 2rem auto;
 `;
 
-export default CreateEventReview;
+export default CreateEventReviewList;

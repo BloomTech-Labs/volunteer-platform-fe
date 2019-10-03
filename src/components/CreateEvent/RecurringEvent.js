@@ -5,16 +5,17 @@ import {
   WrappedAntForm,
   AntInputNumber,
   AntSelect,
-} from '../styled';
-import { formLayouts } from '../utility/formLayouts';
+} from '../../styled';
+import { formLayouts } from '../../utility/formLayouts';
 import moment from 'moment';
 import styled from 'styled-components';
 
 const { Option } = Select;
 
 export const RecurringEvent = props => {
-  const { localState, setLocalState, dynamicState } = props;
-  const { dynamicNumber, dynamicNth, dynamicDay, dynamicYear } = dynamicState;
+  const { localState, setLocalState } = props;
+  const { dynamicDates } = localState;
+  const { dynamicNumber, dynamicNth, dynamicDay, dynamicYear } = dynamicDates;
   const [formState, setFormState] = useState({
     days: [],
   });
@@ -76,7 +77,7 @@ export const RecurringEvent = props => {
       ...localState,
       recurringInfo: {
         ...localState.recurringInfo,
-        occurrenceEndDate: date.unix(),
+        occurrenceEndDate: date,
       },
     });
   };
@@ -168,7 +169,8 @@ export const RecurringEvent = props => {
       <div>
         <Radio.Group
           onChange={handleCheckBox}
-          disabled={!dynamicState.dynamicDay}
+          // disabled={!dynam.dynamicDates.dynamicDay}
+          defaultValue={localState.recurringEvent === 'Yes' ? 'Yes' : 'No'}
           className={'radioWrapper'}
           style={{ marginLeft: 100 }}
           layout={formLayouts.empty}
@@ -182,8 +184,10 @@ export const RecurringEvent = props => {
               <StyledSelect
                 style={{ width: 200 }}
                 name={'Repeat Time Period'}
+                defaultValue={localState.recurringInfo.repeatTimePeriod}
                 onChange={handleRepeatPeriod}
                 layout={formLayouts.empty}
+                label={''}
               >
                 {repeatTimePeriod}
               </StyledSelect>
@@ -191,33 +195,45 @@ export const RecurringEvent = props => {
             <label>Ends</label>
             <Radio.Group
               name={'Occurrence Ends'}
+              defaultValue={
+                localState.recurringInfo.occurrenceEnds === 'On'
+                  ? 'On'
+                  : localState.recurringInfo.occurrenceEnds === 'After'
+                  ? 'After'
+                  : 'Never'
+              }
               onChange={handleOccurrences}
               className={'radioWrapper'}
             >
-              <Radio value={'Never'}>Never</Radio>
               <Radio value={'On'}>On</Radio>
               <Radio value={'After'}>After</Radio>
+              <Radio value={'Never'}>Never</Radio>
             </Radio.Group>
             <DatePicker
               name={'Occurrence End Date'}
+              format={'MM/DD/YYYY'}
               onChange={handleOccurrenceEndDate}
+              defaultValue={localState.recurringInfo.occurrenceEndDate}
               disabledDate={current =>
                 current && current < moment().endOf('day')
               }
               disabled={
                 localState.recurringInfo.occurrenceEnds === 'On' ? false : true
               }
+              notRequired
             />
             <InputNumber
               style={{ width: 50 }}
               name={'Occurrence Ends After'}
               min={0}
+              defaultValue={localState.recurringInfo.occurrenceEndsAfter}
               onChange={handleOccurrencesEndsAfter}
               disabled={
                 localState.recurringInfo.occurrenceEnds === 'After'
                   ? false
                   : true
               }
+              notRequired
             />
           </div>
         )}
@@ -225,6 +241,7 @@ export const RecurringEvent = props => {
         <Modal
           title="Add a recurring event"
           width={720}
+          closable
           onClose={closeModal}
           visible={formState.recurringBoolean}
           footer={null}
@@ -239,32 +256,53 @@ export const RecurringEvent = props => {
             submitButtonText={'Submit'}
             submitButton
           >
+            <h4>hello</h4>
             <AntInputNumber
               name={'Repeat every'}
               style={{ width: 100 }}
+              defaultValue={localState.recurringInfo.repeatEvery}
               onChange={handleRepeatEvery}
               min={0}
             />
             <AntSelect
               style={{ width: 100 }}
               name={'Repeat every value'}
+              defaultValue={localState.recurringInfo.repeatEveryValue}
               onChange={handleEveryValue}
             >
               {periodOfTime}
             </AntSelect>
             {localState.recurringInfo.repeatEveryValue === 'Week' && (
-              <Checkbox.Group name={'Days'} options={dayOptions} notRequired />
+              <Checkbox.Group
+                name={'Days'}
+                defaultValue={localState.recurringInfo.days}
+                options={dayOptions}
+                notRequired
+              />
             )}
             {localState.recurringInfo.repeatEveryValue === 'Weeks' && (
-              <Checkbox.Group name={'Days'} options={dayOptions} notRequired />
+              <Checkbox.Group
+                name={'Days'}
+                defaultValue={localState.recurringInfo.days}
+                options={dayOptions}
+                notRequired
+              />
             )}
             {localState.recurringInfo.repeatEveryValue === 'Month' && (
-              <AntSelect name={'Monthly Period'} notRequired>
+              <AntSelect
+                name={'Monthly Period'}
+                defaultValue={localState.recurringInfo.monthlyPeriod}
+                notRequired
+              >
                 {monthlyPeriod}
               </AntSelect>
             )}
             {localState.recurringInfo.repeatEveryValue === 'Months' && (
-              <AntSelect name={'Monthly Period'} notRequired>
+              <AntSelect
+                name={'Monthly Period'}
+                defaultValue={localState.recurringInfo.monthlyPeriod}
+                notRequired
+              >
                 {monthlyPeriod}
               </AntSelect>
             )}
@@ -279,6 +317,12 @@ const StyledRecurringEvent = styled.div`
   .radioWrapper {
     display: flex;
     justify-content: center;
+  }
+
+  .hide {
+    label {
+      display: none;
+    }
   }
 `;
 

@@ -1,37 +1,52 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { WrappedAntForm, AntTextArea, AntInput } from '../../styled';
+import { Form, Input } from 'antd';
+import { StyledButton, StyledCancelButton } from '../../styled';
+
+const { TextArea } = Input;
 
 export const LastPart = ({ clickNext, storedData, clickPrevious }) => {
+  const [localState, setLocalState] = useState({ ...storedData });
+
+  const handleChange = e => {
+    e.preventDefault();
+    setLocalState({ ...localState, [e.target.name]: e.target.value });
+  };
+
   return (
     <DivForStyling>
-      <WrappedAntForm
-        layout={'vertical'}
-        onSubmit={clickNext}
-        cancelButton
-        handleCancel={clickPrevious}
-        autofill={storedData}
-        submitButton
-        submitButtonText={'Submit'}
-        cancelButtonText={'Previous'}
-      >
+      <Form layout={'vertical'} onSubmit={() => clickNext(localState)}>
         <h4>Tell Us about Your Organization</h4>
         <div className="inputs">
-          <AntTextArea
-            name={'About Us'}
-            autosize={{ minRows: 4, maxRows: 120 }}
-            placeholder={
-              'A short paragraph such as mission, vision, and values of your non profit would go here...'
-            }
-          />
-          <AntInput
-            name={'Website'}
-            notRequired={'false'}
-            type={'url'}
-            placeholder={'https://nonprofit.org'}
-          />
+          <Form.Item label={'About Us'}>
+            <TextArea
+              name={'aboutUs'}
+              value={localState['aboutUs']}
+              onChange={handleChange}
+              autosize={{ minRows: 4, maxRows: 120 }}
+              placeholder={
+                'A short paragraph such as mission, vision, and values of your non profit would go here...'
+              }
+            />
+          </Form.Item>
+          <Form.Item label={'Website'}>
+            <Input
+              name={'website'}
+              value={[localState['website']]}
+              onChange={handleChange}
+              placeholder={'https://nonprofit.org'}
+            />
+          </Form.Item>
         </div>
-      </WrappedAntForm>
+      </Form>
+      <div className="buttonStyles">
+        <StyledCancelButton onClick={clickPrevious} type="primary">
+          Previous
+        </StyledCancelButton>
+        <StyledButton onClick={() => clickNext(localState)} type="primary">
+          Next
+        </StyledButton>
+      </div>
     </DivForStyling>
   );
 };
