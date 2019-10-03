@@ -54,8 +54,8 @@ export const CreateOrg = props => {
     2: "Let's Set Up Your Organization",
     3: 'Almost Finished Setting Up',
     4: 'Last Part!',
-    5: 'Let\'s Review Your Information',
-    6: 'Edit Your Organization'
+    5: "Let's Review Your Information",
+    6: 'Edit Your Organization',
   };
 
   const possibleParts = {
@@ -71,21 +71,25 @@ export const CreateOrg = props => {
 
   const RenderedPart = possibleParts[partCount];
 
+  const setUpPOC = values => {
+    let contactCount = [];
+    let POC = [];
+    for (let key in values) {
+      if (/fullName/.test(key)) contactCount.push(key.slice(-1));
+    }
+    for (let i = 0; i < contactCount.length; i++) {
+      POC.push({
+        email: values[`email${contactCount[i]}`],
+        phone: values[`phone${contactCount[i]}`],
+        fullName: values[`fullName${contactCount[i]}`],
+      });
+    }
+    values.POC = POC;
+    return values;
+  };
   const clickNext = values => {
     if (partCount === 2) {
-      let contactCount = 0;
-      let POC = [];
-      for (let key in values) {
-        if (/fullName/.test(key)) contactCount++;
-      }
-      for (let i = 1; i <= contactCount; i++) {
-        POC.push({
-          email: values[`email${i}`],
-          phone: values[`phone${i}`],
-          fullName: values[`fullName${i}`],
-        });
-      }
-      values.POC = POC;
+      values = setUpPOC(values);
     }
     if (partCount === 3) {
       let weekends = values.weekends || [];
@@ -121,6 +125,7 @@ export const CreateOrg = props => {
     let weekdays = values.weekdays || [];
     if (values.weekdayOptions === 'Custom')
       values.daysOfTheWeek = [...weekdays, ...weekends];
+    values = setUpPOC(values);
     setLocalState({ ...localState, [5]: values });
     setPartCount(5);
   };

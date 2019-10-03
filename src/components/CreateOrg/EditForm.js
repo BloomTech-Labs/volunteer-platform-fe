@@ -3,14 +3,15 @@ import { Form, Input, Select, Tooltip, Checkbox, TimePicker, Icon } from 'antd';
 import styled from 'styled-components';
 import { causeAreas } from '../../reducers/initialState';
 import { StyledButton, StyledCancelButton } from '../../styled';
-import moment from 'moment';
+import { POC } from './POC';
+
 const { Option } = Select;
 const { TextArea } = Input;
 
 export const EditForm = ({ storedData, cancelForm, setBackToReview }) => {
   const [localState, setLocalState] = useState({ ...storedData });
   const [showCustomOptions, setShowCustomOptions] = useState(false);
-
+  const [allPOCs, setAllPOCs] = useState([1]);
   const weekdaysArr = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
   const weekendsArr = ['Saturday', 'Sunday'];
   const options = [
@@ -23,6 +24,12 @@ export const EditForm = ({ storedData, cancelForm, setBackToReview }) => {
   const handleChange = (name, value) => {
     setLocalState({ ...localState, [name]: value });
   };
+
+  useEffect(() => {
+    let temp = [];
+    for (let i = 1; i <= localState.POC.length; i++) temp.push(i);
+    setAllPOCs(temp);
+  }, [localState.POC]);
 
   useEffect(() => {
     if (localState['weekdayOptions'] === 'Custom') setShowCustomOptions(true);
@@ -46,6 +53,18 @@ export const EditForm = ({ storedData, cancelForm, setBackToReview }) => {
     }
   }, [localState['weekdayOptions']]);
 
+  const changePOC = (action, i) => {
+    if (action === 'add') {
+      setAllPOCs([...allPOCs, allPOCs.length + 1]);
+    } else {
+      let removed = allPOCs.splice(allPOCs.indexOf(i), 1);
+      delete localState[`fullName${i}`];
+      delete localState[`phone${i}`];
+      delete localState[`email${i}`];
+      setAllPOCs([...allPOCs]);
+    }
+  };
+
   return (
     <>
       <StyledForm
@@ -57,6 +76,7 @@ export const EditForm = ({ storedData, cancelForm, setBackToReview }) => {
             value={localState['organizationName']}
             onChange={e => handleChange(e.target.name, e.target.value)}
             name={'organizationName'}
+            placeholder="Name of Organization"
           />
         </Form.Item>
         <Form.Item label={'Address'}>
@@ -64,18 +84,22 @@ export const EditForm = ({ storedData, cancelForm, setBackToReview }) => {
             value={localState['streetAddress']}
             onChange={e => handleChange(e.target.name, e.target.value)}
             name={'streetAddress'}
+            placeholder="Street Address"
           />
-          <Input
-            value={localState['city']}
-            onChange={e => handleChange(e.target.name, e.target.value)}
-            name={'city'}
-          />
-          <Input
-            value={localState['state']}
-            onChange={e => handleChange(e.target.name, e.target.value)}
-            name={'state'}
-            placeholder="State"
-          />
+          <div className="inline">
+            <Input
+              value={localState['city']}
+              onChange={e => handleChange(e.target.name, e.target.value)}
+              name={'city'}
+              placeholder="City"
+            />
+            <Input
+              value={localState['state']}
+              onChange={e => handleChange(e.target.name, e.target.value)}
+              name={'state'}
+              placeholder="State"
+            />
+          </div>
         </Form.Item>
         <Form.Item
           label={
@@ -92,19 +116,43 @@ export const EditForm = ({ storedData, cancelForm, setBackToReview }) => {
             onChange={value => handleChange('causeAreas', value)}
             showArrow
             mode={'multiple'}
+            placeholder="Select Your Causes"
           >
             {causeAreas.map(cause => (
               <Option key={cause}>{cause}</Option>
             ))}
           </Select>
         </Form.Item>
-        <Form.Item label={'Point of Contacts'}></Form.Item>
+        <Form.Item label={'Point of Contacts'}>
+          {allPOCs.map(poc => (
+            <POC
+              key={poc}
+              i={poc}
+              changePOC={changePOC}
+              values={localState}
+              setValues={setLocalState}
+            />
+          ))}
+          <Icon
+            type="plus-circle"
+            style={{
+              fontSize: '1.6rem',
+              marginRight: '1rem',
+              color: '#005A87',
+            }}
+            onClick={() => changePOC('add')}
+          />
+          <span style={{ color: '#005A87' }} onClick={() => changePOC('add')}>
+            Add another point of contact.
+          </span>
+        </Form.Item>
         <Form.Item label={'Hours of Operation'}>
           <Select
             name="weekdayOptions"
             className="weekday-select"
             onChange={value => handleChange('weekdayOptions', value)}
             value={localState['weekdayOptions']}
+            placeholder="Days of Operation"
           >
             {options.map(option => (
               <Option value={option}>{option}</Option>
@@ -152,13 +200,16 @@ export const EditForm = ({ storedData, cancelForm, setBackToReview }) => {
           <TextArea
             name={'aboutUs'}
             value={localState['aboutUs']}
-            onChange={value => handleChange('aboutUs', value)}
-            autosize={{ minRows: 4, maxRows: 120 }}
+            onChange={e => handleChange(e.target.name, e.target.value)}
+            placeholder={
+              'A short paragraph such as mission, vision, and values of your non profit would go here...'
+            }
           />
           <Input
             name={'website'}
             value={[localState['website']]}
-            onChange={value => handleChange('website', value)}
+            onChange={e => handleChange(e.target.name, e.target.value)}
+            placeholder="Organization Website"
           />
         </Form.Item>
       </StyledForm>
@@ -169,7 +220,7 @@ export const EditForm = ({ storedData, cancelForm, setBackToReview }) => {
         <StyledButton
           onClick={() => setBackToReview(localState)}
           type="primary"
-          width='fit-content'
+          width="fit-content"
         >
           Save and Review
         </StyledButton>
@@ -178,5 +229,61 @@ export const EditForm = ({ storedData, cancelForm, setBackToReview }) => {
   );
 };
 
-const StyledForm = styled(Form)``;
+const StyledForm = styled(Form)`
+  width: 80%;
+  margin: 0 auto;
+
+  .inline {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+
+    input {
+      width: 45%;
+    }
+  }
+
+  .weekday-select {
+    width: 310px;
+    margin: 0 auto 20px;
+  }
+  .daysOfWeekPicker {
+    display: flex;
+    justify-content: space-evenly;
+    width: 70%;
+    margin: 0 auto;
+    height: 200px;
+
+    .weekdays-group,
+    .weekend-group {
+      display: flex;
+      height: 150px;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .weekend-group {
+      justify-content: space-between;
+      height: 54px;
+    }
+  }
+  .ant-checkbox-checked > .ant-checkbox-inner {
+    background: ${({ theme }) => theme.primary8};
+  }
+  .timeOfDayPicker {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 350px;
+    margin: 0 auto;
+    .ant-row {
+      padding-bottom: 8px;
+      margin: 0;
+    }
+    span {
+      color: ${({ theme }) => theme.primary8};
+    }
+  }
+`;
 export default EditForm;

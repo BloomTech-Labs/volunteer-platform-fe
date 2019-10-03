@@ -8,7 +8,11 @@ const { Option } = Select;
 export const ThirdPart = ({ clickNext, storedData, clickPrevious }) => {
   const weekdaysArr = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
   const weekendsArr = ['Saturday', 'Sunday'];
-  const [localState, setLocalState] = useState({ startTime: moment('9:00 A', 'H:mm A'), endTime: moment('5:00 P', 'H:mm A'), ...storedData });
+  const [localState, setLocalState] = useState({
+    startTime: moment('9:00 A', 'H:mm A'),
+    endTime: moment('5:00 P', 'H:mm A'),
+    ...storedData,
+  });
   const [showCustomOptions, setShowCustomOptions] = useState(false);
   useEffect(() => {
     if (localState['weekdayOptions'] === 'Custom') setShowCustomOptions(true);
@@ -139,28 +143,6 @@ const DivForStyling = styled.div`
     }
     span {
       color: ${({ theme }) => theme.primary8};
-    }
-  }
-  .special-options-div {
-    width: 70%;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-evenly;
-    margin-bottom: 10px;
-
-    button {
-      background: ${({ theme, standard }) => !standard && theme.primary8};
-      color: white;
-      border-radius: 4px;
-      font-family: Arvo;
-      border: 0;
-      font-size: 12px;
-      padding: 5px 8px;
-      cursor: pointer;
-
-      :hover {
-        background: ${props => props.theme.primary7};
-      }
     }
   }
 `;

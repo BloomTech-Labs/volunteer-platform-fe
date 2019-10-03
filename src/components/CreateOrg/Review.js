@@ -39,7 +39,6 @@ export const Review = ({
     });
     confirmSubmit();
   };
-
   return (
     <>
       <ReviewDiv>
