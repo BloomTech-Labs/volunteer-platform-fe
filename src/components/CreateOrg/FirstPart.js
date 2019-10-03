@@ -35,7 +35,7 @@ export const FirstPart = ({ clickNext, storedData, cancelForm }) => {
     setErrorMessage({ ...errorMessage, ...errors });
     if (!errorCount) clickNext(localState);
   };
-  console.log(errorMessage);
+ 
   return (
     <DivForStyling>
       <Form layout={'vertical'} onSubmit={() => clickNext(localState)}>
