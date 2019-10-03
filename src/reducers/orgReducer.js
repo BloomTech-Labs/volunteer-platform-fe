@@ -12,6 +12,7 @@ import {
 import {SIGNED_OUT} from '../actions';
 
 export const orgReducer = (state, action) => {
+  
   switch (action.type){
     case GET_ORGANIZATIONS_BY_STATE_INIT:
       return {
