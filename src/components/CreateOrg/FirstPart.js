@@ -1,59 +1,90 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { WrappedAntForm, AntInput, AntSelect } from '../../styled';
-import { Icon, Select } from 'antd';
+import { Icon, Select, Form, Input, Tooltip } from 'antd';
 import { causeAreas } from '../../reducers/initialState';
+import { StyledButton, StyledCancelButton } from '../../styled';
 
 const Option = Select.Option;
 
 export const FirstPart = ({ clickNext, storedData, cancelForm }) => {
+  const [localState, setLocalState] = useState({ ...storedData });
+
+  const handleChange = (name, value) => {
+    setLocalState({ ...localState, [name]: value });
+  };
+
   return (
     <DivForStyling>
-      <WrappedAntForm
-        layout={'vertical'}
-        onSubmit={clickNext}
-        handleCancel={cancelForm}
-        autofill={storedData}
-        submitButton
-        submitButtonText={'Next'}
-        cancelButton
-        cancelButtonText={'Cancel'}
-        noFormLayout
-      >
-        <AntInput
-          name={'Name of Organization'}
-          placeholder={'Community Helper'}
-        />
-        <AntInput
-          name={'Street Address'}
-          placeholder={'123 Bruce Willis Dr.'}
-        />
+      <Form layout={'vertical'} onSubmit={() => clickNext(localState)}>
+        <Form.Item label={'Name of Organization'} required>
+          <Input
+            value={localState['nameOfOrganization']}
+            onChange={e => handleChange(e.target.name, e.target.value)}
+            name={'nameOfOrganization'}
+            placeholder={'Community Helper'}
+          />
+        </Form.Item>
+        <Form.Item label="Street Address" required>
+          <Input
+            value={localState['streetAddress']}
+            onChange={e => handleChange(e.target.name, e.target.value)}
+            name={'streetAddress'}
+            placeholder={'123 Bruce Willis Dr.'}
+          />
+        </Form.Item>
         <div className="inline">
-          <AntInput name={'City'} placeholder={'Los Angeles'} />
-          <AntInput name={'State'} placeholder={'California'} />
+          <Form.Item label={'City'} required>
+            <Input
+              value={localState['city']}
+              onChange={e => handleChange(e.target.name, e.target.value)}
+              name={'city'}
+              placeholder={'Los Angeles'}
+            />
+          </Form.Item>
+          <Form.Item label="State" required>
+            <Input
+              value={localState['state']}
+              onChange={e => handleChange(e.target.name, e.target.value)}
+              name={'state'}
+              placeholder={'California'}
+            />
+          </Form.Item>
         </div>
         <h4>What type of cause is your organization serving?</h4>
         <div className="ant-select-causes">
-          <AntSelect
-            name={'Type of Causes'}
-            showArrow
+          <Form.Item
             label={
-              <>
+              <Tooltip
+                title={'Select all cause areas that your organization helps.'}
+              >
                 Types of causes <Icon type="question-circle-o" />
-              </>
+              </Tooltip>
             }
-            mode={'multiple'}
-            placeholder={'Please select all that apply.'}
-            tooltipTitle={
-              'Select all cause areas that your organization helps.'
-            }
+            required
           >
-            {causeAreas.map(cause => (
-              <Option key={cause}>{cause}</Option>
-            ))}
-          </AntSelect>
+            <Select
+              name={'typeOfCauses'}
+              value={localState['typeOfCauses']}
+              onChange={value => handleChange('typeOfCauses', value)}
+              showArrow
+              mode={'multiple'}
+              placeholder={'Please select all that apply.'}
+            >
+              {causeAreas.map(cause => (
+                <Option key={cause}>{cause}</Option>
+              ))}
+            </Select>
+          </Form.Item>
         </div>
-      </WrappedAntForm>
+      </Form>
+      <div className="buttonStyles">
+        <StyledCancelButton onClick={cancelForm} type="primary">
+          Cancel
+        </StyledCancelButton>
+        <StyledButton onClick={() => clickNext(localState)} type="primary">
+          Next
+        </StyledButton>
+      </div>
     </DivForStyling>
   );
 };

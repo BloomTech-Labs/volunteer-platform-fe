@@ -11,6 +11,7 @@ import {
   ThirdPart,
   LastPart,
   Review,
+  EditForm
 } from '../components/CreateOrg';
 import { Steps } from 'antd';
 import { deleteModal } from '../styled';
@@ -45,11 +46,12 @@ export const CreateOrg = props => {
     3: ThirdPart,
     4: LastPart,
     5: Review,
+    6: EditForm
   };
 
   const steps = [0, 1, 2, 3, 4];
 
-  const RenderedPart = possibleParts[2];
+  const RenderedPart = possibleParts[partCount];
 
   const clickNext = values => {
     if (partCount === 2) {
@@ -70,6 +72,18 @@ export const CreateOrg = props => {
     if (partCount === 3) {
       let weekends = values.weekends || [];
       let weekdays = values.weekdays || [];
+      switch (values['weekday-options']) {
+        case 'Weekdays':
+          weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+          break;
+        case 'Weekends (Fri, Sat, Sun)':
+          weekdays = ['Friday'];
+          weekends = ['Saturday, Sunday'];
+          break;
+        case 'Sat/Sun Only':
+          weekends = ['Saturday', 'Sunday'];
+          break;
+      }
       values.daysOfTheWeek = [...weekdays, ...weekends];
     }
     setLocalState({ ...localState, [partCount]: values });
@@ -184,9 +198,12 @@ const StyledRenderDiv = styled.div`
 
   .buttonStyles {
     display: flex;
-    width: 60%;
-    margin: 50px auto;
+    margin: 50px auto 0;
+    padding-top: 40px;
+    padding-right: 70px;
+    padding-left: 70px;
     justify-content: space-between;
+    border-top: 2px solid ${({theme}) => theme.primary8};
   }
 `;
 

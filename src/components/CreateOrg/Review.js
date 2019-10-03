@@ -22,27 +22,31 @@ export const Review = ({ storedData, cancelForm, submitForm, setEdit }) => {
     };
 
     const confirmSubmit = confirmModal({
-        title: 'Creating Your Organization',
-        content: 'Please ensure all the information is correct.',
-        onOk: () => submitForm(values)
-    })
-    confirmSubmit()
+      title: 'Creating Your Organization',
+      content: 'Please ensure all the information is correct.',
+      onOk: () => submitForm(values),
+    });
+    confirmSubmit();
   };
 
   return (
+      <>
     <ReviewDiv>
-      <Icon
-        type="save"
-        theme="twoTone"
-        twoToneColor="#005a87"
-        onClick={onSubmit}
-      />
-      <Icon
-        type="edit"
-        theme="twoTone"
-        twoToneColor="#005a87"
-        onClick={setEdit}
-      />
+      <div className="form-icons">
+        <Icon
+          type="save"
+          theme="twoTone"
+          twoToneColor="#005a87"
+          onClick={onSubmit}
+        />
+        <Icon
+          type="edit"
+          theme="twoTone"
+          twoToneColor="#005a87"
+          onClick={setEdit}
+        />
+      </div>
+      <InfoDiv>
       <h4>Name</h4>
       <p>{storedData[1].nameOfOrganization}</p>
       <h4>Location</h4>
@@ -77,6 +81,8 @@ export const Review = ({ storedData, cancelForm, submitForm, setEdit }) => {
       <p>{storedData[4].aboutUs}</p>
       <h4>Website</h4>
       <p>{storedData[4].website}</p>
+      </InfoDiv>
+    </ReviewDiv>
       <div className="buttonStyles">
         <StyledCancelButton onClick={cancelForm} type="primary">
           Cancel
@@ -85,11 +91,14 @@ export const Review = ({ storedData, cancelForm, submitForm, setEdit }) => {
           Confirm
         </StyledButton>
       </div>
-    </ReviewDiv>
+      </>
   );
 };
 
 const ReviewDiv = styled.div`
   border: 3px solid ${({ theme }) => theme.gray2};
 `;
+
+const InfoDiv = styled.div`
+`
 export default Review;

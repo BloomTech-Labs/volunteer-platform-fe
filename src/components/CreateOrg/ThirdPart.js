@@ -16,7 +16,7 @@ export const ThirdPart = ({ clickNext, storedData, clickPrevious }) => {
   }, [localState['weekday-options']]);
   const options = [
     'Weekdays',
-    'Weekends (Fri, Sat, Sun',
+    'Weekends (Fri, Sat, Sun)',
     'Sat/Sun Only',
     'Custom',
   ];
@@ -80,15 +80,15 @@ export const ThirdPart = ({ clickNext, storedData, clickPrevious }) => {
             minuteStep={15}
           />
         </div>
-        <div className="buttonStyles">
-          <StyledCancelButton onClick={clickPrevious} type="primary">
-            Previous
-          </StyledCancelButton>
-          <StyledButton onClick={() => clickNext(localState)} type="primary">
-            Next
-          </StyledButton>
-        </div>
       </Form>
+      <div className="buttonStyles">
+        <StyledCancelButton onClick={clickPrevious} type="primary">
+          Previous
+        </StyledCancelButton>
+        <StyledButton onClick={() => clickNext(localState)} type="primary">
+          Next
+        </StyledButton>
+      </div>
     </DivForStyling>
   );
 };
@@ -100,9 +100,9 @@ const DivForStyling = styled.div`
     margin-left: 25%;
   }
 
-  .weekday-select{
-      width: 40%;
-      margin: 0 auto 20px;
+  .weekday-select {
+    width: 40%;
+    margin: 0 auto 20px;
   }
   .daysOfWeekPicker {
     display: flex;
