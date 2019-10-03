@@ -18,7 +18,8 @@ import {
   Login,
   LandingPage,
   NotFound,
-  UserProfile
+  UserProfile,
+  Organization,
 } from './views';
 
 import EventCard from './components/EventCard'
@@ -120,6 +121,7 @@ function App(){
               <LoginRoute path={'/login'} component={Login}/>
               <LoginRoute path={'/signup'} component={Login}/>
               <Route exact path={'/'} component={LandingPage}/>
+              <Route path={'/organization/:id'} component={Organization}/>
               <ProtectedRoute path={'/dashboard'} component={MainDashboard}/>
               <RegisteredAndLoggedInRoute
                 path={'/create-org'}
@@ -133,6 +135,7 @@ function App(){
                 path={'/org-dashboard'}
                 component={OrganizationDashboard}
               />
+<<<<<<< HEAD
 
           <Route 
             path={'/events/:id'}
@@ -146,6 +149,16 @@ function App(){
             path={'/profile'}
             component={UserProfile}
           />              <Route component={NotFound} />
+=======
+              <RegisterRoute path={'/register'} component={Signup}/>
+              <Route path={'/messages'} component={Message}/>
+              
+              <RegisteredAndLoggedInRoute
+                path={'/profile'}
+                component={UserProfile}
+              />
+              <Route component={NotFound}/>
+>>>>>>> staging
             </Switch>
           </StyledContent>
           <FooterDiv/>

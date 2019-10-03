@@ -88,7 +88,8 @@ export const Signup = (props) => {
             onSubmit={handleSubmit}
             autofill={localState}
             buttonType="primary"
-            buttonText="Register"
+            submitButton
+            submitButtonText="Register"
             buttonLoading={state.auth.isLoading}
             cancelButton={true}
             cancelButtonText={'Cancel'}

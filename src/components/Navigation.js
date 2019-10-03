@@ -1,13 +1,18 @@
 import React, {useState, useEffect} from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import {checkUserRegistered, signOut} from '../actions';
-import {Menu, Tooltip} from 'antd';
+import {Menu, Tooltip, Badge} from 'antd';
 import styled from 'styled-components';
 import {useStateValue} from '../hooks/useStateValue';
 
 export const Navigation = props => {
   const [state, dispatch] = useStateValue();
   const [current, setCurrent] = useState('Home');
+  
+  const numberOfUnreadMessages = state.messages.messageThreads.reduce((acc,
+    thread) => {
+    return acc + thread.unreadMessages;
+  }, 0);
   
   const pathNames = {
     '/dashboard': 'Home',
@@ -56,13 +61,19 @@ export const Navigation = props => {
         </Menu.Item>
         <Menu.Divider/>
         <Menu.Item>
-          <NavbarMenuLink to="#" disabled>
+          <NavbarMenuLink to='/profile'>
             Profile
           </NavbarMenuLink>
         </Menu.Item>
         <Menu.Item>
           <NavbarMenuLink to="/messages">
-            Messages
+            <Badge count={numberOfUnreadMessages} style={{
+              color: '#fff',
+              backgroundColor: '#1890ff',
+              marginBottom: '30px',
+            }}>
+              <span style={{marginRight: '1rem'}}>Messages</span>
+            </Badge>
           </NavbarMenuLink>
         </Menu.Item>
         <Menu.Item key="Home">
@@ -131,6 +142,9 @@ const StyledNavigation = styled.div`
     display: flex;
     justify-content: center;
     margin: 3rem 0;
+  }
+  span > p {
+    color: white;
   }
 `;
 
