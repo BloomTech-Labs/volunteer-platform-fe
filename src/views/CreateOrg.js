@@ -37,7 +37,14 @@ export const CreateOrg = props => {
   }, [props.location.state]);
 
   useEffect(() => {
-    if (orgToEdit) setPartCount(6);
+    if (orgToEdit) {
+      if (typeof orgToEdit.startTime === 'number')
+        orgToEdit.startTime = moment.unix(orgToEdit.startTime);
+      if (typeof orgToEdit.endTime === 'number')
+        orgToEdit.endTime = moment.unix(orgToEdit.endTime);
+      setLocalState({ ...localState, [6]: orgToEdit });
+      setPartCount(6);
+    }
   }, [orgToEdit]);
 
   const possibleHeaders = {
@@ -93,7 +100,11 @@ export const CreateOrg = props => {
       }
       values.daysOfTheWeek = [...weekdays, ...weekends];
     }
-    setLocalState({ ...localState, [partCount]: values });
+    setLocalState({
+      ...localState,
+      [partCount]: values,
+      [5]: { ...localState[5], ...values },
+    });
     setPartCount(partCount => partCount + 1);
   };
 
@@ -102,7 +113,7 @@ export const CreateOrg = props => {
   };
 
   const setBackToReview = values => {
-    setLocalState({ ...values });
+    setLocalState({ ...localState, [5]: values });
     setPartCount(5);
   };
 
@@ -148,12 +159,12 @@ export const CreateOrg = props => {
         <StyledRenderDiv>
           <RenderedPart
             clickNext={clickNext}
-            storedData={localState[partCount] || localState}
+            storedData={localState[partCount]}
             cancelForm={cancelForm}
             clickPrevious={clickPrevious}
             submitForm={submitForm}
             setBackToReview={setBackToReview}
-            // setEdit={setEdit}
+            setEdit={setOrgToEdit}
           />
         </StyledRenderDiv>
       </CustomStyledCard>

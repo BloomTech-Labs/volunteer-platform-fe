@@ -2,23 +2,29 @@ import React from 'react';
 import styled from 'styled-components';
 import { Icon, Tag } from 'antd';
 import { setDaysOpen } from '../../utility/setDaysOpen';
-import moment from 'moment';
 import { StyledButton, StyledCancelButton, confirmModal } from '../../styled';
-export const Review = ({ storedData, cancelForm, submitForm, setEdit }) => {
+
+export const Review = ({
+  storedData,
+  cancelForm,
+  submitForm,
+  setEdit,
+  localState,
+}) => {
   const onSubmit = e => {
     e.preventDefault();
     let values = {
-      POC: storedData[2].POC || [],
-      aboutUs: storedData[4].aboutUs || '',
-      causeAreas: storedData[1].typeOfCauses || [],
-      city: storedData[1].city || '',
-      streetAddress: storedData[1].streetAddress || '',
-      state: storedData[1].state || '',
-      daysOfTheWeek: storedData[3].daysOfTheWeek || [],
-      startTime: storedData[3].startTime.unix() || '',
-      endTime: storedData[3].endTime.unix() || '',
-      organizationName: storedData[1].nameOfOrganization || '',
-      website: storedData[4].website || '',
+      POC: storedData.POC || [],
+      aboutUs: storedData.aboutUs || '',
+      causeAreas: storedData.typeOfCauses || [],
+      city: storedData.city || '',
+      streetAddress: storedData.streetAddress || '',
+      state: storedData.state || '',
+      daysOfTheWeek: storedData.daysOfTheWeek || [],
+      startTime: storedData.startTime.unix() || '',
+      endTime: storedData.endTime.unix() || '',
+      organizationName: storedData.nameOfOrganization || '',
+      website: storedData.website || '',
     };
 
     const confirmSubmit = confirmModal({
@@ -47,29 +53,29 @@ export const Review = ({ storedData, cancelForm, submitForm, setEdit }) => {
               type="edit"
               theme="twoTone"
               twoToneColor="#005a87"
-              onClick={setEdit}
+              onClick={() => setEdit({ ...storedData })}
             />
             <span>Edit</span>
           </div>
         </div>
         <InfoDiv>
           <h4>Name</h4>
-          <p>{storedData[1].nameOfOrganization}</p>
+          <p>{storedData.nameOfOrganization}</p>
           <h4>Location</h4>
-          <p className="no-margin">{storedData[1].streetAddress}</p>
+          <p className="no-margin">{storedData.streetAddress}</p>
           <p>
-            {storedData[1].city},{storedData[1].state}
+            {storedData.city}, {storedData.state}
           </p>
           <h4>Cause(s)</h4>
           <div className="cause-tags">
-            {storedData[1].typeOfCauses.map(cause => (
+            {storedData.typeOfCauses.map(cause => (
               <Tag key={cause}>{cause}</Tag>
             ))}
           </div>
-          {storedData[2].POC.length > 0 && (
+          {storedData.POC.length > 0 && (
             <>
-              <h4>Point of Contact</h4>
-              {storedData[2].POC.map((poc, i) => {
+              <h4>Point of Contact(s)</h4>
+              {storedData.POC.map((poc, i) => {
                 return (
                   <div className="review-poc">
                     <span>{i + 1}.</span>
@@ -99,34 +105,34 @@ export const Review = ({ storedData, cancelForm, submitForm, setEdit }) => {
               })}
             </>
           )}
-          {(storedData[3].daysOfTheWeek.length > 0 ||
-            storedData[3].startTime ||
-            storedData[3].endTime) && (
+          {(storedData.daysOfTheWeek.length > 0 ||
+            storedData.startTime ||
+            storedData.endTime) && (
             <>
               <h4>Hours of Operation</h4>
               <div className="hours-operation">
-              {storedData[3].daysOfTheWeek && (
-                <p>{setDaysOpen(storedData[3].daysOfTheWeek)}</p>
-              )}
-              {storedData[3].startTime && (
-                <p>{`${storedData[3].startTime.format(
-                  'LT'
-                )} - ${storedData[3].startTime.format('LT')}`}</p>
-              )}
+                {storedData.daysOfTheWeek && (
+                  <p>{setDaysOpen(storedData.daysOfTheWeek)}</p>
+                )}
+                {storedData.startTime && (
+                  <p>{`${storedData.startTime.format(
+                    'LT'
+                  )} - ${storedData.startTime.format('LT')}`}</p>
+                )}
               </div>
             </>
           )}
 
-          {storedData[4].aboutUs && (
+          {storedData.aboutUs && (
             <>
               <h4>About Your Organization</h4>
-              <p>{storedData[4].aboutUs}</p>
+              <p>{storedData.aboutUs}</p>
             </>
           )}
-          {storedData[4].website && (
+          {storedData.website && (
             <>
               <h4>Website</h4>
-              <p>{storedData[4].website}</p>
+              <p>{storedData.website}</p>
             </>
           )}
         </InfoDiv>
@@ -150,10 +156,10 @@ const ReviewDiv = styled.div`
 
   .form-icons {
     align-self: flex-end;
-    padding-right: 10%;
-    width: 20%;
+    padding-right: 20%;
+    width: 35%;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
 
     .col {
       display: flex;
@@ -166,6 +172,7 @@ const ReviewDiv = styled.div`
     i {
       font-size: 25px;
       padding-top: 10px;
+      cursor: pointer;
     }
   }
 `;
