@@ -11,7 +11,6 @@ import {
   WrappedAntForm,
 } from '../../../styled';
 import { Icon } from 'antd';
-import moment from 'moment';
 import styled from 'styled-components';
 import createEventImg from '../../../assets/undraw_blooming_jtv6.svg';
 import RecurringEvent from '../RecurringEvent';
@@ -29,6 +28,9 @@ export const CreateEventReviewEditForm = props => {
     setEdit(false);
   };
 
+  const handleCancel = () => {
+    setEdit(false);
+  };
   return (
     <StyledDiv className={'flex center'}>
       <CustomStyledCard
@@ -50,7 +52,7 @@ export const CreateEventReviewEditForm = props => {
             <WrappedAntForm
               cancelButton={true}
               cancelButtonText={'Cancel'}
-              // handleCancel={cancelForm}
+              handleCancel={handleCancel}
               onSubmit={handleSubmit}
               layout={'vertical'}
               buttonType={'primary'}
@@ -86,6 +88,7 @@ export const CreateEventReviewEditForm = props => {
                 localState={localState}
                 setLocalState={setLocalState}
                 dynamicDates={localState.dynamicDates}
+                notRequired
               />
               <h4>What time?</h4>
               <AntTimePicker name={'Start Time'} use12Hours format={'h:mm a'} />

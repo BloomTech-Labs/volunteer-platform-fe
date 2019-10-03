@@ -75,11 +75,14 @@ export const CreateEvent = props => {
   //Handle Submit for Form
   const handleReviewSubmit = () => {
     const event = {
-      ...localState,
       orgId: localState.orgId,
       orgName: props.location.state.org.organizationName,
-      orgImagePath: props.location.state.org.imagePath,
+      orgImagePath: props.location.state.org.imagePath || '',
       orgPage: '',
+      nameOfEvent: localState.nameOfEvent,
+      city: localState.city,
+      email: localState.email,
+      phoneNumber: localState.phoneNumber,
       date: localState.date.unix(),
       startTime: localState.startTime.format('LT'),
       endTime: localState.endTime.format('LT'),
@@ -89,12 +92,17 @@ export const CreateEvent = props => {
       endTimeSTamp: moment(
         localState.date.format('LL') + ' ' + localState.endTime.format('LT')
       ).unix(),
+      numberOfVolunteers: localState.numberOfVolunteers,
+      typesOfCauses: localState.typesOfCauses,
+      interest: localState.interest,
       volunteerRequirements: localState.volunteerRequirements,
       pointOfcontact: {
         firstName: localState.firstName,
         lastName: localState.lastName,
         email: localState.email,
       },
+      website: localState.website,
+      otherNotes: localState.otherNotes,
     };
 
     if (recurringEvent === 'Yes') {
@@ -106,13 +114,13 @@ export const CreateEvent = props => {
       if (event.recurringInfo.occurrenceEnds === 'After') {
         event.recurringInfo.occurrenceEndDate = '';
       }
-      removeUndefinied(event);
+      // removeUndefinied(event);
       console.log('recurring', event);
-      // createRecurringEvent(event, dispatch);
+      createRecurringEvent(event, dispatch);
     } else {
-      removeUndefinied(event);
+      // removeUndefinied(event);
       console.log('regular', event);
-      // createEvent(event, dispatch);
+      createEvent(event, dispatch);
     }
     setPageNumberState({
       pageNumber: 1,

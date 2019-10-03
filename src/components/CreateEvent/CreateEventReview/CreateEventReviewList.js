@@ -28,11 +28,6 @@ export const CreateEventReviewList = props => {
         <StyledImg src={createEventImg} alt="undraw unexpected friends" />
         <StyledCreateEvent>
           <StyledButtons>
-            {edit && (
-              <div className="icon">
-                <Icon type="save" />
-              </div>
-            )}
             <div className="icon" onClick={editForm}>
               <Icon type="edit" />
             </div>
@@ -79,7 +74,7 @@ export const CreateEventReviewList = props => {
           </StyledButton>
           ,
           <StyledButton key="submit" onClick={handleReviewSubmit}>
-            Submit
+            Confirm
           </StyledButton>
         </StyledCreateEvent>
       </CustomStyledCard>

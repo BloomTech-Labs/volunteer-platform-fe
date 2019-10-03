@@ -226,7 +226,7 @@ export const RecurringEvent = props => {
               style={{ width: 50 }}
               name={'Occurrence Ends After'}
               min={0}
-              defaultValue={localState.recurringInfo.occurrenceEndAfter}
+              defaultValue={localState.recurringInfo.occurrenceEndsAfter}
               onChange={handleOccurrencesEndsAfter}
               disabled={
                 localState.recurringInfo.occurrenceEnds === 'After'
