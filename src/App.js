@@ -1,14 +1,17 @@
-import React, {useEffect, useState} from 'react';
-import {Switch, Route} from 'react-router';
+import React, { useEffect, useState } from 'react';
+import { Switch, Route } from 'react-router';
 import styled from 'styled-components';
 import firebase from './firebase/FirebaseConfig';
-import {Layout, Icon, Affix} from 'antd';
-import {useStateValue} from './hooks/useStateValue';
+import { Layout, Icon, Affix } from 'antd';
+import { useStateValue } from './hooks/useStateValue';
 import {
-  subscribeToUserOrganizations, signedIn, signedOut, subscribeToMessages,
+  subscribeToUserOrganizations,
+  signedIn,
+  signedOut,
+  subscribeToMessages,
   generateRandomEvents,
 } from './actions';
-import {HeaderDiv, FooterDiv} from './components';
+import { HeaderDiv, FooterDiv } from './components';
 import Navigation from './components/Navigation';
 import {
   MainDashboard,
@@ -23,7 +26,7 @@ import {
   Organization,
 } from './views';
 
-import EventCard from './components/EventCard'
+import EventCard from './components/EventCard';
 import {
   RegisteredAndLoggedInRoute,
   LoginRoute,
@@ -33,9 +36,9 @@ import {
 } from './routes/index';
 import Message from './views/Message';
 
-const {Sider, Content} = Layout;
+const { Sider, Content } = Layout;
 
-function App(){
+function App() {
   const [state, dispatch] = useStateValue();
   const [collapsed, setCollapsed] = useState(false);
   const [dimensions, setDimensions] = useState({
@@ -43,15 +46,15 @@ function App(){
     height: document.body.clientHeight,
   });
   const [subscriptions, setSubscriptions] = useState({});
-  
+
   /**
    * Set up google auth on change event handler.
    */
   useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
-      if (user){
+      if (user) {
         signedIn(user, dispatch);
-      }else{
+      } else {
         signedOut(dispatch);
       }
     });
@@ -60,47 +63,49 @@ function App(){
     window.addEventListener('resize', updateDimensions);
     updateDimensions();
   }, []);
-  
+
   useEffect(() => {
-    if (state.auth.googleAuthUser && state.auth.googleAuthUser.uid){
+    if (state.auth.googleAuthUser && state.auth.googleAuthUser.uid) {
       const orgSub = subscribeToUserOrganizations(
         state.auth.googleAuthUser.uid,
-        dispatch);
+        dispatch
+      );
       const messageSub = subscribeToMessages(
-        {type: 'users', uid: state.auth.googleAuthUser.uid},
-        dispatch);
-      setSubscriptions({orgSub, [ state.auth.googleAuthUser.uid ]: messageSub});
+        { type: 'users', uid: state.auth.googleAuthUser.uid },
+        dispatch
+      );
+      setSubscriptions({ orgSub, [state.auth.googleAuthUser.uid]: messageSub });
     }
-    
   }, [state.auth.googleAuthUser]);
-  
+
   useEffect(() => {
-    
     state.org.userOrganizations.forEach(org => {
-      
-      if (!subscriptions[ org.orgId ]){
-        const messageSub = subscribeToMessages({
-          type: 'organizations',
-          uid: org.orgId,
-        }, dispatch);
-        setSubscriptions({...subscriptions, [ org.orgId ]: messageSub});
+      if (!subscriptions[org.orgId]) {
+        const messageSub = subscribeToMessages(
+          {
+            type: 'organizations',
+            uid: org.orgId,
+          },
+          dispatch
+        );
+        setSubscriptions({ ...subscriptions, [org.orgId]: messageSub });
       }
     });
   }, [state.org.userOrganizations]);
-  
+
   const updateDimensions = () => {
     setDimensions({
       width: window.innerWidth,
       height: document.body.scrollHeight,
     });
-    if (window.innerWidth < 900){
+    if (window.innerWidth < 900) {
       setCollapsed(true);
     }
   };
-  
+
   return (
     <StyledApp className="App">
-      <Layout style={{background: 'white'}}>
+      <Layout style={{ background: 'white' }}>
         {state.auth.loggedIn && (
           <StyledSider
             height={'100%'}
@@ -118,11 +123,11 @@ function App(){
             reverseArrow={true}
           >
             <Affix>
-              <Navigation/>
+              <Navigation />
             </Affix>
           </StyledSider>
         )}
-        <Layout style={{background: 'white'}}>
+        <Layout style={{ background: 'white' }}>
           <HeaderDiv loggedIn={state.auth.loggedIn}>
             {state.auth.loggedIn && (
               <StyledMenuButton
@@ -138,12 +143,17 @@ function App(){
             loggedIn={state.auth.loggedIn}
           >
             <Switch>
-              <LoginRoute path={'/login'} component={Login}/>
-              <LoginRoute path={'/signup'} component={Login}/>
-              <Route exact path={'/'} render={props => <LandingPage {...props}
-                                                                    collapsed={collapsed}/>}/>
-              <Route path={'/organization/:id'} component={Organization}/>
-              <ProtectedRoute path={'/dashboard'} component={MainDashboard}/>
+              <LoginRoute path={'/login'} component={Login} />
+              <LoginRoute path={'/signup'} component={Login} />
+              <Route
+                exact
+                path={'/'}
+                render={props => (
+                  <LandingPage {...props} collapsed={collapsed} />
+                )}
+              />
+              <Route path={'/organization/:id'} component={Organization} />
+              <ProtectedRoute path={'/dashboard'} component={MainDashboard} />
               <RegisteredAndLoggedInRoute
                 path={'/create-org'}
                 component={CreateOrg}
@@ -156,22 +166,20 @@ function App(){
                 path={'/org-dashboard'}
                 component={OrganizationDashboard}
               />
-
-          <Route 
-            path={'/events/:id'}
-            render = {(props) => <EventCard {...props} state={state} /> }
-          />
-          
-          <RegisterRoute path={'/register'} component={Signup}/>
-          <Route path={'/messages'} component={Message}/>
-          
-          <RegisteredAndLoggedInRoute
-            path={'/profile'}
-            component={UserProfile}
-          />              <Route component={NotFound} />
+              <Route
+                path={'/events/:id'}
+                render={props => <EventCard {...props} state={state} />}
+              />
+              <RegisterRoute path={'/register'} component={Signup} />
+              <Route path={'/messages'} component={Message} />
+              <RegisteredAndLoggedInRoute
+                path={'/profile'}
+                component={UserProfile}
+              />{' '}
+              <Route component={NotFound} />
             </Switch>
           </StyledContent>
-          <FooterDiv/>
+          <FooterDiv />
         </Layout>
       </Layout>
     </StyledApp>
