@@ -21,7 +21,7 @@ export const causeAreas = [
   'Environment',
   'Veterans & Military Families',
   'Advocacy & Human Rights',
-];
+].sort((a, b) => (a > b ? 1 : -1));
 
 export const requirements = [
   'Background Check',
@@ -33,7 +33,7 @@ export const requirements = [
   'Waiver for Youth',
   'Application Required',
   'Basic Computer Skills',
-];
+].sort((a, b) => (a > b ? 1 : -1));
 
 export const interests = [
   'Work with Animals',
@@ -50,7 +50,7 @@ export const interests = [
   'Youth Friendly',
   'Wheelchair Accessible',
   'Outdoor Work',
-];
+].sort((a, b) => (a > b ? 1 : -1));
 
 const checkLoggedIn = localStorage.getItem('loggedIn') === 'true';
 const checkRegistered = localStorage.getItem('userRegistered') === 'true';

@@ -60,18 +60,11 @@ export const CreateEventPartTwo = props => {
     });
   };
 
-  console.log('autoofil', autoFillState);
-  //Handle Submit push values to parent state
-
   const hanldePartTwoSubmit = values => {
-    console.log('values', values);
     setLocalState({
       ...localState,
       ...values,
       values,
-      // date: values.date,
-      // startTime: values.startTime,
-      // endTime: values.endTime,
     });
     setAutoFillState({
       ...autoFillState,
@@ -102,74 +95,76 @@ export const CreateEventPartTwo = props => {
             submitButtonText={'Next'}
             autofill={autoFillState[pageNumber]}
           >
-            <label>Who is your point of contact?</label>
-            <div className={'pocWrapper'}>
-              <div className={'inline'}>
-                <AntInput
-                  name={'First Name'}
-                  type="text"
-                  layout={formLayouts.empty}
-                  style={{ width: 240 }}
-                />
+            <div className={'part2Wrapper'}>
+              <label>Who is your point of contact?</label>
+              <div className={'pocWrapper'}>
+                <div className={'inline'}>
+                  <AntInput
+                    name={'First Name'}
+                    type="text"
+                    layout={formLayouts.empty}
+                    style={{ width: 240 }}
+                  />
+                </div>
+                <div className={'inline'}>
+                  <AntInput
+                    name={'Last Name'}
+                    type="text"
+                    layout={formLayouts.empty}
+                    style={{ width: 240 }}
+                  />
+                </div>
+                <div className={'inline'}>
+                  <AntInput
+                    name={'Email'}
+                    type="email"
+                    layout={formLayouts.empty}
+                    style={{ width: 240 }}
+                  />
+                </div>
               </div>
-              <div className={'inline'}>
-                <AntInput
-                  name={'Last Name'}
-                  type="text"
-                  layout={formLayouts.empty}
-                  style={{ width: 240 }}
-                />
-              </div>
-              <div className={'inline'}>
-                <AntInput
-                  name={'Email'}
-                  type="email"
-                  layout={formLayouts.empty}
-                  style={{ width: 240 }}
-                />
-              </div>
-            </div>
-            <div className={'dateWrapper hidden'}>
-              <AntDatePicker
-                name={'Date'}
-                format={'MM/DD/YYYY'}
-                onChange={handleDynmaicDate}
-                disabledDate={current =>
-                  current && current < moment().endOf('day')
-                }
-                layout={formLayouts.empty}
-              />
-            </div>
-            <div className={'recurringWrapper'}>
-              <RecurringEvent
-                name={'Is This a Recurring Event ?'}
-                localState={localState}
-                setLocalState={setLocalState}
-                dynamicDates={localState.dynamicDates}
-                layout={formLayouts.empty}
-                notRequired
-              />
-            </div>
-            <label>What time ?</label>
-            <div className={'timeWrapper'}>
-              <div className={'hidden'}>
-                <AntTimePicker
-                  name={'Start Time'}
-                  use12Hours
-                  format={'h:mm a'}
-                  defaultOpenValue={moment('00:00:00', 'HH:mm')}
+              <div className={'dateWrapper hidden'}>
+                <AntDatePicker
+                  name={'Date'}
+                  format={'MM/DD/YYYY'}
+                  onChange={handleDynmaicDate}
+                  disabledDate={current =>
+                    current && current < moment().endOf('day')
+                  }
                   layout={formLayouts.empty}
                 />
               </div>
-              <p className="to">to</p>
-              <div className={'hidden'}>
-                <AntTimePicker
-                  name={'End Time'}
-                  use12Hours
-                  format={'h:mm a'}
-                  defaultOpenValue={moment('00:00:00', 'HH:mm')}
+              <div className={'recurringWrapper'}>
+                <RecurringEvent
+                  name={'Is This a Recurring Event ?'}
+                  localState={localState}
+                  setLocalState={setLocalState}
+                  dynamicDates={localState.dynamicDates}
                   layout={formLayouts.empty}
+                  notRequired
                 />
+              </div>
+              <label>What time ?</label>
+              <div className={'timeWrapper'}>
+                <div className={'hidden'}>
+                  <AntTimePicker
+                    name={'Start Time'}
+                    use12Hours
+                    format={'h:mm a'}
+                    defaultOpenValue={moment('00:00:00', 'HH:mm')}
+                    layout={formLayouts.empty}
+                  />
+                </div>
+                <p className="to">to</p>
+                <div className={'hidden'}>
+                  <AntTimePicker
+                    name={'End Time'}
+                    use12Hours
+                    format={'h:mm a'}
+                    defaultOpenValue={moment('00:00:00', 'HH:mm')}
+                    layout={formLayouts.empty}
+                  />
+                </div>
               </div>
             </div>
           </WrappedAntForm>
@@ -192,6 +187,11 @@ const StyledCreateEvent = styled.div`
   .buttonStyles {
     display: flex;
     justify-content: space-around;
+  }
+  .part2Wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   label {
