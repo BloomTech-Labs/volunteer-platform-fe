@@ -7,7 +7,7 @@ export const RecurringInfoReview = props => {
     <div>
       <h4>Repeat Time Period</h4>
       <p>{localState.recurringInfo.repeatTimePeriod}</p>
-      {localState.recurringInfo.repeatTimePeriod === 'Custom' && (
+      {localState.recurringInfo.repeatTimePeriod === 'Other' && (
         <p>{localState.recurringInfo.repeatEvery}</p>
       )}
       <h4>Occurence Ends After</h4>
