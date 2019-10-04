@@ -236,8 +236,12 @@ export const GET_EVENT_BY_ID = 'GET_EVENT_BY_ID';
  * @param eventId
  * @param dispatch
  */
-const getEventById = (eventId, dispatch) => {
+export const getEventById = (eventId, dispatch) => {
   store.collection('events').doc(eventId).get().then(res => {
+    if (!res.exists){
+      getRecuringEventById(eventId, dispatch);
+      return;
+    }
     const event = res.data();
     event.eventId = res.id;
     dispatch(action(GET_EVENT_BY_ID, event));
@@ -301,11 +305,9 @@ export const generateRandomEvents = () => {
           orgId: org.orgId,
           phoneNumber: faker.phone.phoneNumber(),
           pointOfContact: poc1,
-          recurringInfo: {
-            recurringEvent: 'No',
-          },
           typesOfCauses: getRandomCauses(),
           volunteerRequirements: getRandomRequirements(),
+          otherNotes: faker.lorem.paragraph(),
           website,
           eventDetails: faker.lorem.paragraphs(),
           
