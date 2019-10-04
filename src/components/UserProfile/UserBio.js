@@ -63,9 +63,8 @@ export const UserBio = (props) => {
 export default UserBio;
 
 const StyledDiv = styled.div`
-  width: 40%;
+  width: 50%;
   padding: 2rem;
-  height: 245px;
   border: 1px solid ${({ theme }) => theme.gray3};
   border-radius: 10px;
 
