@@ -24,8 +24,6 @@ export const registerOrganization = (org, dispatch) => {
     .collection('organizations')
     .add(org)
     .then(res => {
-      console.log(res);
-      console.log('testing');
       dispatch(action(CREATED_ORGANIZATION));
     })
     .catch(err => {
@@ -107,11 +105,9 @@ export const updateOrganization = (orgId, updates, dispatch) => {
     .doc(orgId)
     .set(updates)
     .then(res => {
-      console.log('success updating organization');
       dispatch({type: UPDATE_ORGANIZATION_SUCCESS});
     })
     .catch(err => {
-      console.log('error updating organization');
       dispatch({type: UPDATE_ORGANIZATION_FAIL});
     });
 };

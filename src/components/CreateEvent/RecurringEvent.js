@@ -30,17 +30,18 @@ export const RecurringEvent = props => {
   ];
 
   const repeatTimePeriodOptions = [
-    'Daily',
-    'Every Weekday',
+    'Weekdays',
+    'Weekends (Fri, Sat, Sun)',
+    'Sat/Sun Only',
     `Weekly on ${dynamicDay}`,
   ];
 
   if (dynamicNth !== 'Fifth') {
-    repeatTimePeriodOptions.push(`Monthly on the ${dynamicNth} ${dynamicDay} `);
+    repeatTimePeriodOptions.push(`Monthly on ${dynamicNth} ${dynamicDay} `);
   }
 
   repeatTimePeriodOptions.push(`Annually on ${dynamicYear}`);
-  repeatTimePeriodOptions.push('Custom');
+  repeatTimePeriodOptions.push('Other');
 
   const closeModal = () => {
     setFormState({
@@ -57,7 +58,7 @@ export const RecurringEvent = props => {
   };
 
   const handleRepeatPeriod = period => {
-    if (period === 'Custom') {
+    if (period === 'Other') {
       setFormState({
         ...formState,
         recurringBoolean: true,
@@ -119,7 +120,6 @@ export const RecurringEvent = props => {
   };
 
   const handleSubmit = values => {
-    console.log(values);
     setLocalState({
       ...localState,
       recurringInfo: {
@@ -169,7 +169,7 @@ export const RecurringEvent = props => {
       <div>
         <Radio.Group
           onChange={handleCheckBox}
-          // disabled={!dynam.dynamicDates.dynamicDay}
+          disabled={!dynamicDay}
           defaultValue={localState.recurringEvent === 'Yes' ? 'Yes' : 'No'}
           className={'radioWrapper'}
           style={{ marginLeft: 100 }}
@@ -180,7 +180,7 @@ export const RecurringEvent = props => {
         </Radio.Group>
         {localState.recurringEvent === 'Yes' && (
           <div>
-            <div className={'repeatWrapper'}>
+            <div className={localState.recurringEvent === 'Yes' ? 'hide' : ''}>
               <StyledSelect
                 style={{ width: 200 }}
                 name={'Repeat Time Period'}
@@ -256,7 +256,6 @@ export const RecurringEvent = props => {
             submitButtonText={'Submit'}
             submitButton
           >
-            <h4>hello</h4>
             <AntInputNumber
               name={'Repeat every'}
               style={{ width: 100 }}

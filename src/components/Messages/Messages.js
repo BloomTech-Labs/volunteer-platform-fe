@@ -5,17 +5,24 @@ import moment from 'moment';
 import {Input} from 'antd';
 import {sendMessage} from '../../actions';
 
-const Messages = ({messageId}) => {
+const Messages = ({messageId, selectedUid}) => {
   const [{auth, messages}, dispatch] = useStateValue();
-  const messageThread = messages.messages[ auth.googleAuthUser.uid ].filter(
-    messageThread => messageThread.id === messageId);
+  debugger;
+  let messageThread = [];
+  if (messages.messages[ selectedUid ] &&
+    messages.messages[ selectedUid ].filter(
+      messageThread => messageThread.id === messageId).length > 0){
+    messageThread = messages.messages[ selectedUid ].filter(
+      messageThread => messageThread.id === messageId);
+  }
+  
   const {Search} = Input;
   
   const send = (value) => {
     
     const message = {
       createdAt: moment().unix(),
-      from: auth.googleAuthUser.uid,
+      from: selectedUid,
       to: messageThread[ 0 ].id,
       text: value,
       read: false,
@@ -27,8 +34,8 @@ const Messages = ({messageId}) => {
     };
     
     const from = {
-      type: 'users',
-      uid: auth.googleAuthUser.uid,
+      type: selectedUid === auth.googleAuthUser.uid ? 'users' : 'organizations',
+      uid: selectedUid,
     };
     
     sendMessage(to, from, message);
@@ -41,19 +48,20 @@ const Messages = ({messageId}) => {
         messageThread[ 0 ].messages.map((message, i) => {
           return (
             <div key={message + ' ' + i}
-                 className={message.to === auth.googleAuthUser.uid ? 'other' :
+                 className={message.to === selectedUid ? 'other' :
                    'me'}
             >
-              {message.to === auth.googleAuthUser.uid &&
-              <p>{messageThread[ 0 ].firstName}: {moment.unix(message.createdAt)
+              {message.to === selectedUid &&
+              <p>{messageThread[ 0 ].name}: {moment.unix(message.createdAt)
                 .format('LLL')}</p>}
-              {message.to !== auth.googleAuthUser.uid &&
+              {message.to !== selectedUid &&
               <p>Me: {moment.unix(message.createdAt)
                 .format('LLL')}</p>}
               <p className={'message'}>{message.text} </p>
             </div>
           );
         })}
+        {messageThread.length === 0 && <h2>No messages to display</h2>}
       </StyledMessageThread>
       <Search
         placeholder={'Message'}
@@ -108,7 +116,7 @@ const StyledMessages = styled.div`
                 `;
 
 const StyledMessageThread = styled.div`
-                height: 70Vh;
+                height: 65Vh;
                 overflow-y: scroll;
                 `;
 
