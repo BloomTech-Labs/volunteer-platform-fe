@@ -14,7 +14,7 @@ import CreateEventReview from '../components/CreateEvent/CreateEventReview/Creat
 export const CreateEvent = props => {
   const initialEvent = {
     nameOfEvent: '',
-    typeOfCause: [],
+    typesOfCauses: [],
     date: moment('00:00:00', 'HH:mm'),
     startTime: moment('00:00:00', 'HH:mm'),
     endTime: moment('00:00:00', 'HH:mm'),
@@ -22,6 +22,7 @@ export const CreateEvent = props => {
     phoneNumber: '',
     pointOfcontact: '',
     volunteerRequirements: [],
+    interest: [],
     website: '',
     dynamicDates: {
       dynamicDay: '',
@@ -106,10 +107,11 @@ export const CreateEvent = props => {
       if (event.recurringInfo.occurrenceEnds === 'After') {
         event.recurringInfo.occurrenceEndDate = '';
       }
-
-      createRecurringEvent(event, dispatch);
+      console.log('reg', event);
+      // createRecurringEvent(event, dispatch);
     } else {
-      createEvent(event, dispatch);
+      console.log('rec', event);
+      // createEvent(event, dispatch);
     }
     setPageNumberState({
       pageNumber: 1,
@@ -211,7 +213,7 @@ export const CreateEvent = props => {
   return (
     <div>
       {pageNumberState.pageNumber && renderParts[pageNumberState.pageNumber]}
-      {/* <CreateEventReview
+      <CreateEventReview
         localState={localState}
         setLocalState={setLocalState}
         handleSubmit={handleFormPartSubmit}
@@ -220,7 +222,7 @@ export const CreateEvent = props => {
         autoFillState={autoFillState}
         handleReviewSubmit={handleReviewSubmit}
         cancelForm={cancelForm}
-      /> */}
+      />
     </div>
   );
 };

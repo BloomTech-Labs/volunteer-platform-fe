@@ -93,8 +93,8 @@ export const CreateEventReviewList = props => {
             <p>{localState.eventDetails}</p>
             <h4>Website</h4>
             <p>{localState.website}</p>
-            {localState.otherNotes && <h4>Other Notes</h4>}
-            {localState.otherNotes && <p>{localState.otherNotes}</p>}
+            <h4>Other Notes</h4>
+            <p>{localState.otherNotes}</p>
           </div>
           <StyledButton key="cancel" onClick={handlePageBack}>
             Cancel

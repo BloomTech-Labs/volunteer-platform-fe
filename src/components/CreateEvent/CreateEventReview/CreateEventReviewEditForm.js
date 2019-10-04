@@ -11,27 +11,29 @@ const { Option } = Select;
 
 export const CreateEventReviewEditForm = props => {
   const [state, dispatch] = useStateValue();
-  const [errorMessage, setErrorMessage] = useState({
-    nameOfEvent: false,
-    streetAddress: false,
-    city: false,
-    state: false,
-    typesOfCauses: false,
-    volunteerRequirements: false,
-    interest: false,
-    numberOfVolunteers: false,
-    phoneNumber: false,
-    firstName: false,
-    lastName: false,
-    email: false,
-    date: false,
-    startTime: false,
-    endTime: false,
-    eventDetails: false,
-    website: false,
-    otherNotes: false,
-  });
   const { localState, setLocalState, setEdit } = props;
+  const {
+    nameOfEvent,
+    streetAddress,
+    city,
+    typesOfCauses,
+    volunteerRequirements,
+    interest,
+    numberOfVolunteers,
+    phoneNumber,
+    firstName,
+    lastName,
+    email,
+    date,
+    startTime,
+    endTime,
+    eventDetails,
+    website,
+    otherNotes,
+    dynamicDates,
+  } = localState;
+
+  const [error, setError] = useState('');
 
   console.log('local', localState);
   const causeAreaTags = state.tags.causeAreas.map(tag => {
@@ -50,22 +52,34 @@ export const CreateEventReviewEditForm = props => {
     return <Option key={tag}>{tag}</Option>;
   });
 
-  const checkRequired = () => {
-    console.log('fre');
-    let errors = {};
-    let errorCount = 0;
-    for (let key in errorMessage) {
-      if (!(key in localState)) {
-        errorCount++;
-        errors = {
-          ...errors,
-          [key]: 'This field is required.',
-        };
-      }
+  const isFormValid = () => {
+    if (
+      nameOfEvent &&
+      streetAddress &&
+      city &&
+      localState.state &&
+      typesOfCauses.length > 1 &&
+      volunteerRequirements.length > 1 &&
+      interest.length > 1 &&
+      numberOfVolunteers > 1 &&
+      phoneNumber &&
+      firstName &&
+      lastName &&
+      email &&
+      eventDetails &&
+      website
+    ) {
+      return true;
     }
-    setErrorMessage({ ...errorMessage, ...errors });
-    if (!errorCount) {
+  };
+
+  const checkRequired = () => {
+    if (isFormValid()) {
+      console.log('uesss');
+      setError('');
       handleForm();
+    } else {
+      setError('This field is required.');
     }
   };
 
@@ -102,106 +116,166 @@ export const CreateEventReviewEditForm = props => {
               <h4>Event Name</h4>
               <Input
                 name={'nameOfEvent'}
-                value={localState.nameOfEvent}
+                value={nameOfEvent}
                 onChange={e => handleValue(e.target.name, e.target.value)}
               />
+              {error && !nameOfEvent && (
+                <span className="error-message error-span left-aligned">
+                  {error}
+                </span>
+              )}
               <h4>Location</h4>
               <Input
                 name={'streetAddress'}
-                value={localState.streetAddress}
+                value={streetAddress}
                 onChange={e => handleValue(e.target.name, e.target.value)}
               />
+              {error && !streetAddress && (
+                <span className="error-message error-span left-aligned">
+                  {error}
+                </span>
+              )}
               <Input
                 name={'city'}
-                value={localState.city}
+                value={city}
                 onChange={e => handleValue(e.target.name, e.target.value)}
-              />
+              />{' '}
+              {error && !city && (
+                <span className="error-message error-span left-aligned">
+                  {error}
+                </span>
+              )}
               <Input
                 name={'state'}
                 value={localState.state}
                 onChange={e => handleValue(e.target.name, e.target.value)}
               />
+              {error && !localState.state && (
+                <span className="error-message error-span left-aligned">
+                  {error}
+                </span>
+              )}
               <h4>Tyeps of Causes</h4>
               <Select
                 name={'Types of Causes'}
                 mode="multiple"
-                value={localState.typesOfCauses}
+                value={typesOfCauses}
                 onChange={value => handleValue('typesOfCauses', value)}
               >
                 {causeAreaTags}
               </Select>
+              {error && typesOfCauses.length < 1 && (
+                <span className="error-message error-span left-aligned">
+                  {error}
+                </span>
+              )}
               <h4>Volunteer Requirments</h4>
               <Select
                 name={'Volunteer Requirements'}
                 mode="multiple"
-                value={localState.volunteerRequirements}
+                value={volunteerRequirements}
                 onChange={value => handleValue('volunteerRequirements', value)}
               >
                 {requirementTags}
               </Select>
+              {error && volunteerRequirements.length < 1 && (
+                <span className="error-message error-span left-aligned">
+                  {error}
+                </span>
+              )}
               <h4>Interests</h4>
               <Select
                 name={'Interest'}
                 mode="multiple"
-                value={localState.interest}
+                value={interest}
                 onChange={value => handleValue('interest', value)}
               >
                 {interestTags}
               </Select>
+              {error && interest.length < 1 && (
+                <span className="error-message error-span left-aligned">
+                  {error}
+                </span>
+              )}
               <h4>Volunteers Needed</h4>
               <InputNumber
                 name={'Number of Volunteers'}
                 min={0}
-                value={localState.numberOfVolunteers}
+                value={numberOfVolunteers}
                 onChange={value => handleValue('numberOfVolunteers', value)}
               />
+              {error && numberOfVolunteers < 1 && (
+                <span className="error-message error-span left-aligned">
+                  {error}
+                </span>
+              )}
               <h4>Phone Number</h4>
               <Input
                 name={'phoneNumber'}
-                value={localState.phoneNumber}
+                value={phoneNumber}
                 onChange={e => handleValue(e.target.name, e.target.value)}
               />
+              {error && !phoneNumber && (
+                <span className="error-message error-span left-aligned">
+                  {error}
+                </span>
+              )}
               <h4>Point of Contact</h4>
               <Input
                 name={'firstName'}
-                value={localState.firstName}
+                value={firstName}
                 onChange={e => handleValue(e.target.name, e.target.value)}
               />
+              {error && !firstName && (
+                <span className="error-message error-span left-aligned">
+                  {error}
+                </span>
+              )}
               <Input
                 name={'lastName'}
-                value={localState.lastName}
+                value={lastName}
                 onChange={e => handleValue(e.target.name, e.target.value)}
               />
+              {error && !lastName && (
+                <span className="error-message error-span left-aligned">
+                  {error}
+                </span>
+              )}
               <Input
                 name={'email'}
-                value={localState.email}
+                value={email}
                 onChange={e => handleValue(e.target.name, e.target.value)}
               />
+              {error && !email && (
+                <span className="error-message error-span left-aligned">
+                  {error}
+                </span>
+              )}
               <h4>When is the event?</h4>
               <DatePicker
                 name={'Date'}
                 format={'MM/DD/YYYY'}
-                value={localState.date}
+                value={date}
                 onChange={value => handleValue('date', value)}
               />
               <RecurringEvent
                 localState={localState}
                 setLocalState={setLocalState}
-                dynamicDates={localState.dynamicDates}
+                dynamicDates={dynamicDates}
               />
               <h4>What time?</h4>
               <TimePicker
                 name={'Start Time'}
                 use12Hours
                 format={'h:mm a'}
-                value={localState.startTime}
+                value={startTime}
                 onChange={value => handleValue('startTime', value)}
               />
               <TimePicker
                 name={'End Time'}
                 use12Hours
                 format={'h:mm a'}
-                value={localState.endTime}
+                value={endTime}
                 onChange={value => handleValue('endTime', value)}
               />
               <h4>Event Details</h4>
@@ -210,29 +284,37 @@ export const CreateEventReviewEditForm = props => {
                 placeholder={
                   'What the volunteer would do at the event would go here.'
                 }
-                value={localState.eventDetails}
+                value={eventDetails}
                 onChange={e => handleValue(e.target.name, e.target.value)}
                 style={{ height: 115 }}
               />
+              {error && !eventDetails && (
+                <span className="error-message error-span left-aligned">
+                  {error}
+                </span>
+              )}
               <h4>Website</h4>
               <Input
                 name={'website'}
-                value={localState.website}
+                value={website}
                 onChange={e => handleValue(e.target.name, e.target.value)}
               />
-              {localState.otherNotes && <h4>Other Notes</h4>}
-              {localState.otherNotes && (
-                <TextArea
-                  name={'otherNotes'}
-                  placeholder={
-                    'Any additional helpful tips for the event go here.'
-                  }
-                  value={localState.otherNotes}
-                  onChange={e => handleValue(e.target.name, e.target.value)}
-                  style={{ height: 115 }}
-                  notRequired
-                />
+              {error && !website && (
+                <span className="error-message error-span left-aligned">
+                  {error}
+                </span>
               )}
+              <h4>Other Notes</h4>
+              <TextArea
+                name={'otherNotes'}
+                placeholder={
+                  'Any additional helpful tips for the event go here.'
+                }
+                value={otherNotes}
+                onChange={e => handleValue(e.target.name, e.target.value)}
+                style={{ height: 115 }}
+                notRequired
+              />
               <div className="buttonStyles">
                 <StyledButton type="primary" onClick={() => handleForm()}>
                   Cancel
@@ -286,6 +368,10 @@ const StyledEditEvent = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+  .error-message.error-span.left-aligned {
+    color: red;
+    font-size: 12px;
   }
 
   label {
