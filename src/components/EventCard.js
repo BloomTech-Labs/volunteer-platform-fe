@@ -9,11 +9,11 @@ import { findNext } from '../utility/findNextRecurEvent';
 import { getEventById } from '../actions';
 
 export const EventCard = props => {
-  const [{ events }, dispatch] = useStateValue();
+    const [{ events }, dispatch] = useStateValue();
 
-  const { event } = events;
+    const { event } = events;
 
-  const [localState, setLocalState] = useState({
+    const [localState, setLocalState] = useState({
     interest: [],
     typesOfCauses: [],
     volunteerRequirements: [],
@@ -26,83 +26,82 @@ export const EventCard = props => {
     otherNotes: '',
     nextDate: '',
     recurringInfo: {},
-    ...event,
-  });
+    });
 
-  useEffect(() => {
+useEffect(() => {
     if ('recurringInfo' in event) {
         let nextDate = findNext(event.startTimeStamp, event.recurringInfo);
         setLocalState({
-          ...localState,
-          nextDate: moment(
-            moment.unix(nextDate).format('LL') + ' ' + event.startTime
-          ).unix(),
+            ...localState,
+            nextDate: moment(
+                moment.unix(nextDate).format('LL') + ' ' + event.startTime
+            ).unix(), ...event
         });
-      } else {
-        setLocalState({ ...localState, nextDate: event.startTimeStamp });
-      }
-  }, [event]);
-  
+    } else {
+    setLocalState({ ...localState, nextDate: event.startTimeStamp, ...event });
+    }
+}, [event]);
 
-  // for setting events from state to our localState
-  useEffect(() => {
-    getEventById(props.match.params.id, dispatch);
-  }, [props.match.params.id]);
 
-  const causes = localState.typesOfCauses.map(item => {
-    return <Tag>{(item = [item])}</Tag>;
-  });
+// for setting events from state to our localState
+useEffect(() => {
+getEventById(props.match.params.id, dispatch);
+}, [props.match.params.id]);
 
-  const interest = localState.interest.map(item => {
-    return <Tag>{(item = [item])}</Tag>;
-  });
+const causes = localState.typesOfCauses.map(item => {
+return <Tag>{(item = [item])}</Tag>;
+});
 
-  const requirements = localState.volunteerRequirements.map(item => {
-    return <Tag>{(item = [item])}</Tag>;
-  });
+const interest = localState.interest.map(item => {
+return <Tag>{(item = [item])}</Tag>;
+});
 
-  console.log('LocalState', localState);
+const requirements = localState.volunteerRequirements.map(item => {
+return <Tag>{(item = [item])}</Tag>;
+});
 
-  return (
-    <div>
-      <div style={heading}>
-        <h4> {localState.nameOfEvent} </h4>
-        <h6> {moment.unix(localState.nextDate).format('LLLL')} </h6>
-        <h6> {localState.orgName} </h6>
-      </div>
-      <StyledEventPage>
-        <div className="card">
-          <div className="photo">
-            <img src={manHiking} alt="dude" width={175} height={175} />
-          </div>
-          <div className="tags">
-            <h5>Interests: </h5>
-            <div className="subtag">{interest}</div>
-            <h5>Causes: </h5>
-            <div className="subtag">{causes}</div>
-            <h5>Requirements: </h5>
-            <div className="subtag">{requirements}</div>
-          </div>
+console.log('LocalState', localState);
+
+    return (
+        <div>
+        <div style={heading}>
+            <h4> {localState.nameOfEvent} </h4>
+            <h6> {moment.unix(localState.nextDate).format('LLLL')} </h6>
+            <h6> {localState.orgName} </h6>
         </div>
-      </StyledEventPage>
-      <StyledEventDetails>
-        <div className="details">
-          <h5>Details</h5>
+        <StyledEventPage>
+            <div className="card">
+            <div className="photo">
+                <img src={manHiking} alt="dude" width={175} height={175} />
+            </div>
+            <div className="tags">
+                <h5>Interests: </h5>
+                <div className="subtag">{interest}</div>
+                <h5>Causes: </h5>
+                <div className="subtag">{causes}</div>
+                <h5>Requirements: </h5>
+                <div className="subtag">{requirements}</div>
+            </div>
+            </div>
+        </StyledEventPage>
+        <StyledEventDetails>
+            <div className="details">
+            <h5>Details</h5>
+            </div>
+            <div className="description">{localState.eventDetails}</div>
+        </StyledEventDetails>
+        <StyledEventTime>
+            <div className="time">
+            <h5>
+                {localState.startTime} - {localState.endTime}
+            </h5>
+            </div>
+            <div className="info">
+            <h6>{localState.recurringInfo.days}</h6>
+            </div>
+        </StyledEventTime>
         </div>
-        <div className="description">{localState.eventDetails}</div>
-      </StyledEventDetails>
-      <StyledEventTime>
-        <div className="time">
-          <h5>
-            {localState.startTime} - {localState.endTime}
-          </h5>
-        </div>
-        <div className="info">
-          <h6>{localState.recurringInfo.days}</h6>
-        </div>
-      </StyledEventTime>
-    </div>
-  );
+    );
 };
 
 const StyledEventPage = styled(StyledCard)`
