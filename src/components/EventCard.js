@@ -6,18 +6,19 @@ import { Tag, AutoComplete } from 'antd';
 import moment from 'moment';
 import { useStateValue } from '../hooks/useStateValue';
 import { findNext } from '../utility/findNextRecurEvent';
+import { getEventById } from '../actions';
 
 export const EventCard = props => {
   const [{ events }, dispatch] = useStateValue();
 
   const { event } = events;
+
   const [localState, setLocalState] = useState({
     interest: [],
     typesOfCauses: [],
     volunteerRequirements: [],
     orgName: '',
     nameOfEvent: '',
-    date: '',
     startTime: '',
     endTime: '',
     numberOfVolunteers: null,
@@ -28,11 +29,16 @@ export const EventCard = props => {
     ...event,
   });
 
-  if(recurringInfo in event){
-      setLocalState({...localState, nextDate: event.startTimeStamp})
-  }
-  else{
-    setLocalState({...localState, nextDate: event.startTimeStamp})
+  if (recurringInfo in event) {
+    let nextDate = findNext(event.startTimeStamp, event.recurringInfo);
+    setLocalState({
+      ...localState,
+      nextDate: moment(
+        moment.unix(nextDate).format('LL') + ' ' + event.startTime
+      ).unix(),
+    });
+  } else {
+    setLocalState({ ...localState, nextDate: event.startTimeStamp });
   }
   // for setting events from state to our localState
   useEffect(() => {
@@ -57,7 +63,7 @@ export const EventCard = props => {
     <div>
       <div style={heading}>
         <h4> {localState.nameOfEvent} </h4>
-        <h6> {moment.unix(localState.date).format('LLLL')} </h6>
+        <h6> {moment.unix(localState.nextDate).format('LLLL')} </h6>
         <h6> {localState.orgName} </h6>
       </div>
       <StyledEventPage>
