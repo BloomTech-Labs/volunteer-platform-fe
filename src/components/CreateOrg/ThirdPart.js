@@ -2,18 +2,22 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Checkbox, Form, TimePicker, Select } from 'antd';
 import { StyledButton, StyledCancelButton } from '../../styled';
-
+import moment from 'moment';
 const { Option } = Select;
 
 export const ThirdPart = ({ clickNext, storedData, clickPrevious }) => {
   const weekdaysArr = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
   const weekendsArr = ['Saturday', 'Sunday'];
-  const [localState, setLocalState] = useState({ ...storedData });
+  const [localState, setLocalState] = useState({
+    startTime: moment('9:00 A', 'H:mm A'),
+    endTime: moment('5:00 P', 'H:mm A'),
+    ...storedData,
+  });
   const [showCustomOptions, setShowCustomOptions] = useState(false);
   useEffect(() => {
-    if (localState['weekday-options'] === 'Custom') setShowCustomOptions(true);
+    if (localState['weekdayOptions'] === 'Custom') setShowCustomOptions(true);
     else setShowCustomOptions(false);
-  }, [localState['weekday-options']]);
+  }, [localState['weekdayOptions']]);
   const options = [
     'Weekdays',
     'Weekends (Fri, Sat, Sun)',
@@ -24,7 +28,6 @@ export const ThirdPart = ({ clickNext, storedData, clickPrevious }) => {
   const handleChange = (name, value) => {
     setLocalState({ ...localState, [name]: value });
   };
-
   return (
     <DivForStyling>
       <Form layout={'vertical'} onSubmit={() => clickNext(localState)}>
@@ -32,10 +35,10 @@ export const ThirdPart = ({ clickNext, storedData, clickPrevious }) => {
         <h5>1. Days of the week</h5>
 
         <Select
-          name="weekday-options"
+          name="weekdayOptions"
           className="weekday-select"
-          onChange={value => handleChange('weekday-options', value)}
-          value={localState['weekday-options']}
+          onChange={value => handleChange('weekdayOptions', value)}
+          value={localState['weekdayOptions']}
         >
           {options.map(option => (
             <Option value={option}>{option}</Option>
@@ -140,28 +143,6 @@ const DivForStyling = styled.div`
     }
     span {
       color: ${({ theme }) => theme.primary8};
-    }
-  }
-  .special-options-div {
-    width: 70%;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-evenly;
-    margin-bottom: 10px;
-
-    button {
-      background: ${({ theme, standard }) => !standard && theme.primary8};
-      color: white;
-      border-radius: 4px;
-      font-family: Arvo;
-      border: 0;
-      font-size: 12px;
-      padding: 5px 8px;
-      cursor: pointer;
-
-      :hover {
-        background: ${props => props.theme.primary7};
-      }
     }
   }
 `;

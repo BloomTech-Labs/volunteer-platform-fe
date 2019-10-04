@@ -9,32 +9,36 @@ export const Review = ({
   cancelForm,
   submitForm,
   setEdit,
-  localState,
+  isEditing,
 }) => {
   const onSubmit = e => {
     e.preventDefault();
     let values = {
       POC: storedData.POC || [],
       aboutUs: storedData.aboutUs || '',
-      causeAreas: storedData.typeOfCauses || [],
+      causeAreas: storedData.causeAreas || [],
       city: storedData.city || '',
       streetAddress: storedData.streetAddress || '',
       state: storedData.state || '',
+      weekdayOptions: storedData.weekdayOptions || '',
       daysOfTheWeek: storedData.daysOfTheWeek || [],
       startTime: storedData.startTime.unix() || '',
       endTime: storedData.endTime.unix() || '',
-      organizationName: storedData.nameOfOrganization || '',
+      organizationName: storedData.organizationName || '',
       website: storedData.website || '',
+      weekdays: storedData.weekdays || [],
+      weekends: storedData.weekends || [],
     };
 
     const confirmSubmit = confirmModal({
-      title: 'Creating Your Organization',
+      title: isEditing
+        ? 'Editing Your Organization'
+        : 'Creating Your Organization',
       content: 'Please ensure all the information is correct.',
       onOk: () => submitForm(values),
     });
     confirmSubmit();
   };
-
   return (
     <>
       <ReviewDiv>
@@ -60,7 +64,7 @@ export const Review = ({
         </div>
         <InfoDiv>
           <h4>Name</h4>
-          <p>{storedData.nameOfOrganization}</p>
+          <p>{storedData.organizationName}</p>
           <h4>Location</h4>
           <p className="no-margin">{storedData.streetAddress}</p>
           <p>
@@ -68,7 +72,7 @@ export const Review = ({
           </p>
           <h4>Cause(s)</h4>
           <div className="cause-tags">
-            {storedData.typeOfCauses.map(cause => (
+            {storedData.causeAreas.map(cause => (
               <Tag key={cause}>{cause}</Tag>
             ))}
           </div>
@@ -117,7 +121,7 @@ export const Review = ({
                 {storedData.startTime && (
                   <p>{`${storedData.startTime.format(
                     'LT'
-                  )} - ${storedData.startTime.format('LT')}`}</p>
+                  )} - ${storedData.endTime.format('LT')}`}</p>
                 )}
               </div>
             </>
