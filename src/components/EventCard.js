@@ -73,7 +73,7 @@ console.log('LocalState', localState);
                 Previous Page
             </div>
             <div style={{  margin: '0 auto', width: '70%'}}>
-                <div style={heading}>
+                <div>
                     <h4> {localState.nameOfEvent} </h4>
                     <h6> {moment.unix(localState.nextDate).format('LLLL')} </h6>
                     <h6> {localState.orgName} </h6>
@@ -205,51 +205,4 @@ const StyledEventTime = styled(StyledCard)`
 }
 `;
 
-const heading = {
-//   marginLeft: '15%',
-};
-
 export default EventCard;
-
-
-// return (
-//     <div>
-//     <div style={heading}>
-//         <h4> {localState.nameOfEvent} </h4>
-//         <h6> {moment.unix(localState.nextDate).format('LLLL')} </h6>
-//         <h6> {localState.orgName} </h6>
-//     </div>
-//     <StyledEventPage>
-//         <div className="card">
-//         <div className="photo">
-//             <img src={manHiking} alt="dude" width={175} height={175} />
-//         </div>
-//         <div className="tags">
-//             <h5>Interests: </h5>
-//             <div className="subtag">{interest}</div>
-//             <h5>Causes: </h5>
-//             <div className="subtag">{causes}</div>
-//             <h5>Requirements: </h5>
-//             <div className="subtag">{requirements}</div>
-//         </div>
-//         </div>
-//     </StyledEventPage>
-//     <StyledEventDetails>
-//         <div className="details">
-//         <h5>Details</h5>
-//         </div>
-//         <div className="description">{localState.eventDetails}</div>
-//     </StyledEventDetails>
-//     <StyledEventTime>
-//         <div className="time">
-//         <h5>
-//             {localState.startTime} - {localState.endTime}
-//         </h5>
-//         </div>
-//         <div className="info">
-//         <h6>{localState.recurringInfo.days}</h6>
-//         </div>
-//     </StyledEventTime>
-//     </div>
-// );
-// };
