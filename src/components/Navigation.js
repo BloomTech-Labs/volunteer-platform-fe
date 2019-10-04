@@ -91,7 +91,15 @@ export const Navigation = props => {
             <span style={{marginRight: '1rem'}}>Messages</span>
           </Badge>}>
           <Menu.Item key={'Messages'}>
-            <Link to={'/messages'}>
+            <Link
+              to={{
+                pathname: '/messages',
+                state: {
+                  uid: state.auth.googleAuthUser ?
+                    state.auth.googleAuthUser.uid : null,
+                },
+              }}
+            >
               <span style={{marginRight: '1rem'}}>User Messages</span>
               <Badge className={'colorless-badge'}
                      count={state.auth.googleAuthUser ?
@@ -107,7 +115,7 @@ export const Navigation = props => {
           state.org.userOrganizations.map(org => {
             return <Menu.Item key={org.orgId}>
               
-              <Link to={'/messages'}>
+              <Link to={{pathname: '/messages', state: {uid: org.orgId}}}>
                   <span
                     style={{marginRight: '.2rem'}}>{org.organizationName}</span>
                 <Badge className={'colorless-badge'}
