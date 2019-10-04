@@ -29,17 +29,21 @@ export const EventCard = props => {
     ...event,
   });
 
-  if (recurringInfo in event) {
-    let nextDate = findNext(event.startTimeStamp, event.recurringInfo);
-    setLocalState({
-      ...localState,
-      nextDate: moment(
-        moment.unix(nextDate).format('LL') + ' ' + event.startTime
-      ).unix(),
-    });
-  } else {
-    setLocalState({ ...localState, nextDate: event.startTimeStamp });
-  }
+  useEffect(() => {
+    if ('recurringInfo' in event) {
+        let nextDate = findNext(event.startTimeStamp, event.recurringInfo);
+        setLocalState({
+          ...localState,
+          nextDate: moment(
+            moment.unix(nextDate).format('LL') + ' ' + event.startTime
+          ).unix(),
+        });
+      } else {
+        setLocalState({ ...localState, nextDate: event.startTimeStamp });
+      }
+  }, [event]);
+  
+
   // for setting events from state to our localState
   useEffect(() => {
     getEventById(props.match.params.id, dispatch);
