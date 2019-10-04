@@ -257,6 +257,40 @@ export const getAllRecurringEventsByOrg = (orgId, dispatch) => {
     .catch(err => console.log(err));
 };
 
+export const GET_EVENT_BY_ID = 'GET_EVENT_BY_ID';
+
+/**
+ * Gets event by id. If normal event doesn't exist in db then it checks for a recurring event.
+ * @function
+ * @param eventId
+ * @param dispatch
+ */
+export const getEventById = (eventId, dispatch) => {
+  store.collection('events').doc(eventId).get().then(res => {
+    if (!res.exists){
+      getRecuringEventById(eventId, dispatch);
+      return;
+    }
+    const event = res.data();
+    event.eventId = res.id;
+    dispatch(action(GET_EVENT_BY_ID, event));
+  }).catch(err => {
+    console.log(err);
+  });
+};
+
+export const GET_RECURRING_EVENT_BY_ID = 'GET_EVENT_BY_ID';
+
+const getRecuringEventById = (eventId, dispatch) => {
+  store.collection('recurring events').doc(eventId).get().then(res => {
+    const event = res.data();
+    event.eventId = res.id;
+    dispatch(action(GET_RECURRING_EVENT_BY_ID, event));
+  }).catch(err => {
+    console.log(err);
+  });
+};
+
 export const generateRandomEvents = () => {
   store.collection('organizations').get().then(res => {
     const orgs = [];
@@ -295,12 +329,11 @@ export const generateRandomEvents = () => {
           orgId: org.orgId,
           phoneNumber: faker.phone.phoneNumber(),
           pointOfContact: poc1,
-          recurringInfo: {
-            recurringEvent: 'No',
-          },
           typesOfCauses: getRandomCauses(),
           volunteerRequirements: getRandomRequirements(),
+          otherNotes: faker.lorem.paragraph(),
           website,
+          eventDetails: faker.lorem.paragraphs(),
           
         };
         
@@ -363,7 +396,94 @@ const getRandomRequirements = () => {
   return randomRequirements;
 };
 
-</code></pre>
+export const SIGN_UP_FOR_EVENT_INIT = 'SIGN_UP_FOR_EVENT_INIT';
+export const SIGNED_UP_VOLUNTEER_FOR_EVENT = 'SIGNED_UP_VOLUNTEER_FOR_EVENT';
+export const SIGNED_UP_FOR_EVENT = 'SIGNED_UP_FOR_EVENT';
+export const SIGN_UP_FOR_EVENT_FAILURE = 'SIGN_UP_FOR_EVENT_FAILURE';
+
+export const signUpForEvent = (event, user, dispatch) => {
+  let volunteers = event.registeredVolunteers || [];
+  let events = user.registeredEvents || [];
+  let updatedEvent = {
+    ...event,
+    registeredVolunteers: [...volunteers, user.uid],
+  };
+  let updatedUser = {
+    ...user,
+    registeredEvents: [
+      ...events, {
+        nameOfEvent: event.nameOfEvent,
+        pointOfContact: event.pointOfContact,
+        date: event.date,
+        startTime: event.startTime,
+        endTime: event.endTime,
+        location: `${event.city}, ${event.state}`,
+        eventId: event.eventId,
+        orgId: event.orgId,
+      },
+    ],
+  };
+  
+  dispatch(action(SIGN_UP_FOR_EVENT_INIT));
+  store
+    .collection('events')
+    .doc(event.eventId)
+    .set(updatedEvent)
+    .then(res => {
+      dispatch(action(SIGNED_UP_VOLUNTEER_FOR_EVENT, updatedEvent));
+      store.collection('users')
+        .doc(user.uid)
+        .set(updatedUser)
+        .then(res => {
+          dispatch(action(SIGNED_UP_FOR_EVENT, updatedUser));
+        })
+        .catch(error => {
+          dispatch(action(SIGN_UP_FOR_EVENT_FAILURE));
+        });
+    })
+    .catch(error => {
+      dispatch(action(SIGN_UP_FOR_EVENT_FAILURE));
+    });
+};
+
+export const CANCEL_SIGNED_UP_EVENT_INIT = 'CANCEL_SIGNED_UP_EVENT_INIT';
+export const CANCELED_VOLUNTEER_FOR_EVENT = 'CANCELED_VOLUNTEER_FOR_EVENT';
+export const CANCELED_SIGNED_UP_EVENT = 'CANCELED_SIGNED_UP_EVENT';
+export const CANCEL_SIGNED_UP_EVENT_FAILURE = 'CANCEL_SIGNED_UP_EVENT_FAILURE';
+
+export const cancelSignedUpEvent = (event, user, dispatch) => {
+  let updatedEvent = {
+    ...event,
+    registeredVolunteers: event.registeredVolunteers.filter(
+      uid => uid !== user.uid),
+  };
+  let updatedUser = {
+    ...user,
+    registeredEvents: user.registeredEvents.filter(
+      item => item.eventId !== event.eventId),
+  };
+  
+  dispatch(action(CANCEL_SIGNED_UP_EVENT_INIT));
+  store
+    .collection('events')
+    .doc(event.eventId)
+    .set(updatedEvent)
+    .then(res => {
+      dispatch(action(CANCELED_VOLUNTEER_FOR_EVENT, updatedEvent));
+      store.collection('users')
+        .doc(user.uid)
+        .set(updatedUser)
+        .then(res => {
+          dispatch(action(CANCELED_SIGNED_UP_EVENT, updatedUser));
+        })
+        .catch(error => {
+          dispatch(action(CANCEL_SIGNED_UP_EVENT_FAILURE));
+        });
+    })
+    .catch(error => {
+      dispatch(action(CANCEL_SIGNED_UP_EVENT_FAILURE));
+    });
+};</code></pre>
         </article>
     </section>
 
@@ -373,13 +493,13 @@ const getRandomRequirements = () => {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-actions_auth.html">actions/auth</a></li><li><a href="module-actions_events.html">actions/events</a></li><li><a href="module-actions_file.html">actions/file</a></li><li><a href="module-actions_organizations.html">actions/organizations</a></li><li><a href="module-State.html">State</a></li><li><a href="module-Types.html">Types</a></li></ul><h3>Global</h3><ul><li><a href="global.html#action">action</a></li><li><a href="global.html#createNewMessageThread">createNewMessageThread</a></li><li><a href="global.html#markMessagesRead">markMessagesRead</a></li><li><a href="global.html#sendMessage">sendMessage</a></li><li><a href="global.html#subscribeToMessages">subscribeToMessages</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-actions_auth.html">actions/auth</a></li><li><a href="module-actions_events.html">actions/events</a></li><li><a href="module-actions_file.html">actions/file</a></li><li><a href="module-actions_messaging.html">actions/messaging</a></li><li><a href="module-actions_organizations.html">actions/organizations</a></li><li><a href="module-State.html">State</a></li><li><a href="module-Types.html">Types</a></li></ul><h3>Global</h3><ul><li><a href="global.html#action">action</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Wed Oct 02 2019 15:42:27 GMT-0600 (Mountain Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Fri Oct 04 2019 11:50:46 GMT-0600 (Mountain Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

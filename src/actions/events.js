@@ -232,12 +232,17 @@ export const getAllRecurringEventsByOrg = (orgId, dispatch) => {
 export const GET_EVENT_BY_ID = 'GET_EVENT_BY_ID';
 
 /**
- * Gets event by id.
+ * Gets event by id. If normal event doesn't exist in db then it checks for a recurring event.
+ * @function
  * @param eventId
  * @param dispatch
  */
-const getEventById = (eventId, dispatch) => {
+export const getEventById = (eventId, dispatch) => {
   store.collection('events').doc(eventId).get().then(res => {
+    if (!res.exists){
+      getRecuringEventById(eventId, dispatch);
+      return;
+    }
     const event = res.data();
     event.eventId = res.id;
     dispatch(action(GET_EVENT_BY_ID, event));
@@ -248,11 +253,6 @@ const getEventById = (eventId, dispatch) => {
 
 export const GET_RECURRING_EVENT_BY_ID = 'GET_EVENT_BY_ID';
 
-/**
- * Gets recurring event by id.
- * @param eventId
- * @param dispatch
- */
 const getRecuringEventById = (eventId, dispatch) => {
   store.collection('recurring events').doc(eventId).get().then(res => {
     const event = res.data();
@@ -301,11 +301,9 @@ export const generateRandomEvents = () => {
           orgId: org.orgId,
           phoneNumber: faker.phone.phoneNumber(),
           pointOfContact: poc1,
-          recurringInfo: {
-            recurringEvent: 'No',
-          },
           typesOfCauses: getRandomCauses(),
           volunteerRequirements: getRandomRequirements(),
+          otherNotes: faker.lorem.paragraph(),
           website,
           eventDetails: faker.lorem.paragraphs(),
           
