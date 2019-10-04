@@ -232,7 +232,8 @@ export const getAllRecurringEventsByOrg = (orgId, dispatch) => {
 export const GET_EVENT_BY_ID = 'GET_EVENT_BY_ID';
 
 /**
- * Gets event by id.
+ * Gets event by id. If normal event doesn't exist in db then it checks for a recurring event.
+ * @function
  * @param eventId
  * @param dispatch
  */
@@ -252,11 +253,6 @@ export const getEventById = (eventId, dispatch) => {
 
 export const GET_RECURRING_EVENT_BY_ID = 'GET_EVENT_BY_ID';
 
-/**
- * Gets recurring event by id.
- * @param eventId
- * @param dispatch
- */
 const getRecuringEventById = (eventId, dispatch) => {
   store.collection('recurring events').doc(eventId).get().then(res => {
     const event = res.data();

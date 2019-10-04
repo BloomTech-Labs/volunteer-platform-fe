@@ -7,6 +7,12 @@ import moment from 'moment';
 export const MESSAGE_CREATED_SUCESSFULLY = 'MESSAGE_CREATED_SUCESSFULLY';
 
 /**
+ * Message Actions
+ * @module actions/messaging
+ *
+ */
+
+/**
  * Send a message to another user.
  * @function
  * @param {MessageContact} to Who the message is to
