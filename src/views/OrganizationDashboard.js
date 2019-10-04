@@ -103,9 +103,9 @@ export const OrganizationDashboard = () => {
     setCalendarValue(moment());
   };
 
-  const deleteImage = (org) => {
-    deleteOrganizationImage(org)
-  }
+  const deleteImage = org => {
+    deleteOrganizationImage(org);
+  };
 
   return (
     <StyledDashboard>
