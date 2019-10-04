@@ -62,17 +62,6 @@ export const CreateEvent = props => {
     }
   }, [props.location.state.org]);
 
-  //Date Format
-
-  const removeUndefinied = event => {
-    Object.keys(event).forEach(key => {
-      if (event[key] === undefined) {
-        delete event[key];
-      }
-      return event;
-    });
-  };
-
   //Handle Submit for Form
   const handleReviewSubmit = () => {
     const event = {
@@ -212,7 +201,6 @@ export const CreateEvent = props => {
         autoFillState={autoFillState}
         handleReviewSubmit={handleReviewSubmit}
         cancelForm={cancelForm}
-        state={state}
       />
     ),
     // 6: <SuccessModal />,
@@ -221,16 +209,6 @@ export const CreateEvent = props => {
   return (
     <div>
       {pageNumberState.pageNumber && renderParts[pageNumberState.pageNumber]}
-      <CreateEventReview
-        localState={localState}
-        setLocalState={setLocalState}
-        handleSubmit={handleFormPartSubmit}
-        handlePageBack={handlePageBack}
-        pageNumber={pageNumberState.pageNumber}
-        autoFillState={autoFillState}
-        handleReviewSubmit={handleReviewSubmit}
-        cancelForm={cancelForm}
-      />
     </div>
   );
 };

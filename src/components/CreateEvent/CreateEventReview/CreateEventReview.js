@@ -14,7 +14,6 @@ export const CreateEventReview = props => {
     setLocalState,
     handleReviewSubmit,
     handlePageBack,
-    state,
   } = props;
 
   return (
@@ -27,7 +26,6 @@ export const CreateEventReview = props => {
           handlePageBack={handlePageBack}
           setEdit={setEdit}
           edit={edit}
-          state={state}
         />
       ) : (
         <CreateEventReviewList

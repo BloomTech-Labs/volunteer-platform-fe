@@ -24,7 +24,7 @@ export const CreateEventReviewList = props => {
         className={'flex center'}
         style={{ maxWidth: '900px', margin: '2rem 0 5rem 0' }}
       >
-        <h1>Let's Create An Event</h1>
+        <h1>Here's What We Got</h1>
         <StyledImg src={createEventImg} alt="undraw unexpected friends" />
         <StyledCreateEvent>
           <StyledButtons>
