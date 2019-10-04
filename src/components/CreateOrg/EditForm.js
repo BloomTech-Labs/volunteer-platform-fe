@@ -3,7 +3,7 @@ import { Form, Input, Select, Tooltip, Checkbox, TimePicker, Icon } from 'antd';
 import styled from 'styled-components';
 import { causeAreas } from '../../reducers/initialState';
 import { StyledButton, StyledCancelButton } from '../../styled';
-import { POC } from './POC';
+import { EditPOC } from './EditPOC';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -53,16 +53,18 @@ export const EditForm = ({ storedData, cancelForm, setBackToReview }) => {
     }
   }, [localState['weekdayOptions']]);
 
-  const changePOC = (action, i) => {
-    if (action === 'add') {
-      setAllPOCs([...allPOCs, allPOCs.length + 1]);
-    } else {
-      let removed = allPOCs.splice(allPOCs.indexOf(i), 1);
-      delete localState[`fullName${i}`];
-      delete localState[`phone${i}`];
-      delete localState[`email${i}`];
-      setAllPOCs([...allPOCs]);
-    }
+  const addPOC = () => {
+    localState.POC.push({
+      email: '',
+      fullName: '',
+      phone: '',
+    });
+    setLocalState({ ...localState });
+  };
+
+  const removePOC = i => {
+    let removed = localState.POC.splice(i, 1);
+    setLocalState({ ...localState, POC: [...localState.POC] });
   };
 
   return (
@@ -124,13 +126,13 @@ export const EditForm = ({ storedData, cancelForm, setBackToReview }) => {
           </Select>
         </Form.Item>
         <Form.Item label={'Point of Contacts'}>
-          {allPOCs.map(poc => (
-            <POC
-              key={poc}
-              i={poc}
-              changePOC={changePOC}
-              values={localState}
+          {localState.POC.map((poc, i) => (
+            <EditPOC
+              key={i}
+              i={i}
               setValues={setLocalState}
+              values={localState}
+              removePOC={removePOC}
             />
           ))}
           <Icon
@@ -140,9 +142,9 @@ export const EditForm = ({ storedData, cancelForm, setBackToReview }) => {
               marginRight: '1rem',
               color: '#005A87',
             }}
-            onClick={() => changePOC('add')}
+            onClick={() => addPOC()}
           />
-          <span style={{ color: '#005A87' }} onClick={() => changePOC('add')}>
+          <span style={{ color: '#005A87' }} onClick={() => addPOC()}>
             Add another point of contact.
           </span>
         </Form.Item>
@@ -283,6 +285,17 @@ const StyledForm = styled(Form)`
     }
     span {
       color: ${({ theme }) => theme.primary8};
+    }
+  }
+
+  .pocInfo {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    align-items: center;
+
+    input {
+      width: 30%;
     }
   }
 `;

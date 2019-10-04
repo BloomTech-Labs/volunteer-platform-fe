@@ -104,8 +104,9 @@ const OrgInfoDiv = styled(StyledCard)`
 
     .poc {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      
+
       .poc-name {
         min-width: 30%;
         margin-bottom: 5px;
@@ -114,6 +115,7 @@ const OrgInfoDiv = styled(StyledCard)`
       .poc-info {
         display: flex;
         align-items: center;
+        min-width: 30%;
       }
     }
   }

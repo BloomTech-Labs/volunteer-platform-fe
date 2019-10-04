@@ -125,7 +125,6 @@ export const CreateOrg = props => {
     let weekdays = values.weekdays || [];
     if (values.weekdayOptions === 'Custom')
       values.daysOfTheWeek = [...weekdays, ...weekends];
-    values = setUpPOC(values);
     setLocalState({ ...localState, [5]: values });
     setPartCount(5);
   };
