@@ -229,8 +229,39 @@ export const getAllRecurringEventsByOrg = (orgId, dispatch) => {
     .catch(err => console.log(err));
 };
 
+export const GET_EVENT_BY_ID = 'GET_EVENT_BY_ID';
 
+/**
+ * Gets event by id.
+ * @param eventId
+ * @param dispatch
+ */
+const getEventById = (eventId, dispatch) => {
+  store.collection('events').doc(eventId).get().then(res => {
+    const event = res.data();
+    event.eventId = res.id;
+    dispatch(action(GET_EVENT_BY_ID, event));
+  }).catch(err => {
+    console.log(err);
+  });
+};
 
+export const GET_RECURRING_EVENT_BY_ID = 'GET_EVENT_BY_ID';
+
+/**
+ * Gets recurring event by id.
+ * @param eventId
+ * @param dispatch
+ */
+const getRecuringEventById = (eventId, dispatch) => {
+  store.collection('recurring events').doc(eventId).get().then(res => {
+    const event = res.data();
+    event.eventId = res.id;
+    dispatch(action(GET_RECURRING_EVENT_BY_ID, event));
+  }).catch(err => {
+    console.log(err);
+  });
+};
 
 export const generateRandomEvents = () => {
   store.collection('organizations').get().then(res => {
@@ -349,43 +380,45 @@ export const signUpForEvent = (event, user, dispatch) => {
   let events = user.registeredEvents || [];
   let updatedEvent = {
     ...event,
-    registeredVolunteers: [...volunteers, user.uid]
+    registeredVolunteers: [...volunteers, user.uid],
   };
   let updatedUser = {
     ...user,
-    registeredEvents: [...events, {
-      nameOfEvent: event.nameOfEvent,
-      pointOfContact: event.pointOfContact,
-      date: event.date,
-      startTime: event.startTime,
-      endTime: event.endTime,
-      location: `${event.city}, ${event.state}`,
-      eventId: event.eventId,
-      orgId: event.orgId
-    }]
+    registeredEvents: [
+      ...events, {
+        nameOfEvent: event.nameOfEvent,
+        pointOfContact: event.pointOfContact,
+        date: event.date,
+        startTime: event.startTime,
+        endTime: event.endTime,
+        location: `${event.city}, ${event.state}`,
+        eventId: event.eventId,
+        orgId: event.orgId,
+      },
+    ],
   };
-
+  
   dispatch(action(SIGN_UP_FOR_EVENT_INIT));
   store
     .collection('events')
     .doc(event.eventId)
-    .set(updatedEvent) 
+    .set(updatedEvent)
     .then(res => {
-      dispatch(action(SIGNED_UP_VOLUNTEER_FOR_EVENT, updatedEvent))
+      dispatch(action(SIGNED_UP_VOLUNTEER_FOR_EVENT, updatedEvent));
       store.collection('users')
         .doc(user.uid)
         .set(updatedUser)
         .then(res => {
-          dispatch(action(SIGNED_UP_FOR_EVENT, updatedUser))
+          dispatch(action(SIGNED_UP_FOR_EVENT, updatedUser));
         })
         .catch(error => {
-          dispatch(action(SIGN_UP_FOR_EVENT_FAILURE))
-        })
+          dispatch(action(SIGN_UP_FOR_EVENT_FAILURE));
+        });
     })
     .catch(error => {
-      dispatch(action(SIGN_UP_FOR_EVENT_FAILURE))
-    })
-} 
+      dispatch(action(SIGN_UP_FOR_EVENT_FAILURE));
+    });
+};
 
 export const CANCEL_SIGNED_UP_EVENT_INIT = 'CANCEL_SIGNED_UP_EVENT_INIT';
 export const CANCELED_VOLUNTEER_FOR_EVENT = 'CANCELED_VOLUNTEER_FOR_EVENT';
@@ -395,31 +428,33 @@ export const CANCEL_SIGNED_UP_EVENT_FAILURE = 'CANCEL_SIGNED_UP_EVENT_FAILURE';
 export const cancelSignedUpEvent = (event, user, dispatch) => {
   let updatedEvent = {
     ...event,
-    registeredVolunteers: event.registeredVolunteers.filter(uid => uid !== user.uid)
+    registeredVolunteers: event.registeredVolunteers.filter(
+      uid => uid !== user.uid),
   };
   let updatedUser = {
     ...user,
-    registeredEvents: user.registeredEvents.filter(item => item.eventId !== event.eventId)
+    registeredEvents: user.registeredEvents.filter(
+      item => item.eventId !== event.eventId),
   };
-
+  
   dispatch(action(CANCEL_SIGNED_UP_EVENT_INIT));
   store
     .collection('events')
     .doc(event.eventId)
-    .set(updatedEvent) 
+    .set(updatedEvent)
     .then(res => {
-      dispatch(action(CANCELED_VOLUNTEER_FOR_EVENT, updatedEvent))
+      dispatch(action(CANCELED_VOLUNTEER_FOR_EVENT, updatedEvent));
       store.collection('users')
         .doc(user.uid)
         .set(updatedUser)
         .then(res => {
-          dispatch(action(CANCELED_SIGNED_UP_EVENT, updatedUser))
+          dispatch(action(CANCELED_SIGNED_UP_EVENT, updatedUser));
         })
         .catch(error => {
-          dispatch(action(CANCEL_SIGNED_UP_EVENT_FAILURE))
-        })
+          dispatch(action(CANCEL_SIGNED_UP_EVENT_FAILURE));
+        });
     })
     .catch(error => {
-      dispatch(action(CANCEL_SIGNED_UP_EVENT_FAILURE))
-    })
-}
+      dispatch(action(CANCEL_SIGNED_UP_EVENT_FAILURE));
+    });
+};

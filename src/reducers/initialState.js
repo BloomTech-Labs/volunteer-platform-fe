@@ -67,7 +67,7 @@ export const initialState = {
     topVolunteersError: null,
     isLoading: false,
     signUpEventError: null,
-    cancelSignedUpEventError: null
+    cancelSignedUpEventError: null,
   },
   org: {
     createdOrg: false,
@@ -82,6 +82,7 @@ export const initialState = {
   },
   events: {
     events: [],
+    event: {},
     recurringEvents: [],
     createEventFailedError: '',
     deleteEventFailedError: '',
@@ -148,6 +149,7 @@ export const initialState = {
  * @type {Object}
  * @property {Event[]} events Array of events collected from db.
  * @property {RecurringEvent[]}
+ * @property {Event} event Event for event page.
  * @property {String} createEventFailedError Create Event Error Message
  * @property {String} createEventFailedError Create Event Error Message
  * @property {String} editEventFailedError Edit Event Error Message
