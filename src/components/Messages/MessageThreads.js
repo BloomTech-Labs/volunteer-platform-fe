@@ -49,7 +49,8 @@ const MessageThreads = (props) => {
   }, [props.location.state]);
   
   const handleClick = ({key}) => {
-    const messageThread = messages.messages[ auth.googleAuthUser.uid ].filter(
+    debugger;
+    const messageThread = messages.messages[ selectedUid ].filter(
       thread => thread.id === key)[ 0 ];
     setSelectedThread(messageThread);
     

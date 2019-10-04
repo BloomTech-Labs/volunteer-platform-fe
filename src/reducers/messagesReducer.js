@@ -5,16 +5,18 @@ import {
 } from '../actions/messaging';
 
 export const messageReducer = (state, action) => {
-  switch (action.type) {
+  debugger;
+  switch (action.type){
     case COLLECTING_USER_MESSAGES_INIT:
       return {
         ...state,
         isLoading: true,
       };
     case USER_HAS_NO_MESSAGES:
+      delete (state.messages[ action.payload ]);
       return {
         ...state,
-        messageThreads: [],
+        messages: {...state.messages},
         error: 'The user has no messages at this time.',
         isLoading: false,
       };
