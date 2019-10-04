@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useStateValue} from '../../hooks/useStateValue';
 import styled from 'styled-components';
 import moment from 'moment';
@@ -7,7 +7,8 @@ import {sendMessage} from '../../actions';
 
 const Messages = ({messageId, selectedUid}) => {
   const [{auth, messages}, dispatch] = useStateValue();
-  debugger;
+  const [text, setText] = useState();
+  
   let messageThread = [];
   if (messages.messages[ selectedUid ] &&
     messages.messages[ selectedUid ].filter(
@@ -18,13 +19,13 @@ const Messages = ({messageId, selectedUid}) => {
   
   const {Search} = Input;
   
-  const send = (value) => {
+  const send = () => {
     
     const message = {
       createdAt: moment().unix(),
       from: selectedUid,
       to: messageThread[ 0 ].id,
-      text: value,
+      text: text,
       read: false,
     };
     
@@ -37,7 +38,7 @@ const Messages = ({messageId, selectedUid}) => {
       type: selectedUid === auth.googleAuthUser.uid ? 'users' : 'organizations',
       uid: selectedUid,
     };
-    
+    setText('');
     sendMessage(to, from, message);
   };
   
@@ -68,6 +69,8 @@ const Messages = ({messageId, selectedUid}) => {
         onSearch={send}
         enterButton={'Send'}
         size={'large'}
+        value={text}
+        onChange={e => setText(e.target.value)}
       />
     </StyledMessages>
   );
