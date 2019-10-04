@@ -251,3 +251,19 @@ export const deleteUserImage = ( user, dispatch ) => {
     })
     .catch(err => console.log(err));
 }
+
+export const getUserById = async ( userId ) => {
+  return await store.collection('users')
+    .doc(userId)
+    .get()
+    .then(res => {
+      if (res.exists) {
+        let user = res.data();
+        user.uid = res.id;
+        return user;
+      } else {
+        return null;
+      }
+    })
+}
+
