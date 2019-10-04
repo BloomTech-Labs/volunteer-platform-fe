@@ -61,7 +61,6 @@ export const CreateEventPartTwo = props => {
   };
 
   const hanldePartTwoSubmit = values => {
-    console.log('values', values);
     setLocalState({
       ...localState,
       ...values,

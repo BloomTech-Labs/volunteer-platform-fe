@@ -21,7 +21,7 @@ const { Option } = Select;
 export const CreateEventReviewEditForm = props => {
   const [state, dispatch] = useStateValue();
   const { localState, setLocalState, setEdit } = props;
-  console.log('state', state);
+
   const causeAreaTags = state.tags.causeAreas.map(tag => {
     return (
       <Option key={tag} value={tag}>
@@ -39,7 +39,6 @@ export const CreateEventReviewEditForm = props => {
   });
 
   const handleSubmit = values => {
-    console.log('values', values);
     setLocalState({
       ...localState,
       ...values,

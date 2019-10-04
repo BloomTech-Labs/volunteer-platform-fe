@@ -122,7 +122,6 @@ export const CreateEvent = props => {
 
   //Handle Form Parts Submit
   const handleFormPartSubmit = values => {
-    console.log('part', values);
     if (pageNumberState.pageNumber) {
       setAutoFillState({
         ...autoFillState,
