@@ -65,7 +65,6 @@ export const Signup = (props) => {
 
   const cancelRegister = () => {
     message.warning('Registration is required to continue using Voluntier');
-    console.log('testing');
   }
   
   return (

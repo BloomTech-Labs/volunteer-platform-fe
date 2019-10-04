@@ -9,11 +9,11 @@ const Option = Select.Option;
 export const FirstPart = ({ clickNext, storedData, cancelForm }) => {
   const [localState, setLocalState] = useState({ ...storedData });
   const [errorMessage, setErrorMessage] = useState({
-    nameOfOrganization: false,
+    organizationName: false,
     streetAddress: false,
     city: false,
     state: false,
-    typeOfCauses: false,
+    causeAreas: false,
   });
 
   const handleChange = (name, value) => {
@@ -28,28 +28,28 @@ export const FirstPart = ({ clickNext, storedData, cancelForm }) => {
         errorCount++;
         errors = {
           ...errors,
-          [key]: 'Please fill out required field.',
+          [key]: 'This field is required.',
         };
       }
     }
     setErrorMessage({ ...errorMessage, ...errors });
     if (!errorCount) clickNext(localState);
   };
- 
+
   return (
     <DivForStyling>
       <Form layout={'vertical'} onSubmit={() => clickNext(localState)}>
         <Form.Item label={'Name of Organization'} required>
           <Input
-            value={localState['nameOfOrganization']}
+            value={localState['organizationName']}
             onChange={e => handleChange(e.target.name, e.target.value)}
-            name={'nameOfOrganization'}
+            name={'organizationName'}
             placeholder={'Community Helper'}
           />
         </Form.Item>
-        {errorMessage['nameOfOrganization'] && (
+        {errorMessage['organizationName'] && (
           <span className="error-message error-span left-aligned">
-            {errorMessage['nameOfOrganization']}
+            {errorMessage['organizationName']}
           </span>
         )}
         <Form.Item label="Street Address" required>
@@ -110,9 +110,9 @@ export const FirstPart = ({ clickNext, storedData, cancelForm }) => {
             required
           >
             <Select
-              name={'typeOfCauses'}
-              value={localState['typeOfCauses']}
-              onChange={value => handleChange('typeOfCauses', value)}
+              name={'causeAreas'}
+              value={localState['causeAreas']}
+              onChange={value => handleChange('causeAreas', value)}
               showArrow
               mode={'multiple'}
               placeholder={'Please select all that apply.'}
@@ -122,9 +122,9 @@ export const FirstPart = ({ clickNext, storedData, cancelForm }) => {
               ))}
             </Select>
           </Form.Item>
-          {errorMessage['typeOfCauses'] && (
+          {errorMessage['causeAreas'] && (
             <span className="error-message error-span left-aligned">
-              {errorMessage['typeOfCauses']}
+              {errorMessage['causeAreas']}
             </span>
           )}
         </div>

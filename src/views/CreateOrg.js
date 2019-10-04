@@ -20,6 +20,7 @@ const {Step} = Steps;
 export const CreateOrg = props => {
   const [state, dispatch] = useStateValue();
   const [orgToEdit, setOrgToEdit] = useState();
+  const [isEditing, setIsEditing] = useState(false);
   const [localState, setLocalState] = useState({
     1: {},
     2: {},
@@ -30,10 +31,10 @@ export const CreateOrg = props => {
   const [partCount, setPartCount] = useState(1);
   
   useEffect(() => {
-    
-    if (props.location.state){
-      setLocalState({...localState, [ 6 ]: props.location.state.org});
-      setOrgToEdit({...props.location.state.org});
+    if (props.location.state) {
+      setLocalState({ ...localState, [6]: props.location.state.org });
+      setOrgToEdit({ ...props.location.state.org });
+      setIsEditing(true);
     }
   }, [props.location.state]);
   
@@ -55,6 +56,8 @@ export const CreateOrg = props => {
     2: 'Let\'s Set Up Your Organization',
     3: 'Almost Finished Setting Up',
     4: 'Last Part!',
+    5: "Let's Review Your Information",
+    6: 'Edit Your Organization',
   };
   
   const possibleParts = {
@@ -67,37 +70,39 @@ export const CreateOrg = props => {
   };
   
   const steps = [0, 1, 2, 3, 4];
-  
-  const RenderedPart = possibleParts[ partCount ];
-  
+
+  const RenderedPart = possibleParts[partCount];
+
+  const setUpPOC = values => {
+    let contactCount = [];
+    let POC = [];
+    for (let key in values) {
+      if (/fullName/.test(key)) contactCount.push(key.slice(-1));
+    }
+    for (let i = 0; i < contactCount.length; i++) {
+      POC.push({
+        email: values[`email${contactCount[i]}`],
+        phone: values[`phone${contactCount[i]}`],
+        fullName: values[`fullName${contactCount[i]}`],
+      });
+    }
+    values.POC = POC;
+    return values;
+  };
   const clickNext = values => {
-    if (partCount === 2){
-      let contactCount = 0;
-      let POC = [];
-      for (let key in values){
-        if (/fullName/.test(key)){
-          contactCount++;
-        }
-      }
-      for (let i = 1; i <= contactCount; i++){
-        POC.push({
-          email: values[ `email${i}` ],
-          phone: values[ `phone${i}` ],
-          fullName: values[ `fullName${i}` ],
-        });
-      }
-      values.POC = POC;
+    if (partCount === 2) {
+      values = setUpPOC(values);
     }
     if (partCount === 3){
       let weekends = values.weekends || [];
       let weekdays = values.weekdays || [];
-      switch (values[ 'weekday-options' ]){
+      switch (values['weekdayOptions']) {
         case 'Weekdays':
           weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
           break;
         case 'Weekends (Fri, Sat, Sun)':
           weekdays = ['Friday'];
-          weekends = ['Saturday, Sunday'];
+          weekends = ['Saturday', 'Sunday'];
           break;
         case 'Sat/Sun Only':
           weekends = ['Saturday', 'Sunday'];
@@ -118,7 +123,11 @@ export const CreateOrg = props => {
   };
   
   const setBackToReview = values => {
-    setLocalState({...localState, [ 5 ]: values});
+    let weekends = values.weekends || [];
+    let weekdays = values.weekdays || [];
+    if (values.weekdayOptions === 'Custom')
+      values.daysOfTheWeek = [...weekdays, ...weekends];
+    setLocalState({ ...localState, [5]: values });
     setPartCount(5);
   };
   
@@ -143,7 +152,7 @@ export const CreateOrg = props => {
         delete org[ key ];
       }
     }
-    if (orgToEdit){
+    if (isEditing) {
       updateOrganization(orgToEdit.orgId, org, dispatch);
     }else{
       registerOrganization(org, dispatch);
@@ -170,6 +179,7 @@ export const CreateOrg = props => {
             submitForm={submitForm}
             setBackToReview={setBackToReview}
             setEdit={setOrgToEdit}
+            isEditing={isEditing}
           />
         </StyledRenderDiv>
       </CustomStyledCard>
