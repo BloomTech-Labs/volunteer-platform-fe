@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import { useStateValue } from '../hooks/useStateValue';
-import { UserBio, UserInfo, UserEvents } from '../components/UserProfile/index';
+import { UserBio, UserInfo, UserEvents, UserGoal } from '../components/UserProfile/index';
 import { OrgPhoto } from '../components/OrgDashboard/index';
 import { Calendar } from 'antd';
-import { updateRegisteredUser, getFileUrl, deleteUserImage } from '../actions';
+import { updateRegisteredUser, getFileUrl, deleteUserImage, getUserById } from '../actions';
 import moment from 'moment';
 
 export const UserProfile = (props) => {
@@ -17,17 +17,29 @@ export const UserProfile = (props) => {
   const [calendarValue, setCalendarValue] = useState(moment());
 
   //I need to use another variable or else if the page is refreshed, state.auth.registeredUser is null so it will throw an error
+
   useEffect(() => {
     if (state.auth.registeredUser) {
-      setUser(state.auth.registeredUser);
-      if (state.auth.registeredUser.imagePath) {
-        getFileUrl(state.auth.registeredUser.imagePath)
-          .then(res => setImageUrl(res));
+      if (state.auth.registeredUser.uid !== props.match.params.id) {
+        getUserById(props.match.params.id)
+          .then(foundUser => {
+            if (foundUser) {
+              setUser(foundUser)
+            } else {
+              props.history.push('/notfound')
+            }
+          })
       } else {
-        setImageUrl(null);
+        setUser(state.auth.registeredUser);
+        if (state.auth.registeredUser.imagePath) {
+          getFileUrl(state.auth.registeredUser.imagePath)
+            .then(res => setImageUrl(res));
+        } else {
+          setImageUrl(null);
+        }
       }
     }
-  }, [state.auth.registeredUser]);
+  }, [state.auth.registeredUser, props.match.params.id]);
 
   const onFileUpload = path => {
     getFileUrl(path)
@@ -110,6 +122,7 @@ export const UserProfile = (props) => {
             onPanelChange={onPanelChange}
             onSelect={onSelect}
             value={calendarValue}/>
+          <UserGoal/>
         </div>
         <div className='profile-bottom-right'>
           <UserEvents 
