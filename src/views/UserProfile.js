@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import { useStateValue } from '../hooks/useStateValue';
 import { UserBio, UserInfo, UserEvents } from '../components/UserProfile/index';
@@ -6,7 +7,7 @@ import { OrgPhoto } from '../components/OrgDashboard/index';
 import { Calendar } from 'antd';
 import { updateRegisteredUser, getFileUrl, deleteUserImage } from '../actions';
 
-export const UserProfile = () => {
+export const UserProfile = (props) => {
   const [state, dispatch] = useStateValue();
   //const [loading, setLoading] = useState(true);
   const [user, setUser] = useState('');
@@ -71,20 +72,20 @@ export const UserProfile = () => {
           <Calendar fullscreen={false} />
         </div>
         <div className='profile-bottom-right'>
-          <UserEvents />
+          <UserEvents events={user.registeredEvents}/>
         </div>
       </div>
     </StyledDiv>
   )
 }
 
-export default UserProfile;
+export default withRouter(UserProfile);
 
 const StyledDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 1100px;
+  margin-left: 250px;
 
   h3 {
     align-self: flex-start;

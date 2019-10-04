@@ -77,6 +77,7 @@ function App(){
   useEffect(() => {
     
     state.org.userOrganizations.forEach(org => {
+      
       if (!subscriptions[ org.orgId ]){
         const messageSub = subscribeToMessages({
           type: 'organizations',

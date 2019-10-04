@@ -66,6 +66,8 @@ export const initialState = {
     signUpError: null,
     topVolunteersError: null,
     isLoading: false,
+    signUpEventError: null,
+    cancelSignedUpEventError: null
   },
   org: {
     createdOrg: false,
@@ -85,6 +87,8 @@ export const initialState = {
     deleteEventFailedError: '',
     editEventFailedError: '',
     getEventsFailedError: '',
+    signUpVolunteerError: '',
+    cancelSignedUpVolunteerError: '',
     isLoading: false,
   },
   tags: {
