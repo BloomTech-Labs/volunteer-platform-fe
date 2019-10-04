@@ -229,6 +229,40 @@ export const getAllRecurringEventsByOrg = (orgId, dispatch) => {
     .catch(err => console.log(err));
 };
 
+export const GET_EVENT_BY_ID = 'GET_EVENT_BY_ID';
+
+/**
+ * Gets event by id. If normal event doesn't exist in db then it checks for a recurring event.
+ * @function
+ * @param eventId
+ * @param dispatch
+ */
+export const getEventById = (eventId, dispatch) => {
+  store.collection('events').doc(eventId).get().then(res => {
+    if (!res.exists){
+      getRecuringEventById(eventId, dispatch);
+      return;
+    }
+    const event = res.data();
+    event.eventId = res.id;
+    dispatch(action(GET_EVENT_BY_ID, event));
+  }).catch(err => {
+    console.log(err);
+  });
+};
+
+export const GET_RECURRING_EVENT_BY_ID = 'GET_EVENT_BY_ID';
+
+const getRecuringEventById = (eventId, dispatch) => {
+  store.collection('recurring events').doc(eventId).get().then(res => {
+    const event = res.data();
+    event.eventId = res.id;
+    dispatch(action(GET_RECURRING_EVENT_BY_ID, event));
+  }).catch(err => {
+    console.log(err);
+  });
+};
+
 export const generateRandomEvents = () => {
   store.collection('organizations').get().then(res => {
     const orgs = [];
@@ -267,11 +301,9 @@ export const generateRandomEvents = () => {
           orgId: org.orgId,
           phoneNumber: faker.phone.phoneNumber(),
           pointOfContact: poc1,
-          recurringInfo: {
-            recurringEvent: 'No',
-          },
           typesOfCauses: getRandomCauses(),
           volunteerRequirements: getRandomRequirements(),
+          otherNotes: faker.lorem.paragraph(),
           website,
           eventDetails: faker.lorem.paragraphs(),
           
@@ -336,3 +368,91 @@ const getRandomRequirements = () => {
   return randomRequirements;
 };
 
+export const SIGN_UP_FOR_EVENT_INIT = 'SIGN_UP_FOR_EVENT_INIT';
+export const SIGNED_UP_VOLUNTEER_FOR_EVENT = 'SIGNED_UP_VOLUNTEER_FOR_EVENT';
+export const SIGNED_UP_FOR_EVENT = 'SIGNED_UP_FOR_EVENT';
+export const SIGN_UP_FOR_EVENT_FAILURE = 'SIGN_UP_FOR_EVENT_FAILURE';
+
+export const signUpForEvent = (event, user, dispatch) => {
+  let volunteers = event.registeredVolunteers || [];
+  let events = user.registeredEvents || [];
+  let updatedEvent = {
+    ...event,
+    registeredVolunteers: [...volunteers, user.uid],
+  };
+  let updatedUser = {
+    ...user,
+    registeredEvents: [
+      ...events, {
+        nameOfEvent: event.nameOfEvent,
+        pointOfContact: event.pointOfContact,
+        date: event.date,
+        startTime: event.startTime,
+        endTime: event.endTime,
+        location: `${event.city}, ${event.state}`,
+        eventId: event.eventId,
+        orgId: event.orgId,
+      },
+    ],
+  };
+  
+  dispatch(action(SIGN_UP_FOR_EVENT_INIT));
+  store
+    .collection('events')
+    .doc(event.eventId)
+    .set(updatedEvent)
+    .then(res => {
+      dispatch(action(SIGNED_UP_VOLUNTEER_FOR_EVENT, updatedEvent));
+      store.collection('users')
+        .doc(user.uid)
+        .set(updatedUser)
+        .then(res => {
+          dispatch(action(SIGNED_UP_FOR_EVENT, updatedUser));
+        })
+        .catch(error => {
+          dispatch(action(SIGN_UP_FOR_EVENT_FAILURE));
+        });
+    })
+    .catch(error => {
+      dispatch(action(SIGN_UP_FOR_EVENT_FAILURE));
+    });
+};
+
+export const CANCEL_SIGNED_UP_EVENT_INIT = 'CANCEL_SIGNED_UP_EVENT_INIT';
+export const CANCELED_VOLUNTEER_FOR_EVENT = 'CANCELED_VOLUNTEER_FOR_EVENT';
+export const CANCELED_SIGNED_UP_EVENT = 'CANCELED_SIGNED_UP_EVENT';
+export const CANCEL_SIGNED_UP_EVENT_FAILURE = 'CANCEL_SIGNED_UP_EVENT_FAILURE';
+
+export const cancelSignedUpEvent = (event, user, dispatch) => {
+  let updatedEvent = {
+    ...event,
+    registeredVolunteers: event.registeredVolunteers.filter(
+      uid => uid !== user.uid),
+  };
+  let updatedUser = {
+    ...user,
+    registeredEvents: user.registeredEvents.filter(
+      item => item.eventId !== event.eventId),
+  };
+  
+  dispatch(action(CANCEL_SIGNED_UP_EVENT_INIT));
+  store
+    .collection('events')
+    .doc(event.eventId)
+    .set(updatedEvent)
+    .then(res => {
+      dispatch(action(CANCELED_VOLUNTEER_FOR_EVENT, updatedEvent));
+      store.collection('users')
+        .doc(user.uid)
+        .set(updatedUser)
+        .then(res => {
+          dispatch(action(CANCELED_SIGNED_UP_EVENT, updatedUser));
+        })
+        .catch(error => {
+          dispatch(action(CANCEL_SIGNED_UP_EVENT_FAILURE));
+        });
+    })
+    .catch(error => {
+      dispatch(action(CANCEL_SIGNED_UP_EVENT_FAILURE));
+    });
+};

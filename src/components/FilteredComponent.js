@@ -28,7 +28,6 @@ export const FilteredComponent = Component => {
     let allEvents = [...events, ...recurringEvents].sort(
       (a, b) => a.nextDate - b.nextDate
     );
-
     if (!events || !filterCount) {
       return <Component events={allEvents} {...props} />;
     }
