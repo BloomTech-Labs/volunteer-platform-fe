@@ -70,6 +70,7 @@ export const CreateEvent = props => {
       orgImagePath: props.location.state.org.imagePath || '',
       orgPage: '',
       nameOfEvent: localState.nameOfEvent,
+      streetAddress: localState.streetAddress,
       city: localState.city,
       email: localState.email,
       phoneNumber: localState.phoneNumber,
@@ -105,9 +106,11 @@ export const CreateEvent = props => {
       if (event.recurringInfo.occurrenceEnds === 'After') {
         event.recurringInfo.occurrenceEndDate = '';
       }
-      createRecurringEvent(event, dispatch);
+      console.log('reg', event);
+      // createRecurringEvent(event, dispatch);
     } else {
-      createEvent(event, dispatch);
+      console.log('rec', event);
+      // createEvent(event, dispatch);
     }
     setPageNumberState({
       pageNumber: 1,
@@ -209,7 +212,7 @@ export const CreateEvent = props => {
   return (
     <div>
       {pageNumberState.pageNumber && renderParts[pageNumberState.pageNumber]}
-      <CreateEventReview
+      {/* <CreateEventReview
         localState={localState}
         setLocalState={setLocalState}
         handleSubmit={handleFormPartSubmit}
@@ -218,7 +221,7 @@ export const CreateEvent = props => {
         autoFillState={autoFillState}
         handleReviewSubmit={handleReviewSubmit}
         cancelForm={cancelForm}
-      />
+      /> */}
     </div>
   );
 };

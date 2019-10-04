@@ -116,7 +116,9 @@ export const RecurringEvent = props => {
           name={'recurringEvent'}
           onChange={e => handleChange(e.target.name, e.target.value)}
           disabled={!dynamicDay}
-          defaultValue={localState.recurringEvent === 'Yes' ? 'Yes' : 'No'}
+          defaultValue={
+            localState.recurringInfo.recurringEvent === 'Yes' ? 'Yes' : 'No'
+          }
           className={'radioWrapper'}
           style={{ marginLeft: 100 }}
           layout={formLayouts.empty}

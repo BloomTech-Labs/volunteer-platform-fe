@@ -11,6 +11,26 @@ const { Option } = Select;
 
 export const CreateEventReviewEditForm = props => {
   const [state, dispatch] = useStateValue();
+  const [errorMessage, setErrorMessage] = useState({
+    nameOfEvent: false,
+    streetAddress: false,
+    city: false,
+    state: false,
+    typesOfCauses: false,
+    volunteerRequirements: false,
+    interest: false,
+    numberOfVolunteers: false,
+    phoneNumber: false,
+    firstName: false,
+    lastName: false,
+    email: false,
+    date: false,
+    startTime: false,
+    endTime: false,
+    eventDetails: false,
+    website: false,
+    otherNotes: false,
+  });
   const { localState, setLocalState, setEdit } = props;
 
   const causeAreaTags = state.tags.causeAreas.map(tag => {
@@ -29,6 +49,24 @@ export const CreateEventReviewEditForm = props => {
     return <Option key={tag}>{tag}</Option>;
   });
 
+  const checkRequired = () => {
+    let errors = {};
+    let errorCount = 0;
+    for (let key in errorMessage) {
+      if (!(key in localState)) {
+        errorCount++;
+        errors = {
+          ...errors,
+          [key]: 'This field is required.',
+        };
+      }
+    }
+    setErrorMessage({ ...errorMessage, ...errors });
+    if (!errorCount) {
+      handleForm();
+    }
+  };
+
   const handleValue = (name, value) => {
     setLocalState({
       ...localState,
@@ -36,7 +74,7 @@ export const CreateEventReviewEditForm = props => {
     });
   };
 
-  const handleCancel = () => {
+  const handleForm = () => {
     setEdit(false);
   };
 
@@ -51,7 +89,7 @@ export const CreateEventReviewEditForm = props => {
         <StyledEditEvent>
           <StyledButtons>
             <div className="icon">
-              <Icon type="save" onClick={() => setEdit(false)} />
+              <Icon type="save" onClick={() => checkRequired()} />
             </div>
             <div className="icon">
               <Icon type="edit" theme="twoTone" twoToneColor="#52c41a" />
@@ -194,11 +232,11 @@ export const CreateEventReviewEditForm = props => {
                 />
               )}
               <div className="buttonStyles">
-                <StyledButton type="primary" onClick={handleCancel}>
+                <StyledButton type="primary" onClick={() => handleForm()}>
                   Cancel
                 </StyledButton>
                 <StyledButton
-                  onClick={() => setEdit(false)}
+                  onClick={() => checkRequired()}
                   type="primary"
                   width="fit-content"
                 >
