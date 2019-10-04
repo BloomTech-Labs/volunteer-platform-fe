@@ -7,7 +7,7 @@ import { Tag } from 'antd';
 
 export const Event = ({ event }) => {
   //logic
-  const [{ org, events }, dispatch] = useStateValue();
+  const [{ org, events, auth }, dispatch] = useStateValue();
 
   let ableToDelete = false;
 

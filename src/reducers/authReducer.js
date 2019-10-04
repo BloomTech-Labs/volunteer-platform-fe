@@ -14,6 +14,14 @@ import {
   NO_VOLUNTEERS_REGISTERED,
   GET_TOP_VOLUNTEERS,
 } from '../actions/auth';
+import {
+  SIGN_UP_FOR_EVENT_INIT,
+  SIGNED_UP_FOR_EVENT,
+  SIGN_UP_FOR_EVENT_FAILURE,
+  CANCEL_SIGNED_UP_EVENT_INIT,
+  CANCELED_SIGNED_UP_EVENT,
+  CANCEL_SIGNED_UP_EVENT_FAILURE,
+} from '../actions/events';
 
 export const authReducer = (state, action) => {
   
@@ -76,7 +84,35 @@ export const authReducer = (state, action) => {
         topVolunteers: [],
         topVolunteersError: 'There are no volunteers registered',
       };
-
+    case SIGN_UP_FOR_EVENT_INIT:
+      return {
+        ...state,
+        signUpEventError: null
+      };
+    case SIGNED_UP_FOR_EVENT:
+      return {
+        ...state,
+        registeredUser: action.payload,
+      };
+    case SIGN_UP_FOR_EVENT_FAILURE:
+      return {
+        ...state,
+        signUpEventError: 'Error signing up event'
+      };
+    case CANCEL_SIGNED_UP_EVENT_INIT:
+      return {
+        ...state,
+        cancelSignedUpEventError: null,
+      };
+    case CANCELED_SIGNED_UP_EVENT:
+      return {
+        registeredUser: action.payload,
+      };
+    case CANCEL_SIGNED_UP_EVENT_FAILURE:
+      return {
+        ...state,
+        cancelSignedUpEventError: 'Error canceling signed up event'
+      };
     default:
       return state;
   }
