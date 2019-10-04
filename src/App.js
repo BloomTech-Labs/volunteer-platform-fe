@@ -156,7 +156,10 @@ function App(){
                 component={OrganizationDashboard}
               />
               <RegisterRoute path={'/register'} component={Signup}/>
-              <Route path={'/messages'} component={Message}/>
+              <Route path={'/messages'} render={props =>
+                <Message {...props} width={dimensions.width}/>
+              }
+              />
               
               <RegisteredAndLoggedInRoute
                 path={'/profile'}
