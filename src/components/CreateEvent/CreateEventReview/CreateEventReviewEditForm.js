@@ -33,6 +33,7 @@ export const CreateEventReviewEditForm = props => {
   });
   const { localState, setLocalState, setEdit } = props;
 
+  console.log('local', localState);
   const causeAreaTags = state.tags.causeAreas.map(tag => {
     return (
       <Option key={tag} value={tag}>
@@ -50,6 +51,7 @@ export const CreateEventReviewEditForm = props => {
   });
 
   const checkRequired = () => {
+    console.log('fre');
     let errors = {};
     let errorCount = 0;
     for (let key in errorMessage) {
