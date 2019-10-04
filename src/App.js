@@ -40,7 +40,7 @@ function App(){
   const [collapsed, setCollapsed] = useState(false);
   const [dimensions, setDimensions] = useState({
     width: window.innerWidth,
-    height: document.body.scrollHeight,
+    height: document.body.clientHeight,
   });
   const [subscriptions, setSubscriptions] = useState({});
   
@@ -127,7 +127,7 @@ function App(){
               <StyledMenuButton
                 collapsed={collapsed ? 1 : 0}
                 className="trigger"
-                type={collapsed ? 'menu-fold' : 'menu-unfold'}
+                type={collapsed ? 'menu-unfold' : 'menu-fold'}
                 onClick={() => setCollapsed(!collapsed)}
               />
             )}
@@ -139,7 +139,8 @@ function App(){
             <Switch>
               <LoginRoute path={'/login'} component={Login}/>
               <LoginRoute path={'/signup'} component={Login}/>
-              <Route exact path={'/'} component={LandingPage}/>
+              <Route exact path={'/'} render={props => <LandingPage {...props}
+                                                                    collapsed={collapsed}/>}/>
               <Route path={'/organization/:id'} component={Organization}/>
               <ProtectedRoute path={'/dashboard'} component={MainDashboard}/>
               <RegisteredAndLoggedInRoute
@@ -178,7 +179,7 @@ function App(){
 
 const StyledMenuButton = styled(Icon)`
   && {
-    margin-right: ${props => (props.collapsed ? '30px' : '230px')};
+    margin-left: ${props => (props.collapsed ? '30px' : '230px')};
     font-size: 2rem;
     margin-top: 20px;
     transition: all 0.2s;
@@ -188,7 +189,7 @@ const StyledMenuButton = styled(Icon)`
 const StyledSider = styled(Sider)`
   &&& {
     position: absolute;
-    right: 0;
+    left: 0;
     z-index: 100;
     min-height: 100vh;
     height: ${props => (props.height ? `${props.height}px` : '100%')};
@@ -204,8 +205,6 @@ const StyledApp = styled.div`
 
 const StyledContent = styled(Content)`
   && {
-    padding-right: ${props =>
-  props.width > 900 && props.loggedIn ? '15rem' : 0};
     padding-bottom: ${props => props.theme.footerPadding};
   }
 `;
