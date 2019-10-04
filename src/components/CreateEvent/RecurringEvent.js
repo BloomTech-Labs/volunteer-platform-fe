@@ -50,15 +50,8 @@ export const RecurringEvent = props => {
     });
   };
 
-  const handleCheckBox = checked => {
-    setLocalState({
-      ...localState,
-      recurringEvent: checked.target.value,
-    });
-  };
-
-  const handleRepeatPeriod = period => {
-    if (period === 'Other') {
+  const handleChange = (name, value) => {
+    if (value === 'Other') {
       setFormState({
         ...formState,
         recurringBoolean: true,
@@ -68,53 +61,7 @@ export const RecurringEvent = props => {
       ...localState,
       recurringInfo: {
         ...localState.recurringInfo,
-        repeatTimePeriod: period,
-      },
-    });
-  };
-
-  const handleOccurrenceEndDate = date => {
-    setLocalState({
-      ...localState,
-      recurringInfo: {
-        ...localState.recurringInfo,
-        occurrenceEndDate: date,
-      },
-    });
-  };
-  const handleOccurrences = occurrence => {
-    setLocalState({
-      ...localState,
-      recurringInfo: {
-        ...localState.recurringInfo,
-        occurrenceEnds: occurrence.target.value,
-      },
-    });
-  };
-  const handleOccurrencesEndsAfter = number => {
-    setLocalState({
-      ...localState,
-      recurringInfo: {
-        ...localState.recurringInfo,
-        occurrenceEndsAfter: number,
-      },
-    });
-  };
-  const handleEveryValue = value => {
-    setLocalState({
-      ...localState,
-      recurringInfo: {
-        ...localState.recurringInfo,
-        repeatEveryValue: value,
-      },
-    });
-  };
-  const handleRepeatEvery = value => {
-    setLocalState({
-      ...localState,
-      recurringInfo: {
-        ...localState.recurringInfo,
-        repeatEvery: value,
+        [name]: value,
       },
     });
   };
@@ -124,12 +71,10 @@ export const RecurringEvent = props => {
       ...localState,
       recurringInfo: {
         ...localState.recurringInfo,
-        ...values,
+        values,
       },
     });
-    setFormState({
-      recurringBoolean: false,
-    });
+    closeModal();
   };
 
   const periodOfTime = timePeriodOptions.map(period => {
@@ -168,7 +113,8 @@ export const RecurringEvent = props => {
     <StyledRecurringEvent>
       <div>
         <Radio.Group
-          onChange={handleCheckBox}
+          name={'recurringEvent'}
+          onChange={e => handleChange(e.target.name, e.target.value)}
           disabled={!dynamicDay}
           defaultValue={localState.recurringEvent === 'Yes' ? 'Yes' : 'No'}
           className={'radioWrapper'}
@@ -178,16 +124,15 @@ export const RecurringEvent = props => {
           <Radio value={'Yes'}>Yes</Radio>
           <Radio value={'No'}>No</Radio>
         </Radio.Group>
-        {localState.recurringEvent === 'Yes' && (
+        {localState.recurringInfo.recurringEvent === 'Yes' && (
           <div>
             <div className={localState.recurringEvent === 'Yes' ? 'hide' : ''}>
               <StyledSelect
                 style={{ width: 200 }}
                 name={'Repeat Time Period'}
                 defaultValue={localState.recurringInfo.repeatTimePeriod}
-                onChange={handleRepeatPeriod}
+                onChange={value => handleChange('repeatTimePeriod', value)}
                 layout={formLayouts.empty}
-                label={''}
               >
                 {repeatTimePeriod}
               </StyledSelect>
@@ -202,7 +147,7 @@ export const RecurringEvent = props => {
                   ? 'After'
                   : 'Never'
               }
-              onChange={handleOccurrences}
+              onChange={e => handleChange('occurrenceEnds', e.target.value)}
               className={'radioWrapper'}
             >
               <Radio value={'On'}>On</Radio>
@@ -212,7 +157,7 @@ export const RecurringEvent = props => {
             <DatePicker
               name={'Occurrence End Date'}
               format={'MM/DD/YYYY'}
-              onChange={handleOccurrenceEndDate}
+              onChange={value => handleChange('occurrenceEndDate', value)}
               defaultValue={localState.recurringInfo.occurrenceEndDate}
               disabledDate={current =>
                 current && current < moment().endOf('day')
@@ -227,7 +172,7 @@ export const RecurringEvent = props => {
               name={'Occurrence Ends After'}
               min={0}
               defaultValue={localState.recurringInfo.occurrenceEndsAfter}
-              onChange={handleOccurrencesEndsAfter}
+              onChange={value => handleChange('occurrenceEndsAfter', value)}
               disabled={
                 localState.recurringInfo.occurrenceEnds === 'After'
                   ? false
@@ -260,14 +205,14 @@ export const RecurringEvent = props => {
               name={'Repeat every'}
               style={{ width: 100 }}
               defaultValue={localState.recurringInfo.repeatEvery}
-              onChange={handleRepeatEvery}
+              onChange={value => handleChange('repeatEvery', value)}
               min={0}
             />
             <AntSelect
               style={{ width: 100 }}
               name={'Repeat every value'}
               defaultValue={localState.recurringInfo.repeatEveryValue}
-              onChange={handleEveryValue}
+              onChange={value => handleChange('repeatEveryValue', value)}
             >
               {periodOfTime}
             </AntSelect>
@@ -276,6 +221,7 @@ export const RecurringEvent = props => {
                 name={'Days'}
                 defaultValue={localState.recurringInfo.days}
                 options={dayOptions}
+                onChange={value => handleChange('days', value)}
                 notRequired
               />
             )}
@@ -284,6 +230,7 @@ export const RecurringEvent = props => {
                 name={'Days'}
                 defaultValue={localState.recurringInfo.days}
                 options={dayOptions}
+                onChange={value => handleChange('days', value)}
                 notRequired
               />
             )}
@@ -291,6 +238,7 @@ export const RecurringEvent = props => {
               <AntSelect
                 name={'Monthly Period'}
                 defaultValue={localState.recurringInfo.monthlyPeriod}
+                onChange={value => handleChange('monthlyPeriod', value)}
                 notRequired
               >
                 {monthlyPeriod}
@@ -300,6 +248,7 @@ export const RecurringEvent = props => {
               <AntSelect
                 name={'Monthly Period'}
                 defaultValue={localState.recurringInfo.monthlyPeriod}
+                onChange={value => handleChange('monthlyPeriod', value)}
                 notRequired
               >
                 {monthlyPeriod}

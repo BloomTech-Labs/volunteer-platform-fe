@@ -91,11 +91,12 @@ export const CreateEvent = props => {
         lastName: localState.lastName,
         email: localState.email,
       },
+      eventDetails: localState.eventDetails,
       website: localState.website,
       otherNotes: localState.otherNotes,
     };
 
-    if (recurringEvent === 'Yes') {
+    if (recurringInfo.recurringEvent === 'Yes') {
       event.recurringInfo = recurringInfo;
       if (event.recurringInfo.occurrenceEnds === 'On') {
         event.recurringInfo.occurrenceEndDate = event.recurringInfo.occurrenceEndDate.unix();
@@ -204,10 +205,20 @@ export const CreateEvent = props => {
     ),
     // 6: <SuccessModal />,
   };
-
+  console.log('localstate', localState);
   return (
     <div>
       {pageNumberState.pageNumber && renderParts[pageNumberState.pageNumber]}
+      <CreateEventReview
+        localState={localState}
+        setLocalState={setLocalState}
+        handleSubmit={handleFormPartSubmit}
+        handlePageBack={handlePageBack}
+        pageNumber={pageNumberState.pageNumber}
+        autoFillState={autoFillState}
+        handleReviewSubmit={handleReviewSubmit}
+        cancelForm={cancelForm}
+      />
     </div>
   );
 };
