@@ -178,7 +178,7 @@ function App() {
               />
               
               <RegisteredAndLoggedInRoute
-                path={'/profile'}
+                path={`/profile/:id`}
                 component={UserProfile}
               />
               <Route component={NotFound}/>
