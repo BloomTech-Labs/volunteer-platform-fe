@@ -73,6 +73,7 @@ export const CreateEvent = props => {
       nameOfEvent: localState.nameOfEvent,
       streetAddress: localState.streetAddress,
       city: localState.city,
+      state: localState.state,
       email: localState.email,
       phoneNumber: localState.phoneNumber,
       date: localState.date.unix(),

@@ -58,10 +58,10 @@ export const CreateEventReviewEditForm = props => {
       streetAddress &&
       city &&
       localState.state &&
-      typesOfCauses.length > 1 &&
-      volunteerRequirements.length > 1 &&
-      interest.length > 1 &&
-      numberOfVolunteers > 1 &&
+      typesOfCauses.length > 0 &&
+      volunteerRequirements.length > 0 &&
+      interest.length > 0 &&
+      numberOfVolunteers > 0 &&
       phoneNumber &&
       firstName &&
       lastName &&
@@ -164,7 +164,7 @@ export const CreateEventReviewEditForm = props => {
               >
                 {causeAreaTags}
               </Select>
-              {error && typesOfCauses.length < 1 && (
+              {error && !typesOfCauses.length > 0 && (
                 <span className="error-message error-span left-aligned">
                   {error}
                 </span>
@@ -178,7 +178,7 @@ export const CreateEventReviewEditForm = props => {
               >
                 {requirementTags}
               </Select>
-              {error && volunteerRequirements.length < 1 && (
+              {error && !volunteerRequirements.length > 0 && (
                 <span className="error-message error-span left-aligned">
                   {error}
                 </span>
@@ -192,7 +192,7 @@ export const CreateEventReviewEditForm = props => {
               >
                 {interestTags}
               </Select>
-              {error && interest.length < 1 && (
+              {error && !interest.length > 0 && (
                 <span className="error-message error-span left-aligned">
                   {error}
                 </span>
@@ -204,7 +204,7 @@ export const CreateEventReviewEditForm = props => {
                 value={numberOfVolunteers}
                 onChange={value => handleValue('numberOfVolunteers', value)}
               />
-              {error && numberOfVolunteers < 1 && (
+              {error && !numberOfVolunteers > 0 && (
                 <span className="error-message error-span left-aligned">
                   {error}
                 </span>
