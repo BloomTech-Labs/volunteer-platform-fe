@@ -5,7 +5,7 @@ import { useStateValue } from '../hooks/useStateValue';
 import { UserBio, UserInfo, UserEvents } from '../components/UserProfile/index';
 import { OrgPhoto } from '../components/OrgDashboard/index';
 import { Calendar } from 'antd';
-import { updateRegisteredUser, getFileUrl, deleteUserImage, getAllEventsByUser } from '../actions';
+import { updateRegisteredUser, getFileUrl, deleteUserImage } from '../actions';
 
 export const UserProfile = (props) => {
   const [state, dispatch] = useStateValue();
@@ -25,12 +25,6 @@ export const UserProfile = (props) => {
       }
     }
   }, [state.auth.registeredUser]);
-
-  useEffect(() => {
-    if (user) {
-      getAllEventsByUser(user, dispatch);
-    }
-  }, [user, dispatch])
 
   const onFileUpload = path => {
     getFileUrl(path)
@@ -78,7 +72,7 @@ export const UserProfile = (props) => {
           <Calendar fullscreen={false} />
         </div>
         <div className='profile-bottom-right'>
-          <UserEvents events={state.events.events}/>
+          <UserEvents events={user.registeredEvents}/>
         </div>
       </div>
     </StyledDiv>
@@ -91,7 +85,7 @@ const StyledDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 1100px;
+  margin-left: 250px;
 
   h3 {
     align-self: flex-start;
