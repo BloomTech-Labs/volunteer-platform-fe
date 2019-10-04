@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-
 import { useStateValue } from '../hooks/useStateValue';
 import { createEvent, createRecurringEvent } from '../actions';
 import moment from 'moment';
-
-import CreateEventPartOne from '../components/CreateEvent/CreateEventPartOne';
-import CreateEventPartTwo from '../components/CreateEvent/CreateEventPartTwo';
-import CreateEventPartThree from '../components/CreateEvent/CreateEventPartThree';
-import CreateEventPartFour from '../components/CreateEvent/CreateEventPartFour';
+import {
+  CreateEventPartOne,
+  CreateEventPartTwo,
+  CreateEventPartThree,
+  CreateEventPartFour,
+  SuccessModal,
+} from '../components/CreateEvent';
 import CreateEventReview from '../components/CreateEvent/CreateEventReview/CreateEventReview';
 
 export const CreateEvent = props => {
@@ -61,17 +62,6 @@ export const CreateEvent = props => {
     }
   }, [props.location.state.org]);
 
-  //Date Format
-
-  const removeUndefinied = event => {
-    Object.keys(event).forEach(key => {
-      if (event[key] === undefined) {
-        delete event[key];
-      }
-      return event;
-    });
-  };
-
   //Handle Submit for Form
   const handleReviewSubmit = () => {
     const event = {
@@ -114,12 +104,8 @@ export const CreateEvent = props => {
       if (event.recurringInfo.occurrenceEnds === 'After') {
         event.recurringInfo.occurrenceEndDate = '';
       }
-      // removeUndefinied(event);
-      console.log('recurring', event);
       createRecurringEvent(event, dispatch);
     } else {
-      // removeUndefinied(event);
-      console.log('regular', event);
       createEvent(event, dispatch);
     }
     setPageNumberState({
@@ -136,7 +122,6 @@ export const CreateEvent = props => {
 
   //Handle Form Parts Submit
   const handleFormPartSubmit = values => {
-    console.log('part', values);
     if (pageNumberState.pageNumber) {
       setAutoFillState({
         ...autoFillState,
@@ -217,8 +202,8 @@ export const CreateEvent = props => {
         cancelForm={cancelForm}
       />
     ),
+    // 6: <SuccessModal />,
   };
-  console.log('localState', localState);
 
   return (
     <div>
