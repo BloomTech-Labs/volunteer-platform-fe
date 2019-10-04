@@ -156,19 +156,22 @@ function App(){
                 path={'/org-dashboard'}
                 component={OrganizationDashboard}
               />
+              <RegisterRoute path={'/register'} component={Signup}/>
+              <Route path={'/messages'} render={props =>
+                <Message {...props} width={dimensions.width}/>
+              }
+              />
 
-          <Route 
-            path={'/events/:id'}
-            render = {(props) => <EventCard {...props} state={state} /> }
-          />
-          
-          <RegisterRoute path={'/register'} component={Signup}/>
-          <Route path={'/messages'} component={Message}/>
-          
-          <RegisteredAndLoggedInRoute
-            path={'/profile'}
-            component={UserProfile}
-          />              <Route component={NotFound} />
+              <Route 
+                path={'/events/:id'}
+                render = {(props) => <EventCard {...props} state={state} /> }
+              />
+              
+              <RegisteredAndLoggedInRoute
+                path={'/profile'}
+                component={UserProfile}
+              />
+              <Route component={NotFound}/>
             </Switch>
           </StyledContent>
           <FooterDiv/>

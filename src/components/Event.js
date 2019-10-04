@@ -8,12 +8,8 @@ import moment from 'moment';
 import { Tag } from 'antd';
 
 export const Event = ({ event }) => {
-<<<<<<< HEAD
-  const [{ org, events }, dispatch] = useStateValue();
-=======
   //logic
   const [{ org, events, auth }, dispatch] = useStateValue();
->>>>>>> staging
 
   let ableToDelete = false;
 
