@@ -11,7 +11,7 @@ export const EventCard = (props) => {
     const [ localState, setLocalState ] = useState({
         interest: [], typesOfCauses: [] , volunteerRequirements: [], orgName: '',
         nameOfEvent: '', date: '', startTime: '', endTime: '' , numberOfVolunteers: null,
-        eventDetails: '', otherNotes: '', nextDate: '', recurringInfo: {}, 
+        eventDetails: '', otherNotes: '', nextDate: '', recurringInfo: {},
     });
 
 // for setting events from state to our localState
@@ -26,9 +26,7 @@ useEffect(() => {
             if(id === event.eventId) {
                 return setLocalState(event);    
             } 
-            //else {
-            //     console.log('ID not equal to NonRecurring ID')
-            // }
+
         })
 
         if(EventN.length < 1) {
@@ -36,9 +34,6 @@ useEffect(() => {
                 if(id === event.eventId) {
                     return setLocalState(event)
                 }
-                // else{
-                //     console.log('ID not equal to Recurring ID')
-                // }
             })
         }
     }
@@ -70,17 +65,6 @@ console.log('LocalState', localState)
                     <div className='photo'>
                         <img src={manHiking} alt='dude' width={175} height={175} />
                     </div>
-                    {/* <div className= 'tags'>
-                        <div className='subtag' >
-                        <h5>Interest(s): {interest} </h5>
-                        </div>
-                        <div className='subtag' >
-                        <h5>Cause(s): {causes} </h5>
-                        </div>
-                        <div className='subtag' >
-                        <h5>Requiremetn(s): {requirements} </h5>
-                        </div>
-                    </div> */}
                     <div className= 'tags'>
                         <h5>Interests: </h5>
                             <div className='subtag' >
@@ -105,9 +89,14 @@ console.log('LocalState', localState)
                         {localState.eventDetails}
                     </div>
             </StyledEventDetails>
-            {/* <div style={divDetails}>
-                {localState.eventDetails}
-            </div> */}
+            <StyledEventTime>
+                    <div className='time'>
+                        <h5>{localState.startTime} - {localState.endTime}</h5>
+                    </div>
+                    <div className='info'>
+                        <h6>{localState.recurringInfo.days}</h6>
+                    </div>
+            </StyledEventTime>
         </div>
     )
 }
@@ -116,7 +105,7 @@ const StyledEventPage = styled(StyledCard)`
 && {
     margin-left: 15%;
     border-radius: 2px;
-    width: 70%;
+    width: 65%;
     max-width: 100%
 }   
 .card {
@@ -148,12 +137,35 @@ const StyledEventDetails = styled(StyledCard)`
     border-radius: 2px;
     margin-left: 15%;
     margin-top: 3%;
-    width: 50%;
+    width: 45%;
+    .container {
+        display:flex
+    }
     .details {
         border-bottom: 1px solid black
     }
 
     .description {
+        background-color: white;
+        padding: 1% 0;
+    }
+
+    
+}
+`;
+
+const StyledEventTime = styled(StyledCard)`
+&&& {
+    background-color:white;
+    border-radius: 2px;
+    margin-left: 15%;
+    margin-top: 3%;
+    width: 20%;
+    .time {
+        border-bottom: 1px solid black
+    }
+
+    .info {
         background-color: white;
         padding: 1% 0;
     }
