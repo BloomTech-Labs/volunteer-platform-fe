@@ -1,6 +1,6 @@
-import { store } from '../firebase/FirebaseConfig';
-import { action } from './action';
-import { arrayUnion } from 'firebase';
+import {store} from '../firebase/FirebaseConfig';
+import {action} from './action';
+import {arrayUnion} from 'firebase';
 import firebase from '../firebase/FirebaseConfig';
 import moment from 'moment';
 
@@ -27,11 +27,11 @@ const attachMessageToUsersMessages = (to, from, message) => {
     .get()
     .then(res => {
       // message thread does not exist.
-      if (!res.exists) {
+      if (!res.exists){
         createNewMessageThread(from, to, message);
-      } else {
+      }else{
         const data = res.data();
-
+        
         res.ref
           .update({
             updatedAt: moment().unix(),
@@ -67,14 +67,14 @@ export const createNewMessageThread = (to, from, message = null) => {
     .doc(to.uid)
     .get()
     .then(res => {
-      if (!res.exists) {
+      if (!res.exists){
         store
           .collection(to.type)
           .doc(to.uid)
           .get()
           .then(res => {
             const contact = res.data();
-
+            
             const messageThread = {
               name:
                 to.type === 'organizations'
@@ -127,8 +127,8 @@ export const subscribeToMessages = (contact, dispatch) => {
     .collection('messages')
     .orderBy('updatedAt', 'desc')
     .onSnapshot(snapshot => {
-      if (snapshot.empty) {
-        dispatch(action(USER_HAS_NO_MESSAGES));
+      if (snapshot.empty){
+        dispatch(action(USER_HAS_NO_MESSAGES, contact.uid));
         return;
       }
       const messageThreads = [];
@@ -137,9 +137,9 @@ export const subscribeToMessages = (contact, dispatch) => {
         messageThread.id = doc.id;
         messageThreads.push(messageThread);
       });
-
-      const messageObject = { [contact.uid]: messageThreads };
-
+      
+      const messageObject = {[ contact.uid ]: messageThreads};
+      
       dispatch(action(COLLECTED_USER_MESSAGES, messageObject));
     });
 };
@@ -156,8 +156,9 @@ export const markMessagesRead = (contact, messageThread) => {
     .doc(contact.uid)
     .collection('messages')
     .doc(messageThread.id)
-    .update({ unreadMessages: 0 })
-    .then(res => {})
+    .update({unreadMessages: 0})
+    .then(res => {
+    })
     .catch(err => {
       console.log(err);
     });
