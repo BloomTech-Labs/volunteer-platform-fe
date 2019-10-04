@@ -81,7 +81,7 @@ export const Navigation = props => {
         </Menu.Item>
         <Menu.Divider />
         <Menu.Item>
-          <NavbarMenuLink to="/profile">Profile</NavbarMenuLink>
+          {state.auth.googleAuthUser && <NavbarMenuLink to={`/profile/${state.auth.googleAuthUser.uid}`}>Profile</NavbarMenuLink>}
         </Menu.Item>
         <SubMenu
           key={'sub1'}

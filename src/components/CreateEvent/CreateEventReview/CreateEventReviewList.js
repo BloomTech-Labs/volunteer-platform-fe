@@ -82,7 +82,7 @@ export const CreateEventReviewList = props => {
             <p>{localState.email}</p>
             <h4>Date</h4>
             <p>{localState.date.format('LL')}</p>
-            {localState.recurringEvent === 'Yes' && (
+            {localState.recurringInfo.recurringEvent === 'Yes' && (
               <RecurringInfoReview localState={localState} />
             )}
             <h4>Start Time</h4>
@@ -93,13 +93,13 @@ export const CreateEventReviewList = props => {
             <p>{localState.eventDetails}</p>
             <h4>Website</h4>
             <p>{localState.website}</p>
-            {localState.otherNotes && <h4>Other Notes</h4>}
-            {localState.otherNotes && <p>{localState.otherNotes}</p>}
+            <h4>Other Notes</h4>
+            <p>{localState.otherNotes}</p>
           </div>
           <StyledButton key="cancel" onClick={handlePageBack}>
             Cancel
           </StyledButton>
-          ,
+
           <StyledButton key="submit" onClick={handleReviewSubmit}>
             Confirm
           </StyledButton>
