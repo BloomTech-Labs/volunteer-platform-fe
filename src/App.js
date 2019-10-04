@@ -74,9 +74,9 @@ function App(){
   }, [state.auth.googleAuthUser]);
   
   useEffect(() => {
-    debugger;
+    
     state.org.userOrganizations.forEach(org => {
-      debugger;
+      
       if (!subscriptions[ org.orgId ]){
         const messageSub = subscribeToMessages({
           type: 'organizations',
