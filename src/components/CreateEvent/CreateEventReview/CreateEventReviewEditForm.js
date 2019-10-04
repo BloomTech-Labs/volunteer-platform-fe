@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   AntInput,
   AntSelect,
@@ -10,13 +10,31 @@ import {
   AntTimePicker,
   WrappedAntForm,
 } from '../../../styled';
-import { Icon } from 'antd';
+import { Icon, Select } from 'antd';
 import styled from 'styled-components';
 import createEventImg from '../../../assets/undraw_blooming_jtv6.svg';
 import RecurringEvent from '../RecurringEvent';
 
+const { Option } = Select;
+
 export const CreateEventReviewEditForm = props => {
-  const { localState, setLocalState, setEdit } = props;
+  const { localState, setLocalState, setEdit, state } = props;
+
+  const causeAreaTags = state.tags.causeAreas.map(tag => {
+    return (
+      <Option key={tag} value={tag}>
+        {tag}
+      </Option>
+    );
+  });
+
+  const requirementTags = state.tags.requirements.map(tag => {
+    return <Option key={tag}>{tag}</Option>;
+  });
+
+  const interestTags = state.tags.interests.map(tag => {
+    return <Option key={tag}>{tag}</Option>;
+  });
 
   const handleSubmit = values => {
     console.log('values', values);
@@ -67,11 +85,17 @@ export const CreateEventReviewEditForm = props => {
               <AntInput name={'City'} />
               <AntInput name={'State'} />
               <h4>Tyeps of Causes</h4>
-              <AntInput name={'Types of Causes'} mode="multiple" />
+              <AntSelect name={'Types of Causes'} mode="multiple">
+                {causeAreaTags}
+              </AntSelect>
               <h4>Volunteer Requirments</h4>
-              <AntInput name={'Volunteer Requirements'} mode="multiple" />
+              <AntSelect name={'Volunteer Requirements'} mode="multiple">
+                {requirementTags}
+              </AntSelect>
               <h4>Interests</h4>
-              <AntInput name={'Interest'} mode="multiple" />
+              <AntSelect name={'Interest'} mode="multiple">
+                {interestTags}
+              </AntSelect>
               <h4>Volunteers Needed</h4>
               <p>{localState.numberOfVolunteers}</p>
               <AntInputNumber name={'Number of Volunteers'} min={0} />

@@ -60,18 +60,12 @@ export const CreateEventPartTwo = props => {
     });
   };
 
-  console.log('autoofil', autoFillState);
-  //Handle Submit push values to parent state
-
   const hanldePartTwoSubmit = values => {
     console.log('values', values);
     setLocalState({
       ...localState,
       ...values,
       values,
-      // date: values.date,
-      // startTime: values.startTime,
-      // endTime: values.endTime,
     });
     setAutoFillState({
       ...autoFillState,

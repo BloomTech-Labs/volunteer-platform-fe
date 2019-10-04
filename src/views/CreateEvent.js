@@ -212,16 +212,25 @@ export const CreateEvent = props => {
         autoFillState={autoFillState}
         handleReviewSubmit={handleReviewSubmit}
         cancelForm={cancelForm}
+        state={state}
       />
     ),
-    6: <SuccessModal />,
+    // 6: <SuccessModal />,
   };
-  console.log('localState', localState);
 
   return (
     <div>
       {pageNumberState.pageNumber && renderParts[pageNumberState.pageNumber]}
-      {/* <SuccessModal /> */}
+      <CreateEventReview
+        localState={localState}
+        setLocalState={setLocalState}
+        handleSubmit={handleFormPartSubmit}
+        handlePageBack={handlePageBack}
+        pageNumber={pageNumberState.pageNumber}
+        autoFillState={autoFillState}
+        handleReviewSubmit={handleReviewSubmit}
+        cancelForm={cancelForm}
+      />
     </div>
   );
 };

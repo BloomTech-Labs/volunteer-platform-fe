@@ -20,13 +20,10 @@ export const CreateEventPartThree = props => {
     autoFillState,
     pageNumber,
   } = props;
-  let requirementTags = [];
 
-  if (state.tags.requirements) {
-    requirementTags = state.tags.requirements.map(tag => {
-      return <Option key={tag}>{tag}</Option>;
-    });
-  }
+  const requirementTags = state.tags.requirements.map(tag => {
+    return <Option key={tag}>{tag}</Option>;
+  });
 
   const interestTags = state.tags.interests.map(tag => {
     return <Option key={tag}>{tag}</Option>;
