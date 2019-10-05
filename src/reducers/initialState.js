@@ -105,12 +105,25 @@ export const initialState = {
     isLoading: false,
     error: '',
   },
+  comments: {
+    isLoading: false,
+    error: '',
+    isLoadingReplyToComment: false,
+  },
 };
 
 /**
  * State
  * @module State
  *
+ */
+
+/**
+ * @typedef comments
+ * @type {Object}
+ * @property {Boolean} isLoading If submitting message has started.
+ * @property {String} error Error message if failed.
+ * @property {String} isLoadingReplyToComment Error message if failed.
  */
 
 /**

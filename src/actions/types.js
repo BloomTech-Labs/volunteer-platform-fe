@@ -90,10 +90,14 @@
 
 /**
  * @typedef Comment
+ * @type {Object}
+ * @property {String} commentId Unique identifier string.
  * @property {String} comment The comment text.
+ * @property {String} usersUid Uid of the user who made the comment.
  * @property {String} avatarUrl Url of the persons avatar image.
  * @property {Number} createdAt Unix timestamp the moment he comment was made.
  * @property {Comment[]} [replies] Replies to the comment.
+ * @property {String} name Persons name who made the comment.
  */
 
 /**

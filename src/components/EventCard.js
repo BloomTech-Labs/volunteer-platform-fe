@@ -8,8 +8,17 @@ import {findNext} from '../utility/findNextRecurEvent';
 import PropTypes from 'prop-types';
 import Editor from './EventComments/Editor';
 import CommentList from './EventComments/CommentsList';
+import {useStateValue} from '../hooks/useStateValue';
+import {addComment, addCommentToComment} from '../actions';
+import uuid4 from 'uuid4';
 
 export const EventCard = ({event, match}) => {
+  
+  const [{auth, comments}, dispatch] = useStateValue();
+  
+  useEffect(() => {
+    debugger;
+  }, [comments]);
   
   const [localState, setLocalState] = useState({
     interest: [],
@@ -54,6 +63,32 @@ export const EventCard = ({event, match}) => {
   
   console.log('LocalState', localState);
   
+  const submitComment = (text) => {
+    debugger;
+    const comment = {
+      commentId: uuid4(),
+      comment: text.comment,
+      avatarUrl: auth.registeredUser.imageUrl,
+      createdAt: moment().unix(),
+      usersUid: auth.googleAuthUser.uid,
+      name: auth.registeredUser.firstName + ' ' + auth.registeredUser.lastName,
+    };
+    addComment(comment, event, dispatch);
+  };
+  
+  const handleAddCommentToComment = (text, comment) => {
+    debugger;
+    const newComment = {
+      commentId: uuid4(),
+      comment: text.comment,
+      avatarUrl: auth.registeredUser.imageUrl,
+      createdAt: moment().unix(),
+      userUid: auth.googleAuthUser.uid,
+      name: auth.registeredUser.firstName + ' ' + auth.registeredUser.lastName,
+    };
+    addCommentToComment(newComment, event, comment, dispatch);
+  };
+  
   return (
     <div>
       <div style={heading}>
@@ -92,8 +127,10 @@ export const EventCard = ({event, match}) => {
           <h6>{localState.recurringInfo.days}</h6>
         </div>
       </StyledEventTime>
-      <CommentList comments={event.comments}/>
-      <Editor/>
+      <CommentList comments={event.comments}
+                   addCommentToComment={handleAddCommentToComment}
+                   isLoading={comments.isLoadingReplyToComment}/>
+      <Editor onSubmit={submitComment} submitting={comments.isLoading}/>
     </div>
   );
 };

@@ -8,10 +8,11 @@ const Event = (props) => {
   const [{events}, dispatch] = useStateValue();
   
   useEffect(() => {
+    debugger;
     if (props.match.params.id){
       getEventById(props.match.params.id, dispatch);
     }
-  }, [props.match.params]);
+  }, []);
   return (
     <div>
       <EventCard event={events.event}/>
