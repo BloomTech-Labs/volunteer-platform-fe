@@ -94,14 +94,32 @@
  * @property {String} orgId Id of the organization that created the event.
  * @property {String} volunteerType The volunteer event type
  * @property {String} numberOfPeople The number of people needed at event.
- * @property {number} startTime Start time timestamp
- * @property {number} stopTime Timestamp when the event is supposed to end.
+ * @property {String} startTime String representation of start time.
+ * @property {Number} startTimeStamp Unix timestamp of start time.
+ * @property {String} stopTime String Unix timestamp of stop time.
+ * @property {Number} stopTimeStamp Timestamp when the event is supposed to end.
  * @property {String} pointOfContact Contact information for people to contact.
  * @property {String[]} tags Array of string values
  * @property {String} description Description of the event.
  * @property {String} volunteerRequirements Requirements volunteers must meet.
  * @property {EventAttendees} Object where the keys are dates and userId array
+ * @property {RecurringEventInfo} recurringInfo Info about the recurring event.
+ * @property {RegisteredVolunteers} registeredVolunteers Volunteers registered.
  *
+ */
+
+/**
+ * @typedef {{unixTimeStamp: Number, String[]}} RegisteredVolunteers
+ */
+
+/**
+ * @typedef RecurringEventInfo
+ * @type{Object}
+ * @property {Number} occurrenceEndDate Unix timestamp of end date.
+ * @property {Number} occurrenceEnds Number of occurrences before it ends.
+ * @property {Number} occurrenceEndsAfter Number of occurrences before it ends.
+ * @property {String} [recurringEvent] Yes or No for if it is a recurring event.
+ * @property {String} repeatTimePeriod String indicating how it repeats.
  */
 
 /**

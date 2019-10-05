@@ -1,10 +1,17 @@
 import moment from 'moment';
-import { findNextCustom } from './findNextCustom';
-import { findNthWeek } from './findNthWeek';
+import {findNextCustom} from './findNextCustom';
+import {findNthWeek} from './findNthWeek';
 
+/**
+ * Find the next event date.
+ * @function
+ * @param {Number} date unix time stamp
+ * @param {RecurringEventInfo} info
+ * @returns {Number} unix timestamp
+ */
 export const findNext = (date, info) => {
-  let keyWord = info.repeatTimePeriod.split(' ')[0];
-  switch (keyWord) {
+  let keyWord = info.repeatTimePeriod.split(' ')[ 0 ];
+  switch (keyWord){
     case 'Custom':
       return findNextCustom(date, info);
     case 'Daily':
@@ -19,74 +26,95 @@ export const findNext = (date, info) => {
     case 'Monthly':
       return findNthWeek(moment().unix(), info, 1);
     case 'Annually':
-        //need to fix this to see if the date stored has occurred yet, if not then add a year
+      if (moment.unix(date).unix() - moment().unix() < 0){
+        return date;
+      }
       return moment
         .unix(date)
         .add(1, 'year')
         .unix();
     case 'Weekdays':
-      let today = moment().day();
-      if (today === 5 || today === 6) {
-        return moment()
+      let today = moment.unix(date).day();
+      if (today === 6 || today === 7){
+        return moment.unix(date)
           .day(8)
           .unix();
-      } else {
-        return moment()
-          .add(1, 'days')
-          .unix();
+      }else{
+        return moment.unix(date).unix();
       }
   }
 };
 
+/**
+ *
+ * @param {RecurringEvent} event The recurring event
+ * @returns {*}
+ */
+
 export const findNextEvents = event => {
-  let keyWord = event.recurringInfo.repeatTimePeriod.split(' ')[0];
+  debugger;
+  let keyWord = event.recurringInfo.repeatTimePeriod.split(' ')[ 0 ];
   event.registeredVolunteers = event.registeredVolunteers || {};
   let arrayOfDates = event.registeredVolunteers
     ? [...Object.keys(event.registeredVolunteers)].sort()
     : [];
+  
+  // find the latest day we will add the recurring event to events.
   let end = findEndDate(event.recurringInfo, arrayOfDates);
-  if (!end) return event;
+  if (!end){
+    // if there are no dates to add then return. We are done here.
+    return event;
+  }
   arrayOfDates = arrayOfDates.filter(timeStamp => moment().unix() < timeStamp);
-  let eventDay = findNext(event.date, event.recurringInfo);
-
+  
+  let eventDay = moment(moment.unix(findNext(event.date, event.recurringInfo))
+    .format('LL') + ' ' + moment.unix(event.startTimeStamp).format('LT'));
+  
+  const endUnix = end.maxDate.unix();
+  let eventDayUnix = eventDay.unix();
+  
+  // calculate the difference in dates.
+  let diff = endUnix - eventDayUnix;
   while (
-    end.maxDate.diff(moment.unix(eventDay).startOf('day')) > 0 &&
+    diff > 0 &&
     arrayOfDates.length < end.maxEvents
-  ) {
-    arrayOfDates.push(eventDay);
-    switch (keyWord) {
+    ){
+    arrayOfDates.push(eventDay.unix());
+    switch (keyWord){
       case 'Daily':
-        eventDay = moment
-          .unix(eventDay)
-          .add(1, 'day')
-          .unix();
+        eventDay
+          .add(1, 'day');
         break;
       case 'Weekly':
-        eventDay = moment
-          .unix(eventDay)
-          .add(1, 'week')
-          .unix();
+        eventDay
+          .add(1, 'week');
+        break;
+      case 'Weekdays':
+        eventDay = moment(moment.unix(findNext(
+          eventDay.add(1, 'day').unix(),
+          event.recurringInfo)).format('LL') + ' ' +
+          moment.unix(event.startTimeStamp).format('LT'));
         break;
       case 'Annually':
-        eventDay = moment
-          .unix(eventDay)
-          .add(1, 'year')
-          .unix();
+        eventDay
+          .add(1, 'year');
         break;
       case 'Monthly':
-        eventDay = findNthWeek(
-          moment
-            .unix(eventDay)
-            .add(1, 'month')
-            .unix(),
+        eventDay = moment(moment.unix(findNthWeek(
+          eventDay.add(1, 'month').unix(),
           event.recurringInfo,
-          1
-        );
+          1,
+          )).format('LL') + ' '
+          + moment.unix(event.startTimeStamp).format('LT'));
     }
+    // recalculate the diff
+    diff = end.maxDate.unix() - eventDay.unix();
   }
-  for (let key of arrayOfDates) {
-    if (!event.registeredVolunteers[key]) {
-      event.registeredVolunteers[key] = [];
+  
+  // ensure the dates are added to the event
+  for (let key of arrayOfDates){
+    if (!event.registeredVolunteers[ key ]){
+      event.registeredVolunteers[ key ] = [];
     }
   }
   return event.registeredVolunteers;
@@ -96,17 +124,17 @@ const findEndDate = (info, arr) => {
   let endDate = info.occurrenceEndDate;
   let ends = info.occurrenceEnds; //'On', 'Never', 'After'
   let endsAfter = info.occurrenceEndsAfter; //Number of events
-
-  switch (ends) {
+  
+  switch (ends){
     case 'On':
-      return { maxDate: moment.unix(endDate), maxEvents: 8 };
+      return {maxDate: moment.unix(endDate), maxEvents: 8};
     case 'Never':
     case '':
-      return { maxDate: moment().add(3, 'months'), maxEvents: 8 };
+      return {maxDate: moment().add(3, 'months'), maxEvents: 8};
     case 'After':
-      if (arr.length > endsAfter) {
+      if (arr.length > endsAfter){
         return false;
-      } else {
+      }else{
         return {
           maxDate: moment().add(3, 'months'),
           maxEvents: endsAfter - arr.length,
