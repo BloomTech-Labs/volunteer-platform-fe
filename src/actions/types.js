@@ -84,7 +84,16 @@
  * @property {String[]} tags Array of string values
  * @property {String} description Description of the event.
  * @property {String} volunteerRequirements Requirements volunteers must meet.
+ * @property {Comment[]} comments Comments for the event.
  *
+ */
+
+/**
+ * @typedef Comment
+ * @property {String} comment The comment text.
+ * @property {String} avatarUrl Url of the persons avatar image.
+ * @property {Number} createdAt Unix timestamp the moment he comment was made.
+ * @property {Comment[]} [replies] Replies to the comment.
  */
 
 /**

@@ -1,9 +1,10 @@
-import { action } from './action';
-import firebase, { store } from '../firebase/FirebaseConfig';
+import {action} from './action';
+import firebase, {store} from '../firebase/FirebaseConfig';
 import moment from 'moment';
 import faker from 'faker';
-import { interests, causeAreas, requirements } from '../reducers/initialState';
-import { findNextEvents } from '../utility/findNextRecurEvent';
+import {interests, causeAreas, requirements} from '../reducers/initialState';
+import {findNextEvents} from '../utility/findNextRecurEvent';
+
 /**
  * Auth Actions
  * @module actions/events
@@ -96,21 +97,21 @@ export const getAllEventsByOrg = (orgId, dispatch) => {
     .where('orgId', '==', orgId)
     .get()
     .then(res => {
-      if (res.empty) {
+      if (res.empty){
         dispatch(action(ORG_HAS_NO_EVENTS));
         return;
       }
-
+      
       const events = [];
       res.forEach(event => {
         let eventToAdd = event.data();
         eventToAdd.eventId = event.id;
-
-        if (eventToAdd.startTimeStamp > time) {
+        
+        if (eventToAdd.startTimeStamp > time){
           events.push(eventToAdd);
         }
       });
-
+      
       dispatch(action(GET_EVENTS_BY_ORG, events));
     })
     .catch(error => {
@@ -138,18 +139,18 @@ export const getAllEventsByState = (state, dispatch) => {
     .limit(20)
     .get()
     .then(res => {
-      if (res.empty) {
+      if (res.empty){
         dispatch(action(NO_EVENTS_FOR_THAT_STATE));
         return;
       }
-
+      
       const events = [];
       res.forEach(event => {
         const data = event.data();
         data.eventId = event.id;
         events.push(data);
       });
-
+      
       dispatch(action(GET_EVENTS_BY_STATE, events));
     })
     .catch(err => {
@@ -189,15 +190,15 @@ export const getAllRecurringEventsByState = (state, dispatch) => {
     .where('state', '==', state)
     .get()
     .then(res => {
-      if (res.empty) {
+      if (res.empty){
         dispatch(action(RECURRING_EVENTS_BY_STATE_EMPTY));
-      } else {
+      }else{
         const events = [];
         res.forEach(event => {
           const data = event.data();
           data.eventId = event.id;
           let daysOfEvents = [];
-          if (data.recurringInfo.repeatTimePeriod.includes('Annually')) {
+          if (data.recurringInfo.repeatTimePeriod.includes('Annually')){
             data.registeredVolunteers = findNextEvents(data);
             event.ref.update({
               registeredVolunteers: data.registeredVolunteers,
@@ -205,7 +206,7 @@ export const getAllRecurringEventsByState = (state, dispatch) => {
           }
           events.push(data);
         });
-
+        
         dispatch(action(GET_RECURRING_EVENTS_BY_STATE, events));
       }
     });
@@ -225,16 +226,16 @@ export const getAllRecurringEventsByOrg = (orgId, dispatch) => {
     .where('orgId', '==', orgId)
     .get()
     .then(res => {
-      if (res.empty) {
+      if (res.empty){
         dispatch(action(RECURRING_EVENTS_BY_ORG_EMPTY));
-      } else {
+      }else{
         const events = [];
         res.forEach(event => {
           const data = event.data();
           data.eventId = event.id;
           events.push(data);
         });
-
+        
         dispatch(action(GET_RECURRING_EVENTS_BY_ORG, events));
       }
     })
@@ -246,25 +247,21 @@ export const GET_EVENT_BY_ID = 'GET_EVENT_BY_ID';
 /**
  * Gets event by id. If normal event doesn't exist in db then it checks for a recurring event.
  * @function
- * @param eventId
- * @param dispatch
+ * @param {String} eventId
+ * @param {Dispatch} dispatch
  */
 export const getEventById = (eventId, dispatch) => {
   store
     .collection('events')
     .doc(eventId)
-    .get()
-    .then(res => {
-      if (!res.exists) {
+    .onSnapshot(res => {
+      if (!res.exists){
         getRecuringEventById(eventId, dispatch);
         return;
       }
       const event = res.data();
       event.eventId = res.id;
       dispatch(action(GET_EVENT_BY_ID, event));
-    })
-    .catch(err => {
-      console.log(err);
     });
 };
 
@@ -296,19 +293,19 @@ export const generateRandomEvents = () => {
         data.orgId = org.id;
         orgs.push(data);
       });
-
+      
       orgs.forEach(org => {
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 3; i++){
           const date = moment(faker.date.future());
-
+          
           const poc1 = {
             email: faker.internet.email(),
             firstName: faker.name.firstName(),
             lastName: faker.name.lastName(),
           };
-
+          
           const website = 'http://' + faker.internet.domainName();
-
+          
           const event = {
             nameOfEvent: faker.company.catchPhrase(),
             city: org.city ? org.city : faker.address.city(),
@@ -334,7 +331,7 @@ export const generateRandomEvents = () => {
             website,
             eventDetails: faker.lorem.paragraphs(),
           };
-
+          
           store
             .collection('events')
             .add(event)
@@ -353,15 +350,15 @@ const getRandomInterests = () => {
   const randomInterests = [];
   const randomNumber = Math.ceil(Math.random() * 5);
   const selectedNumber = [];
-  for (let i = 0; i < randomNumber; i++) {
+  for (let i = 0; i < randomNumber; i++){
     let randomInterestNumber = Math.floor(Math.random() * interests.length);
-    while (selectedNumber.includes(randomInterestNumber)) {
+    while (selectedNumber.includes(randomInterestNumber)){
       randomInterestNumber = Math.floor(Math.random() * interests.length);
     }
     selectedNumber.push(randomInterestNumber);
-    randomInterests.push(interests[randomInterestNumber]);
+    randomInterests.push(interests[ randomInterestNumber ]);
   }
-
+  
   return randomInterests;
 };
 
@@ -369,15 +366,15 @@ const getRandomCauses = () => {
   const randomCauses = [];
   const randomNumber = Math.ceil(Math.random() * 5);
   const selectedNumber = [];
-  for (let i = 0; i < randomNumber; i++) {
+  for (let i = 0; i < randomNumber; i++){
     let randomCusesNumber = Math.floor(Math.random() * causeAreas.length);
-    while (selectedNumber.includes(randomCusesNumber)) {
+    while (selectedNumber.includes(randomCusesNumber)){
       randomCusesNumber = Math.floor(Math.random() * causeAreas.length);
     }
     selectedNumber.push(randomCusesNumber);
-    randomCauses.push(causeAreas[randomCusesNumber]);
+    randomCauses.push(causeAreas[ randomCusesNumber ]);
   }
-
+  
   return randomCauses;
 };
 
@@ -385,17 +382,17 @@ const getRandomRequirements = () => {
   const randomRequirements = [];
   const randomNumber = Math.ceil(Math.random() * 5);
   const selectedNumber = [];
-  for (let i = 0; i < randomNumber; i++) {
+  for (let i = 0; i < randomNumber; i++){
     let randomRequirementNumber = Math.floor(
-      Math.random() * requirements.length
+      Math.random() * requirements.length,
     );
-    while (selectedNumber.includes(randomRequirementNumber)) {
+    while (selectedNumber.includes(randomRequirementNumber)){
       randomRequirementNumber = Math.floor(Math.random() * requirements.length);
     }
     selectedNumber.push(randomRequirementNumber);
-    randomRequirements.push(requirements[randomRequirementNumber]);
+    randomRequirements.push(requirements[ randomRequirementNumber ]);
   }
-
+  
   return randomRequirements;
 };
 
@@ -427,7 +424,7 @@ export const signUpForEvent = (event, user, dispatch) => {
       },
     ],
   };
-
+  
   dispatch(action(SIGN_UP_FOR_EVENT_INIT));
   store
     .collection('events')
@@ -460,16 +457,16 @@ export const cancelSignedUpEvent = (event, user, dispatch) => {
   let updatedEvent = {
     ...event,
     registeredVolunteers: event.registeredVolunteers.filter(
-      uid => uid !== user.uid
+      uid => uid !== user.uid,
     ),
   };
   let updatedUser = {
     ...user,
     registeredEvents: user.registeredEvents.filter(
-      item => item.eventId !== event.eventId
+      item => item.eventId !== event.eventId,
     ),
   };
-
+  
   dispatch(action(CANCEL_SIGNED_UP_EVENT_INIT));
   store
     .collection('events')
