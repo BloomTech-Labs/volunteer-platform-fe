@@ -1,14 +1,18 @@
 import React from 'react';
-import { Select } from 'antd';
-import { WrappedAntForm, AntInput, AntSelect, StyledCard } from '../../styled';
+import { Select, Form, Input } from 'antd';
+import { StyledButton, StyledCancelButton } from '../../styled';
 import styled from 'styled-components';
-import createEventImg from '../../assets/undraw_blooming_jtv6.svg';
-import { formLayouts } from '../../utility/formLayouts';
 
 const { Option } = Select;
 
 export const CreateEventPartOne = props => {
-  const { state, handleSubmit, cancelForm, autoFillState, pageNumber } = props;
+  const {
+    state,
+    handlePageForward,
+    localState,
+    setLocalState,
+    cancelForm,
+  } = props;
 
   //Mapping through tags for antd select
   const causeAreaTags = state.tags.causeAreas.map(tag => {
@@ -19,160 +23,97 @@ export const CreateEventPartOne = props => {
     );
   });
 
+  const handleChange = (name, value) => {
+    setLocalState({
+      ...localState,
+      [name]: value,
+    });
+  };
+
   return (
     <StyledDiv className={'flex center'}>
-      <CustomStyledCard
-        className={'flex center'}
-        style={{ maxWidth: '900px', margin: '2rem 0 5rem 0' }}
-      >
-        <h1>Let's Create An Event</h1>
-        <StyledImg src={createEventImg} alt="undraw unexpected friends" />
-        <StyledCreateEvent>
-          <WrappedAntForm
-            cancelButton={true}
-            cancelButtonText={'Cancel'}
-            handleCancel={cancelForm}
-            onSubmit={handleSubmit}
-            layout={'vertical'}
-            buttonType={'primary'}
-            submitButton
-            submitButtonText={'Next'}
-            autofill={autoFillState[pageNumber]}
-          >
-            <div className={'nameCauseWrapper'}>
-              <div className={''}>
-                <AntInput
-                  name={'Name of Event'}
-                  type="text"
-                  layout={formLayouts.empty}
-                  style={{ width: 240 }}
-                />
-              </div>
-              <div className={''}>
-                <AntSelect
-                  name={'Types of Causes'}
-                  placeholder="Types of Causes"
-                  mode="multiple"
-                  layout={formLayouts.empty}
-                  style={{ width: 240 }}
-                >
-                  {causeAreaTags}
-                </AntSelect>
-              </div>
-            </div>
-            <div className={'addressWrapper'}>
-              <AntInput name={'Street Address'} layout={formLayouts.empty} />
-            </div>
-            <div className={'locationWrapper'}>
-              <div className={'inlineTriple'}>
-                <AntInput
-                  name={'City'}
-                  layout={formLayouts.empty}
-                  placeholder="City"
-                ></AntInput>
-              </div>
-              <div className={'inlineTriple'}>
-                <AntInput
-                  name={'State'}
-                  layout={formLayouts.empty}
-                  placeholder="State"
-                ></AntInput>
-              </div>
-              <div className={'inlineTriple'}>
-                <AntInput
-                  name={'Phone Number'}
-                  pattern={'[0-9]{3}-[0-9]{3}-[0-9]{4}'}
-                  placeholder={'000-000-0000'}
-                  layout={formLayouts.empty}
-                />
-              </div>
-            </div>
-          </WrappedAntForm>
-        </StyledCreateEvent>
-      </CustomStyledCard>
+      <h1>Let's Create An Event</h1>
+
+      <Form layout={'vertical'} onSubmit={() => handlePageForward()}>
+        <Form.Item label={'Name of Event'} required>
+          <Input
+            name={'nameOfEvent'}
+            value={localState.nameOfEvent}
+            placeholder="Name of Event"
+            onChange={e => handleChange(e.target.name, e.target.value)}
+          />
+        </Form.Item>
+
+        <div className={''}>
+          <Form.Item label={'Types Of Causes'} required>
+            <Select
+              name={'typesOfCauses'}
+              value={localState.typesOfCauses}
+              placeholder="Types of Causes"
+              mode="multiple"
+              onChange={value => handleChange('typesOfCauses', value)}
+            >
+              {causeAreaTags}
+            </Select>
+          </Form.Item>
+        </div>
+        <div className={''}>
+          <Form.Item label={'Street Address'} required>
+            <Input
+              name={'streetAddress'}
+              value={localState.streetAddress}
+              placeholder="Street Address"
+              onChange={e => handleChange(e.target.name, e.target.value)}
+            />
+          </Form.Item>
+        </div>
+        <div className={''}>
+          <div className={'inlineTriple'}>
+            <Form.Item label="City" required>
+              <Input
+                name={'City'}
+                value={localState.city}
+                placeholder="City"
+                onChange={e => handleChange(e.target.name, e.target.value)}
+              />
+            </Form.Item>
+          </div>
+          <div className={''}>
+            <Form.Item label={'State'}>
+              <Input
+                name={'state'}
+                value={localState.state}
+                placeholder="State"
+                onChange={e => handleChange(e.target.name, e.target.value)}
+              />
+            </Form.Item>
+          </div>
+          <div className={'inlineTriple'}>
+            <Form.Item label={'Phone Number'}>
+              <Input
+                name={'phoneNumber'}
+                value={localState.phoneNumber}
+                pattern={'[0-9]{3}-[0-9]{3}-[0-9]{4}'}
+                placeholder={'000-000-0000'}
+                onChange={e => handleChange(e.target.name, e.target.value)}
+              />
+            </Form.Item>
+          </div>
+        </div>
+      </Form>
+      <div className="buttonStyles">
+        <StyledCancelButton onClick={cancelForm} type="primary">
+          Cancel
+        </StyledCancelButton>
+        <StyledButton type="primary">Next</StyledButton>
+      </div>
     </StyledDiv>
   );
 };
-const StyledCreateEvent = styled.div`
-  width: 100%;
-  font-weight: bold;
-  text-align: left;
-  padding: 8rem;
-  .inline {
-    width: 50%;
-  }
-  .inlineTriple {
-    width: 35%;
-  }
-  .buttonStyles {
-    display: flex;
-    justify-content: space-around;
-  }
-
-  .nameCauseWrapper {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-  }
-  .addressWrapper {
-    width: 100%;
-
-    input {
-      width: 625px;
-    }
-  }
-
-  .locationWrapper {
-    display: flex;
-    flex-direction: space-between;
-
-    input {
-      width: 200px;
-    }
-  }
-
-  label {
-    color: ${({ theme }) => theme.primary8};
-
-    &::before {
-      color: ${({ theme }) => theme.primary8};
-    }
-  }
-  small {
-    color: #bfbfbf;
-  }
-`;
 
 const StyledDiv = styled.div`
-  background: #003d61;
-
-  h1 {
-    color: ${props => props.theme.primary8};
-  }
-
-  h4 {
-    color: ${props => props.theme.primary8};
-  }
-  padding: 2rem;
-`;
-
-const CustomStyledCard = styled(StyledCard)`
-  &&& {
-    background: #fafafa;
-    margin: 3rem;
-    text-align: center;
-    cursor: default;
-    transition: none;
-    max-width: 1088px;
-    &:hover {
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-    }
-  }
-`;
-
-const StyledImg = styled.img`
-  width: 211px;
-  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
 `;
 
 export default CreateEventPartOne;

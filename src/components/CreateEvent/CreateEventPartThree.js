@@ -7,7 +7,6 @@ import {
   StyledCard,
 } from '../../styled';
 import styled from 'styled-components';
-import createEventImg from '../../assets/undraw_blooming_jtv6.svg';
 import { formLayouts } from '../../utility/formLayouts';
 
 const { Option } = Select;
@@ -35,7 +34,7 @@ export const CreateEventPartThree = props => {
         style={{ maxWidth: '900px', margin: '2rem 0 5rem 0' }}
       >
         <h1>Let's Create An Event</h1>
-        <StyledImg src={createEventImg} alt="undraw unexpected friends" />
+
         <StyledCreateEvent>
           <WrappedAntForm
             cancelButton={true}

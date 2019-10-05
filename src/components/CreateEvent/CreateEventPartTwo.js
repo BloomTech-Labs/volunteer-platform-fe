@@ -8,7 +8,6 @@ import {
 import RecurringEvent from './RecurringEvent';
 import moment from 'moment';
 import styled from 'styled-components';
-import createEventImg from '../../assets/undraw_blooming_jtv6.svg';
 import { formLayouts } from '../../utility/formLayouts';
 import { AntDatePicker } from '../../styled';
 
@@ -82,7 +81,7 @@ export const CreateEventPartTwo = props => {
         style={{ maxWidth: '900px', margin: '2rem 0 5rem 0' }}
       >
         <h1>Let's Create An Event</h1>
-        <StyledImg src={createEventImg} alt="undraw unexpected friends" />
+
         <StyledCreateEvent>
           <WrappedAntForm
             cancelButton={true}

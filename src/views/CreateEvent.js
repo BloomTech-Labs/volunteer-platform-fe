@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useStateValue } from '../hooks/useStateValue';
 import { createEvent, createRecurringEvent } from '../actions';
 import moment from 'moment';
+import styled from 'styled-components';
+import { StyledCard } from '../styled';
+import createEventImg from '../assets/undraw_blooming_jtv6.svg';
 import {
   CreateEventPartOne,
   CreateEventPartTwo,
@@ -108,10 +111,10 @@ export const CreateEvent = props => {
       if (event.recurringInfo.occurrenceEnds === 'After') {
         event.recurringInfo.occurrenceEndDate = '';
       }
-      // console.log('reg', event);
-      createRecurringEvent(event, dispatch);
+      console.log('reg', event);
+      // createRecurringEvent(event, dispatch);
     } else {
-      // console.log('rec', event);
+      console.log('rec', event);
       createEvent(event, dispatch);
     }
     setPageNumberState({
@@ -127,18 +130,7 @@ export const CreateEvent = props => {
   };
 
   //Handle Form Parts Submit
-  const handleFormPartSubmit = values => {
-    if (pageNumberState.pageNumber) {
-      setAutoFillState({
-        ...autoFillState,
-        [pageNumberState.pageNumber]: values,
-      });
-    }
-    setLocalState({
-      ...localState,
-      ...values,
-      values,
-    });
+  const handlePageForward = () => {
     setPageNumberState({
       pageNumber: pageNumberState.pageNumber + 1,
     });
@@ -157,7 +149,7 @@ export const CreateEvent = props => {
         state={state}
         localState={localState}
         setLocalState={setLocalState}
-        handleSubmit={handleFormPartSubmit}
+        handlePageForward={handlePageForward}
         cancelForm={cancelForm}
         pageNumber={pageNumberState.pageNumber}
         autoFillState={autoFillState}
@@ -167,7 +159,7 @@ export const CreateEvent = props => {
       <CreateEventPartTwo
         localState={localState}
         setLocalState={setLocalState}
-        handleSubmit={handleFormPartSubmit}
+        // handleSubmit={handle}
         handlePageBack={handlePageBack}
         pageNumberState={pageNumberState}
         setPageNumberState={setPageNumberState}
@@ -180,7 +172,7 @@ export const CreateEvent = props => {
         state={state}
         localState={localState}
         setLocalState={setLocalState}
-        handleSubmit={handleFormPartSubmit}
+        // handleSubmit={handleFormPartSubmit}
         handlePageBack={handlePageBack}
         pageNumber={pageNumberState.pageNumber}
         autoFillState={autoFillState}
@@ -190,7 +182,7 @@ export const CreateEvent = props => {
       <CreateEventPartFour
         localState={localState}
         setLocalState={setLocalState}
-        handleSubmit={handleFormPartSubmit}
+        // handleSubmit={handleFormPartSubmit}
         handlePageBack={handlePageBack}
         pageNumber={pageNumberState.pageNumber}
         autoFillState={autoFillState}
@@ -200,7 +192,7 @@ export const CreateEvent = props => {
       <CreateEventReview
         localState={localState}
         setLocalState={setLocalState}
-        handleSubmit={handleFormPartSubmit}
+        // handleSubmit={handleFormPartSubmit}
         handlePageBack={handlePageBack}
         pageNumber={pageNumberState.pageNumber}
         autoFillState={autoFillState}
@@ -213,19 +205,81 @@ export const CreateEvent = props => {
   console.log('localstate', localState);
   return (
     <div>
-      {pageNumberState.pageNumber && renderParts[pageNumberState.pageNumber]}
-      {/* <CreateEventReview
-        localState={localState}
-        setLocalState={setLocalState}
-        handleSubmit={handleFormPartSubmit}
-        handlePageBack={handlePageBack}
-        pageNumber={pageNumberState.pageNumber}
-        autoFillState={autoFillState}
-        handleReviewSubmit={handleReviewSubmit}
-        cancelForm={cancelForm}
-      /> */}
+      <StyledDiv className={'flex center'}>
+        <CustomStyledCard margin="2rem 0 5rem 0" maxWidth="900px">
+          <StyledImg src={createEventImg} alt="undraw unexpected friends" />
+          <StyledRenderDiv>
+            {pageNumberState.pageNumber &&
+              renderParts[pageNumberState.pageNumber]}
+          </StyledRenderDiv>
+        </CustomStyledCard>
+      </StyledDiv>
     </div>
   );
 };
+
+const StyledDiv = styled.div`
+  background: white;
+  .create-org-header {
+    color: ${props => props.theme.primary8};
+  }
+`;
+
+const CustomStyledCard = styled(StyledCard)`
+  &&& {
+    background: #d9d9d9;
+    text-align: center;
+    cursor: default;
+    transition: none;
+
+    .ant-steps {
+      text-align: left;
+      margin-bottom: 40px;
+
+      .ant-steps-item-finish
+        > .ant-steps-item-container
+        > .ant-steps-item-tail {
+        &::after {
+          background: ${({ theme }) => theme.primary8};
+        }
+      }
+      span.ant-steps-icon-dot {
+        background: ${({ theme }) => theme.primary8};
+      }
+    }
+  }
+`;
+
+const StyledRenderDiv = styled.div`
+  background: ${({ theme }) => theme.gray4};
+  width: 75%;
+  margin: 0 auto;
+  font-weight: bold;
+  padding: 1.5rem 3rem;
+  border-radius: ${({ theme }) => theme.borderRadiusDefault};
+
+  label {
+    color: ${({ theme }) => theme.primary8};
+
+    &::before {
+      color: ${({ theme }) => theme.primary8};
+    }
+  }
+
+  .buttonStyles {
+    display: flex;
+    margin: 50px auto 0;
+    padding-top: 40px;
+    padding-right: 70px;
+    padding-left: 70px;
+    justify-content: space-between;
+    border-top: 2px solid ${({ theme }) => theme.primary8};
+  }
+`;
+
+const StyledImg = styled.img`
+  width: 211px;
+  margin: 2rem auto;
+`;
 
 export default CreateEvent;
