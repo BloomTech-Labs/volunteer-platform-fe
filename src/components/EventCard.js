@@ -138,11 +138,16 @@ export const EventCard = ({event, match}) => {
 };
 
 const StyledEventPage = styled(StyledCard)`
+.ant-card-body {
+    padding: 0;
+}
 && {
-    margin-left: 15%;
+    // margin-left: 15%;
     border-radius: 2px;
-    width: 65%;
-    max-width: 100%
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    //border: 1px solid purple
 }   
 .card {
     display: flex;
@@ -158,7 +163,7 @@ const StyledEventPage = styled(StyledCard)`
         flex-direction: column;
         flex-wrap: wrap;
         justify-content: center;
-        
+        margin: 2% 0;
         .subtag {
             flex-direction: row;
             justify-content: flex-start;
@@ -168,42 +173,51 @@ const StyledEventPage = styled(StyledCard)`
 `;
 
 const StyledEventDetails = styled(StyledCard)`
-  &&& {
+.ant-card-body {
+    padding: 0;
+}
+&&& {
     background-color: white;
     border-radius: 2px;
-    margin-left: 15%;
-    margin-top: 3%;
-    width: 45%;
+    margin-top: 1.5%;
+    width: 100%;
+
     .container {
-      display: flex;
+        display: flex;
     }
     .details {
-      border-bottom: 1px solid black;
+        border-bottom: 1px solid black;
+        text-align:center;
     }
 
     .description {
-      background-color: white;
-      padding: 1% 0;
+        background-color: white;
+        padding: 1% 0;
+        text-align:left;
     }
-  }
+}
 `;
 
 const StyledEventTime = styled(StyledCard)`
-  &&& {
+.ant-card-body {
+    padding: 0;
+}
+&&& {
     background-color: white;
     border-radius: 2px;
-    margin-left: 15%;
-    margin-top: 3%;
-    width: 20%;
+    margin-top: 1.5%;
+    width: 35%;
+    height: 100px;
+    text-align:center;
+
     .time {
-      border-bottom: 1px solid black;
+        border-bottom: 1px solid black;
     }
 
     .info {
-      background-color: white;
-      padding: 1% 0;
+        background-color: white;
     }
-  }
+}
 `;
 
 const heading = {
