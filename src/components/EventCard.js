@@ -17,7 +17,7 @@ export const EventCard = ({event, match}) => {
   const [{auth, comments}, dispatch] = useStateValue();
   
   useEffect(() => {
-    debugger;
+  
   }, [comments]);
   
   const [localState, setLocalState] = useState({
@@ -64,11 +64,11 @@ export const EventCard = ({event, match}) => {
   console.log('LocalState', localState);
   
   const submitComment = (text) => {
-    debugger;
+    
     const comment = {
       commentId: uuid4(),
       comment: text.comment,
-      avatarUrl: auth.registeredUser.imageUrl,
+      avatarPath: auth.registeredUser.imagePath,
       createdAt: moment().unix(),
       usersUid: auth.googleAuthUser.uid,
       name: auth.registeredUser.firstName + ' ' + auth.registeredUser.lastName,
@@ -77,13 +77,13 @@ export const EventCard = ({event, match}) => {
   };
   
   const handleAddCommentToComment = (text, comment) => {
-    debugger;
+    
     const newComment = {
       commentId: uuid4(),
       comment: text.comment,
-      avatarUrl: auth.registeredUser.imageUrl,
+      avatarPath: auth.registeredUser.imagePath,
       createdAt: moment().unix(),
-      userUid: auth.googleAuthUser.uid,
+      usersUid: auth.googleAuthUser.uid,
       name: auth.registeredUser.firstName + ' ' + auth.registeredUser.lastName,
     };
     addCommentToComment(newComment, event, comment, dispatch);
@@ -129,7 +129,9 @@ export const EventCard = ({event, match}) => {
       </StyledEventTime>
       <CommentList comments={event.comments}
                    addCommentToComment={handleAddCommentToComment}
-                   isLoading={comments.isLoadingReplyToComment}/>
+                   isLoading={comments.isLoadingReplyToComment}
+                   event={event}
+      />
       <Editor onSubmit={submitComment} submitting={comments.isLoading}/>
     </div>
   );

@@ -4,7 +4,7 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-const CommentList = ({comments, addCommentToComment, isLoading}) => {
+const CommentList = ({comments, addCommentToComment, isLoading, event}) => {
   
   return (<SyledCommentList>
       <h1>Event Comments</h1>
@@ -15,6 +15,7 @@ const CommentList = ({comments, addCommentToComment, isLoading}) => {
             'comment'}`}
           itemLayout="horizontal"
           renderItem={props => <CommentItem {...props}
+                                            event={event}
                                             allowReply={true}
                                             addCommentToComment={addCommentToComment}
                                             isLoading={isLoading}/>}
@@ -31,6 +32,7 @@ padding: 1rem 3rem;
 CommentList.propTypes = {
   comments: PropTypes.arrayOf(PropTypes.object).isRequired,
   addCommentToComment: PropTypes.func.isRequired,
+  event: PropTypes.object.isRequired,
 };
 
 export default CommentList;

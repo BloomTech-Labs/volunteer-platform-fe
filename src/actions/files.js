@@ -10,17 +10,21 @@ import uuid4 from 'uuid4';
 /**
  * Upload file to storage
  * @function
- * @param file
- * @param onError
- * @param onSuccess
+ * @param {File} file
+ * @param {Function} onError
+ * @param {Function} onSuccess
+ * @param {String} imageName
  * @returns {Promise<*>}
  */
-export async function uploadImage(file, onError, onSuccess){
-  const storage = firebase.storage();
+export async function uploadImage(file, onError, onSuccess,
+  imageName = uuid4()){
   
+  
+  const storage = firebase.storage();
+  const nameSplit = file.name.split('.');
+  const imageType = nameSplit[ nameSplit.length - 1 ];
   const storageRef = await storage.ref();
-  const imageName = uuid4(); //a unique name for the image
-  const imgFile = storageRef.child(`images/${imageName}.png`);
+  const imgFile = storageRef.child(`images/${imageName}.${imageType}`);
   try{
     const image = await imgFile.put(file);
     onSuccess(null, image);

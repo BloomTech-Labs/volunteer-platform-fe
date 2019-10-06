@@ -247,38 +247,22 @@ export const GET_EVENT_BY_ID = 'GET_EVENT_BY_ID';
 /**
  * Gets event by id. If normal event doesn't exist in db then it checks for a recurring event.
  * @function
- * @param {String} eventId
- * @param {Dispatch} dispatch
+ * @param {String} eventId Event id.
+ * @param {Dispatch} dispatch Dispatch for reducer
+ * @param eventType Event type, ["events", "recurring events"]
  */
-export const getEventById = (eventId, dispatch) => {
+export const getEventById = (eventId, dispatch, eventType = 'events') => {
   store
-    .collection('events')
+    .collection(eventType)
     .doc(eventId)
     .onSnapshot(res => {
       if (!res.exists){
-        getRecuringEventById(eventId, dispatch);
+        getEventById(eventId, dispatch, 'recurring events');
         return;
       }
       const event = res.data();
       event.eventId = res.id;
       dispatch(action(GET_EVENT_BY_ID, event));
-    });
-};
-
-export const GET_RECURRING_EVENT_BY_ID = 'GET_EVENT_BY_ID';
-
-const getRecuringEventById = (eventId, dispatch) => {
-  store
-    .collection('recurring events')
-    .doc(eventId)
-    .get()
-    .then(res => {
-      const event = res.data();
-      event.eventId = res.id;
-      dispatch(action(GET_RECURRING_EVENT_BY_ID, event));
-    })
-    .catch(err => {
-      console.log(err);
     });
 };
 

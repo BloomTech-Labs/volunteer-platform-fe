@@ -109,6 +109,7 @@ export const initialState = {
     isLoading: false,
     error: '',
     isLoadingReplyToComment: false,
+    deletedComment: false,
   },
 };
 

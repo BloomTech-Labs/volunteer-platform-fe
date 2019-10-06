@@ -1,27 +1,57 @@
-import React, {useState} from 'react';
-import {Comment, Avatar} from 'antd';
+import React, {useEffect, useState} from 'react';
+import {Comment, Avatar, Icon} from 'antd';
 import Editor from './Editor';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import {getFileUrl, deleteComment} from '../../actions';
+import {useStateValue} from '../../hooks/useStateValue';
 
-const CommentItem = ({name, avatarUrl, comment, addCommentToComment, commentId, isLoading, allowReply, replies, createdAt}) => {
+const CommentItem = ({name, usersUid, avatarPath, comment, addCommentToComment, commentId, isLoading, allowReply, replies, createdAt, event}) => {
   
+  const [{auth}, dispatch] = useStateValue();
   const [reply, setReply] = useState(false);
+  const [avatUrl, setUrl] = useState('');
+  
+  useEffect(() => {
+    if (avatarPath){
+      getFileUrl(avatarPath).then(url => {
+        setUrl(url);
+      });
+      
+    }
+  }, avatarPath);
   
   const handleSubmit = (values) => {
-    addCommentToComment(values, {name, avatarUrl, comment, commentId});
+    addCommentToComment(values, {name, avatarPath, comment, commentId});
   };
-  debugger;
+  
+  const handleDeleteComment = () => {
+    deleteComment(commentId, event, dispatch);
+  };
+  
+  const getActions = () => {
+    const actions = [];
+    debugger;
+    if (allowReply){
+      actions.push(<span onClick={() => setReply(!reply)}
+                         key="comment-nested-reply-to">Reply to</span>);
+    }
+    
+    if (usersUid === auth.googleAuthUser.uid){
+      actions.push(<span onClick={handleDeleteComment}><Icon
+        type="delete"/></span>);
+    }
+    return actions;
+  };
+  
   return (
     <div>
       <Comment
-        actions={allowReply ? [
-          <span onClick={() => setReply(!reply)} key="comment-nested-reply-to">Reply to</span>,
-        ] : []}
+        actions={getActions()}
         author={<a>{name && name} {moment.unix(createdAt).format('LLL')}</a>}
         avatar={
           <Avatar
-            src={avatarUrl}
+            src={avatUrl}
             alt={name}
           />
         }
@@ -34,6 +64,7 @@ const CommentItem = ({name, avatarUrl, comment, addCommentToComment, commentId, 
         
         {replies && replies.map(reply => {
           return <CommentItem allowReply={false}
+                              event={event}
                               isLoading={false} {...reply} />;
         })}
         {reply && <Editor onSubmit={handleSubmit} submitting={isLoading}/>}
@@ -44,12 +75,13 @@ const CommentItem = ({name, avatarUrl, comment, addCommentToComment, commentId, 
 
 CommentItem.propTypes = {
   name: PropTypes.string.isRequired,
-  avatarUrl: PropTypes.string,
+  avatarPath: PropTypes.string,
   comment: PropTypes.string.isRequired,
   addCommentToComment: PropTypes.func,
   commentId: PropTypes.string.isRequired,
   isLoading: PropTypes.bool.isRequired,
   allowReply: PropTypes.bool.isRequired,
   replies: PropTypes.arrayOf(PropTypes.object),
+  event: PropTypes.object.isRequired,
 };
 export default CommentItem;
