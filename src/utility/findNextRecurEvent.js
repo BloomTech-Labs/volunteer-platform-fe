@@ -34,12 +34,21 @@ export const findNext = (date, keyWord, info = {}) => {
 };
 
 export const findNextEvents = event => {
-  debugger;
   let dayAbbrevs = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
   let keyWord = event.recurringInfo.repeatTimePeriod.split(' ')[0];
   event.registeredVolunteers = event.registeredVolunteers || {};
-  let passed = eventPassed(event.startTimeStamp);
-  let eventDay = moment.unix(event.startTimeStamp);
+  let arrayOfDates = event.registeredVolunteers
+    ? [...Object.keys(event.registeredVolunteers)].sort()
+    : [];
+  let eventDay =
+    arrayOfDates.length > 0
+      ? findNext(
+          moment.unix(arrayOfDates[arrayOfDates.length - 1]),
+          keyWord,
+          event.recurringInfo
+        )
+      : moment.unix(event.startTimeStamp);
+  let passed = eventPassed(eventDay.unix());
   let isCustomWeekly =
     event.recurringInfo.repeatTimePeriod.split(' ')[0] === 'Other' &&
     event.recurringInfo.repeatEveryValue.includes('Week');
@@ -62,17 +71,11 @@ export const findNextEvents = event => {
     isGood = days.includes(eventDay.day());
   }
   while (passed || !isGood) {
-    eventDay = findNext(
-      moment.unix(event.startTimeStamp),
-      keyWord,
-      event.recurringInfo
-    );
+    eventDay = findNext(eventDay, keyWord, event.recurringInfo);
     passed = eventPassed(eventDay.unix());
     isGood = true;
   }
-  let arrayOfDates = event.registeredVolunteers
-    ? [...Object.keys(event.registeredVolunteers)].sort()
-    : [];
+
   let end = findEndDate(event.recurringInfo, arrayOfDates);
   if (!end) return event;
   arrayOfDates = arrayOfDates.filter(timeStamp => moment().unix() < timeStamp);
