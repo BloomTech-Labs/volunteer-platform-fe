@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Icon } from 'antd';
+
 import { WrappedAntForm, AntInput, StyledLine, StyledLink } from '../styled';
 import {
   signIn,
@@ -9,7 +10,6 @@ import {
   TWITTER_PROVIDER,
   EMAIL_PROVIDER,
 } from '../actions';
-import { formLayouts } from '../utility/formLayouts';
 import { useStateValue } from '../hooks/useStateValue';
 import { device } from '../styled/deviceBreakpoints';
 

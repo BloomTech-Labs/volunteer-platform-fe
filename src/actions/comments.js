@@ -20,7 +20,6 @@ export const ADD_COMMENT_FAILED = 'ADD_COMMENT_FAILED';
  * @param {String} eventType Type of event, ["recurring events", "events"]
  */
 export const addComment = (comment, event, dispatch, eventType = 'events') => {
-  
   dispatch(action(ADD_COMMENT_INIT));
   store.collection(eventType).doc(event.eventId).get().then(res => {
     if (!res.exists){
@@ -38,7 +37,7 @@ export const addComment = (comment, event, dispatch, eventType = 'events') => {
   });
 };
 
-export const ADD_COMMENT_TO_COMMENT_INIT = 'ADD_COMMENT_INIT';
+export const ADD_COMMENT_TO_COMMENT_INIT = 'ADD_COMMENT_TO_COMMENT_INIT';
 export const ADD_COMMENT_TO_COMMENT_SUCCESS = 'ADD_COMMENT_TO_COMMENT_SUCCESS';
 export const ADD_COMMENT_TO_COMMENT_FAIL = 'ADD_COMMENT_TO_COMMENT_FAIL';
 

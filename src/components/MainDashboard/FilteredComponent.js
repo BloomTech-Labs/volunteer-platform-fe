@@ -1,9 +1,12 @@
 import React from 'react';
-import { findNext } from '../utility/findNextRecurEvent';
+import { findNext } from '../../utility/findNextRecurEvent';
 import moment from 'moment';
 
 export const FilteredComponent = Component => {
-  return ({ events, filter, tagFilter, recurringEvents }, ...props) => {
+  return (
+    { events, filter, tagFilter, recurringEvents, organizations, activeTab },
+    ...props
+  ) => {
     const { location } = filter;
     const { interests, requirements, causeAreas } = tagFilter;
     const { state, city } = location;
@@ -28,8 +31,15 @@ export const FilteredComponent = Component => {
     let allEvents = [...events, ...recurringEvents].sort(
       (a, b) => a.nextDate - b.nextDate
     );
+
     if (!events || !filterCount) {
-      return <Component events={allEvents} {...props} />;
+      return (
+        <Component
+          results={activeTab === 'Events' ? allEvents : organizations}
+          type={activeTab}
+          {...props}
+        />
+      );
     }
 
     let filteredEvents = allEvents;
@@ -58,7 +68,6 @@ export const FilteredComponent = Component => {
     }
     if (causeAreas) {
       filteredEvents.forEach(event => {
-        console.log(event);
         event.typesOfCauses.forEach(causeArea => {
           if (tagFilter.causeAreas[causeArea])
             event.sortRank = event.sortRank + 1;
@@ -89,6 +98,12 @@ export const FilteredComponent = Component => {
     });
     filteredEvents = filteredEvents.filter(event => event.sortRank > 0);
 
-    return <Component events={filteredEvents} {...props} />;
+    return (
+      <Component
+        results={activeTab === 'Events' ? allEvents : organizations}
+        type={activeTab}
+        {...props}
+      />
+    );
   };
 };

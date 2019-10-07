@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useStateValue } from '../hooks/useStateValue';
-import { createEvent, createRecurringEvent } from '../actions';
 import moment from 'moment';
+
 import {
   CreateEventPartOne,
   CreateEventPartTwo,
   CreateEventPartThree,
   CreateEventPartFour,
-  SuccessModal,
 } from '../components/CreateEvent';
 import CreateEventReview from '../components/CreateEvent/CreateEventReview/CreateEventReview';
+import { useStateValue } from '../hooks/useStateValue';
+import { createEvent, createRecurringEvent } from '../actions';
 
 export const CreateEvent = props => {
   const initialEvent = {

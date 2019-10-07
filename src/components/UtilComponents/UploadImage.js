@@ -1,6 +1,6 @@
 import React from 'react';
 import { Upload, Icon, Alert } from 'antd';
-import { uploadImage } from '../actions/files';
+import { uploadImage } from '../../actions/files';
 import PropTypes from 'prop-types';
 
 function getBase64(file) {

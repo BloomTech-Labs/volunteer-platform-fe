@@ -22,6 +22,7 @@ const CommentItem = ({name, usersUid, avatarPath, comment, addCommentToComment, 
   }, avatarPath);
   
   const handleSubmit = (values) => {
+      debugger;
     addCommentToComment(values, {name, avatarPath, comment, commentId});
   };
   
@@ -31,7 +32,6 @@ const CommentItem = ({name, usersUid, avatarPath, comment, addCommentToComment, 
   
   const getActions = () => {
     const actions = [];
-    debugger;
     if (allowReply){
       actions.push(<span onClick={() => setReply(!reply)}
                          key="comment-nested-reply-to">Reply to</span>);
