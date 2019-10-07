@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { AntInput, AntTimePicker, StyledCard } from '../../styled';
-import { Select, Input, Form, DatePicker, TimePicker } from 'antd';
+import { Input, Form, DatePicker, TimePicker } from 'antd';
 import RecurringEvent from './RecurringEvent';
 import moment from 'moment';
 import styled from 'styled-components';
-import { formLayouts } from '../../utility/formLayouts';
+
 import { StyledCancelButton, StyledButton } from '../../styled';
 
 export const CreateEventPartTwo = props => {
@@ -15,6 +14,17 @@ export const CreateEventPartTwo = props => {
     handlePageForward,
     handleChange,
   } = props;
+  const {
+    firstName,
+    lastName,
+    email,
+    date,
+    startTime,
+    endTime,
+    dynamicDates,
+  } = localState;
+
+  const [error, setError] = useState('');
 
   //Mapping through tags for antd select
 
@@ -52,38 +62,66 @@ export const CreateEventPartTwo = props => {
     });
   };
 
+  const isFormValid = () => {
+    if (firstName && lastName && email) return true;
+  };
+
+  const checkedRequired = () => {
+    if (isFormValid()) {
+      setError('');
+      handlePageForward();
+    } else {
+      setError('This field is required.');
+    }
+  };
+
   return (
     <StyledDiv className={'flex center'}>
       <label>Who is your point of contact?</label>
-      <Form layout={'vertical'} onSubmit={''}>
+      <Form layout={'vertical'} onSubmit={() => checkedRequired()}>
         <div>
           <Form.Item label={'First Name'} required>
             <Input
               name={'firstName'}
-              value={localState.firstName}
+              value={firstName}
               placeholder="First Name"
               onChange={e => handleChange(e.target.name, e.target.value)}
             />
+            {error && !firstName && (
+              <span className="error-message error-span left-aligned">
+                {error}
+              </span>
+            )}
           </Form.Item>
         </div>
         <div>
           <Form.Item label={'Last Name'} required>
             <Input
               name={'lastName'}
-              value={localState.lastName}
+              value={lastName}
               placeholder="Last Name"
               onChange={e => handleChange(e.target.name, e.target.value)}
             />
+            {error && !lastName && (
+              <span className="error-message error-span left-aligned">
+                {error}
+              </span>
+            )}
           </Form.Item>
         </div>
         <div>
           <Form.Item label={'Email'} required>
             <Input
               name={'email'}
-              value={localState.email}
+              value={email}
               placeholder="Email"
               onChange={e => handleChange(e.target.name, e.target.value)}
             />
+            {error && !email && (
+              <span className="error-message error-span left-aligned">
+                {error}
+              </span>
+            )}
           </Form.Item>
         </div>
         <label>When is the event?</label>
@@ -91,7 +129,7 @@ export const CreateEventPartTwo = props => {
           <Form.Item required>
             <DatePicker
               name={'date'}
-              value={localState.date}
+              value={date}
               disabledDate={current =>
                 current && current < moment().endOf('day')
               }
@@ -106,7 +144,7 @@ export const CreateEventPartTwo = props => {
           <RecurringEvent
             localState={localState}
             setLocalState={setLocalState}
-            dynamicDates={localState.dynamicDates}
+            dynamicDates={dynamicDates}
           />
         </div>
 
@@ -117,7 +155,7 @@ export const CreateEventPartTwo = props => {
               <TimePicker
                 name={'startTime'}
                 use12Hours
-                value={localState.startTime}
+                value={startTime}
                 format={'h:mm a'}
                 defaultOpenValue={moment('00:00:00', 'HH:mm')}
                 onChange={value => handleChange('startTime', value)}
@@ -132,7 +170,7 @@ export const CreateEventPartTwo = props => {
               <TimePicker
                 name={'endTime'}
                 use12Hours
-                value={localState.endTime}
+                value={endTime}
                 format={'h:mm a'}
                 defaultOpenValue={moment('00:00:00', 'HH:mm')}
                 onChange={value => handleChange('startTime', value)}
@@ -151,7 +189,7 @@ export const CreateEventPartTwo = props => {
           <StyledButton
             type="primary"
             key="next"
-            onClick={() => handlePageForward()}
+            onClick={() => checkedRequired()}
           >
             Next
           </StyledButton>

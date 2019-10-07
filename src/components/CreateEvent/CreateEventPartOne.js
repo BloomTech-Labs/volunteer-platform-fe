@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Select, Form, Input } from 'antd';
 import { StyledButton, StyledCancelButton } from '../../styled';
 import styled from 'styled-components';
@@ -14,6 +14,14 @@ export const CreateEventPartOne = props => {
     cancelForm,
   } = props;
 
+  const {
+    nameOfEvent,
+    typesOfCauses,
+    streetAddress,
+    city,
+    phoneNumber,
+  } = localState;
+  const [error, setError] = useState('');
   //Mapping through tags for antd select
   const causeAreaTags = state.tags.causeAreas.map(tag => {
     return (
@@ -23,13 +31,34 @@ export const CreateEventPartOne = props => {
     );
   });
 
+  const isFormValid = () => {
+    if (
+      nameOfEvent &&
+      typesOfCauses.length > 0 &&
+      streetAddress &&
+      city &&
+      localState.state &&
+      phoneNumber
+    )
+      return true;
+  };
+
+  const checkRequired = () => {
+    if (isFormValid()) {
+      setError('');
+      handlePageForward();
+    } else {
+      setError('This field is required');
+    }
+  };
+
   return (
     <StyledDiv className={'flex center'}>
-      <Form layout={'vertical'} onSubmit={() => handlePageForward()}>
+      <Form layout={'vertical'} onSubmit={() => checkRequired()}>
         <Form.Item label={'Name of Event'} required>
           <Input
             name={'nameOfEvent'}
-            value={localState.nameOfEvent}
+            value={nameOfEvent}
             placeholder="Name of Event"
             onChange={e => handleChange(e.target.name, e.target.value)}
           />
@@ -39,23 +68,34 @@ export const CreateEventPartOne = props => {
           <Form.Item label={'Types Of Causes'} required>
             <Select
               name={'typesOfCauses'}
-              value={localState.typesOfCauses}
+              value={typesOfCauses}
               placeholder="Types of Causes"
               mode="multiple"
+              style={{ width: '350px' }}
               onChange={value => handleChange('typesOfCauses', value)}
             >
               {causeAreaTags}
             </Select>
+            {error && !typesOfCauses.length > 0 && (
+              <span className="error-message error-span left-aligned">
+                {error}
+              </span>
+            )}
           </Form.Item>
         </div>
         <div className={''}>
           <Form.Item label={'Street Address'} required>
             <Input
               name={'streetAddress'}
-              value={localState.streetAddress}
+              value={streetAddress}
               placeholder="Street Address"
               onChange={e => handleChange(e.target.name, e.target.value)}
             />
+            {error && !streetAddress && (
+              <span className="error-message error-span left-aligned">
+                {error}
+              </span>
+            )}
           </Form.Item>
         </div>
         <div className={''}>
@@ -63,10 +103,15 @@ export const CreateEventPartOne = props => {
             <Form.Item label="City" required>
               <Input
                 name={'city'}
-                value={localState.city}
+                value={city}
                 placeholder="City"
                 onChange={e => handleChange(e.target.name, e.target.value)}
               />
+              {error && !city && (
+                <span className="error-message error-span left-aligned">
+                  {error}
+                </span>
+              )}
             </Form.Item>
           </div>
           <div className={''}>
@@ -77,17 +122,27 @@ export const CreateEventPartOne = props => {
                 placeholder="State"
                 onChange={e => handleChange(e.target.name, e.target.value)}
               />
+              {error && !localState.state && (
+                <span className="error-message error-span left-aligned">
+                  {error}
+                </span>
+              )}
             </Form.Item>
           </div>
           <div className={'inlineTriple'}>
             <Form.Item label={'Phone Number'}>
               <Input
                 name={'phoneNumber'}
-                value={localState.phoneNumber}
+                value={phoneNumber}
                 pattern={'[0-9]{3}-[0-9]{3}-[0-9]{4}'}
                 placeholder={'000-000-0000'}
                 onChange={e => handleChange(e.target.name, e.target.value)}
               />
+              {error && !phoneNumber && (
+                <span className="error-message error-span left-aligned">
+                  {error}
+                </span>
+              )}
             </Form.Item>
           </div>
         </div>
@@ -105,7 +160,7 @@ export const CreateEventPartOne = props => {
             <StyledButton
               type="primary"
               kye="primary"
-              onClick={() => handlePageForward()}
+              onClick={() => checkRequired()}
             >
               Next
             </StyledButton>

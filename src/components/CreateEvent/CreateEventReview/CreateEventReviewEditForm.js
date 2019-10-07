@@ -81,7 +81,6 @@ export const CreateEventReviewEditForm = props => {
 
   const checkRequired = () => {
     if (isFormValid()) {
-      console.log('uesss');
       setError('');
       handleForm();
     } else {

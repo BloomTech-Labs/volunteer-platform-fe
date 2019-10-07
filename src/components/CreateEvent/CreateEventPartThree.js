@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Select, Input, Form } from 'antd';
 import { StyledCancelButton, StyledButton } from '../../styled';
 import styled from 'styled-components';
-import { formLayouts } from '../../utility/formLayouts';
 
 const { Option } = Select;
 const { TextArea } = Input;
 
 export const CreateEventPartThree = props => {
+  const [error, setError] = useState('');
   const {
     state,
     localState,
@@ -15,6 +15,8 @@ export const CreateEventPartThree = props => {
     handlePageForward,
     handleChange,
   } = props;
+
+  const { volunteerRequirements, interest, eventDetails } = localState;
 
   const requirementTags = state.tags.requirements.map(tag => {
     return <Option key={tag}>{tag}</Option>;
@@ -24,50 +26,97 @@ export const CreateEventPartThree = props => {
     return <Option key={tag}>{tag}</Option>;
   });
 
+  const isFormValid = () => {
+    if (volunteerRequirements.length > 0 && interest.length > 0 && eventDetails)
+      return true;
+  };
+  const checkedRequired = () => {
+    if (isFormValid()) {
+      setError('');
+      handlePageForward();
+    } else {
+      setError('This field is required');
+    }
+  };
   return (
     <StyledDiv className={'flex center'}>
       <label>What are the requirements?</label>
-      <Form layout={'vertical'} onSubmit={() => handlePageForward()}>
+      <Form layout={'vertical'} onSubmit={() => checkedRequired()}>
         <div className={''}>
           <Form.Item label={'Volunteer Requirments'} required>
-            <Select
-              name={'volunteerRequirements'}
-              placeholder="Type here and a tag will appear"
-              mode="multiple"
-              value={localState.volunteerRequirements}
-              onChange={value => handleChange('volunteerRequirements', value)}
-              style={{ width: '300px' }}
-            >
-              {requirementTags}
-            </Select>
+            <div className={'errorFlex'}>
+              <div>
+                <Select
+                  name={'volunteerRequirements'}
+                  placeholder="Type here and a tag will appear"
+                  mode="multiple"
+                  value={volunteerRequirements}
+                  onChange={value =>
+                    handleChange('volunteerRequirements', value)
+                  }
+                  style={{ width: '300px' }}
+                >
+                  {requirementTags}
+                </Select>
+              </div>
+              <div>
+                {error && !volunteerRequirements.length > 0 && (
+                  <span className="error-message error-span left-aligned">
+                    {error}
+                  </span>
+                )}
+              </div>
+            </div>
           </Form.Item>
         </div>
         <div className={''}>
           <Form.Item label={'interests'}>
-            <Select
-              name={'interest'}
-              placeholder=""
-              mode="multiple"
-              value={localState.interest}
-              onChange={value => handleChange('interest', value)}
-              style={{ width: '300px' }}
-            >
-              {interestTags}
-            </Select>
+            <div className={'errorFlex'}>
+              <div>
+                <Select
+                  name={'interest'}
+                  placeholder=""
+                  mode="multiple"
+                  value={interest}
+                  onChange={value => handleChange('interest', value)}
+                  style={{ width: '300px' }}
+                >
+                  {interestTags}
+                </Select>
+              </div>
+              <div>
+                {error && !interest.length > 0 && (
+                  <span className="error-message error-span left-aligned">
+                    {error}
+                  </span>
+                )}
+              </div>
+            </div>
           </Form.Item>
         </div>
 
         <div className={''}>
           <Form.Item label={'Event Details'} required>
-            <TextArea
-              name={'eventDetails'}
-              placeholder={
-                'What the volunteer would do at the event would go here.'
-              }
-              value={localState.eventDetails}
-              onChange={e => handleChange(e.target.name, e.target.value)}
-              style={{ width: '300px', height: '200px' }}
-            />
+            <div className={'errorFlex'}>
+              <div>
+                <TextArea
+                  name={'eventDetails'}
+                  placeholder={
+                    'What the volunteer would do at the event would go here.'
+                  }
+                  value={eventDetails}
+                  onChange={e => handleChange(e.target.name, e.target.value)}
+                  style={{ width: '300px', height: '200px' }}
+                />
+              </div>
+              <div>
+                {error && !eventDetails && (
+                  <span className="error-message error-span left-aligned">
+                    {error}
+                  </span>
+                )}
+              </div>
+            </div>
           </Form.Item>
         </div>
       </Form>
@@ -85,7 +134,7 @@ export const CreateEventPartThree = props => {
           <StyledButton
             type="primary"
             key="next"
-            onClick={() => handlePageForward()}
+            onClick={() => checkedRequired()}
           >
             Next
           </StyledButton>
@@ -97,6 +146,11 @@ export const CreateEventPartThree = props => {
 const StyledDiv = styled.div`
   display: flex;
   flex-direction: column;
+
+  .errorFlex {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 export default CreateEventPartThree;

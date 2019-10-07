@@ -228,6 +228,7 @@ const StyledRenderDiv = styled.div`
   border-radius: ${({ theme }) => theme.borderRadiusDefault};
 
   label {
+    margin-left: 20px;
     color: ${({ theme }) => theme.primary8};
 
     &::before {
@@ -248,6 +249,10 @@ const StyledRenderDiv = styled.div`
       margin-left: 15px;
       margin-right: 15px;
     }
+  }
+  .error-message.error-span.left-aligned {
+    color: red;
+    font-size: 12px;
   }
 `;
 
