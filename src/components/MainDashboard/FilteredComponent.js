@@ -1,5 +1,5 @@
 import React from 'react';
-import { findNext } from '../utility/findNextRecurEvent';
+import { findNext } from '../../utility/findNextRecurEvent';
 import moment from 'moment';
 
 export const FilteredComponent = Component => {

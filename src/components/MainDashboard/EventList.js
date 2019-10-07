@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Event from './Event';
+import Event from '../Event';
 import { NoEventsFound } from './NoEventsFound';
 import { Pagination } from 'antd';
 

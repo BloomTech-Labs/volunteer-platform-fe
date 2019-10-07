@@ -8,9 +8,10 @@ import {
   FilterTopbar,
   NoEventsFound,
   StyledLoader,
-} from '../components';
+} from '../components/MainDashboard';
 import {getAllEventsByState, getAllRecurringEventsByState} from '../actions';
 import {stateConversion} from '../utility/stateConversion';
+import {StyledLoader} from '../styled'
 
 export const MainDashboard = () => {
   const [state, dispatch] = useStateValue();
