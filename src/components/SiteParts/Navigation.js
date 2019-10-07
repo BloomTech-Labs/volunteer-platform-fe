@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { checkUserRegistered, signOut } from '../actions';
+import { checkUserRegistered, signOut } from '../../actions';
 import { Menu, Tooltip, Badge } from 'antd';
 import styled from 'styled-components';
-import { useStateValue } from '../hooks/useStateValue';
+import { useStateValue } from '../../hooks/useStateValue';
 
 export const Navigation = props => {
   const [state, dispatch] = useStateValue();

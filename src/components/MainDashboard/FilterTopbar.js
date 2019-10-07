@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {useStateValue} from '../../hooks/useStateValue';
 import {Card, Form, Row, Input, Icon, Divider} from 'antd';
 import {StyledCheckableTag as CheckableTag} from '../../styled';
-import OrganizationsList from './OrganizationsList';
+import OrganizationsList from './Orgview/OrganizationsList';
 
 const tabList = [
   {

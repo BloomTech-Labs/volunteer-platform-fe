@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
-import {getOrganizationsByState} from '../../actions';
-import {useStateValue} from '../../hooks/useStateValue';
+import {getOrganizationsByState} from '../../../actions';
+import {useStateValue} from '../../../hooks/useStateValue';
 import OrganizationCard from './OrganizationCard';
 import PropTypes from 'prop-types';
 

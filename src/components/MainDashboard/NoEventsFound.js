@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import sad_face from '../assets/sad_face.png';
-import usa_map from '../assets/usa_map.png';
+import sad_face from '../../assets/sad_face.png';
+import usa_map from '../../assets/usa_map.png';
 
 const Container = styled.div`
   width: 80%;

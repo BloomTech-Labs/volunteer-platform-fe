@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Event from '../Event';
-import { NoEventsFound } from './NoEventsFound';
+import Event from './Event';
+import { NoEventsFound } from '../NoEventsFound';
 import { Pagination } from 'antd';
 
 export const EventList = ({ events }) => {

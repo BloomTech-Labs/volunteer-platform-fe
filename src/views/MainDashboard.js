@@ -7,7 +7,6 @@ import {
   FilteredComponent,
   FilterTopbar,
   NoEventsFound,
-  StyledLoader,
 } from '../components/MainDashboard';
 import {getAllEventsByState, getAllRecurringEventsByState} from '../actions';
 import {stateConversion} from '../utility/stateConversion';
