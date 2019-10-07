@@ -210,15 +210,14 @@ export const CreateEvent = props => {
           <StyledRenderDiv>
             {pageNumberState.pageNumber &&
               renderParts[pageNumberState.pageNumber]}
-            <CreateEventPartTwo
+            <CreateEventPartThree
+              state={state}
               localState={localState}
               setLocalState={setLocalState}
-              // handleSubmit={handle}
+              // handleSubmit={handleFormPartSubmit}
               handlePageBack={handlePageBack}
-              pageNumberState={pageNumberState}
-              setPageNumberState={setPageNumberState}
+              pageNumber={pageNumberState.pageNumber}
               autoFillState={autoFillState}
-              setAutoFillState={setAutoFillState}
             />
           </StyledRenderDiv>
         </CustomStyledCard>
