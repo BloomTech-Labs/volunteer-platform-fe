@@ -103,6 +103,10 @@ export const MainDashboard = () => {
     else setInitialResults([...org.organizations]);
   }, [activeTabKey]);
 
+  useEffect(() => {
+    setInitialResults([...events.events, ...events.recurringEvents]);
+  }, [events]);
+
   const onChange = e => {
     setInputState({ ...inputState, [e.target.name]: e.target.value });
   };
@@ -128,9 +132,7 @@ export const MainDashboard = () => {
     });
   };
 
-
-  const FilteredList = FilteredComponent(ResultList)
-
+  const FilteredList = FilteredComponent(ResultList);
 
   return (
     <div className="main-content" style={{ maxWidth: 1020, margin: '0 auto' }}>
