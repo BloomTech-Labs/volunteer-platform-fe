@@ -6,7 +6,7 @@ import {
   ResultList,
   FilteredComponent,
   FilterTopbar,
-  NoEventsFound,
+  NoResultsFound,
 } from '../components/MainDashboard';
 import {
   getAllEventsByState,
@@ -148,9 +148,9 @@ export const MainDashboard = () => {
         {loadingEvents ? (
           <StyledLoader />
         ) : filtersTouched && !initialResults.length ? (
-          <NoEventsFound filtersTouched={true} />
+          <NoResultsFound filtersTouched={true} />
         ) : (
-          <ResultList
+          <FilteredList
             events={events.events}
             recurringEvents={events.recurringEvents}
             filter={inputState}

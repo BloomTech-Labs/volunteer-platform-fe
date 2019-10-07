@@ -16,7 +16,7 @@ const Container = styled.div`
   }
 `;
 
-export const NoEventsFound = ({ filtersTouched }) => {
+export const NoResultsFound = ({ filtersTouched }) => {
   return filtersTouched ? (
     <Container>
       <img src={sad_face} alt="Sad face" />

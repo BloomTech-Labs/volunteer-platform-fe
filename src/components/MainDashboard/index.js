@@ -1,6 +1,6 @@
 export * from './FilterTopbar'
 export * from './FilteredComponent'
-export * from './NoEventsFound'
+export * from './NoResultsFound'
 export * from './ResultList'
 export * from './Event'
 export * from './OrganizationCard'

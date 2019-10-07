@@ -4,7 +4,7 @@ import moment from 'moment';
 
 export const FilteredComponent = Component => {
   return (
-    { events, filter, tagFilter, recurringEvents, organizations },
+    { events, filter, tagFilter, recurringEvents, organizations, activeTab },
     ...props
   ) => {
     const { location } = filter;
@@ -31,11 +31,12 @@ export const FilteredComponent = Component => {
     let allEvents = [...events, ...recurringEvents].sort(
       (a, b) => a.nextDate - b.nextDate
     );
+
     if (!events || !filterCount) {
       return (
         <Component
-          events={allEvents}
-          organizations={organizations}
+          results={activeTab === 'Events' ? allEvents : organizations}
+          type={activeTab}
           {...props}
         />
       );
@@ -99,8 +100,8 @@ export const FilteredComponent = Component => {
 
     return (
       <Component
-        events={filteredEvents}
-        organizations={organizations}
+        results={activeTab === 'Events' ? allEvents : organizations}
+        type={activeTab}
         {...props}
       />
     );

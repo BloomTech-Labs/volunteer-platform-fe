@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import {Event, OrganizationCard} from '../MainDashboard';
-import { NoEventsFound } from './NoEventsFound';
+import { NoResultsFound } from './NoResultsFound';
 import { Pagination } from 'antd';
 
 export const ResultList = ({ results, type }) => {
@@ -35,7 +35,7 @@ export const ResultList = ({ results, type }) => {
       />
     </StyledResultList>
   ) : (
-    <NoEventsFound />
+    <NoResultsFound />
   );
 };
 
