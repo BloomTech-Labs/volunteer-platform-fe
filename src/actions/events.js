@@ -1,9 +1,9 @@
-import {action} from './action';
-import firebase, {store} from '../firebase/FirebaseConfig';
+import { action } from './action';
+import firebase, { store } from '../firebase/FirebaseConfig';
 import moment from 'moment';
 import faker from 'faker';
-import {interests, causeAreas, requirements} from '../reducers/initialState';
-import {findNextEvents} from '../utility/findNextRecurEvent';
+import { interests, causeAreas, requirements } from '../reducers/initialState';
+import { findNextEvents } from '../utility/findNextRecurEvent';
 
 /**
  * Auth Actions
@@ -103,21 +103,21 @@ export const getAllEventsByOrg = (orgId, dispatch) => {
     .where('orgId', '==', orgId)
     .get()
     .then(res => {
-      if (res.empty){
+      if (res.empty) {
         dispatch(action(ORG_HAS_NO_EVENTS));
         return;
       }
-      
+
       const events = [];
       res.forEach(event => {
         let eventToAdd = event.data();
         eventToAdd.eventId = event.id;
-        
-        if (eventToAdd.startTimeStamp > time){
+
+        if (eventToAdd.startTimeStamp > time) {
           events.push(eventToAdd);
         }
       });
-      
+
       dispatch(action(GET_EVENTS_BY_ORG, events));
     })
     .catch(error => {
@@ -145,18 +145,18 @@ export const getAllEventsByState = (state, dispatch) => {
     .limit(20)
     .get()
     .then(res => {
-      if (res.empty){
+      if (res.empty) {
         dispatch(action(NO_EVENTS_FOR_THAT_STATE));
         return;
       }
-      
+
       const events = [];
       res.forEach(event => {
         const data = event.data();
         data.eventId = event.id;
         events.push(data);
       });
-      
+
       dispatch(action(GET_EVENTS_BY_STATE, events));
     })
     .catch(err => {
@@ -198,15 +198,15 @@ export const getAllRecurringEventsByState = (state, dispatch) => {
     .where('state', '==', state)
     .get()
     .then(res => {
-      if (res.empty){
+      if (res.empty) {
         dispatch(action(RECURRING_EVENTS_BY_STATE_EMPTY));
-      }else{
+      } else {
         const events = [];
         res.forEach(event => {
           const data = event.data();
           data.eventId = event.id;
           let daysOfEvents = [];
-          if (data.recurringInfo.repeatTimePeriod.includes('Other')){
+          if (data.recurringInfo.repeatTimePeriod.includes('Sat/Sun')) {
             data.registeredVolunteers = findNextEvents(data);
             event.ref.update({
               registeredVolunteers: data.registeredVolunteers,
@@ -214,7 +214,7 @@ export const getAllRecurringEventsByState = (state, dispatch) => {
           }
           events.push(data);
         });
-        
+
         dispatch(action(GET_RECURRING_EVENTS_BY_STATE, events));
       }
     });
@@ -234,16 +234,16 @@ export const getAllRecurringEventsByOrg = (orgId, dispatch) => {
     .where('orgId', '==', orgId)
     .get()
     .then(res => {
-      if (res.empty){
+      if (res.empty) {
         dispatch(action(RECURRING_EVENTS_BY_ORG_EMPTY));
-      }else{
+      } else {
         const events = [];
         res.forEach(event => {
           const data = event.data();
           data.eventId = event.id;
           events.push(data);
         });
-        
+
         dispatch(action(GET_RECURRING_EVENTS_BY_ORG, events));
       }
     })
@@ -264,7 +264,7 @@ export const getEventById = (eventId, dispatch, eventType = 'events') => {
     .collection(eventType)
     .doc(eventId)
     .onSnapshot(res => {
-      if (!res.exists){
+      if (!res.exists) {
         getEventById(eventId, dispatch, 'recurring events');
         return;
       }
@@ -285,19 +285,19 @@ export const generateRandomEvents = () => {
         data.orgId = org.id;
         orgs.push(data);
       });
-      
+
       orgs.forEach(org => {
-        for (let i = 0; i < 3; i++){
+        for (let i = 0; i < 3; i++) {
           const date = moment(faker.date.future());
-          
+
           const poc1 = {
             email: faker.internet.email(),
             firstName: faker.name.firstName(),
             lastName: faker.name.lastName(),
           };
-          
+
           const website = 'http://' + faker.internet.domainName();
-          
+
           const event = {
             nameOfEvent: faker.company.catchPhrase(),
             city: org.city ? org.city : faker.address.city(),
@@ -323,7 +323,7 @@ export const generateRandomEvents = () => {
             website,
             eventDetails: faker.lorem.paragraphs(),
           };
-          
+
           store
             .collection('events')
             .add(event)
@@ -342,15 +342,15 @@ const getRandomInterests = () => {
   const randomInterests = [];
   const randomNumber = Math.ceil(Math.random() * 5);
   const selectedNumber = [];
-  for (let i = 0; i < randomNumber; i++){
+  for (let i = 0; i < randomNumber; i++) {
     let randomInterestNumber = Math.floor(Math.random() * interests.length);
-    while (selectedNumber.includes(randomInterestNumber)){
+    while (selectedNumber.includes(randomInterestNumber)) {
       randomInterestNumber = Math.floor(Math.random() * interests.length);
     }
     selectedNumber.push(randomInterestNumber);
-    randomInterests.push(interests[ randomInterestNumber ]);
+    randomInterests.push(interests[randomInterestNumber]);
   }
-  
+
   return randomInterests;
 };
 
@@ -358,15 +358,15 @@ const getRandomCauses = () => {
   const randomCauses = [];
   const randomNumber = Math.ceil(Math.random() * 5);
   const selectedNumber = [];
-  for (let i = 0; i < randomNumber; i++){
+  for (let i = 0; i < randomNumber; i++) {
     let randomCusesNumber = Math.floor(Math.random() * causeAreas.length);
-    while (selectedNumber.includes(randomCusesNumber)){
+    while (selectedNumber.includes(randomCusesNumber)) {
       randomCusesNumber = Math.floor(Math.random() * causeAreas.length);
     }
     selectedNumber.push(randomCusesNumber);
-    randomCauses.push(causeAreas[ randomCusesNumber ]);
+    randomCauses.push(causeAreas[randomCusesNumber]);
   }
-  
+
   return randomCauses;
 };
 
@@ -374,17 +374,17 @@ const getRandomRequirements = () => {
   const randomRequirements = [];
   const randomNumber = Math.ceil(Math.random() * 5);
   const selectedNumber = [];
-  for (let i = 0; i < randomNumber; i++){
+  for (let i = 0; i < randomNumber; i++) {
     let randomRequirementNumber = Math.floor(
-      Math.random() * requirements.length,
+      Math.random() * requirements.length
     );
-    while (selectedNumber.includes(randomRequirementNumber)){
+    while (selectedNumber.includes(randomRequirementNumber)) {
       randomRequirementNumber = Math.floor(Math.random() * requirements.length);
     }
     selectedNumber.push(randomRequirementNumber);
-    randomRequirements.push(requirements[ randomRequirementNumber ]);
+    randomRequirements.push(requirements[randomRequirementNumber]);
   }
-  
+
   return randomRequirements;
 };
 
@@ -424,7 +424,7 @@ export const signUpForEvent = (event, user, dispatch) => {
       },
     ],
   };
-  
+
   dispatch(action(SIGN_UP_FOR_EVENT_INIT));
   store
     .collection('events')
@@ -465,16 +465,16 @@ export const cancelSignedUpEvent = (event, user, dispatch) => {
   let updatedEvent = {
     ...event,
     registeredVolunteers: event.registeredVolunteers.filter(
-      uid => uid !== user.uid,
+      uid => uid !== user.uid
     ),
   };
   let updatedUser = {
     ...user,
     registeredEvents: user.registeredEvents.filter(
-      item => item.eventId !== event.eventId,
+      item => item.eventId !== event.eventId
     ),
   };
-  
+
   dispatch(action(CANCEL_SIGNED_UP_EVENT_INIT));
   store
     .collection('events')
@@ -498,10 +498,13 @@ export const cancelSignedUpEvent = (event, user, dispatch) => {
     });
 };
 
-export const SIGN_UP_FOR_RECURRING_EVENT_INIT = 'SIGN_UP_FOR_RECURRING_EVENT_INIT';
-export const SIGNED_UP_VOLUNTEER_FOR_RECURRING_EVENT = 'SIGNED_UP_VOLUNTEER_FOR_RECURRING_EVENT';
+export const SIGN_UP_FOR_RECURRING_EVENT_INIT =
+  'SIGN_UP_FOR_RECURRING_EVENT_INIT';
+export const SIGNED_UP_VOLUNTEER_FOR_RECURRING_EVENT =
+  'SIGNED_UP_VOLUNTEER_FOR_RECURRING_EVENT';
 export const SIGNED_UP_FOR_RECURRING_EVENT = 'SIGNED_UP_FOR_RECURRING_EVENT';
-export const SIGN_UP_FOR_RECURRING_EVENT_FAILURE = 'SIGN_UP_FOR_RECURRING_EVENT_FAILURE';
+export const SIGN_UP_FOR_RECURRING_EVENT_FAILURE =
+  'SIGN_UP_FOR_RECURRING_EVENT_FAILURE';
 
 /**
  * Sign up a volunteer for a recurring event. Add the user id to the event document. Add the event to the user document.
@@ -516,22 +519,23 @@ export const signUpForRecurringEvent = (event, user, date, dispatch) => {
   let volunteers = event.registeredVolunteers || {};
   let targetDate = moment(date).unix();
   let events = user.registeredEvents || [];
-  
+
   if (!volunteers[targetDate]) {
     volunteers[targetDate] = [user.uid];
   } else {
     volunteers[targetDate] = [...volunteers[targetDate], user.uid];
   }
-  
+
   let updatedEvent = {
     ...event,
-    registeredVolunteers: volunteers
+    registeredVolunteers: volunteers,
   };
 
   let updatedUser = {
     ...user,
     registeredEvents: [
-      ...events, {
+      ...events,
+      {
         nameOfEvent: event.nameOfEvent,
         pointOfContact: event.pointOfContact,
         date: targetDate,
@@ -551,7 +555,8 @@ export const signUpForRecurringEvent = (event, user, date, dispatch) => {
     .set(updatedEvent)
     .then(res => {
       dispatch(action(SIGNED_UP_VOLUNTEER_FOR_RECURRING_EVENT, updatedEvent));
-      store.collection('users')
+      store
+        .collection('users')
         .doc(user.uid)
         .set(updatedUser)
         .then(res => {
@@ -564,13 +569,16 @@ export const signUpForRecurringEvent = (event, user, date, dispatch) => {
     .catch(error => {
       dispatch(action(SIGN_UP_FOR_RECURRING_EVENT_FAILURE));
     });
+};
 
-}
-
-export const CANCEL_SIGNED_UP_RECURRING_EVENT_INIT = 'CANCEL_SIGNED_UP_RECURRING_EVENT_INIT';
-export const CANCELED_VOLUNTEER_FOR_RECURRING_EVENT = 'CANCELED_VOLUNTEER_FOR_RECURRING_EVENT';
-export const CANCELED_SIGNED_UP_RECURRING_EVENT = 'CANCELED_SIGNED_UP_RECURRING_EVENT';
-export const CANCEL_SIGNED_UP_RECURRING_EVENT_FAILURE = 'CANCEL_SIGNED_UP_RECURRING_EVENT_FAILURE';
+export const CANCEL_SIGNED_UP_RECURRING_EVENT_INIT =
+  'CANCEL_SIGNED_UP_RECURRING_EVENT_INIT';
+export const CANCELED_VOLUNTEER_FOR_RECURRING_EVENT =
+  'CANCELED_VOLUNTEER_FOR_RECURRING_EVENT';
+export const CANCELED_SIGNED_UP_RECURRING_EVENT =
+  'CANCELED_SIGNED_UP_RECURRING_EVENT';
+export const CANCEL_SIGNED_UP_RECURRING_EVENT_FAILURE =
+  'CANCEL_SIGNED_UP_RECURRING_EVENT_FAILURE';
 
 /**
  * Cancel a signed up recurring event for an user. Delete the volunteer in the event document. Delete the event in the user document.
@@ -583,21 +591,24 @@ export const CANCEL_SIGNED_UP_RECURRING_EVENT_FAILURE = 'CANCEL_SIGNED_UP_RECURR
 
 export const cancelSignedUpRecurringEvent = (event, user, date, dispatch) => {
   let targetDate = moment(date).unix();
-  let updatedVolunteers = event.registeredVolunteers[targetDate].filter(uid => uid !== user.uid);
+  let updatedVolunteers = event.registeredVolunteers[targetDate].filter(
+    uid => uid !== user.uid
+  );
 
   let updatedEvent = {
     ...event,
     registeredVolunteers: {
       ...event.registeredVolunteers,
-      targetDate: updatedVolunteers
-    }
+      targetDate: updatedVolunteers,
+    },
   };
   let updatedUser = {
     ...user,
     registeredEvents: user.registeredEvents.filter(
-      item => item.eventId !== event.eventId),
+      item => item.eventId !== event.eventId
+    ),
   };
-  
+
   dispatch(action(CANCEL_SIGNED_UP_RECURRING_EVENT_INIT));
   store
     .collection('recurring events')
@@ -605,7 +616,8 @@ export const cancelSignedUpRecurringEvent = (event, user, date, dispatch) => {
     .set(updatedEvent)
     .then(res => {
       dispatch(action(CANCELED_VOLUNTEER_FOR_RECURRING_EVENT, updatedEvent));
-      store.collection('users')
+      store
+        .collection('users')
         .doc(user.uid)
         .set(updatedUser)
         .then(res => {

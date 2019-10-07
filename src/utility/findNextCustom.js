@@ -2,7 +2,6 @@ import moment from 'moment';
 import { findNthWeek } from './findNthWeek';
 
 export const findNextCustom = (date, info) => {
-  debugger;
   let unit = info.repeatEveryValue;
   let timeFrame = info.repeatEvery;
   let dayAbbrevs = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
@@ -34,21 +33,11 @@ export const findNextCustom = (date, info) => {
       return moment(nextOccurrence.format('LL') + ' ' + date.format('LT'));
     case 'Month':
     case 'Months':
-      let option = info.monthlyPeriod;
-      let firstEvent, day;
-      if (option.includes('Monthly on day')) {
-        day = +option.split(' ')[3];
-        firstEvent = moment().set({
-          month: moment.unix(date).month(),
-          date: day,
-        });
-        while (moment().diff(firstEvent) >= 0) {
-          firstEvent = firstEvent.add(timeFrame, 'month');
-        }
-        return firstEvent.unix();
-      } else {
-        return findNthWeek(date, { repeatTimePeriod: option }, timeFrame);
-      }
+      return info.monthlyPeriod.split(' ')[2] === 'day'
+        ? date.add(timeFrame, 'months')
+        : findNthWeek(date.add(timeFrame, 'months'), {
+            repeatTimePeriod: info.monthlyPeriod,
+          });
   }
   return 1;
 };

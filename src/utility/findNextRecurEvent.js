@@ -8,25 +8,28 @@ export const eventPassed = date => {
 
 export const findNext = (date, keyWord, info = {}) => {
   switch (keyWord) {
-    case 'Other': //need to do
+    case 'Other':
       return findNextCustom(date, info);
     case 'Daily':
       return date.add(1, 'days');
-    case 'Weekly': //CHECKED
+    case 'Weekly':
       let weekdayOfEvent = date.day();
       return date.day(weekdayOfEvent + 7);
-    case 'Monthly': //CHECKED
+    case 'Monthly':
       return findNthWeek(date.add(1, 'month'), info);
-    case 'Annually': //CHECKED
+    case 'Annually':
       return date.add(1, 'year');
-    case 'Weekdays': //CHECKED
+    case 'Weekdays':
       let dayOfWeek = date.day();
       if (dayOfWeek === 5 || dayOfWeek === 6) {
-        //Fri or Sat
         return date.day(8);
       } else {
         return date.add(1, 'days');
       }
+    case 'Weekends': //Fri, Sat, Sun
+      return date.day() < 5 ? date.day(5) : date.add(1, 'day');
+    case 'Sat/Sun':
+      return date.day() < 6 ? date.day(6) : date.add(1, 'day');
   }
 };
 
@@ -37,11 +40,25 @@ export const findNextEvents = event => {
   event.registeredVolunteers = event.registeredVolunteers || {};
   let passed = eventPassed(event.startTimeStamp);
   let eventDay = moment.unix(event.startTimeStamp);
-  let isCustom = event.recurringInfo.repeatTimePeriod.split(' ')[0] === 'Other';
+  let isCustomWeekly =
+    event.recurringInfo.repeatTimePeriod.split(' ')[0] === 'Other' &&
+    event.recurringInfo.repeatEveryValue.includes('Week');
+  let isWeekend =
+    event.recurringInfo.repeatTimePeriod.split(' ')[0] === 'Weekends';
+  let isSat_Sun =
+    event.recurringInfo.repeatTimePeriod.split(' ')[0] === 'Sat/Sun';
   let isGood = true;
-  let days = event.recurringInfo.days || [];
+  let days = [0, 5, 6];
+  if (isWeekend) {
+    isGood = days.includes(eventDay.day());
+  }
+  days = [0, 6];
+  if (isSat_Sun) {
+    isGood = days.includes(eventDay.day());
+  }
+  days = event.recurringInfo.days || [];
   days = days.map(day => dayAbbrevs[day]);
-  if (isCustom) {
+  if (isCustomWeekly) {
     isGood = days.includes(eventDay.day());
   }
   while (passed || !isGood) {
@@ -51,7 +68,7 @@ export const findNextEvents = event => {
       event.recurringInfo
     );
     passed = eventPassed(eventDay.unix());
-    isGood = true
+    isGood = true;
   }
   let arrayOfDates = event.registeredVolunteers
     ? [...Object.keys(event.registeredVolunteers)].sort()
