@@ -85,12 +85,14 @@ export const initialState = {
     event: {},
     recurringEvents: [],
     createEventFailedError: '',
+    createRecurringEventFailedError: '',
     deleteEventFailedError: '',
     editEventFailedError: '',
     getEventsFailedError: '',
     signUpVolunteerError: '',
     cancelSignedUpVolunteerError: '',
     isLoading: false,
+    isSaving: false
   },
   tags: {
     interests: interests,
