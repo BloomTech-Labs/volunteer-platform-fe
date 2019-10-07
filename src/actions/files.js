@@ -24,7 +24,7 @@ export async function uploadImage(file, onError, onSuccess,
   const nameSplit = file.name.split('.');
   const imageType = nameSplit[ nameSplit.length - 1 ];
   const storageRef = await storage.ref();
-  const imgFile = storageRef.child(`images/${imageName}.${imageType}`);
+  const imgFile = storageRef.child(`images/${imageName}`);
   try{
     const image = await imgFile.put(file);
     onSuccess(null, image);
