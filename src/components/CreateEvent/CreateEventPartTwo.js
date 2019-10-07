@@ -8,17 +8,7 @@ import { formLayouts } from '../../utility/formLayouts';
 import { StyledCancelButton, StyledButton } from '../../styled';
 
 export const CreateEventPartTwo = props => {
-  const {
-    localState,
-    setLocalState,
-    handlePageBack,
-    autoFillState,
-    setAutoFillState,
-    pageNumberState,
-    setPageNumberState,
-  } = props;
-
-  const { pageNumber } = pageNumberState;
+  const { localState, setLocalState, handlePageBack, handleChange } = props;
 
   //Mapping through tags for antd select
 
@@ -53,13 +43,6 @@ export const CreateEventPartTwo = props => {
         dynamicNumber,
         dynamicNth: nth[count],
       },
-    });
-  };
-
-  const handleChange = (name, value) => {
-    setLocalState({
-      ...localState,
-      [name]: value,
     });
   };
 

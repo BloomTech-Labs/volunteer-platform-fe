@@ -124,6 +124,12 @@ export const CreateEvent = props => {
     props.history.push('/org-dashboard');
   };
 
+  const handleChange = (name, value) => {
+    setLocalState({
+      ...localState,
+      [name]: value,
+    });
+  };
   ///Cancel Form
   const cancelForm = () => {
     props.history.push('/org-dashboard');
@@ -152,7 +158,7 @@ export const CreateEvent = props => {
         handlePageForward={handlePageForward}
         cancelForm={cancelForm}
         pageNumber={pageNumberState.pageNumber}
-        autoFillState={autoFillState}
+        handleChange={handleChange}
       />
     ),
     2: (
@@ -160,10 +166,8 @@ export const CreateEvent = props => {
         localState={localState}
         setLocalState={setLocalState}
         handlePageBack={handlePageBack}
-        pageNumberState={pageNumberState}
         setPageNumberState={setPageNumberState}
-        autoFillState={autoFillState}
-        setAutoFillState={setAutoFillState}
+        handleChange={handleChange}
       />
     ),
     3: (
@@ -171,20 +175,16 @@ export const CreateEvent = props => {
         state={state}
         localState={localState}
         setLocalState={setLocalState}
-        // handleSubmit={handleFormPartSubmit}
         handlePageBack={handlePageBack}
-        pageNumber={pageNumberState.pageNumber}
-        autoFillState={autoFillState}
+        handleChange={handleChange}
       />
     ),
     4: (
       <CreateEventPartFour
         localState={localState}
         setLocalState={setLocalState}
-        // handleSubmit={handleFormPartSubmit}
         handlePageBack={handlePageBack}
-        pageNumber={pageNumberState.pageNumber}
-        autoFillState={autoFillState}
+        handleChange={handleChange}
       />
     ),
     5: (
@@ -197,6 +197,7 @@ export const CreateEvent = props => {
         autoFillState={autoFillState}
         handleReviewSubmit={handleReviewSubmit}
         cancelForm={cancelForm}
+        handleChange={handleChange}
       />
     ),
     // 6: <SuccessModal />,
@@ -210,15 +211,6 @@ export const CreateEvent = props => {
           <StyledRenderDiv>
             {pageNumberState.pageNumber &&
               renderParts[pageNumberState.pageNumber]}
-            <CreateEventPartThree
-              state={state}
-              localState={localState}
-              setLocalState={setLocalState}
-              // handleSubmit={handleFormPartSubmit}
-              handlePageBack={handlePageBack}
-              pageNumber={pageNumberState.pageNumber}
-              autoFillState={autoFillState}
-            />
           </StyledRenderDiv>
         </CustomStyledCard>
       </StyledDiv>

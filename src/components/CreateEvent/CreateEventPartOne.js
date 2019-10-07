@@ -10,7 +10,7 @@ export const CreateEventPartOne = props => {
     state,
     handlePageForward,
     localState,
-    setLocalState,
+    handleChange,
     cancelForm,
   } = props;
 
@@ -22,13 +22,6 @@ export const CreateEventPartOne = props => {
       </Option>
     );
   });
-
-  const handleChange = (name, value) => {
-    setLocalState({
-      ...localState,
-      [name]: value,
-    });
-  };
 
   return (
     <StyledDiv className={'flex center'}>
@@ -104,7 +97,9 @@ export const CreateEventPartOne = props => {
           <StyledCancelButton onClick={cancelForm} type="primary">
             Cancel
           </StyledCancelButton>
-          <StyledButton type="primary">Next</StyledButton>
+          <StyledButton type="primary" onClick={() => handlePageForward()}>
+            Next
+          </StyledButton>
         </div>
       </Form>
     </StyledDiv>

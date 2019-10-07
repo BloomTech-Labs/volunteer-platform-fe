@@ -14,6 +14,7 @@ export const CreateEventPartThree = props => {
     setLocalState,
     handlePageBack,
     handlePageForward,
+    handleChange,
   } = props;
 
   const requirementTags = state.tags.requirements.map(tag => {
@@ -23,12 +24,7 @@ export const CreateEventPartThree = props => {
   const interestTags = state.tags.interests.map(tag => {
     return <Option key={tag}>{tag}</Option>;
   });
-  const handleChange = (name, value) => {
-    setLocalState({
-      ...localState,
-      [name]: value,
-    });
-  };
+
   return (
     <StyledDiv className={'flex center'}>
       <h1>Let's Create An Event</h1>
