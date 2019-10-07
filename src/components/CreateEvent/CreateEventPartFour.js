@@ -48,10 +48,18 @@ export const CreateEventPartFour = props => {
         </div>
       </Form>
       <div className="buttonStyles">
-        <StyledCancelButton onClick={() => handlePageBack()} type="primary">
-          Cancel
+        <StyledCancelButton
+          onClick={() => handlePageBack()}
+          type="secondary"
+          key="back"
+        >
+          Back
         </StyledCancelButton>
-        <StyledButton type="primary" onClick={() => handlePageForward()}>
+        <StyledButton
+          type="primary"
+          key="next"
+          onClick={() => handlePageForward()}
+        >
           Next
         </StyledButton>
       </div>

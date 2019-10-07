@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyledButton, StyledCard } from '../../../styled';
+import { StyledButton, StyledCancelButton } from '../../../styled';
 import { Icon, Tag } from 'antd';
 import styled from 'styled-components';
 import createEventImg from '../../../assets/undraw_blooming_jtv6.svg';
@@ -86,12 +86,20 @@ export const CreateEventReviewList = props => {
         <h4>Other Notes</h4>
         <p>{localState.otherNotes}</p>
       </div>
-      <div>
-        <StyledButton key="cancel" onClick={handlePageBack}>
+      <div className="buttonStyles">
+        <StyledCancelButton
+          key="cancel"
+          type="second"
+          onClick={() => handlePageBack()}
+        >
           Cancel
-        </StyledButton>
+        </StyledCancelButton>
 
-        <StyledButton key="submit" onClick={handleReviewSubmit}>
+        <StyledButton
+          key="submit"
+          type="primary"
+          onClick={() => handleReviewSubmit()}
+        >
           Confirm
         </StyledButton>
       </div>

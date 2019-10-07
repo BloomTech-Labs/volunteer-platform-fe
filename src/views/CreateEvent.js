@@ -47,6 +47,15 @@ export const CreateEvent = props => {
     4: 'Almost Finished Creating Your Event!!',
     5: "Here's What We Got",
   };
+
+  const formParts = {
+    1: CreateEventPartOne,
+    2: CreateEventPartTwo,
+    3: CreateEventPartThree,
+    4: CreateEventPartFour,
+    5: CreateEventReview,
+  };
+
   const [localState, setLocalState] = useState(initialEvent);
 
   let [pageNumberState, setPageNumberState] = useState({
@@ -57,6 +66,8 @@ export const CreateEvent = props => {
 
   //Destructuring
   const { recurringInfo, recurringEvent } = localState;
+
+  const RenderedFormParts = formParts[pageNumberState.pageNumber];
 
   useEffect(() => {
     if (props.location.state.org) {
@@ -150,60 +161,6 @@ export const CreateEvent = props => {
     });
   };
 
-  const renderParts = {
-    1: (
-      <CreateEventPartOne
-        state={state}
-        localState={localState}
-        setLocalState={setLocalState}
-        handlePageForward={handlePageForward}
-        cancelForm={cancelForm}
-        pageNumber={pageNumberState.pageNumber}
-        handleChange={handleChange}
-      />
-    ),
-    2: (
-      <CreateEventPartTwo
-        localState={localState}
-        setLocalState={setLocalState}
-        handlePageBack={handlePageBack}
-        setPageNumberState={setPageNumberState}
-        handlePageForward={handlePageForward}
-        handleChange={handleChange}
-      />
-    ),
-    3: (
-      <CreateEventPartThree
-        state={state}
-        localState={localState}
-        setLocalState={setLocalState}
-        handlePageBack={handlePageBack}
-        handleChange={handleChange}
-        handlePageForward={handlePageForward}
-      />
-    ),
-    4: (
-      <CreateEventPartFour
-        localState={localState}
-        setLocalState={setLocalState}
-        handlePageBack={handlePageBack}
-        handleChange={handleChange}
-        handlePageForward={handlePageForward}
-      />
-    ),
-    5: (
-      <CreateEventReview
-        localState={localState}
-        setLocalState={setLocalState}
-        handlePageBack={handlePageBack}
-        pageNumber={pageNumberState.pageNumber}
-        handleReviewSubmit={handleReviewSubmit}
-        cancelForm={cancelForm}
-        handleChange={handleChange}
-      />
-    ),
-    // 6: <SuccessModal />,
-  };
   console.log('localstate', localState);
   return (
     <div>
@@ -212,8 +169,17 @@ export const CreateEvent = props => {
           <h1>{formTitles[pageNumberState.pageNumber]}</h1>
           <StyledImg src={createEventImg} alt="undraw unexpected friends" />
           <StyledRenderDiv>
-            {pageNumberState.pageNumber &&
-              renderParts[pageNumberState.pageNumber]}
+            <RenderedFormParts
+              state={state}
+              localState={localState}
+              setLocalState={setLocalState}
+              handlePageForward={handlePageForward}
+              handlePageBack={handlePageBack}
+              cancelForm={cancelForm}
+              pageNumber={pageNumberState.pageNumber}
+              handleChange={handleChange}
+              handleReviewSubmit={handleReviewSubmit}
+            />
           </StyledRenderDiv>
         </CustomStyledCard>
       </StyledDiv>
@@ -273,10 +239,15 @@ const StyledRenderDiv = styled.div`
     display: flex;
     margin: 50px auto 0;
     padding-top: 40px;
-    padding-right: 70px;
-    padding-left: 70px;
+    padding-right: 50px;
+    padding-left: 50px;
     justify-content: space-between;
     border-top: 2px solid ${({ theme }) => theme.primary8};
+
+    button {
+      margin-left: 15px;
+      margin-right: 15px;
+    }
   }
 `;
 

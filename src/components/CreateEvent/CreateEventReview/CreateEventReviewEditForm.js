@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyledButton } from '../../../styled';
+import { StyledCancelButton, StyledButton } from '../../../styled';
 import { useStateValue } from '../../../hooks/useStateValue';
 import {
   Icon,
@@ -159,61 +159,87 @@ export const CreateEventReviewEditForm = props => {
 
       <h4>Tyeps of Causes</h4>
       <div>
-        <Select
-          name={'Types of Causes'}
-          mode="multiple"
-          value={typesOfCauses}
-          onChange={value => handleValue('typesOfCauses', value)}
-        >
-          {causeAreaTags}
-        </Select>
-        {error && !typesOfCauses.length > 0 && (
-          <span className="error-message error-span left-aligned">{error}</span>
-        )}
+        <div className={'errorFlex'}>
+          <div>
+            <Select
+              name={'Types of Causes'}
+              mode="multiple"
+              value={typesOfCauses}
+              onChange={value => handleValue('typesOfCauses', value)}
+            >
+              {causeAreaTags}
+            </Select>
+          </div>
+          <div>
+            {error && !typesOfCauses.length > 0 && (
+              <span className="error-message error-span left-aligned">
+                {error}
+              </span>
+            )}
+          </div>
+        </div>
       </div>
 
       <h4>Volunteer Requirments</h4>
-      <div>
-        <Select
-          name={'Volunteer Requirements'}
-          mode="multiple"
-          value={volunteerRequirements}
-          onChange={value => handleValue('volunteerRequirements', value)}
-          style={{ width: '325px' }}
-        >
-          {requirementTags}
-        </Select>
-        {error && !volunteerRequirements.length > 0 && (
-          <span className="error-message error-span left-aligned">{error}</span>
-        )}
+      <div className={'errorFlex'}>
+        <div>
+          <Select
+            name={'Volunteer Requirements'}
+            mode="multiple"
+            value={volunteerRequirements}
+            onChange={value => handleValue('volunteerRequirements', value)}
+            style={{ width: '325px' }}
+          >
+            {requirementTags}
+          </Select>
+        </div>
+        <div>
+          {error && !volunteerRequirements.length > 0 && (
+            <span className="error-message error-span left-aligned">
+              {error}
+            </span>
+          )}
+        </div>
       </div>
 
       <h4>Interests</h4>
-      <div>
-        <Select
-          name={'Interest'}
-          mode="multiple"
-          value={interest}
-          onChange={value => handleValue('interest', value)}
-        >
-          {interestTags}
-        </Select>
-        {error && !interest.length > 0 && (
-          <span className="error-message error-span left-aligned">{error}</span>
-        )}
+      <div className={'errorFlex'}>
+        <div>
+          <Select
+            name={'Interest'}
+            mode="multiple"
+            value={interest}
+            onChange={value => handleValue('interest', value)}
+          >
+            {interestTags}
+          </Select>
+        </div>
+        <div>
+          {error && !interest.length > 0 && (
+            <span className="error-message error-span left-aligned">
+              {error}
+            </span>
+          )}
+        </div>
       </div>
 
       <h4>Volunteers Needed</h4>
-      <div>
-        <InputNumber
-          name={'Number of Volunteers'}
-          min={0}
-          value={numberOfVolunteers}
-          onChange={value => handleValue('numberOfVolunteers', value)}
-        />
-        {error && !numberOfVolunteers > 0 && (
-          <span className="error-message error-span left-aligned">{error}</span>
-        )}
+      <div className={'errorFlex'}>
+        <div>
+          <InputNumber
+            name={'Number of Volunteers'}
+            min={0}
+            value={numberOfVolunteers}
+            onChange={value => handleValue('numberOfVolunteers', value)}
+          />
+        </div>
+        <div>
+          {error && !numberOfVolunteers > 0 && (
+            <span className="error-message error-span left-aligned">
+              {error}
+            </span>
+          )}
+        </div>
       </div>
 
       <h4>Phone Number</h4>
@@ -338,11 +364,16 @@ export const CreateEventReviewEditForm = props => {
       </div>
 
       <div className="buttonStyles">
-        <StyledButton type="primary" onClick={() => handleForm()}>
+        <StyledCancelButton
+          key="cancel"
+          type="secondary"
+          onClick={() => handleForm()}
+        >
           Cancel
-        </StyledButton>
+        </StyledCancelButton>
         <StyledButton
           onClick={() => checkRequired()}
+          key="save"
           type="primary"
           width="fit-content"
         >
@@ -373,6 +404,10 @@ const StyledDiv = styled.div`
   display: flex;
   flex-direction: column;
 
+  .errorFlex {
+    display: flex;
+    flex-direction: column;
+  }
   .timeWrapper {
     display: flex;
   }
