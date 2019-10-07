@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import manHiking from '../assets/man-hiking.jpg';
 import styled from 'styled-components';
 import {StyledCard} from '../styled';
-import {Tag} from 'antd';
+import {Tag, AutoComplete, Icon} from 'antd';
 import moment from 'moment';
 import {findNext} from '../utility/findNextRecurEvent';
 import PropTypes from 'prop-types';
@@ -12,7 +12,7 @@ import {useStateValue} from '../hooks/useStateValue';
 import {addComment, addCommentToComment} from '../actions';
 import uuid4 from 'uuid4';
 
-export const EventCard = ({event, match}) => {
+export const EventCard = ({event}) => {
   
   const [{auth, comments}, dispatch] = useStateValue();
   
@@ -68,11 +68,14 @@ export const EventCard = ({event, match}) => {
     const comment = {
       commentId: uuid4(),
       comment: text.comment,
-      avatarPath: auth.registeredUser.imagePath,
       createdAt: moment().unix(),
       usersUid: auth.googleAuthUser.uid,
       name: auth.registeredUser.firstName + ' ' + auth.registeredUser.lastName,
     };
+    
+    if (auth.registeredUser.imagePath){
+      comment.avatarPath = auth.registeredUser.imagePath;
+    }
     addComment(comment, event, dispatch);
   };
   
@@ -81,52 +84,82 @@ export const EventCard = ({event, match}) => {
     const newComment = {
       commentId: uuid4(),
       comment: text.comment,
-      avatarPath: auth.registeredUser.imagePath,
       createdAt: moment().unix(),
       usersUid: auth.googleAuthUser.uid,
       name: auth.registeredUser.firstName + ' ' + auth.registeredUser.lastName,
     };
+    
+    if (auth.registeredUser.imagePath){
+      newComment.avatarPath = auth.registeredUser.imagePath;
+    }
+    
     addCommentToComment(newComment, event, comment, dispatch);
+  };
+  
+  const backButton = () => {
+    //props.history.goBack();
+    return null;
   };
   
   return (
     <div>
-      <div style={heading}>
-        <h4> {localState.nameOfEvent} </h4>
-        <h6> {moment.unix(localState.nextDate).format('LLLL')} </h6>
-        <h6> {localState.orgName} </h6>
+      <div>
+        <Icon type="left-circle" theme="filled" onClick={backButton} style={{
+          marginLeft: '15%',
+          marginRight: '10px',
+          marginTop: '10px',
+          fontSize: '24px',
+        }}/>
+        Previous Page
       </div>
-      <StyledEventPage>
-        <div className="card">
-          <div className="photo">
-            <img src={manHiking} alt="dude" width={175} height={175}/>
+      <div style={{margin: '0 auto', width: '70%'}}>
+        <div>
+          <h4> {localState.nameOfEvent} </h4>
+          <h6> {moment.unix(localState.nextDate).format('LLLL')} </h6>
+          <h6> {localState.orgName} </h6>
+        </div>
+        <StyledEventPage>
+          <div className="card">
+            <div className="photo">
+              <img src={manHiking} alt="dude" width={250} height={250}/>
+            </div>
+            <div className="tags">
+              <h5>Interests: </h5>
+              <div className="subtag">{interest}</div>
+              <h5>Causes: </h5>
+              <div className="subtag">{causes}</div>
+              <h5>Requirements: </h5>
+              <div className="subtag">{requirements}</div>
+            </div>
           </div>
-          <div className="tags">
-            <h5>Interests: </h5>
-            <div className="subtag">{interest}</div>
-            <h5>Causes: </h5>
-            <div className="subtag">{causes}</div>
-            <h5>Requirements: </h5>
-            <div className="subtag">{requirements}</div>
+        </StyledEventPage>
+        <div style={{display: 'flex', justifyContent: 'space-between'}}>
+          <StyledEventDetails>
+            <div className="details">
+              <h5>Details</h5>
+            </div>
+            <div className="description">
+              {localState.eventDetails}
+            </div>
+          </StyledEventDetails>
+          <StyledEventTime>
+            <div className="time">
+              <h6> Every Tuesday, Thursday,
+                Friday{localState.recurringInfo.days}</h6>
+            </div>
+            <div className="info">
+              <h5>
+                {localState.startTime} - {localState.endTime}
+              </h5>
+            </div>
+          </StyledEventTime>
+          <div style={{display: 'column'}}>
+            <Icon type="twitter-circle" theme="filled"/>
+            <Icon type="facebook" theme="filled"/>
+            <Icon type="google-circle" theme="filled"/>
           </div>
         </div>
-      </StyledEventPage>
-      <StyledEventDetails>
-        <div className="details">
-          <h5>Details</h5>
-        </div>
-        <div className="description">{localState.eventDetails}</div>
-      </StyledEventDetails>
-      <StyledEventTime>
-        <div className="time">
-          <h5>
-            {localState.startTime} - {localState.endTime}
-          </h5>
-        </div>
-        <div className="info">
-          <h6>{localState.recurringInfo.days}</h6>
-        </div>
-      </StyledEventTime>
+      </div>
       <CommentList comments={event.comments}
                    addCommentToComment={handleAddCommentToComment}
                    isLoading={comments.isLoadingReplyToComment}
@@ -142,12 +175,10 @@ const StyledEventPage = styled(StyledCard)`
     padding: 0;
 }
 && {
-    // margin-left: 15%;
     border-radius: 2px;
     width: 100%;
     max-width: 100%;
     padding: 0;
-    //border: 1px solid purple
 }   
 .card {
     display: flex;
@@ -219,10 +250,6 @@ const StyledEventTime = styled(StyledCard)`
     }
 }
 `;
-
-const heading = {
-  marginLeft: '15%',
-};
 
 EventCard.propTypes = {
   event: PropTypes.object,

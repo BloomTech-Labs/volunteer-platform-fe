@@ -112,6 +112,7 @@ export const authReducer = (state, action) => {
       };
     case CANCELED_SIGNED_UP_EVENT:
       return {
+        ...state,
         registeredUser: action.payload,
       };
     case CANCEL_SIGNED_UP_EVENT_FAILURE:
