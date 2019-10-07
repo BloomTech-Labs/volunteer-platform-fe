@@ -11,6 +11,7 @@ import {findNextEvents} from '../utility/findNextRecurEvent';
  *
  */
 
+export const CREATE_EVENT_INIT = 'CREATE_EVENT_INIT';
 export const CREATE_EVENT = 'CREATE_EVENT';
 export const CREATE_EVENT_FAILED = 'CREATE_EVENT_FAILED';
 
@@ -21,6 +22,7 @@ export const CREATE_EVENT_FAILED = 'CREATE_EVENT_FAILED';
  * @param {Dispatch} dispatch
  */
 export const createEvent = (event, dispatch) => {
+  dispatch(action(CREATE_EVENT_INIT));
   store
     .collection('events')
     .add(event)
@@ -34,6 +36,7 @@ export const createEvent = (event, dispatch) => {
     });
 };
 
+export const DELETE_EVENT_INIT = 'DELETE_EVENT_INIT';
 export const DELETE_EVENT = 'DELETE_EVENT';
 export const DELETE_EVENT_FAILED = 'DELETE_EVENT_FAILED';
 
@@ -44,6 +47,7 @@ export const DELETE_EVENT_FAILED = 'DELETE_EVENT_FAILED';
  * @param {Dispatch} dispatch
  */
 export const deleteEvent = (eventId, dispatch) => {
+  dispatch(action(DELETE_EVENT_INIT));
   store
     .collection('events')
     .doc(eventId)
@@ -57,6 +61,7 @@ export const deleteEvent = (eventId, dispatch) => {
     });
 };
 
+export const EDIT_EVENT_INIT = 'EDIT_EVENT_INIT';
 export const EDIT_EVENT = 'EDIT_EVENT';
 export const EDIT_EVENT_FAILED = 'EDIT_EVENT_FAILED';
 
@@ -67,6 +72,7 @@ export const EDIT_EVENT_FAILED = 'EDIT_EVENT_FAILED';
  * @param {Dispatch} dispatch
  */
 export const editEvent = (event, dispatch) => {
+  dispatch(action(EDIT_EVENT_INIT));
   store
     .collection('events')
     .doc(event.eventId)
@@ -159,10 +165,12 @@ export const getAllEventsByState = (state, dispatch) => {
     });
 };
 
+export const CREATE_RECURRING_EVENT_INIT = 'CREATE_RECURRING_EVENT_INIT';
 export const CREATE_RECURRING_EVENT = 'CREATE_RECURRING_EVENT';
 export const CREATE_RECURRING_EVENT_FAILED = 'CREATE_RECURRING_EVENT_FAILED';
 
 export const createRecurringEvent = (event, dispatch) => {
+  dispatch(action(CREATE_RECURRING_EVENT_INIT));
   store
     .collection('recurring events')
     .add(event)
@@ -170,7 +178,7 @@ export const createRecurringEvent = (event, dispatch) => {
       dispatch(action(CREATE_RECURRING_EVENT));
     })
     .catch(err => {
-      dispatch(action(CREATE_RECURRING_EVENT_FAILED, err));
+      dispatch(action(CREATE_RECURRING_EVENT_FAILED));
       console.log(err);
     });
 };
