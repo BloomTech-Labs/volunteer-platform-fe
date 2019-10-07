@@ -1,10 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import {StyledCard} from '../styled';
-import {useStateValue} from '../hooks/useStateValue';
-import {registerOrganization, updateOrganization} from '../actions';
-import createOrgImg from '../assets/undraw_unexpected_friends.svg';
 import moment from 'moment';
+import { Steps } from 'antd';
+
 import {
   FirstPart,
   SecondPart,
@@ -13,10 +11,13 @@ import {
   Review,
   EditForm,
 } from '../components/CreateOrg';
-import {Steps} from 'antd';
-import {deleteModal} from '../styled';
+import { registerOrganization, updateOrganization } from '../actions';
+import { useStateValue } from '../hooks/useStateValue';
+import { StyledCard, deleteModal } from '../styled';
+import createOrgImg from '../assets/undraw_unexpected_friends.svg';
 
-const {Step} = Steps;
+const { Step } = Steps;
+
 export const CreateOrg = props => {
   const [state, dispatch] = useStateValue();
   const [orgToEdit, setOrgToEdit] = useState();
@@ -29,7 +30,7 @@ export const CreateOrg = props => {
     6: {},
   });
   const [partCount, setPartCount] = useState(1);
-  
+
   useEffect(() => {
     if (props.location.state) {
       setLocalState({ ...localState, [6]: props.location.state.org });
@@ -37,29 +38,29 @@ export const CreateOrg = props => {
       setIsEditing(true);
     }
   }, [props.location.state]);
-  
+
   useEffect(() => {
-    if (orgToEdit){
-      if (typeof orgToEdit.startTime === 'number'){
+    if (orgToEdit) {
+      if (typeof orgToEdit.startTime === 'number') {
         orgToEdit.startTime = moment.unix(orgToEdit.startTime);
       }
-      if (typeof orgToEdit.endTime === 'number'){
+      if (typeof orgToEdit.endTime === 'number') {
         orgToEdit.endTime = moment.unix(orgToEdit.endTime);
       }
-      setLocalState({...localState, [ 6 ]: orgToEdit});
+      setLocalState({ ...localState, [6]: orgToEdit });
       setPartCount(6);
     }
   }, [orgToEdit]);
-  
+
   const possibleHeaders = {
-    1: 'Let\'s Set Up Your Organization',
-    2: 'Let\'s Set Up Your Organization',
+    1: "Let's Set Up Your Organization",
+    2: "Let's Set Up Your Organization",
     3: 'Almost Finished Setting Up',
     4: 'Last Part!',
     5: "Let's Review Your Information",
     6: 'Edit Your Organization',
   };
-  
+
   const possibleParts = {
     1: FirstPart,
     2: SecondPart,
@@ -68,7 +69,7 @@ export const CreateOrg = props => {
     5: Review,
     6: EditForm,
   };
-  
+
   const steps = [0, 1, 2, 3, 4];
 
   const RenderedPart = possibleParts[partCount];
@@ -93,7 +94,7 @@ export const CreateOrg = props => {
     if (partCount === 2) {
       values = setUpPOC(values);
     }
-    if (partCount === 3){
+    if (partCount === 3) {
       let weekends = values.weekends || [];
       let weekdays = values.weekdays || [];
       switch (values['weekdayOptions']) {
@@ -112,16 +113,16 @@ export const CreateOrg = props => {
     }
     setLocalState({
       ...localState,
-      [ partCount ]: values,
-      [ 5 ]: {...localState[ 5 ], ...values},
+      [partCount]: values,
+      [5]: { ...localState[5], ...values },
     });
     setPartCount(partCount => partCount + 1);
   };
-  
+
   const clickPrevious = () => {
     setPartCount(partCount => partCount - 1);
   };
-  
+
   const setBackToReview = values => {
     let weekends = values.weekends || [];
     let weekdays = values.weekdays || [];
@@ -130,50 +131,50 @@ export const CreateOrg = props => {
     setLocalState({ ...localState, [5]: values });
     setPartCount(5);
   };
-  
+
   const cancelForm = e => {
     const cancelOrgFormModal = deleteModal({
       title: 'Are you sure you want to cancel? All data will be lost.',
       content: 'This cannot be undone',
       onOk: () => props.history.push('/dashboard'),
     });
-    
+
     e.preventDefault();
     cancelOrgFormModal();
   };
-  
+
   const submitForm = values => {
     const org = {
       ...values,
       organizationOwnerUID: state.auth.googleAuthUser.uid,
     };
-    for (let key in org){
-      if (org[ key ] === undefined){
-        delete org[ key ];
+    for (let key in org) {
+      if (org[key] === undefined) {
+        delete org[key];
       }
     }
     if (isEditing) {
       updateOrganization(orgToEdit.orgId, org, dispatch);
-    }else{
+    } else {
       registerOrganization(org, dispatch);
     }
     props.history.push('/org-dashboard');
   };
-  
+
   return (
     <StyledDiv className={'flex center'}>
       <CustomStyledCard margin="2rem 0 5rem 0" maxWidth="900px">
-        <h1 className="create-org-header">{possibleHeaders[ partCount ]}</h1>
-        <StyledImg src={createOrgImg} alt="undraw unexpected friends"/>
+        <h1 className="create-org-header">{possibleHeaders[partCount]}</h1>
+        <StyledImg src={createOrgImg} alt="undraw unexpected friends" />
         <Steps current={partCount - 1} progressDot size="small">
           {steps.map(step => (
-            <Step key={step}/>
+            <Step key={step} />
           ))}
         </Steps>
         <StyledRenderDiv>
           <RenderedPart
             clickNext={clickNext}
-            storedData={localState[ partCount ]}
+            storedData={localState[partCount]}
             cancelForm={cancelForm}
             clickPrevious={clickPrevious}
             submitForm={submitForm}
@@ -209,29 +210,29 @@ const CustomStyledCard = styled(StyledCard)`
         > .ant-steps-item-container
         > .ant-steps-item-tail {
         &::after {
-          background: ${({theme}) => theme.primary8};
+          background: ${({ theme }) => theme.primary8};
         }
       }
       span.ant-steps-icon-dot {
-        background: ${({theme}) => theme.primary8};
+        background: ${({ theme }) => theme.primary8};
       }
     }
   }
 `;
 
 const StyledRenderDiv = styled.div`
-  background: ${({theme}) => theme.gray4};
+  background: ${({ theme }) => theme.gray4};
   width: 75%;
   margin: 0 auto;
   font-weight: bold;
   padding: 1.5rem 3rem;
-  border-radius: ${({theme}) => theme.borderRadiusDefault};
+  border-radius: ${({ theme }) => theme.borderRadiusDefault};
 
   label {
-    color: ${({theme}) => theme.primary8};
+    color: ${({ theme }) => theme.primary8};
 
     &::before {
-      color: ${({theme}) => theme.primary8};
+      color: ${({ theme }) => theme.primary8};
     }
   }
 
@@ -242,7 +243,7 @@ const StyledRenderDiv = styled.div`
     padding-right: 70px;
     padding-left: 70px;
     justify-content: space-between;
-    border-top: 2px solid ${({theme}) => theme.primary8};
+    border-top: 2px solid ${({ theme }) => theme.primary8};
   }
 `;
 

@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {WrappedAntForm, AntInput, AntInputNumber, successModal } from '../styled';
-import {Avatar, Card, message } from 'antd';
 import styled from 'styled-components';
+import {Avatar, Card, message } from 'antd';
+
+import {WrappedAntForm, AntInput, AntInputNumber, successModal } from '../styled';
 import {useStateValue} from '../hooks/useStateValue';
 import {register} from '../actions';
 import sampleProfile from '../assets/undraw_profile.svg';

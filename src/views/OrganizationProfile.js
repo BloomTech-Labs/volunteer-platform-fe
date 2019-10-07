@@ -12,7 +12,7 @@ import {
 import { Calendar, Select } from 'antd';
 import moment from 'moment';
 
-export const Organization = ({ match, history }) => {
+export const OrganizationProfile = ({ match, history }) => {
   const [{ org, auth }, dispatch] = useStateValue();
 
   useEffect(() => {
@@ -37,11 +37,9 @@ export const Organization = ({ match, history }) => {
   return (
     <StyledOrgProfile>
       <h4 className={'org-title'}>Dashboard of</h4>
-     
+
       <StyledButton onClick={createMessageThread}>Message</StyledButton>
-      <div className="inline">
-    
-      </div>
+      <div className="inline"></div>
     </StyledOrgProfile>
   );
 };
