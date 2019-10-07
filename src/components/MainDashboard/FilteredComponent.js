@@ -3,7 +3,10 @@ import { findNext } from '../../utility/findNextRecurEvent';
 import moment from 'moment';
 
 export const FilteredComponent = Component => {
-  return ({ events, filter, tagFilter, recurringEvents }, ...props) => {
+  return (
+    { events, filter, tagFilter, recurringEvents, organizations },
+    ...props
+  ) => {
     const { location } = filter;
     const { interests, requirements, causeAreas } = tagFilter;
     const { state, city } = location;
@@ -29,7 +32,13 @@ export const FilteredComponent = Component => {
       (a, b) => a.nextDate - b.nextDate
     );
     if (!events || !filterCount) {
-      return <Component events={allEvents} {...props} />;
+      return (
+        <Component
+          events={allEvents}
+          organizations={organizations}
+          {...props}
+        />
+      );
     }
 
     let filteredEvents = allEvents;
@@ -58,7 +67,6 @@ export const FilteredComponent = Component => {
     }
     if (causeAreas) {
       filteredEvents.forEach(event => {
-        console.log(event);
         event.typesOfCauses.forEach(causeArea => {
           if (tagFilter.causeAreas[causeArea])
             event.sortRank = event.sortRank + 1;
@@ -89,6 +97,12 @@ export const FilteredComponent = Component => {
     });
     filteredEvents = filteredEvents.filter(event => event.sortRank > 0);
 
-    return <Component events={filteredEvents} {...props} />;
+    return (
+      <Component
+        events={filteredEvents}
+        organizations={organizations}
+        {...props}
+      />
+    );
   };
 };

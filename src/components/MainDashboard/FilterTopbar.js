@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from 'react';
-import {useStateValue} from '../../hooks/useStateValue';
-import {Card, Form, Row, Input, Icon, Divider} from 'antd';
-import {StyledCheckableTag as CheckableTag} from '../../styled';
-import OrganizationsList from './Orgview/OrganizationsList';
+import React, { useState, useEffect } from 'react';
+import { useStateValue } from '../../hooks/useStateValue';
+import { Card, Form, Row, Input, Icon, Divider } from 'antd';
+import { StyledCheckableTag as CheckableTag } from '../../styled';
+
 
 const tabList = [
   {
@@ -26,12 +26,12 @@ export const FilterTopbar = ({
 }) => {
   const [state, dispatch] = useStateValue();
   const [filterExpand, setFilterExpand] = useState(false);
-  const {onChange, onLocationChange, onTagsChange} = changeHandlers;
-  
+  const { onChange, onLocationChange, onTagsChange } = changeHandlers;
+
   const toggleFilterExpand = () => {
     setFilterExpand(!filterExpand);
   };
-  
+
   const CheckableTags = ({
     tags,
     onChange,
@@ -40,56 +40,56 @@ export const FilterTopbar = ({
     tagExpandState,
     toggleTagExpand,
   }) => {
-    const [collapsed, setCollapsed] = useState(!tagExpandState[ collectionName ]);
+    const [collapsed, setCollapsed] = useState(!tagExpandState[collectionName]);
     
     const collapsedCount = 14;
     const [visibleCount, setVisibleCount] = useState(collapsedCount);
-    
+
     const toggle = () => {
       toggleTagExpand(collectionName);
     };
-    
+
     useEffect(() => {
-      if (!tagExpandState[ collectionName ]){
+      if (!tagExpandState[collectionName]) {
         setVisibleCount(collapsedCount);
-      }else{
+      } else {
         setVisibleCount(tags.length);
       }
     }, [tagExpandState]);
-    
+
     let children = [];
-    
-    for (let i = 0; i < tags.length; i++){
+
+    for (let i = 0; i < tags.length; i++) {
       children.push(
         <CheckableTag
           key={i}
           onChange={onChange}
-          name={tags[ i ]}
+          name={tags[i]}
           collection={collectionName}
-          checked={tagFilterState[ collectionName ][ tags[ i ] ]}
-          style={{display: i < visibleCount ? 'inline-block' : 'none'}}
+          checked={tagFilterState[collectionName][tags[i]]}
+          style={{ display: i < visibleCount ? 'inline-block' : 'none' }}
         >
-          {tags[ i ]}
-        </CheckableTag>,
+          {tags[i]}
+        </CheckableTag>
       );
     }
-    
+
     children.push(
       <a
         key={'a link'}
-        style={{marginLeft: 8, fontSize: 12}}
+        style={{ marginLeft: 8, fontSize: 12 }}
         onClick={toggle}
         style={{
           display: collapsedCount >= tags.length ? 'none' : 'inline-block',
         }}
       >
-        {collapsed ? 'More' : 'Hide'} <Icon type={collapsed ? 'down' : 'up'}/>
-      </a>,
+        {collapsed ? 'More' : 'Hide'} <Icon type={collapsed ? 'down' : 'up'} />
+      </a>
     );
-    
+
     return <Row>{children}</Row>;
   };
-  
+
   const contentList = {
     Events: (
       <Form layout="inline">
@@ -101,9 +101,9 @@ export const FilterTopbar = ({
           tagExpandState={tagExpandState}
           toggleTagExpand={toggleTagExpand}
         />
-        <Divider dashed style={{marginTop: 16}}/>
+        <Divider dashed style={{ marginTop: 16 }} />
         <Row>
-          <Row style={{fontSize: 18}}>Location</Row>
+          <Row style={{ fontSize: 18 }}>Location</Row>
           <Form.Item label="City">
             <Input
               value={inputState.location.city}
@@ -121,18 +121,18 @@ export const FilterTopbar = ({
             />
           </Form.Item>
         </Row>
-        <Divider dashed style={{marginBottom: 8}}/>
+        <Divider dashed style={{ marginBottom: 8 }} />
         <Row>
           <a
-            style={{marginLeft: 8, fontSize: 12}}
+            style={{ marginLeft: 8, fontSize: 12 }}
             onClick={toggleFilterExpand}
           >
             {filterExpand ? 'Hide Filters' : 'More Filters'}{' '}
-            <Icon type={filterExpand ? 'up' : 'down'}/>
+            <Icon type={filterExpand ? 'up' : 'down'} />
           </a>
         </Row>
-        <div style={{display: filterExpand ? 'block' : 'none'}}>
-          <h5 style={{fontFamily: 'Montserrat'}}>Interests</h5>
+        <div style={{ display: filterExpand ? 'block' : 'none' }}>
+          <h5 style={{ fontFamily: 'Montserrat' }}>Interests</h5>
           <Row>
             <CheckableTags
               tags={state.tags.interests}
@@ -143,7 +143,7 @@ export const FilterTopbar = ({
               toggleTagExpand={toggleTagExpand}
             />
           </Row>
-          <h5 style={{fontFamily: 'Montserrat'}}>Volunteer Requirements</h5>
+          <h5 style={{ fontFamily: 'Montserrat' }}>Volunteer Requirements</h5>
           <Row>
             <CheckableTags
               tags={state.tags.requirements}
@@ -157,13 +157,44 @@ export const FilterTopbar = ({
         </div>
       </Form>
     ),
-    Organizations: <OrganizationsList state={inputState.location.state}/>,
+    Organizations: (
+      <Form layout="inline">
+        <CheckableTags
+          tags={state.tags.causeAreas}
+          onChange={onTagsChange}
+          collectionName="causeAreas"
+          tagFilterState={tagFilterState}
+          tagExpandState={tagExpandState}
+          toggleTagExpand={toggleTagExpand}
+        />
+        <Divider dashed style={{ marginTop: 16 }} />
+        <Row>
+          <Row style={{ fontSize: 18 }}>Location</Row>
+          <Form.Item label="City">
+            <Input
+              value={inputState.location.city}
+              name={'city'}
+              onChange={onLocationChange}
+              placeholder="City"
+            />
+          </Form.Item>
+          <Form.Item label="State">
+            <Input
+              value={inputState.location.state}
+              name={'state'}
+              onChange={onLocationChange}
+              placeholder="State Initials"
+            />
+          </Form.Item>
+        </Row>
+      </Form>
+    ),
   };
-  
+
   const onTabChange = key => {
     setActiveTabKey(key);
   };
-  
+
   return (
     <Card
       bordered={false}
@@ -171,7 +202,7 @@ export const FilterTopbar = ({
       activeTabKey={activeTab}
       onTabChange={key => onTabChange(key)}
     >
-      {contentList[ activeTab ]}
+      {contentList[activeTab]}
     </Card>
   );
 };

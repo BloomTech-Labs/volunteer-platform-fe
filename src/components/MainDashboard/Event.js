@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { EventCard } from '../../EventCard';
-import { StyledCard, StyledButton } from '../../../styled';
-import { useStateValue } from '../../../hooks/useStateValue';
+import { EventCard } from '../EventCard';
+import { StyledCard, StyledButton } from '../../styled';
+import { useStateValue } from '../../hooks/useStateValue';
 import moment from 'moment';
 import { Tag } from 'antd';
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {StyledCard, StyledButton} from '../../../styled';
+import {StyledCard, StyledButton} from '../../styled';
 import {Link} from 'react-router-dom';
 
-const OrganizationCard = ({org, history}) => {
+export const OrganizationCard = ({org, history}) => {
   
   
   return (
