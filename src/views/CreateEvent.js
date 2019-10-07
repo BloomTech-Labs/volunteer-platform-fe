@@ -14,7 +14,7 @@ import CreateEventReview from '../components/CreateEvent/CreateEventReview/Creat
 export const CreateEvent = props => {
   const initialEvent = {
     nameOfEvent: '',
-    typeOfCause: [],
+    typesOfCauses: [],
     date: moment('00:00:00', 'HH:mm'),
     startTime: moment('00:00:00', 'HH:mm'),
     endTime: moment('00:00:00', 'HH:mm'),
@@ -22,6 +22,7 @@ export const CreateEvent = props => {
     phoneNumber: '',
     pointOfcontact: '',
     volunteerRequirements: [],
+    interest: [],
     website: '',
     dynamicDates: {
       dynamicDay: '',
@@ -70,7 +71,9 @@ export const CreateEvent = props => {
       orgImagePath: props.location.state.org.imagePath || '',
       orgPage: '',
       nameOfEvent: localState.nameOfEvent,
+      streetAddress: localState.streetAddress,
       city: localState.city,
+      state: localState.state,
       email: localState.email,
       phoneNumber: localState.phoneNumber,
       date: localState.date.unix(),
@@ -91,11 +94,12 @@ export const CreateEvent = props => {
         lastName: localState.lastName,
         email: localState.email,
       },
+      eventDetails: localState.eventDetails,
       website: localState.website,
       otherNotes: localState.otherNotes,
     };
 
-    if (recurringEvent === 'Yes') {
+    if (recurringInfo.recurringEvent === 'Yes') {
       event.recurringInfo = recurringInfo;
       if (event.recurringInfo.occurrenceEnds === 'On') {
         event.recurringInfo.occurrenceEndDate = event.recurringInfo.occurrenceEndDate.unix();
@@ -104,8 +108,10 @@ export const CreateEvent = props => {
       if (event.recurringInfo.occurrenceEnds === 'After') {
         event.recurringInfo.occurrenceEndDate = '';
       }
+      // console.log('reg', event);
       createRecurringEvent(event, dispatch);
     } else {
+      // console.log('rec', event);
       createEvent(event, dispatch);
     }
     setPageNumberState({
@@ -204,10 +210,20 @@ export const CreateEvent = props => {
     ),
     // 6: <SuccessModal />,
   };
-
+  console.log('localstate', localState);
   return (
     <div>
       {pageNumberState.pageNumber && renderParts[pageNumberState.pageNumber]}
+      {/* <CreateEventReview
+        localState={localState}
+        setLocalState={setLocalState}
+        handleSubmit={handleFormPartSubmit}
+        handlePageBack={handlePageBack}
+        pageNumber={pageNumberState.pageNumber}
+        autoFillState={autoFillState}
+        handleReviewSubmit={handleReviewSubmit}
+        cancelForm={cancelForm}
+      /> */}
     </div>
   );
 };
