@@ -40,14 +40,15 @@ export const CreateEvent = props => {
       occurrenceEndsAfter: '',
     },
   };
-  const autoFillParts = {
-    1: {},
-    2: {},
-    3: {},
-    4: {},
+  const formTitles = {
+    1: 'Create An Event',
+    2: 'Create An Event',
+    3: 'Almost Finished Creating Your Event!!',
+    4: 'Almost Finished Creating Your Event!!',
+    5: "Here's What We Got",
   };
   const [localState, setLocalState] = useState(initialEvent);
-  const [autoFillState, setAutoFillState] = useState(autoFillParts);
+
   let [pageNumberState, setPageNumberState] = useState({
     pageNumber: 1,
   });
@@ -112,7 +113,7 @@ export const CreateEvent = props => {
         event.recurringInfo.occurrenceEndDate = '';
       }
       console.log('reg', event);
-      // createRecurringEvent(event, dispatch);
+      createRecurringEvent(event, dispatch);
     } else {
       console.log('rec', event);
       createEvent(event, dispatch);
@@ -196,7 +197,6 @@ export const CreateEvent = props => {
         setLocalState={setLocalState}
         handlePageBack={handlePageBack}
         pageNumber={pageNumberState.pageNumber}
-        autoFillState={autoFillState}
         handleReviewSubmit={handleReviewSubmit}
         cancelForm={cancelForm}
         handleChange={handleChange}
@@ -209,6 +209,7 @@ export const CreateEvent = props => {
     <div>
       <StyledDiv className={'flex center'}>
         <CustomStyledCard margin="2rem 0 5rem 0" maxWidth="900px">
+          <h1>{formTitles[pageNumberState.pageNumber]}</h1>
           <StyledImg src={createEventImg} alt="undraw unexpected friends" />
           <StyledRenderDiv>
             {pageNumberState.pageNumber &&
