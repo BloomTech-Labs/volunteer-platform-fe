@@ -529,9 +529,9 @@ export const signUpForRecurringEvent = (event, user, date, dispatch) => {
   let events = user.registeredEvents || [];
   
   if (!volunteers[targetDate]) {
-    volunteer[targetDate] = [user.uid];
+    volunteers[targetDate] = [user.uid];
   } else {
-    volunteer[targetDate] = [...volunteers[targetDate], user.uid];
+    volunteers[targetDate] = [...volunteers[targetDate], user.uid];
   }
   
   let updatedEvent = {
