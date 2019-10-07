@@ -80,6 +80,7 @@ export const UserProfile = (props) => {
       setCalendarValue(newValue);
     }
   };
+
   
   const checkEvent = (events, value) => {
     return events.filter(
@@ -87,7 +88,7 @@ export const UserProfile = (props) => {
         moment.unix(item.date).month() === calendarValue.month() &&
         moment.unix(item.date).year() === calendarValue.year());
   };
-  
+
   const onPanelChange = value => {
     setCalendarValue(moment.unix(value.unix()));
   };

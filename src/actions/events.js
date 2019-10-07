@@ -385,6 +385,14 @@ export const SIGNED_UP_VOLUNTEER_FOR_EVENT = 'SIGNED_UP_VOLUNTEER_FOR_EVENT';
 export const SIGNED_UP_FOR_EVENT = 'SIGNED_UP_FOR_EVENT';
 export const SIGN_UP_FOR_EVENT_FAILURE = 'SIGN_UP_FOR_EVENT_FAILURE';
 
+/**
+ * Sign up a volunteer for an event. Add the user id to the event document. Add the event to the user document.
+ * @function
+ * @param {Event} event
+ * @param {User} user
+ * @param {Dispatch} dispatch
+ */
+
 export const signUpForEvent = (event, user, dispatch) => {
   let volunteers = event.registeredVolunteers || [];
   let events = user.registeredEvents || [];
@@ -437,6 +445,14 @@ export const CANCELED_VOLUNTEER_FOR_EVENT = 'CANCELED_VOLUNTEER_FOR_EVENT';
 export const CANCELED_SIGNED_UP_EVENT = 'CANCELED_SIGNED_UP_EVENT';
 export const CANCEL_SIGNED_UP_EVENT_FAILURE = 'CANCEL_SIGNED_UP_EVENT_FAILURE';
 
+/**
+ * Cancel a signed up event for an user. Delete the volunteer in the event document. Delete the event in the user document.
+ * @function
+ * @param {Event} event
+ * @param {User} user
+ * @param {Dispatch} dispatch
+ */
+
 export const cancelSignedUpEvent = (event, user, dispatch) => {
   let updatedEvent = {
     ...event,
@@ -471,5 +487,127 @@ export const cancelSignedUpEvent = (event, user, dispatch) => {
     })
     .catch(error => {
       dispatch(action(CANCEL_SIGNED_UP_EVENT_FAILURE));
+    });
+};
+
+export const SIGN_UP_FOR_RECURRING_EVENT_INIT = 'SIGN_UP_FOR_RECURRING_EVENT_INIT';
+export const SIGNED_UP_VOLUNTEER_FOR_RECURRING_EVENT = 'SIGNED_UP_VOLUNTEER_FOR_RECURRING_EVENT';
+export const SIGNED_UP_FOR_RECURRING_EVENT = 'SIGNED_UP_FOR_RECURRING_EVENT';
+export const SIGN_UP_FOR_RECURRING_EVENT_FAILURE = 'SIGN_UP_FOR_RECURRING_EVENT_FAILURE';
+
+/**
+ * Sign up a volunteer for a recurring event. Add the user id to the event document. Add the event to the user document.
+ * @function
+ * @param {Event} event
+ * @param {User} user
+ * @param {Date} date //target date the recurring event occurs on
+ * @param {Dispatch} dispatch
+ */
+
+export const signUpForRecurringEvent = (event, user, date, dispatch) => {
+  let volunteers = event.registeredVolunteers || {};
+  let targetDate = moment(date).unix();
+  let events = user.registeredEvents || [];
+  
+  if (!volunteers[targetDate]) {
+    volunteers[targetDate] = [user.uid];
+  } else {
+    volunteers[targetDate] = [...volunteers[targetDate], user.uid];
+  }
+  
+  let updatedEvent = {
+    ...event,
+    registeredVolunteers: volunteers
+  };
+
+  let updatedUser = {
+    ...user,
+    registeredEvents: [
+      ...events, {
+        nameOfEvent: event.nameOfEvent,
+        pointOfContact: event.pointOfContact,
+        date: targetDate,
+        startTime: event.startTime,
+        endTime: event.endTime,
+        location: `${event.city}, ${event.state}`,
+        eventId: event.eventId,
+        orgId: event.orgId,
+      },
+    ],
+  };
+
+  dispatch(action(SIGN_UP_FOR_RECURRING_EVENT_INIT));
+  store
+    .collection('recurring events')
+    .doc(event.eventId)
+    .set(updatedEvent)
+    .then(res => {
+      dispatch(action(SIGNED_UP_VOLUNTEER_FOR_RECURRING_EVENT, updatedEvent));
+      store.collection('users')
+        .doc(user.uid)
+        .set(updatedUser)
+        .then(res => {
+          dispatch(action(SIGNED_UP_FOR_RECURRING_EVENT, updatedUser));
+        })
+        .catch(error => {
+          dispatch(action(SIGN_UP_FOR_RECURRING_EVENT_FAILURE));
+        });
+    })
+    .catch(error => {
+      dispatch(action(SIGN_UP_FOR_RECURRING_EVENT_FAILURE));
+    });
+
+}
+
+export const CANCEL_SIGNED_UP_RECURRING_EVENT_INIT = 'CANCEL_SIGNED_UP_RECURRING_EVENT_INIT';
+export const CANCELED_VOLUNTEER_FOR_RECURRING_EVENT = 'CANCELED_VOLUNTEER_FOR_RECURRING_EVENT';
+export const CANCELED_SIGNED_UP_RECURRING_EVENT = 'CANCELED_SIGNED_UP_RECURRING_EVENT';
+export const CANCEL_SIGNED_UP_RECURRING_EVENT_FAILURE = 'CANCEL_SIGNED_UP_RECURRING_EVENT_FAILURE';
+
+/**
+ * Cancel a signed up recurring event for an user. Delete the volunteer in the event document. Delete the event in the user document.
+ * @function
+ * @param {Event} event
+ * @param {User} user
+ * @param {Date} date //target date the recurring event occurs on
+ * @param {Dispatch} dispatch
+ */
+
+export const cancelSignedUpRecurringEvent = (event, user, date, dispatch) => {
+  let targetDate = moment(date).unix();
+  let updatedVolunteers = event.registeredVolunteers[targetDate].filter(uid => uid !== user.uid);
+
+  let updatedEvent = {
+    ...event,
+    registeredVolunteers: {
+      ...event.registeredVolunteers,
+      targetDate: updatedVolunteers
+    }
+  };
+  let updatedUser = {
+    ...user,
+    registeredEvents: user.registeredEvents.filter(
+      item => item.eventId !== event.eventId),
+  };
+  
+  dispatch(action(CANCEL_SIGNED_UP_RECURRING_EVENT_INIT));
+  store
+    .collection('recurring events')
+    .doc(event.eventId)
+    .set(updatedEvent)
+    .then(res => {
+      dispatch(action(CANCELED_VOLUNTEER_FOR_RECURRING_EVENT, updatedEvent));
+      store.collection('users')
+        .doc(user.uid)
+        .set(updatedUser)
+        .then(res => {
+          dispatch(action(CANCELED_SIGNED_UP_RECURRING_EVENT, updatedUser));
+        })
+        .catch(error => {
+          dispatch(action(CANCEL_SIGNED_UP_RECURRING_EVENT_FAILURE));
+        });
+    })
+    .catch(error => {
+      dispatch(action(CANCEL_SIGNED_UP_RECURRING_EVENT_FAILURE));
     });
 };

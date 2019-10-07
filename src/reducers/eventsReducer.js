@@ -8,7 +8,10 @@ import {
   RECURRING_EVENTS_BY_ORG_EMPTY, SIGN_UP_FOR_EVENT_INIT,
   SIGNED_UP_VOLUNTEER_FOR_EVENT, SIGN_UP_FOR_EVENT_FAILURE,
   CANCEL_SIGNED_UP_EVENT_INIT, CANCELED_VOLUNTEER_FOR_EVENT,
-  CANCEL_SIGNED_UP_EVENT_FAILURE, GET_EVENT_BY_ID, GET_RECURRING_EVENT_BY_ID,
+  CANCEL_SIGNED_UP_EVENT_FAILURE, GET_EVENT_BY_ID, GET_RECURRING_EVENT_BY_ID, SIGN_UP_FOR_RECURRING_EVENT_INIT, SIGNED_UP_VOLUNTEER_FOR_RECURRING_EVENT, SIGN_UP_FOR_RECURRING_EVENT_FAILURE,
+  CANCEL_SIGNED_UP_RECURRING_EVENT_INIT,
+  CANCELED_VOLUNTEER_FOR_RECURRING_EVENT,
+  CANCEL_SIGNED_UP_RECURRING_EVENT_FAILURE
 } from '../actions/events';
 
 export const eventsReducer = (state, action) => {
@@ -111,15 +114,48 @@ export const eventsReducer = (state, action) => {
       };
     case CANCELED_VOLUNTEER_FOR_EVENT:
       return {
+        ...state,
         events: state.events.map(event => {
-          return event.eventId === action.payload.eventId ? action.payload :
-            event;
+          return event.eventId === action.payload.eventId ? action.payload : event;
         }),
       };
     case CANCEL_SIGNED_UP_EVENT_FAILURE:
       return {
         ...state,
         cancelSignedUpVolunteerError: 'Error canceling signed up volunteer for the event',
+      };
+    case SIGN_UP_FOR_RECURRING_EVENT_INIT:
+      return {
+        ...state,
+        signUpVolunteerError: '',
+      }; 
+    case SIGNED_UP_VOLUNTEER_FOR_RECURRING_EVENT:
+      return {
+        ...state,
+        recurringEvents: state.recurringEvents.map(event => {
+          return event.eventId === action.payload.eventId ? action.payload : event;
+        }),
+      }; 
+    case SIGN_UP_FOR_RECURRING_EVENT_FAILURE: 
+      return {
+        signUpVolunteerError: 'Error signing up volunteer for the recurring event',
+      };
+    case CANCEL_SIGNED_UP_RECURRING_EVENT_INIT:
+      return {
+        ...state,
+        cancelSignedUpVolunteerError: '',
+      };
+    case CANCELED_VOLUNTEER_FOR_RECURRING_EVENT:
+      return {
+        ...state,
+        recurringEvents: state.recurringEvents.map(event => {
+          return event.eventId === action.payload.eventId ? action.payload : event;
+        }),
+      };
+    case CANCEL_SIGNED_UP_RECURRING_EVENT_FAILURE:
+      return {
+        ...state,
+        cancelSignedUpVolunteerError: 'Error canceling signed up volunteer for the recurring event'
       };
     default:
       return state;
