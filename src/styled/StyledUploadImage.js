@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { Upload, Icon, message } from 'antd';
-import { uploadImage } from '../actions/files';
+import React, {useState} from 'react';
+import {Upload, Icon, message} from 'antd';
+import {uploadImage} from '../actions/files';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-function getBase64(file) {
+function getBase64(file){
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -16,36 +16,37 @@ function getBase64(file) {
 export const StyledUploadImage = props => {
   const [loading, setIsLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
-
+  
   const handleChange = info => {
-    if (info.file.status === 'uploading') {
+    if (info.file.status === 'uploading'){
       setIsLoading(true);
       return;
     }
-    if (info.file.status === 'done') {
+    if (info.file.status === 'done'){
       getBase64(info.file.originFileObj, imageUrl => {
         setIsLoading(false);
         setImageUrl(imageUrl);
       });
     }
   };
-
+  
   const beforeUpload = file => {
+    
     const isImage = file.type.indexOf('image/') === 0;
-    if (!isImage) {
+    if (!isImage){
       message.warning('You can only upload image file!');
     }
-
+    
     // You can remove this validation if you want
     const isLt5M = file.size / 1024 / 1024 < 5;
-    if (!isLt5M) {
+    if (!isLt5M){
       message.error('Image must smaller than 5MB!');
     }
     return isImage && isLt5M;
   };
-
-  const customUpload = async ({ onError, onSuccess, file }) => {
-    uploadImage(file, onError, onSuccess)
+  
+  const customUpload = async({onError, onSuccess, file}) => {
+    uploadImage(file, onError, onSuccess, props.imageName)
       .then(res => {
         message.success('Upload Complete');
         setIsLoading(false);
@@ -55,14 +56,14 @@ export const StyledUploadImage = props => {
         console.log(error);
       });
   };
-
+  
   const uploadButton = (
     <div>
-      <Icon type={loading ? 'loading' : 'plus'} />
+      <Icon type={loading ? 'loading' : 'plus'}/>
       <div className="ant-upload-text">Upload</div>
     </div>
   );
-
+  
   return (
     <StyledDiv>
       <StyledUpload
@@ -81,7 +82,7 @@ export const StyledUploadImage = props => {
           alignItems: 'center',
         }}
       >
-        {imageUrl ? <img src={imageUrl} alt="avatar" /> : uploadButton}
+        {imageUrl ? <img src={imageUrl} alt="avatar"/> : uploadButton}
       </StyledUpload>
     </StyledDiv>
   );
@@ -90,6 +91,7 @@ export const StyledUploadImage = props => {
 StyledUploadImage.propTypes = {
   fileUploadComplete: PropTypes.func.isRequired,
   imageUrl: PropTypes.string,
+  imageName: PropTypes.string,
 };
 
 const StyledDiv = styled.div`

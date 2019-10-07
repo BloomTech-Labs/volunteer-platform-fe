@@ -4,31 +4,31 @@ import {StyledButton, StyledCancelButton} from '../styled';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 
-export class AntForm extends React.Component {
-  componentDidUpdate(prevProps) {
-    if (prevProps.autofill !== this.props.autofill) {
+export class AntForm extends React.Component{
+  componentDidUpdate(prevProps){
+    if (prevProps.autofill !== this.props.autofill){
       this.autoFill(this.props.autofill);
     }
   }
-
-  componentDidMount() {
+  
+  componentDidMount(){
     this.autoFill(this.props.autofill);
   }
-
+  
   autoFill = values => {
-    for (let key in values) {
+    for (let key in values){
       const field = this.props.form.getFieldInstance(key);
-      if (field) {
-        if (key === 'startTime' || key === 'endTime') {
-          const time = values[key] && moment.unix(values[key], 'HH:MM A');
-          time && this.props.form.setFieldsValue({ [key]: time });
-        } else {
-          this.props.form.setFieldsValue({ [key]: values[key] });
+      if (field){
+        if (key === 'startTime' || key === 'endTime'){
+          const time = values[ key ] && moment.unix(values[ key ], 'HH:MM A');
+          time && this.props.form.setFieldsValue({[ key ]: time});
+        }else{
+          this.props.form.setFieldsValue({[ key ]: values[ key ]});
         }
       }
     }
   };
-
+  
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
@@ -69,12 +69,12 @@ export class AntForm extends React.Component {
   };
   
   getDecorator = child => {
-    if (child.type && child.type.name && child.type.name !== 'POC') {
+    if (child.type && child.type.name && child.type.name !== 'POC'){
       const camelCase = this.getCamelCase(child.props.name);
       const required = !child.props.notRequired;
       const rules = this.getRules(child.props.type, required);
       let label = child.props.label || child.props.name;
-      if (child.props.tooltipTitle) {
+      if (child.props.tooltipTitle){
         label = (
           <Tooltip title={child.props.tooltipTitle}>
             <span>
@@ -89,7 +89,7 @@ export class AntForm extends React.Component {
           key={camelCase}
           {...child.props.layout}
         >
-          {this.props.form.getFieldDecorator(camelCase, { rules })(child)}
+          {this.props.form.getFieldDecorator(camelCase, {rules})(child)}
         </Form.Item>
       );
     }
@@ -108,8 +108,8 @@ export class AntForm extends React.Component {
   };
   
   renderChildren = children => {
-    if (!Array.isArray(children)) {
-      if (children.type === 'div') {
+    if (!Array.isArray(children)){
+      if (children.type === 'div'){
         return this.wrapInDiv(children);
       }
       return this.getDecorator(children);
@@ -124,8 +124,8 @@ export class AntForm extends React.Component {
       return this.getDecorator(child);
     });
   };
-
-  render() {
+  
+  render(){
     return (
       <Form
         onSubmit={this.handleSubmit}
@@ -168,4 +168,6 @@ WrappedAntForm.propTypes = {
   cancelButton: PropTypes.bool,
   handleCancel: PropTypes.func,
   cancelButtonText: PropTypes.string,
+  submitButton: PropTypes.bool,
+  buttonLoading: PropTypes.bool,
 };

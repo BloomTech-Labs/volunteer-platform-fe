@@ -18,11 +18,6 @@ export const eventsReducer = (state, action) => {
         ...state,
         event: action.payload,
       };
-    case GET_RECURRING_EVENT_BY_ID:
-      return {
-        ...state,
-        event: action.payload,
-      };
     case CREATE_EVENT:
       return {
         ...state,

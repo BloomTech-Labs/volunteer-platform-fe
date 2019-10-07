@@ -1,6 +1,6 @@
-import { action } from './action';
-import firebase, { store } from '../firebase/FirebaseConfig';
-import { deleteFile } from './files';
+import {action} from './action';
+import firebase, {store} from '../firebase/FirebaseConfig';
+import {deleteFile} from './files';
 
 /**
  * Auth Actions
@@ -195,6 +195,7 @@ export const UPDATE_REGISTERED_USER = 'UPDATE_REGISTERED_USER';
  * @param {Dispatch} dispatch
  */
 export const updateRegisteredUser = (user, dispatch) => {
+  
   store.collection('users')
     .doc(user.uid)
     .set(user)
@@ -238,11 +239,11 @@ export const getTopVolunteers = (dispatch) => {
  * @function
  * @param {User} user User whose image to be deleted.
  */
-export const deleteUserImage = ( user, dispatch ) => {
-  deleteFile( user.imagePath )
+export const deleteUserImage = (user, dispatch) => {
+  deleteFile(user.imagePath);
   delete user.imagePath;
   delete user.imageUrl;
-
+  
   store.collection('users')
     .doc(user.uid)
     .set(user)
@@ -250,20 +251,20 @@ export const deleteUserImage = ( user, dispatch ) => {
       dispatch(action(UPDATE_REGISTERED_USER, user));
     })
     .catch(err => console.log(err));
-}
+};
 
-export const getUserById = async ( userId ) => {
+export const getUserById = async(userId) => {
   return await store.collection('users')
     .doc(userId)
     .get()
     .then(res => {
-      if (res.exists) {
+      if (res.exists){
         let user = res.data();
         user.uid = res.id;
         return user;
-      } else {
+      }else{
         return null;
       }
-    })
-}
+    });
+};
 
