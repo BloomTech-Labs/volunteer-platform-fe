@@ -11,7 +11,6 @@ export const CreateEventPartThree = props => {
   const {
     state,
     localState,
-    setLocalState,
     handlePageBack,
     handlePageForward,
     handleChange,
@@ -27,8 +26,6 @@ export const CreateEventPartThree = props => {
 
   return (
     <StyledDiv className={'flex center'}>
-      <h1>Let's Create An Event</h1>
-
       <label>What are the requirements?</label>
       {/* <label>List Requirements here</label> */}
       <Form layout={'vertical'} onSubmit={() => handlePageForward()}>
@@ -76,10 +73,16 @@ export const CreateEventPartThree = props => {
         </div>
       </Form>
       <div className="buttonStyles">
-        <StyledCancelButton onClick={() => handlePageBack} type="primary">
-          Back
-        </StyledCancelButton>
-        <StyledButton type="primary">Next</StyledButton>
+        <div>
+          <StyledCancelButton onClick={() => handlePageBack()} type="primary">
+            Back
+          </StyledCancelButton>
+        </div>
+        <div>
+          <StyledButton type="primary" onClick={() => handlePageForward()}>
+            Next
+          </StyledButton>
+        </div>
       </div>
     </StyledDiv>
   );

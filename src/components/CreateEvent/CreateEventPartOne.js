@@ -25,8 +25,6 @@ export const CreateEventPartOne = props => {
 
   return (
     <StyledDiv className={'flex center'}>
-      <h1>Let's Create An Event</h1>
-
       <Form layout={'vertical'} onSubmit={() => handlePageForward()}>
         <Form.Item label={'Name of Event'} required>
           <Input
@@ -64,7 +62,7 @@ export const CreateEventPartOne = props => {
           <div className={''}>
             <Form.Item label="City" required>
               <Input
-                name={'City'}
+                name={'city'}
                 value={localState.city}
                 placeholder="City"
                 onChange={e => handleChange(e.target.name, e.target.value)}

@@ -8,7 +8,13 @@ import { formLayouts } from '../../utility/formLayouts';
 import { StyledCancelButton, StyledButton } from '../../styled';
 
 export const CreateEventPartTwo = props => {
-  const { localState, setLocalState, handlePageBack, handleChange } = props;
+  const {
+    localState,
+    setLocalState,
+    handlePageBack,
+    handlePageForward,
+    handleChange,
+  } = props;
 
   //Mapping through tags for antd select
 
@@ -48,8 +54,6 @@ export const CreateEventPartTwo = props => {
 
   return (
     <StyledDiv className={'flex center'}>
-      <h1>Let's Create An Event</h1>
-
       <label>Who is your point of contact?</label>
       <Form layout={'vertical'} onSubmit={''}>
         <div>
@@ -84,7 +88,7 @@ export const CreateEventPartTwo = props => {
         </div>
         <label>When is the event?</label>
         <div>
-          <Form.Item label={'Date of Event'} required>
+          <Form.Item required>
             <DatePicker
               name={'date'}
               value={localState.date}
@@ -109,7 +113,7 @@ export const CreateEventPartTwo = props => {
         <label>What time ?</label>
         <div className={'timeWrapper'}>
           <div>
-            <Form.Item label={'Start Time'} required>
+            <Form.Item required>
               <TimePicker
                 name={'startTime'}
                 use12Hours
@@ -124,7 +128,7 @@ export const CreateEventPartTwo = props => {
             <p className="to">to</p>
           </div>
           <div>
-            <Form.Item label={'End Time'} required>
+            <Form.Item required>
               <TimePicker
                 name={'endTime'}
                 use12Hours
@@ -140,7 +144,9 @@ export const CreateEventPartTwo = props => {
           <StyledCancelButton onClick={() => handlePageBack()} type="primary">
             Back
           </StyledCancelButton>
-          <StyledButton type="primary">Next</StyledButton>
+          <StyledButton type="primary" onClick={() => handlePageForward()}>
+            Next
+          </StyledButton>
         </div>
       </Form>
     </StyledDiv>

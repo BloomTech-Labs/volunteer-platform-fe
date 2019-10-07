@@ -117,7 +117,7 @@ export const RecurringEvent = props => {
   return (
     <StyledDiv>
       <Form>
-        <Form.Item label={'Is this a recurring event ?'} required>
+        <Form.Item required>
           <Radio.Group
             name={'recurringEvent'}
             onChange={e => handleChange(e.target.name, e.target.value)}

@@ -167,6 +167,7 @@ export const CreateEvent = props => {
         setLocalState={setLocalState}
         handlePageBack={handlePageBack}
         setPageNumberState={setPageNumberState}
+        handlePageForward={handlePageForward}
         handleChange={handleChange}
       />
     ),
@@ -177,6 +178,7 @@ export const CreateEvent = props => {
         setLocalState={setLocalState}
         handlePageBack={handlePageBack}
         handleChange={handleChange}
+        handlePageForward={handlePageForward}
       />
     ),
     4: (
@@ -185,13 +187,13 @@ export const CreateEvent = props => {
         setLocalState={setLocalState}
         handlePageBack={handlePageBack}
         handleChange={handleChange}
+        handlePageForward={handlePageForward}
       />
     ),
     5: (
       <CreateEventReview
         localState={localState}
         setLocalState={setLocalState}
-        // handleSubmit={handleFormPartSubmit}
         handlePageBack={handlePageBack}
         pageNumber={pageNumberState.pageNumber}
         autoFillState={autoFillState}
