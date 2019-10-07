@@ -24,7 +24,7 @@ const Event = (props) => {
   }, []);
   return (
     <div>
-      <EventCard event={events.event}/>
+      <EventCard event={events.event} history={props.history}/>
     </div>
   );
 };
