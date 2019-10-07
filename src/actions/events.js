@@ -206,7 +206,7 @@ export const getAllRecurringEventsByState = (state, dispatch) => {
           const data = event.data();
           data.eventId = event.id;
           let daysOfEvents = [];
-          if (data.recurringInfo.repeatTimePeriod.includes('Annually')){
+          if (data.recurringInfo.repeatTimePeriod.includes('Other')){
             data.registeredVolunteers = findNextEvents(data);
             event.ref.update({
               registeredVolunteers: data.registeredVolunteers,

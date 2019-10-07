@@ -8,18 +8,18 @@ export const eventPassed = date => {
 
 export const findNext = (date, keyWord, info = {}) => {
   switch (keyWord) {
-    case 'Custom': //need to do
+    case 'Other': //need to do
       return findNextCustom(date, info);
     case 'Daily':
       return date.add(1, 'days');
-    case 'Weekly':
+    case 'Weekly': //CHECKED
       let weekdayOfEvent = date.day();
       return date.day(weekdayOfEvent + 7);
-    case 'Monthly': //need to do
-      return findNthWeek(moment().unix(), info, 1);
-    case 'Annually':
+    case 'Monthly': //CHECKED
+      return findNthWeek(date.add(1, 'month'), info);
+    case 'Annually': //CHECKED
       return date.add(1, 'year');
-    case 'Weekdays':
+    case 'Weekdays': //CHECKED
       let dayOfWeek = date.day();
       if (dayOfWeek === 5 || dayOfWeek === 6) {
         //Fri or Sat
@@ -32,16 +32,26 @@ export const findNext = (date, keyWord, info = {}) => {
 
 export const findNextEvents = event => {
   debugger;
+  let dayAbbrevs = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
   let keyWord = event.recurringInfo.repeatTimePeriod.split(' ')[0];
   event.registeredVolunteers = event.registeredVolunteers || {};
   let passed = eventPassed(event.startTimeStamp);
   let eventDay = moment.unix(event.startTimeStamp);
-  if (passed) {
+  let isCustom = event.recurringInfo.repeatTimePeriod.split(' ')[0] === 'Other';
+  let isGood = true;
+  let days = event.recurringInfo.days || [];
+  days = days.map(day => dayAbbrevs[day]);
+  if (isCustom) {
+    isGood = days.includes(eventDay.day());
+  }
+  while (passed || !isGood) {
     eventDay = findNext(
       moment.unix(event.startTimeStamp),
       keyWord,
       event.recurringInfo
     );
+    passed = eventPassed(eventDay.unix());
+    isGood = true
   }
   let arrayOfDates = event.registeredVolunteers
     ? [...Object.keys(event.registeredVolunteers)].sort()
@@ -49,9 +59,8 @@ export const findNextEvents = event => {
   let end = findEndDate(event.recurringInfo, arrayOfDates);
   if (!end) return event;
   arrayOfDates = arrayOfDates.filter(timeStamp => moment().unix() < timeStamp);
-
   while (
-    end.maxDate.diff(eventDay.startOf('day')) > 0 &&
+    end.maxDate.diff(moment(eventDay).startOf('day')) > 0 &&
     arrayOfDates.length < end.maxEvents
   ) {
     arrayOfDates.push(eventDay.unix());

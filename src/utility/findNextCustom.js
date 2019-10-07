@@ -1,46 +1,37 @@
 import moment from 'moment';
 import { findNthWeek } from './findNthWeek';
+
 export const findNextCustom = (date, info) => {
+  debugger;
   let unit = info.repeatEveryValue;
   let timeFrame = info.repeatEvery;
-  let days = info.days ? [...info.days] : [];
-  let nextOccurrence = moment.unix(date);
+  let dayAbbrevs = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+  let days = info.days ? [...info.days].map(day => dayAbbrevs[day]).sort() : [];
+  let nextOccurrence = moment(date);
   switch (unit) {
     case 'Day':
     case 'Days':
-      while (moment().diff(nextOccurrence) >= 0) {
-        nextOccurrence = nextOccurrence.add(timeFrame, 'days');
-      }
-      return nextOccurrence.unix();
+      return nextOccurrence.add(timeFrame, 'days');
     case 'Week':
     case 'Weeks':
-      let createdDate = moment.unix(date);
- 
-      let eventFirstWeek = days.map(day => {
-        let possibleFirst = moment
-          .unix(date)
-          .startOf('week')
-          .day(day)
-          .add('23', 'hours');
-        if (possibleFirst.diff(createdDate) >= 0 && possibleFirst.diff(moment()) >=0) return possibleFirst;
-        else return null;
-      });
-      
-      let firstDate = eventFirstWeek.find(date => date !== null);
-      let firstOccurrence = moment
-        .unix(date)
-        .startOf('week')
-        .day(days[0]);
-      if (firstDate) return firstDate.unix();
-      else
-        while (
-          moment().diff(firstOccurrence) >= 0 ||
-          moment.unix(date).diff(firstOccurrence) >= 0
-        ) {
-          firstOccurrence = firstOccurrence.add(timeFrame, 'weeks');
+      let greaterThanAllDays = true;
+      let desiredDay;
+      for (let i = 0; i < days.length; i++) {
+        if (date.day() < days[i]) {
+          desiredDay = i;
+          greaterThanAllDays = false;
+          break;
         }
-      return firstOccurrence.unix();
-
+      }
+      if (greaterThanAllDays) {
+        nextOccurrence
+          .add(timeFrame, 'weeks')
+          .startOf('week')
+          .day(days[0]);
+      } else {
+        nextOccurrence.day(days[desiredDay]);
+      }
+      return moment(nextOccurrence.format('LL') + ' ' + date.format('LT'));
     case 'Month':
     case 'Months':
       let option = info.monthlyPeriod;

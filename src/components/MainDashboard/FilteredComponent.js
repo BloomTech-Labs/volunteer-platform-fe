@@ -19,15 +19,15 @@ export const FilteredComponent = Component => {
     events.forEach(event => {
       event.nextDate = event.startTimeStamp || event.date;
     });
-    recurringEvents.forEach(event => {
-      let nextDate = findNext(
-        event.startTimeStamp || event.date,
-        event.recurringInfo
-      );
-      event.nextDate = moment(
-        moment.unix(nextDate).format('LL') + ' ' + event.startTime
-      ).unix();
-    });
+    // recurringEvents.forEach(event => {
+    //   let nextDate = findNext(
+    //     event.startTimeStamp || event.date,
+    //     event.recurringInfo
+    //   );
+    //   event.nextDate = moment(
+    //     moment.unix(nextDate).format('LL') + ' ' + event.startTime
+    //   ).unix();
+    // });
     let allEvents = [...events, ...recurringEvents].sort(
       (a, b) => a.nextDate - b.nextDate
     );
