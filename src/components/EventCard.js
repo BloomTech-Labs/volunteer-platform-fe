@@ -12,7 +12,7 @@ import { useStateValue } from '../hooks/useStateValue';
 import { addComment, addCommentToComment } from '../actions';
 import uuid4 from 'uuid4';
 
-export const EventCard = ({ event }) => {
+export const EventCard = ({ event, history }) => {
   const [{ auth, comments }, dispatch] = useStateValue();
 
   useEffect(() => {}, [comments]);
@@ -90,7 +90,7 @@ export const EventCard = ({ event }) => {
   };
 
   const backButton = () => {
-    //props.history.goBack();
+    history.goBack();
     return null;
   };
 
