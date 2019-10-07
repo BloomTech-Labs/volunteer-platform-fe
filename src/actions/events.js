@@ -508,7 +508,6 @@ export const cancelSignedUpEvent = (event, user, dispatch) => {
       dispatch(action(CANCEL_SIGNED_UP_EVENT_FAILURE));
     });
 };
-<<<<<<< HEAD
 
 export const SIGN_UP_FOR_RECURRING_EVENT_INIT = 'SIGN_UP_FOR_RECURRING_EVENT_INIT';
 export const SIGNED_UP_VOLUNTEER_FOR_RECURRING_EVENT = 'SIGNED_UP_VOLUNTEER_FOR_RECURRING_EVENT';
@@ -612,7 +611,7 @@ export const cancelSignedUpRecurringEvent = (event, user, date, dispatch) => {
   
   dispatch(action(CANCEL_SIGNED_UP_RECURRING_EVENT_INIT));
   store
-    .collection('events')
+    .collection('recurring events')
     .doc(event.eventId)
     .set(updatedEvent)
     .then(res => {
@@ -631,5 +630,3 @@ export const cancelSignedUpRecurringEvent = (event, user, date, dispatch) => {
       dispatch(action(CANCEL_SIGNED_UP_RECURRING_EVENT_FAILURE));
     });
 };
-=======
->>>>>>> 1e3f9f73990dd76034fe32aa354f187574f3c1a8
