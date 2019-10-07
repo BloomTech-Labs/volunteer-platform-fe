@@ -22,6 +22,7 @@ export const CreateEventPartTwo = props => {
     startTime,
     endTime,
     dynamicDates,
+    recurringInfo,
   } = localState;
 
   const [error, setError] = useState('');
@@ -66,14 +67,30 @@ export const CreateEventPartTwo = props => {
     if (firstName && lastName && email) return true;
   };
 
+  const isRecurringValid = () => {
+    if (
+      recurringInfo.recurringEvent === 'Yes' &&
+      !recurringInfo.repeatTimePeriod
+    ) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
   const checkedRequired = () => {
     if (isFormValid()) {
-      setError('');
-      handlePageForward();
+      if (isRecurringValid()) {
+        setError('');
+        handlePageForward();
+      } else {
+        setError('This field is required.');
+      }
     } else {
       setError('This field is required.');
     }
   };
+  console.log(error);
 
   return (
     <StyledDiv className={'flex center'}>
@@ -145,6 +162,8 @@ export const CreateEventPartTwo = props => {
             localState={localState}
             setLocalState={setLocalState}
             dynamicDates={dynamicDates}
+            error={error}
+            setError={setError}
           />
         </div>
 

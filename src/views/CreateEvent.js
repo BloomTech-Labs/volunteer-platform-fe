@@ -35,9 +35,10 @@ export const CreateEvent = props => {
     },
     recurringInfo: {
       repeatTimePeriod: '',
-      occurrenceEnds: '',
+      occurrenceEnds: 'Never',
       occurrenceEndDate: '',
       occurrenceEndsAfter: '',
+      days: [],
     },
   };
   const formTitles = {
@@ -228,7 +229,6 @@ const StyledRenderDiv = styled.div`
   border-radius: ${({ theme }) => theme.borderRadiusDefault};
 
   label {
-    margin-left: 20px;
     color: ${({ theme }) => theme.primary8};
 
     &::before {

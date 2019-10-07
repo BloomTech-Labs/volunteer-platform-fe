@@ -15,12 +15,11 @@ import styled from 'styled-components';
 const { Option } = Select;
 
 export const RecurringEvent = props => {
-  const { localState, setLocalState } = props;
-  const { dynamicDates } = localState;
+  const { localState, setLocalState, error, setError } = props;
+  const { dynamicDates, recurringInfo } = localState;
+
   const { dynamicNumber, dynamicNth, dynamicDay, dynamicYear } = dynamicDates;
-  const [formState, setFormState] = useState({
-    days: [],
-  });
+  const [formState, setFormState] = useState({});
 
   const dayOptions = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
@@ -62,7 +61,7 @@ export const RecurringEvent = props => {
     setLocalState({
       ...localState,
       recurringInfo: {
-        ...localState.recurringInfo,
+        ...recurringInfo,
         [name]: value,
       },
     });
@@ -72,7 +71,7 @@ export const RecurringEvent = props => {
     setLocalState({
       ...localState,
       recurringInfo: {
-        ...localState.recurringInfo,
+        ...recurringInfo,
         repeatEvery: '',
         repeatEveryValue: '',
         days: '',
@@ -82,7 +81,44 @@ export const RecurringEvent = props => {
     closeModal();
   };
 
-  const periodOfTime = timePeriodOptions.map(period => {
+  const isModalValid = () => {
+    if (
+      recurringInfo.repeatEveryValue === 'Day' ||
+      recurringInfo.repeatEveryValue === 'Days'
+    ) {
+      return true;
+    } else if (
+      recurringInfo.repeatEveryValue === 'Week' ||
+      (recurringInfo.repeatEveryValue === 'Weeks'
+        ? recurringInfo.days.length > 0
+        : null)
+    ) {
+      return true;
+    } else if (
+      recurringInfo.repeatEveryValue === 'Month' ||
+      (recurringInfo.repeatEveryValue === 'Months'
+        ? recurringInfo.monthlyPeriod
+        : null)
+    ) {
+      return true;
+    }
+  };
+
+  const checkedRequired = () => {
+    if (
+      recurringInfo.repeatTimePeriod === 'Other' &&
+      recurringInfo.repeatEvery > 0
+    ) {
+      if (isModalValid()) {
+        closeModal();
+        setError('');
+      } else {
+        setError('This field is required.');
+      }
+    }
+  };
+
+  const periodOfTimeMap = timePeriodOptions.map(period => {
     if (localState.recurringInfo.repeatEvery > 1) {
       return (
         <Option key={period} value={period + 's'}>
@@ -98,7 +134,7 @@ export const RecurringEvent = props => {
     }
   });
 
-  const repeatTimePeriod = repeatTimePeriodOptions.map(period => {
+  const repeatTimePeriodMap = repeatTimePeriodOptions.map(period => {
     return (
       <Option key={period} value={period}>
         {period}
@@ -106,7 +142,7 @@ export const RecurringEvent = props => {
     );
   });
 
-  const monthlyPeriod = monthlyOptions.map(period => {
+  const monthlyPeriodMap = monthlyOptions.map(period => {
     return (
       <Option key={period} value={period}>
         {period}
@@ -122,26 +158,29 @@ export const RecurringEvent = props => {
             name={'recurringEvent'}
             onChange={e => handleChange(e.target.name, e.target.value)}
             disabled={!dynamicDay}
-            defaultValue={
-              localState.recurringInfo.recurringEvent === 'Yes' ? 'Yes' : 'No'
-            }
+            defaultValue={recurringInfo.recurringEvent === 'Yes' ? 'Yes' : 'No'}
           >
             <Radio value={'Yes'}>Yes</Radio>
             <Radio value={'No'}>No</Radio>
           </Radio.Group>
         </Form.Item>
 
-        {localState.recurringInfo.recurringEvent === 'Yes' && (
+        {recurringInfo.recurringEvent === 'Yes' && (
           <div>
-            <div className={localState.recurringEvent === 'Yes' ? 'hide' : ''}>
-              <Form.Item label="Repeat Every" required>
+            <div>
+              <Form.Item label="Repeat Every">
                 <Select
                   name={'repeatTimePeriod'}
-                  defaultValue={localState.recurringInfo.repeatTimePeriod}
+                  defaultValue={recurringInfo.repeatTimePeriod}
                   onChange={value => handleChange('repeatTimePeriod', value)}
                 >
-                  {repeatTimePeriod}
+                  {repeatTimePeriodMap}
                 </Select>
+                {error && !recurringInfo.repeatTimePeriod && (
+                  <span className="error-message error-span left-aligned">
+                    {error}
+                  </span>
+                )}
               </Form.Item>
             </div>
             <div>
@@ -149,9 +188,9 @@ export const RecurringEvent = props => {
                 <Radio.Group
                   name={'Occurrence Ends'}
                   defaultValue={
-                    localState.recurringInfo.occurrenceEnds === 'On'
+                    recurringInfo.occurrenceEnds === 'On'
                       ? 'On'
-                      : localState.recurringInfo.occurrenceEnds === 'After'
+                      : recurringInfo.occurrenceEnds === 'After'
                       ? 'After'
                       : 'Never'
                   }
@@ -162,41 +201,37 @@ export const RecurringEvent = props => {
                   <Radio value={'After'}>After</Radio>
                   <Radio value={'Never'}>Never</Radio>
                 </Radio.Group>
+                {error && !recurringInfo.occurrenceEnds && (
+                  <span className="error-message error-span left-aligned">
+                    {error}
+                  </span>
+                )}
               </Form.Item>
             </div>
-            {localState.recurringInfo.occurrenceEnds === 'On' && (
-              <div>
-                <Form.Item>
-                  <DatePicker
-                    name={'occurrenceEndDate'}
-                    format={'MM/DD/YYYY'}
-                    onChange={value => handleChange('occurrenceEndDate', value)}
-                    value={localState.recurringInfo.occurrenceEndDate}
-                    disabledDate={current =>
-                      current && current < moment().endOf('day')
-                    }
-                  />
-                </Form.Item>
-              </div>
+            {recurringInfo.occurrenceEnds === 'On' && (
+              <Form.Item>
+                <DatePicker
+                  name={'occurrenceEndDate'}
+                  format={'MM/DD/YYYY'}
+                  onChange={value => handleChange('occurrenceEndDate', value)}
+                  value={recurringInfo.occurrenceEndDate}
+                  disabledDate={current =>
+                    current && current < moment().endOf('day')
+                  }
+                />
+              </Form.Item>
             )}
 
-            {localState.recurringInfo.occurrenceEnds === 'After' && (
-              <div>
-                <Form.Item>
-                  <InputNumber
-                    name={'occurrenceEndsAfter'}
-                    min={0}
-                    defaultValue={
-                      localState.recurringInfo.occurrenceEndsAfter || 1
-                    }
-                    onChange={value =>
-                      handleChange('occurrenceEndsAfter', value)
-                    }
-                  />
-                  {'   '}
-                  Occurrence
-                </Form.Item>
-              </div>
+            {recurringInfo.occurrenceEnds === 'After' && (
+              <Form.Item>
+                <InputNumber
+                  name={'occurrenceEndsAfter'}
+                  min={0}
+                  defaultValue={recurringInfo.occurrenceEndsAfter || 1}
+                  onChange={value => handleChange('occurrenceEndsAfter', value)}
+                />
+                Occurrence
+              </Form.Item>
             )}
           </div>
         )}
@@ -206,7 +241,7 @@ export const RecurringEvent = props => {
         title="Add a Custom Repeat Time Period"
         width={720}
         closable
-        onOk={() => closeModal()}
+        onOk={() => checkedRequired()}
         onCancel={() => cancelModal()}
         onClose={closeModal}
         visible={formState.recurringBoolean}
@@ -218,51 +253,79 @@ export const RecurringEvent = props => {
                 <InputNumber
                   name={'repeatEvery'}
                   style={{ margin: 'o auto' }}
-                  defaultValue={localState.recurringInfo.repeatEvery}
+                  defaultValue={recurringInfo.repeatEvery}
                   onChange={value => handleChange('repeatEvery', value)}
                   min={0}
                 />
+                {error && !recurringInfo.repeatEvery && (
+                  <span className="error-message error-span left-aligned">
+                    {error}
+                  </span>
+                )}
               </Form.Item>
             </div>
             <div>
               <Form.Item>
                 <Select
                   name={'repeatEveryValue'}
-                  value={localState.recurringInfo.repeatEveryValue}
+                  value={recurringInfo.repeatEveryValue}
                   onChange={value => handleChange('repeatEveryValue', value)}
                 >
-                  {periodOfTime}
+                  {periodOfTimeMap}
                 </Select>
+                {error && !recurringInfo.repeatEveryValue && (
+                  <span className="error-message error-span left-aligned">
+                    {error}
+                  </span>
+                )}
               </Form.Item>
             </div>
 
-            {localState.recurringInfo.repeatEveryValue === 'Week' ||
-            localState.recurringInfo.repeatEveryValue === 'Weeks' ? (
-              <div>
-                <Form.Item label={'On'}>
-                  <Checkbox.Group
-                    name={'Days'}
-                    defaultValue={localState.recurringInfo.days}
-                    options={dayOptions}
-                    onChange={value => handleChange('days', value)}
-                    notRequired
-                  />
-                </Form.Item>
-              </div>
+            {recurringInfo.repeatEveryValue === 'Week' ||
+            recurringInfo.repeatEveryValue === 'Weeks' ? (
+              <Form.Item label={'On'}>
+                <div className={'errorFlex'}>
+                  <div>
+                    <Checkbox.Group
+                      name={'Days'}
+                      defaultValue={recurringInfo.days}
+                      options={dayOptions}
+                      onChange={value => handleChange('days', value)}
+                    />
+                  </div>
+                  <div>
+                    {error && !recurringInfo.days.length > 0 && (
+                      <span
+                        className="error-message error-span left-aligned"
+                        style={{ color: 'red', frontSize: '12px' }}
+                      >
+                        {error}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </Form.Item>
             ) : null}
 
-            {localState.recurringInfo.repeatEveryValue === 'Month' ||
-            localState.recurringInfo.repeatEveryValue === 'Months' ? (
+            {recurringInfo.repeatEveryValue === 'Month' ||
+            recurringInfo.repeatEveryValue === 'Months' ? (
               <div>
                 <Form.Item>
                   <Select
                     name={'Monthly Period'}
-                    defaultValue={localState.recurringInfo.monthlyPeriod}
+                    defaultValue={recurringInfo.monthlyPeriod}
                     onChange={value => handleChange('monthlyPeriod', value)}
-                    notRequired
                   >
-                    {monthlyPeriod}
+                    {monthlyPeriodMap}
                   </Select>
+                  {error && !recurringInfo.monthlyPeriod && (
+                    <span
+                      className="error-message error-span left-aligned"
+                      style={{ color: 'red', frontSize: '12px' }}
+                    >
+                      {error}
+                    </span>
+                  )}
                 </Form.Item>
               </div>
             ) : null}
@@ -273,6 +336,11 @@ export const RecurringEvent = props => {
   );
 };
 
-const StyledDiv = styled.div``;
+const StyledDiv = styled.div`
+  .errorFlex {
+    display: flex;
+    flex-direction: column;
+  }
+`;
 
 export default RecurringEvent;

@@ -35,6 +35,7 @@ export const CreateEventPartFour = props => {
               name={'website'}
               value={website}
               placeholder="Enter Website"
+              style={{ width: '400px' }}
               onChange={e => handleChange(e.target.name, e.target.value)}
             />
             {error && !website && (
@@ -78,7 +79,7 @@ export const CreateEventPartFour = props => {
                   }
                   value={otherNotes}
                   onChange={e => handleChange(e.target.name, e.target.value)}
-                  style={{ width: '300px', height: '200px' }}
+                  style={{ width: '400px', height: '200px' }}
                 />
               </div>
               <div>

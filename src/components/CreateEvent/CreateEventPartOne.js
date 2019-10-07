@@ -62,16 +62,21 @@ export const CreateEventPartOne = props => {
             placeholder="Name of Event"
             onChange={e => handleChange(e.target.name, e.target.value)}
           />
+          {error && !nameOfEvent && (
+            <span className="error-message error-span left-aligned">
+              {error}
+            </span>
+          )}
         </Form.Item>
 
-        <div className={''}>
+        <div>
           <Form.Item label={'Types Of Causes'} required>
             <Select
               name={'typesOfCauses'}
               value={typesOfCauses}
               placeholder="Types of Causes"
               mode="multiple"
-              style={{ width: '350px' }}
+              style={{ maxWidth: '400px' }}
               onChange={value => handleChange('typesOfCauses', value)}
             >
               {causeAreaTags}

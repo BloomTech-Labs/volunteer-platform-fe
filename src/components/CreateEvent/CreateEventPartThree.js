@@ -51,10 +51,10 @@ export const CreateEventPartThree = props => {
                   placeholder="Type here and a tag will appear"
                   mode="multiple"
                   value={volunteerRequirements}
+                  style={{ maxWidth: '400px' }}
                   onChange={value =>
                     handleChange('volunteerRequirements', value)
                   }
-                  style={{ width: '300px' }}
                 >
                   {requirementTags}
                 </Select>
@@ -79,7 +79,7 @@ export const CreateEventPartThree = props => {
                   mode="multiple"
                   value={interest}
                   onChange={value => handleChange('interest', value)}
-                  style={{ width: '300px' }}
+                  style={{ maxWidth: '400px' }}
                 >
                   {interestTags}
                 </Select>
@@ -106,7 +106,7 @@ export const CreateEventPartThree = props => {
                   }
                   value={eventDetails}
                   onChange={e => handleChange(e.target.name, e.target.value)}
-                  style={{ width: '300px', height: '200px' }}
+                  style={{ width: '400px', height: '200px' }}
                 />
               </div>
               <div>
