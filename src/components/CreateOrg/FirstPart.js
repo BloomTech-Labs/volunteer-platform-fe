@@ -132,14 +132,6 @@ export const FirstPart = ({ clickNext, storedData, cancelForm }) => {
       <div className="buttonStyles">
         <StyledCancelButton onClick={cancelForm} type="primary">
           Cancel
-          <div className="buttonStyles">
-            <StyledCancelButton onClick={cancelForm} type="primary">
-              Cancel
-            </StyledCancelButton>
-            <StyledButton onClick={checkRequired} type="primary">
-              Next
-            </StyledButton>
-          </div>
         </StyledCancelButton>
         <StyledButton onClick={checkRequired} type="primary">
           Next

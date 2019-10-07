@@ -1,15 +1,11 @@
 import React, { useState } from 'react';
-import {
-  WrappedAntForm,
-  AntInput,
-  AntTimePicker,
-  StyledCard,
-} from '../../styled';
+import { AntInput, AntTimePicker, StyledCard } from '../../styled';
+import { Select, Input, Form, DatePicker, TimePicker } from 'antd';
 import RecurringEvent from './RecurringEvent';
 import moment from 'moment';
 import styled from 'styled-components';
 import { formLayouts } from '../../utility/formLayouts';
-import { AntDatePicker } from '../../styled';
+import { StyledCancelButton, StyledButton } from '../../styled';
 
 export const CreateEventPartTwo = props => {
   const {
@@ -49,6 +45,7 @@ export const CreateEventPartTwo = props => {
 
     setLocalState({
       ...localState,
+      date: date,
       dynamicDates: {
         ...localState.dynamicDates,
         dynamicDay,
@@ -59,182 +56,124 @@ export const CreateEventPartTwo = props => {
     });
   };
 
-  const hanldePartTwoSubmit = values => {
+  const handleChange = (name, value) => {
     setLocalState({
       ...localState,
-      ...values,
-      values,
-    });
-    setAutoFillState({
-      ...autoFillState,
-      [pageNumber]: values,
-    });
-    setPageNumberState({
-      pageNumber: pageNumberState.pageNumber + 1,
+      [name]: value,
     });
   };
 
   return (
     <StyledDiv className={'flex center'}>
-      <CustomStyledCard
-        className={'flex center'}
-        style={{ maxWidth: '900px', margin: '2rem 0 5rem 0' }}
-      >
-        <h1>Let's Create An Event</h1>
+      <h1>Let's Create An Event</h1>
 
-        <StyledCreateEvent>
-          <WrappedAntForm
-            cancelButton={true}
-            cancelButtonText={'Back'}
-            handleCancel={handlePageBack}
-            onSubmit={hanldePartTwoSubmit}
-            layout={'vertical'}
-            buttonType={'primary'}
-            submitButton
-            submitButtonText={'Next'}
-            autofill={autoFillState[pageNumber]}
-          >
-            <div className={'part2Wrapper'}>
-              <label>Who is your point of contact?</label>
-              <div className={'pocWrapper'}>
-                <div className={'inline'}>
-                  <AntInput
-                    name={'First Name'}
-                    type="text"
-                    layout={formLayouts.empty}
-                    style={{ width: 240 }}
-                  />
-                </div>
-                <div className={'inline'}>
-                  <AntInput
-                    name={'Last Name'}
-                    type="text"
-                    layout={formLayouts.empty}
-                    style={{ width: 240 }}
-                  />
-                </div>
-                <div className={'inline'}>
-                  <AntInput
-                    name={'Email'}
-                    type="email"
-                    layout={formLayouts.empty}
-                    style={{ width: 240 }}
-                  />
-                </div>
-              </div>
-              <div className={'dateWrapper hidden'}>
-                <AntDatePicker
-                  name={'Date'}
-                  format={'MM/DD/YYYY'}
-                  onChange={handleDynmaicDate}
-                  disabledDate={current =>
-                    current && current < moment().endOf('day')
-                  }
-                  layout={formLayouts.empty}
-                />
-              </div>
-              <div className={'recurringWrapper'}>
-                <RecurringEvent
-                  name={'Is This a Recurring Event ?'}
-                  localState={localState}
-                  setLocalState={setLocalState}
-                  dynamicDates={localState.dynamicDates}
-                  layout={formLayouts.empty}
-                  notRequired
-                />
-              </div>
-              <label>What time ?</label>
-              <div className={'timeWrapper'}>
-                <div className={'hidden'}>
-                  <AntTimePicker
-                    name={'Start Time'}
-                    use12Hours
-                    format={'h:mm a'}
-                    defaultOpenValue={moment('00:00:00', 'HH:mm')}
-                    layout={formLayouts.empty}
-                  />
-                </div>
-                <p className="to">to</p>
-                <div className={'hidden'}>
-                  <AntTimePicker
-                    name={'End Time'}
-                    use12Hours
-                    format={'h:mm a'}
-                    defaultOpenValue={moment('00:00:00', 'HH:mm')}
-                    layout={formLayouts.empty}
-                  />
-                </div>
-              </div>
-            </div>
-          </WrappedAntForm>
-        </StyledCreateEvent>
-      </CustomStyledCard>
+      <label>Who is your point of contact?</label>
+      <Form layout={'vertical'} onSubmit={''}>
+        <div>
+          <Form.Item label={'First Name'} required>
+            <Input
+              name={'firstName'}
+              value={localState.firstName}
+              placeholder="First Name"
+              onChange={e => handleChange(e.target.name, e.target.value)}
+            />
+          </Form.Item>
+        </div>
+        <div>
+          <Form.Item label={'Last Name'} required>
+            <Input
+              name={'lastName'}
+              value={localState.lastName}
+              placeholder="Last Name"
+              onChange={e => handleChange(e.target.name, e.target.value)}
+            />
+          </Form.Item>
+        </div>
+        <div>
+          <Form.Item label={'Email'} required>
+            <Input
+              name={'email'}
+              value={localState.email}
+              placeholder="Email"
+              onChange={e => handleChange(e.target.name, e.target.value)}
+            />
+          </Form.Item>
+        </div>
+        <label>When is the event?</label>
+        <div>
+          <Form.Item label={'Date of Event'} required>
+            <DatePicker
+              name={'date'}
+              value={localState.date}
+              disabledDate={current =>
+                current && current < moment().endOf('day')
+              }
+              format={'MM/DD/YYYY'}
+              onChange={value => handleDynmaicDate(value)}
+            />
+          </Form.Item>
+        </div>
+
+        <label>Is This a Recurring Event?</label>
+        <div className={'recurringWrapper'}>
+          <RecurringEvent
+            localState={localState}
+            setLocalState={setLocalState}
+            dynamicDates={localState.dynamicDates}
+          />
+        </div>
+
+        <label>What time ?</label>
+        <div className={'timeWrapper'}>
+          <div>
+            <Form.Item label={'Start Time'} required>
+              <TimePicker
+                name={'startTime'}
+                use12Hours
+                value={localState.startTime}
+                format={'h:mm a'}
+                defaultOpenValue={moment('00:00:00', 'HH:mm')}
+                onChange={value => handleChange('startTime', value)}
+              />
+            </Form.Item>
+          </div>
+          <div className="to">
+            <p className="to">to</p>
+          </div>
+          <div>
+            <Form.Item label={'End Time'} required>
+              <TimePicker
+                name={'endTime'}
+                use12Hours
+                value={localState.endTime}
+                format={'h:mm a'}
+                defaultOpenValue={moment('00:00:00', 'HH:mm')}
+                onChange={value => handleChange('startTime', value)}
+              />
+            </Form.Item>
+          </div>
+        </div>
+        <div className="buttonStyles">
+          <StyledCancelButton onClick={() => handlePageBack()} type="primary">
+            Back
+          </StyledCancelButton>
+          <StyledButton type="primary">Next</StyledButton>
+        </div>
+      </Form>
     </StyledDiv>
   );
 };
-const StyledCreateEvent = styled.div`
-  width: 100%;
-  font-weight: bold;
-  text-align: left;
-  padding: 8rem;
-  .inline {
-    width: 50%;
-  }
-  .inlineTriple {
-    width: 35%;
-  }
-  .buttonStyles {
-    display: flex;
-    justify-content: space-around;
-  }
-  .part2Wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  label {
-    color: ${({ theme }) => theme.primary8};
-
-    &::before {
-      color: ${({ theme }) => theme.primary8};
-    }
-  }
-  small {
-    color: #bfbfbf;
-  }
-`;
-
 const StyledDiv = styled.div`
-  background: #003d61;
+  display: flex;
+  flex-direction: column;
 
-  h1 {
-    color: ${props => props.theme.primary8};
+  .timeWrapper {
+    display: flex;
   }
 
-  h4 {
-    color: ${props => props.theme.primary8};
+  .to {
+    margin: 15px 10px 0px 10px;
   }
-  padding: 2rem;
-`;
-
-const CustomStyledCard = styled(StyledCard)`
-  &&& {
-    background: #fafafa;
-    margin: 3rem;
-    text-align: center;
-    cursor: default;
-    transition: none;
-    max-width: 1088px;
-    &:hover {
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-    }
-  }
-`;
-
-const StyledImg = styled.img`
-  width: 211px;
-  margin: 2rem auto;
 `;
 
 export default CreateEventPartTwo;

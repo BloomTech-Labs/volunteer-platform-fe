@@ -68,7 +68,7 @@ export const CreateEventPartOne = props => {
           </Form.Item>
         </div>
         <div className={''}>
-          <div className={'inlineTriple'}>
+          <div className={''}>
             <Form.Item label="City" required>
               <Input
                 name={'City'}
@@ -100,13 +100,13 @@ export const CreateEventPartOne = props => {
             </Form.Item>
           </div>
         </div>
+        <div className="buttonStyles">
+          <StyledCancelButton onClick={cancelForm} type="primary">
+            Cancel
+          </StyledCancelButton>
+          <StyledButton type="primary">Next</StyledButton>
+        </div>
       </Form>
-      <div className="buttonStyles">
-        <StyledCancelButton onClick={cancelForm} type="primary">
-          Cancel
-        </StyledCancelButton>
-        <StyledButton type="primary">Next</StyledButton>
-      </div>
     </StyledDiv>
   );
 };
