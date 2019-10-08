@@ -8,20 +8,24 @@ import { Link } from 'react-router-dom';
 export const OrganizationCard = ({ org }) => {
   //aboutUs, causeAreas, city, state, streetAddress, website, organizationName
   return (
-    <StyledOrgCard margin={'0 0 20px 0'}>
+    <StyledOrgCard margin={'0 0 20px 0'} >
       <h1>{org.organizationName}</h1>
       {org.causeAreas.map(cause => (
         <Tag>{cause}</Tag>
       ))}
 
       <h4>{`${org.streetAddress} ${org.city}, ${org.state}`}</h4>
-        <h5>{org.website}</h5>
+      <h5>{org.website}</h5>
       <Link to={`/organization/${org.orgId}`}>
         <button>View More</button>
       </Link>
     </StyledOrgCard>
   );
 };
+
+const StyledOrgCard = styled(StyledCard)`
+ 
+`;
 
 OrganizationCard.propTypes = {
   org: PropTypes.shape({
@@ -50,5 +54,4 @@ OrganizationCard.propTypes = {
   }),
 };
 
-const StyledOrgCard = styled(StyledCard)``;
 export default OrganizationCard;
