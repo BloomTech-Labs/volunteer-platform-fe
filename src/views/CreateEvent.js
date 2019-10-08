@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
-<<<<<<< HEAD
 import styled from 'styled-components';
 import { StyledCard } from '../styled';
 import createEventImg from '../assets/undraw_blooming_jtv6.svg';
-=======
-
->>>>>>> staging
 import {
   CreateEventPartOne,
   CreateEventPartTwo,
@@ -129,10 +125,9 @@ export const CreateEvent = props => {
       if (event.recurringInfo.occurrenceEnds === 'After') {
         event.recurringInfo.occurrenceEndDate = '';
       }
-      console.log('reg', event);
+
       createRecurringEvent(event, dispatch);
     } else {
-      console.log('rec', event);
       createEvent(event, dispatch);
     }
     setPageNumber(1);
