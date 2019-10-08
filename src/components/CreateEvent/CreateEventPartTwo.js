@@ -27,8 +27,6 @@ export const CreateEventPartTwo = props => {
 
   const [error, setError] = useState('');
 
-  //Mapping through tags for antd select
-
   const handleDynmaicDate = date => {
     const dynamicDay = date._d.toString().split(' ')[0];
     const dynamicYear = date._d

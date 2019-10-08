@@ -12,7 +12,10 @@ import {
   CreateEventPartFour,
   SuccessModal,
 } from '../components/CreateEvent';
+import { Steps } from 'antd';
 import CreateEventReview from '../components/CreateEvent/CreateEventReview/CreateEventReview';
+
+let { Step } = Steps;
 
 export const CreateEvent = props => {
   const initialEvent = {
@@ -41,6 +44,8 @@ export const CreateEvent = props => {
       days: [],
     },
   };
+  const [localState, setLocalState] = useState(initialEvent);
+
   const formTitles = {
     1: 'Create An Event',
     2: 'Create An Event',
@@ -56,19 +61,16 @@ export const CreateEvent = props => {
     4: CreateEventPartFour,
     5: CreateEventReview,
   };
+  let steps = [0, 1, 2, 3, 4];
 
-  const [localState, setLocalState] = useState(initialEvent);
-
-  let [pageNumberState, setPageNumberState] = useState({
-    pageNumber: 1,
-  });
+  let [pageNumber, setPageNumber] = useState(1);
 
   const [state, dispatch] = useStateValue();
 
   //Destructuring
   const { recurringInfo, recurringEvent } = localState;
 
-  const RenderedFormParts = formParts[pageNumberState.pageNumber];
+  const RenderedFormParts = formParts[pageNumber];
 
   useEffect(() => {
     if (props.location.state.org) {
@@ -130,9 +132,7 @@ export const CreateEvent = props => {
       console.log('rec', event);
       createEvent(event, dispatch);
     }
-    setPageNumberState({
-      pageNumber: 1,
-    });
+    setPageNumber(1);
 
     props.history.push('/org-dashboard');
   };
@@ -150,16 +150,12 @@ export const CreateEvent = props => {
 
   //Handle Form Parts Submit
   const handlePageForward = () => {
-    setPageNumberState({
-      pageNumber: pageNumberState.pageNumber + 1,
-    });
+    setPageNumber(pageNumber + 1);
   };
 
   //Go Back a Page Number
   const handlePageBack = () => {
-    setPageNumberState({
-      pageNumber: pageNumberState.pageNumber - 1,
-    });
+    setPageNumber(pageNumber - 1);
   };
 
   console.log('localstate', localState);
@@ -167,8 +163,13 @@ export const CreateEvent = props => {
     <div>
       <StyledDiv className={'flex center'}>
         <CustomStyledCard margin="2rem 0 5rem 0" maxWidth="900px">
-          <h1>{formTitles[pageNumberState.pageNumber]}</h1>
+          <h1>{formTitles[pageNumber]}</h1>
           <StyledImg src={createEventImg} alt="undraw unexpected friends" />
+          <Steps current={pageNumber - 1} progressDot size="small">
+            {steps.map(step => {
+              return <Step key={step} />;
+            })}
+          </Steps>
           <StyledRenderDiv>
             <RenderedFormParts
               state={state}
@@ -177,7 +178,7 @@ export const CreateEvent = props => {
               handlePageForward={handlePageForward}
               handlePageBack={handlePageBack}
               cancelForm={cancelForm}
-              pageNumber={pageNumberState.pageNumber}
+              pageNumber={pageNumber}
               handleChange={handleChange}
               handleReviewSubmit={handleReviewSubmit}
             />
