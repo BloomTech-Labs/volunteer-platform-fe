@@ -90,10 +90,10 @@ export const MainDashboard = () => {
       getOrganizationsByState(inputState.location.state, dispatch);
       setTimeout(() => {
         setLoadingEvents(false);
-      }, 500);
+      }, 1000);
       setTimeout(() => {
         setFiltersTouched(true);
-      }, 500);
+      }, 1000);
     }
   }, [inputState.location.state]);
 

@@ -21,7 +21,7 @@ export const Navigation = props => {
   }, [props.location.pathname]);
   
   const handleClick = e => {
-    if (e.key === 'Logout'){
+    if (e.key === 'Sign Out'){
       signOut(dispatch);
     }
   };
@@ -104,6 +104,18 @@ export const Navigation = props => {
         {state.org.createdOrg && <Menu.Divider/>}
         {state.org.createdOrg && state.org.userOrganizations.map(org => {
           return <Menu.SubMenu key={org.orgId} title={org.organizationName}>
+            <Menu.Item key={'Dashboard'}>
+              <Link
+                to={{
+                  pathname: '/org-dashboard',
+                  state: {
+                    org: org,
+                  },
+                }}
+              >
+                <span style={{marginRight: '1rem'}}>Dashboard</span>
+              </Link>
+            </Menu.Item>
             <Menu.Item key={'Messages'}>
               <Link
                 to={{

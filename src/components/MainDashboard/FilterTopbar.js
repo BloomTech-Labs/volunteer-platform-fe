@@ -3,7 +3,6 @@ import { useStateValue } from '../../hooks/useStateValue';
 import { Card, Form, Row, Input, Icon, Divider } from 'antd';
 import { StyledCheckableTag as CheckableTag } from '../../styled';
 
-
 const tabList = [
   {
     key: 'Events',
@@ -41,7 +40,7 @@ export const FilterTopbar = ({
     toggleTagExpand,
   }) => {
     const [collapsed, setCollapsed] = useState(!tagExpandState[collectionName]);
-    
+
     const collapsedCount = 14;
     const [visibleCount, setVisibleCount] = useState(collapsedCount);
 
