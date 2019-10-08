@@ -13,7 +13,16 @@ export const findNext = (date, keyWord, info = {}) => {
     case 'Daily':
       return date.add(1, 'days');
     case 'Weekly':
-      let weekdayOfEvent = date.day();
+      let dayAbbrevs = {
+        Sun: 0,
+        Mon: 1,
+        Tue: 2,
+        Wed: 3,
+        Thu: 4,
+        Fri: 5,
+        Sat: 6,
+      };
+      let weekdayOfEvent = dayAbbrevs[info.repeatTimePeriod.split(' ')[2]];
       return date.day(weekdayOfEvent + 7);
     case 'Monthly':
       return findNthWeek(date.add(1, 'month'), info);
@@ -99,13 +108,15 @@ export const findNextEvents = event => {
   let end = findEndDate(event.recurringInfo, arrayOfDates);
   if (!end) return event;
   arrayOfDates = arrayOfDates.filter(timeStamp => moment().unix() < timeStamp);
+  let newDates = [];
   while (
     end.maxDate.diff(moment(eventDay).startOf('day')) > 0 &&
-    arrayOfDates.length < end.maxEvents
+    newDates.length < end.maxEvents
   ) {
-    arrayOfDates.push(eventDay.unix());
+    newDates.push(eventDay.unix());
     eventDay = findNext(eventDay, keyWord, event.recurringInfo);
   }
+  arrayOfDates = [...arrayOfDates, ...newDates];
   for (let key of arrayOfDates) {
     if (!event.registeredVolunteers[key]) {
       event.registeredVolunteers[key] = [];
