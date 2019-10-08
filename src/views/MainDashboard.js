@@ -25,6 +25,10 @@ export const MainDashboard = () => {
     requirements: {},
     causeAreas: {},
   });
+  const [selectedTags, setSelectedTags] = useState({
+    interests: [],
+    requirements: [],
+  });
   const [tagExpandState, setTagExpandState] = useState({
     interests: false,
     requirements: false,
@@ -48,6 +52,19 @@ export const MainDashboard = () => {
     });
     setTagFilterState(collectionMeta);
   }, []);
+
+  useEffect(() => {
+    let newTags = {};
+    Object.keys(selectedTags).forEach(collection => {
+      let newCollection = {};
+      Object.keys(tagFilterState[collection]).forEach(
+        tag => (newCollection[tag] = false)
+      );
+      selectedTags[collection].forEach(tag => (newCollection[tag] = true));
+      newTags[collection] = newCollection;
+    });
+    setTagFilterState({ ...tagFilterState, ...newTags });
+  }, [selectedTags]);
 
   //fetching user's location by IP
   useEffect(() => {
@@ -90,10 +107,10 @@ export const MainDashboard = () => {
       getOrganizationsByState(inputState.location.state, dispatch);
       setTimeout(() => {
         setLoadingEvents(false);
-      }, 500);
+      }, 1000);
       setTimeout(() => {
         setFiltersTouched(true);
-      }, 500);
+      }, 1000);
     }
   }, [inputState.location.state]);
 
@@ -119,10 +136,28 @@ export const MainDashboard = () => {
 
   const onTagsChange = (e, name, collection) => {
     setFiltersTouched(true);
-    setTagFilterState({
-      ...tagFilterState,
-      [collection]: { ...tagFilterState[collection], [name]: e },
+    if (e === null)
+      setTagFilterState({
+        ...tagFilterState,
+        [collection]: {
+          ...tagFilterState[collection],
+          [name]: !tagFilterState[collection][name],
+        },
+      });
+    else
+      setTagFilterState({
+        ...tagFilterState,
+        [collection]: { ...tagFilterState[collection], [name]: e },
+      });
+  };
+
+  const onSelectedChange = (selected, collection) => {
+    setFiltersTouched(true);
+    selected.forEach(tag => {
+      console.log(tag);
+      onTagsChange(true, tag, collection);
     });
+    setSelectedTags({ ...selectedTags, [collection]: selected });
   };
 
   const toggleTagExpand = collectionName => {
@@ -138,13 +173,20 @@ export const MainDashboard = () => {
     <div className="main-content" style={{ maxWidth: 1020, margin: '0 auto' }}>
       <h2>Browse {activeTabKey}</h2>
       <FilterTopbar
-        changeHandlers={{ onChange, onLocationChange, onTagsChange }}
+        changeHandlers={{
+          onChange,
+          onLocationChange,
+          onTagsChange,
+          onSelectedChange,
+        }}
         inputState={inputState}
         tagFilterState={tagFilterState}
+        selectedTags={selectedTags}
         tagExpandState={tagExpandState}
         toggleTagExpand={toggleTagExpand}
         activeTab={activeTabKey}
         setActiveTabKey={setActiveTabKey}
+        loading={loadingEvents}
       />
       <div style={{ minHeight: 400, margin: '0 auto' }}>
         {loadingEvents ? (

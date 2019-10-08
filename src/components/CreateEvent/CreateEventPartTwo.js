@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Input, Form, DatePicker, TimePicker } from 'antd';
+import { Input, Form, DatePicker, TimePicker, Tooltip, Icon } from 'antd';
 import RecurringEvent from './RecurringEvent';
 import moment from 'moment';
 import styled from 'styled-components';
@@ -62,7 +62,7 @@ export const CreateEventPartTwo = props => {
   };
 
   const isFormValid = () => {
-    if (firstName && lastName && email) return true;
+    if (firstName && lastName && email && date) return true;
   };
 
   const isRecurringValid = () => {
@@ -91,70 +91,104 @@ export const CreateEventPartTwo = props => {
   console.log(error);
 
   return (
-    <StyledDiv className={'flex center'}>
-      <label>Who is your point of contact?</label>
+    <StyledDiv className={'styledDiv'}>
+      <h4>Who is your point of contact?</h4>
       <Form layout={'vertical'} onSubmit={() => checkedRequired()}>
-        <div>
+        <div className={'error-flex'}>
           <Form.Item label={'First Name'} required>
-            <Input
-              name={'firstName'}
-              value={firstName}
-              placeholder="First Name"
-              onChange={e => handleChange(e.target.name, e.target.value)}
-            />
-            {error && !firstName && (
-              <span className="error-message error-span left-aligned">
-                {error}
-              </span>
-            )}
+            <div className={'input'}>
+              <Input
+                name={'firstName'}
+                value={firstName}
+                placeholder="First Name"
+                onChange={e => handleChange(e.target.name, e.target.value)}
+              />
+            </div>
+            <div>
+              {error && !firstName && (
+                <span className="error-message error-span left-aligned">
+                  {error}
+                </span>
+              )}
+            </div>
           </Form.Item>
         </div>
-        <div>
+        <div className={'error-flex'}>
           <Form.Item label={'Last Name'} required>
-            <Input
-              name={'lastName'}
-              value={lastName}
-              placeholder="Last Name"
-              onChange={e => handleChange(e.target.name, e.target.value)}
-            />
-            {error && !lastName && (
-              <span className="error-message error-span left-aligned">
-                {error}
-              </span>
-            )}
+            <div className={'input'}>
+              <Input
+                name={'lastName'}
+                value={lastName}
+                placeholder="Last Name"
+                onChange={e => handleChange(e.target.name, e.target.value)}
+              />
+            </div>
+            <div>
+              {error && !lastName && (
+                <span className="error-message error-span left-aligned">
+                  {error}
+                </span>
+              )}
+            </div>
           </Form.Item>
         </div>
-        <div>
+        <div className={'error-flex'}>
           <Form.Item label={'Email'} required>
-            <Input
-              name={'email'}
-              value={email}
-              placeholder="Email"
-              onChange={e => handleChange(e.target.name, e.target.value)}
-            />
-            {error && !email && (
+            <div className={'input'}>
+              <Input
+                name={'email'}
+                value={email}
+                placeholder="Email"
+                onChange={e => handleChange(e.target.name, e.target.value)}
+              />
+            </div>
+            <div>
+              {error && !email && (
+                <span className="error-message error-span left-aligned">
+                  {error}
+                </span>
+              )}
+            </div>
+          </Form.Item>
+        </div>
+        <h4>When is the event?</h4>
+        <div className={'date-input'}>
+          <Form.Item label={'Date of Event'} required>
+            <div>
+              <DatePicker
+                name={'date'}
+                value={date}
+                disabledDate={current =>
+                  current && current < moment().endOf('day')
+                }
+                format={'MM/DD/YYYY'}
+                onChange={value => handleDynmaicDate(value)}
+              />
+            </div>
+            {error && !date && (
               <span className="error-message error-span left-aligned">
                 {error}
               </span>
             )}
-          </Form.Item>
-        </div>
-        <label>When is the event?</label>
-        <div>
-          <Form.Item required>
-            <DatePicker
-              name={'date'}
-              value={date}
-              disabledDate={current =>
-                current && current < moment().endOf('day')
-              }
-              format={'MM/DD/YYYY'}
-              onChange={value => handleDynmaicDate(value)}
-            />
           </Form.Item>
         </div>
 
-        <label>Is This a Recurring Event?</label>
+        <div className={'tooltip-recurring'}>
+          <div>
+            <h4>Is This a Recurring Event?</h4>
+          </div>
+          <div style={{ marginLeft: '5px' }}>
+            <Tooltip
+              title={
+                localState.date
+                  ? 'Please select yes if this is a recurring event.'
+                  : 'Please select date of event first.'
+              }
+            >
+              <Icon type="question-circle-o" />
+            </Tooltip>
+          </div>
+        </div>
         <div className={'recurringWrapper'}>
           <RecurringEvent
             localState={localState}
@@ -165,49 +199,48 @@ export const CreateEventPartTwo = props => {
           />
         </div>
 
-        <label>What time ?</label>
-        <div className={'timeWrapper'}>
-          <div>
-            <Form.Item required>
+        <h4>What time?</h4>
+        <div className={'time-wrapper'}>
+          <Form.Item label={'Start Time'} required>
+            <div className={'time-input'}>
               <TimePicker
                 name={'startTime'}
                 use12Hours
                 value={startTime}
                 format={'h:mm a'}
-                defaultOpenValue={moment('00:00:00', 'HH:mm')}
+                defaultValue={moment('00:00:00', 'HH:mm')}
                 onChange={value => handleChange('startTime', value)}
               />
-            </Form.Item>
-          </div>
-          <div className="to">
-            <p className="to">to</p>
+            </div>
+          </Form.Item>
+
+          <div className="to-p">
+            <p>to</p>
           </div>
           <div>
-            <Form.Item required>
-              <TimePicker
-                name={'endTime'}
-                use12Hours
-                value={endTime}
-                format={'h:mm a'}
-                defaultOpenValue={moment('00:00:00', 'HH:mm')}
-                onChange={value => handleChange('startTime', value)}
-              />
+            <Form.Item label={'End Time'} required>
+              <div className={'time-input'}>
+                <TimePicker
+                  name={'endTime'}
+                  use12Hours
+                  value={endTime}
+                  format={'h:mm a'}
+                  defaultValue={moment('00:00:00', 'HH:mm')}
+                  onChange={value => handleChange('startTime', value)}
+                />
+              </div>
             </Form.Item>
           </div>
         </div>
         <div className="buttonStyles">
           <StyledCancelButton
-            onClick={() => handlePageBack()}
+            onClick={handlePageBack}
             key="back"
             type="secondary"
           >
             Back
           </StyledCancelButton>
-          <StyledButton
-            type="primary"
-            key="next"
-            onClick={() => checkedRequired()}
-          >
+          <StyledButton type="primary" key="next" onClick={checkedRequired}>
             Next
           </StyledButton>
         </div>
@@ -216,15 +249,26 @@ export const CreateEventPartTwo = props => {
   );
 };
 const StyledDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  .timeWrapper {
+  .tooltip-recurring {
     display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .date-input {
+    label {
+      margin-left: 185px;
+    }
+  }
+  .time-wrapper {
+    display: flex;
+    justify-content: center;
+    label {
+      margin-left: 0px;
+    }
   }
 
-  .to {
-    margin: 15px 10px 0px 10px;
+  .to-p {
+    margin: 35px 20px 0px;
   }
 `;
 

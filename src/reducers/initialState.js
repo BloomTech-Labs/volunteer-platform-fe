@@ -92,7 +92,7 @@ export const initialState = {
     signUpVolunteerError: '',
     cancelSignedUpVolunteerError: '',
     isLoading: false,
-    isSaving: false
+    isSaving: false,
   },
   tags: {
     interests: interests,
@@ -176,6 +176,7 @@ export const initialState = {
  * @typedef messages
  * @type {Object}
  * @property {MessagesObject} messages Object of messages
+ * @property {MessagesObject} orgMessages Object of messages
  * @property {Boolean} isLoading Boolean indicating if we are collecting the user messages.
  * @property {String} error Error message if there is one.
  */

@@ -20,7 +20,7 @@ export const CreateEvent = props => {
   const initialEvent = {
     nameOfEvent: '',
     typesOfCauses: [],
-    date: moment('00:00:00', 'HH:mm'),
+    date: '',
     startTime: moment('00:00:00', 'HH:mm'),
     endTime: moment('00:00:00', 'HH:mm'),
     numberOfVolunteers: '',
@@ -43,6 +43,7 @@ export const CreateEvent = props => {
       days: [],
     },
   };
+
   const [localState, setLocalState] = useState(initialEvent);
 
   const formTitles = {
@@ -99,14 +100,14 @@ export const CreateEvent = props => {
       startTimeStamp: moment(
         localState.date.format('LL') + ' ' + localState.startTime.format('LT')
       ).unix(),
-      endTimeSTamp: moment(
+      endTimeStamp: moment(
         localState.date.format('LL') + ' ' + localState.endTime.format('LT')
       ).unix(),
       numberOfVolunteers: localState.numberOfVolunteers,
       typesOfCauses: localState.typesOfCauses,
       interest: localState.interest,
       volunteerRequirements: localState.volunteerRequirements,
-      pointOfcontact: {
+      pointOfContact: {
         firstName: localState.firstName,
         lastName: localState.lastName,
         email: localState.email,
@@ -227,12 +228,33 @@ const StyledRenderDiv = styled.div`
   padding: 1.5rem 3rem;
   border-radius: ${({ theme }) => theme.borderRadiusDefault};
 
+  .styledDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  .input {
+    width: 80%;
+    margin: 0 auto;
+  }
+
+  h4 {
+    margin: 30px 0px;
+  }
+
   label {
+    margin-left: 55px;
     color: ${({ theme }) => theme.primary8};
 
     &::before {
       color: ${({ theme }) => theme.primary8};
     }
+  }
+  .errorFlex {
+    dispaly: flex;
+    flex-direction: column;
   }
 
   .buttonStyles {
@@ -245,8 +267,8 @@ const StyledRenderDiv = styled.div`
     border-top: 2px solid ${({ theme }) => theme.primary8};
 
     button {
-      margin-left: 15px;
-      margin-right: 15px;
+      margin-left: 5px;
+      margin-right: 5px;
     }
   }
   .error-message.error-span.left-aligned {
