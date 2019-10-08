@@ -49,10 +49,10 @@ const findEndDate = (info, arr) => {
 
   switch (ends) {
     case 'On':
-      return { maxDate: moment.unix(endDate), maxEvents: 8 };
+      return { maxDate: moment.unix(endDate), maxEvents: 8 - arr.length };
     case 'Never':
     case '':
-      return { maxDate: moment().add(3, 'months'), maxEvents: 8 };
+      return { maxDate: moment().add(3, 'months'), maxEvents: 8 - arr.length };
     case 'After':
       if (arr.length > endsAfter) {
         return false;
