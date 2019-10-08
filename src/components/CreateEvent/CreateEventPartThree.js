@@ -40,10 +40,9 @@ export const CreateEventPartThree = props => {
   };
   return (
     <StyledDiv className={'flex center'}>
-      <label>What are the requirements?</label>
       <Form layout={'vertical'} onSubmit={() => checkedRequired()}>
-        <div className={''}>
-          <Form.Item label={'Volunteer Requirments'} required>
+        <div>
+          <Form.Item label={'What are the requirements?'}>
             <div className={'errorFlex'}>
               <div>
                 <Select

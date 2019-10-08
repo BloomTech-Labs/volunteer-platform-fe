@@ -220,11 +220,13 @@ const StyledDiv = styled.div`
   flex-direction: column;
 
   .timeWrapper {
+    margin-top: 10px;
     display: flex;
+    justify-content: center;
   }
 
   .to {
-    margin: 15px 10px 0px 10px;
+    margin: 5px 10px 0px 10px;
   }
 `;
 
