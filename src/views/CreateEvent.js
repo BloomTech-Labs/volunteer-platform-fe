@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { useStateValue } from '../hooks/useStateValue';
-import { createEvent, createRecurringEvent } from '../actions';
 import moment from 'moment';
+<<<<<<< HEAD
 import styled from 'styled-components';
 import { StyledCard } from '../styled';
 import createEventImg from '../assets/undraw_blooming_jtv6.svg';
+=======
+
+>>>>>>> staging
 import {
   CreateEventPartOne,
   CreateEventPartTwo,
   CreateEventPartThree,
   CreateEventPartFour,
-  SuccessModal,
 } from '../components/CreateEvent';
 import { Steps } from 'antd';
 import CreateEventReview from '../components/CreateEvent/CreateEventReview/CreateEventReview';
+import { useStateValue } from '../hooks/useStateValue';
+import { createEvent, createRecurringEvent } from '../actions';
 
 let { Step } = Steps;
 

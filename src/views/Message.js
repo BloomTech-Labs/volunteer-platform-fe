@@ -1,7 +1,8 @@
 import React from 'react';
-import MessageThreads from '../components/Messages/MessageThreads';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+
+import MessageThreads from '../components/Messages/MessageThreads';
 import {StyledCard} from '../styled';
 
 const Message = (props) => {

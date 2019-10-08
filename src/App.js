@@ -12,7 +12,7 @@ import {
   generateRandomEvents,
 } from './actions';
 import { HeaderDiv, FooterDiv } from './components';
-import Navigation from './components/Navigation';
+import Navigation from './components/SiteParts/Navigation';
 import {
   MainDashboard,
   OrganizationDashboard,
@@ -23,10 +23,9 @@ import {
   LandingPage,
   NotFound,
   UserProfile,
-  Organization,
+  OrganizationProfile,
 } from './views';
 
-import EventCard from './components/EventCard';
 import {
   RegisteredAndLoggedInRoute,
   LoginRoute,
@@ -35,6 +34,7 @@ import {
   RegisterRoute,
 } from './routes/index';
 import Message from './views/Message';
+import Event from './views/Event';
 
 const { Sider, Content } = Layout;
 
@@ -152,7 +152,10 @@ function App() {
                   <LandingPage {...props} collapsed={collapsed} />
                 )}
               />
-              <Route path={'/organization/:id'} component={Organization} />
+              <Route
+                path={'/organization/:id'}
+                component={OrganizationProfile}
+              />
               <ProtectedRoute path={'/dashboard'} component={MainDashboard} />
               <RegisteredAndLoggedInRoute
                 path={'/create-org'}
@@ -166,22 +169,24 @@ function App() {
                 path={'/org-dashboard'}
                 component={OrganizationDashboard}
               />
-              <RegisterRoute path={'/register'} component={Signup}/>
-              <Route path={'/messages'} render={props =>
-                <Message {...props} width={dimensions.width}/>
-              }
+              <RegisterRoute path={'/register'} component={Signup} />
+              <Route
+                path={'/messages'}
+                render={props => (
+                  <Message {...props} width={dimensions.width} />
+                )}
               />
 
-              <Route 
+              <Route
                 path={'/events/:id'}
-                render = {(props) => <EventCard {...props} state={state} /> }
+                render={props => <Event {...props} />}
               />
-              
+
               <RegisteredAndLoggedInRoute
                 path={`/profile/:id`}
                 component={UserProfile}
               />
-              <Route component={NotFound}/>
+              <Route component={NotFound} />
             </Switch>
           </StyledContent>
           <FooterDiv />

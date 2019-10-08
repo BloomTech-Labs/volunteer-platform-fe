@@ -8,6 +8,7 @@ export * from './StyledSelect';
 export * from './StyledForm';
 export * from './StyledUploadImage';
 export * from './StyledModal';
+export * from './StyledLoader';
 
 //Exports for form building
 export * from './Form Options/AntCheckbox';
