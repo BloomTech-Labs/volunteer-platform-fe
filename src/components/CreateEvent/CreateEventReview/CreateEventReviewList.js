@@ -92,7 +92,7 @@ export const CreateEventReviewList = props => {
           type="second"
           onClick={() => handlePageBack()}
         >
-          Cancel
+          Back
         </StyledCancelButton>
 
         <StyledButton
