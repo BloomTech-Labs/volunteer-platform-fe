@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-const getAccHoursForDuration = (duration, hours) => {
+export const getAccHoursForDuration = (duration, hours) => {
   let start = moment(duration.start).unix();
   let end = moment(duration.end).endOf('month').unix();
   console.log(start, end);
@@ -19,13 +19,9 @@ export const volunteerProgress = (goals, accHours) => {
 
   if (goals.frequency === 'per week') {
     total = moment(goals.duration.end).endOf('month').diff(moment(goals.duration.start), 'weeks');
-    console.log(hours, 'hours');
-    console.log(total, 'weeks');
     return Math.round(hours * 100/ (total * goals.hours));
   } else if ((goals.frequency === 'per month')) {
     total = moment(goals.duration.end).diff(moment(goals.duration.start), 'months') + 1;
-    console.log(hours, 'hours');
-    console.log(total, 'months');
     return Math.round(hours * 100/ (total * goals.hours));
   }
 }

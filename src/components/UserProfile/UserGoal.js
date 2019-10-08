@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Select, DatePicker, Progress } from 'antd';
+import styled from 'styled-components';
+import { Modal, Select, DatePicker, Input, Icon, Button } from 'antd';
 import { WrappedAntForm, AntInput, AntSelect,  } from '../../styled/index';
-import { volunteerProgress } from '../../utility/volunteerProgress';
+
 import moment from 'moment';
 
 export const UserGoal = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   //const [goalsToEdit, setGoalsToEdit] = useState({});
-  const [progress, setProgress] = useState(0);
   const [displayGoals, setDisplayGoals] = useState({
     hours: 0,
     frequency: '',
@@ -27,10 +27,6 @@ export const UserGoal = (props) => {
   useEffect(() => {
     if (props.user.goals) {
       setDisplayGoals(props.user.goals);
-    }
-    if (props.user.validatedHours && props.user.goals) {
-      let accHours = volunteerProgress(props.user.goals, props.user.validatedHours);
-      setProgress(accHours);
     }
   }, [props.user])  
 
@@ -59,9 +55,7 @@ export const UserGoal = (props) => {
   }
 
   return (
-    <div>
-      <h5>Your Current Goals</h5>
-      <button onClick={openModal}>Add Goals</button>
+    <StyledDiv>
       <Modal 
         title='Set Your Goal'
         visible={isModalOpen}
@@ -99,22 +93,73 @@ export const UserGoal = (props) => {
           />
         </WrappedAntForm>
       </Modal>
-      <div>{displayGoals.hours} hours {displayGoals.frequency}</div>
-      <div>Duration: {displayGoals.duration.start} to {displayGoals.duration.end}</div>
-      <div>
-        Competing with:
+      <div className='left'>
+        <Button type='link' icon='plus-circle' onClick={openModal}>Set Goals</Button>
+        <div>
+          <h5>Current Goal</h5>
+          <p>{displayGoals.hours} hours {displayGoals.frequency}</p>
+        </div>
+        <div>
+          <h5>Duration</h5>
+          <p>{displayGoals.duration.start} to {displayGoals.duration.end}</p>
+        </div>
       </div>
-      <div>
-        <Progress type='circle' percent={progress} />
+      <div className='right'>
+        <div>
+          <h5>Community</h5>
+          <p>2/5 friends accepted your challenge for October</p>
+        </div>
+        <div>
+          <h5>Challenge a friend to be your goals</h5>
+          <div className='link-row'>
+            <Input 
+              style={{ width: '350px' }}
+              prefix={<Icon type="link" style={{ color: '#8C8C8C' }} />}
+              value={`www.volunteir.com/${props.user.firstName}challenge`}/>
+            <Button icon="copy">Copy</Button>
+          </div>
+        </div>
       </div>
-      <div>
-        <h5>Challenge a Friend to Beat your Goal</h5>
-        <label></label>
-        <input/>
-        <button></button>
-      </div>
-    </div>
+    </StyledDiv>
   )
 }
 
 export default UserGoal;
+
+const StyledDiv = styled.div`
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  border: 1px solid ${({theme}) => theme.gray4};
+  background: white;
+  border-radius: 3px;
+  padding: 1rem 0;
+
+  .left {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    button {
+      color: rgba(0, 0, 0, 0.6);
+      padding: 0;
+    }
+
+    button:hover {
+      color: ${({theme}) => theme.primary7};
+    }
+  }
+
+  .right {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    .link-row {
+      display: flex;
+    }
+  }
+`

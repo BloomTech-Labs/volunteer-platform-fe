@@ -1,13 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
-import {Collapse} from 'antd';
-import {findNext} from '../../utility/findNextRecurEvent';
-import {StyledCard, StyledButton} from '../../styled';
+import { Collapse, DatePicker, Button } from 'antd';
+import { StyledCard } from '../../styled';
 
 const {Panel} = Collapse;
 
-export const UserEvents = ({ events, selectedDate, displayAll }) => {
+export const UserEvents = ({ events, changePanel, calendarValue, selectDate, selectedDate, displayAll }) => {
 
   const filterEvents = (arr, property) => {
     return arr.filter(event => {
@@ -38,14 +37,20 @@ export const UserEvents = ({ events, selectedDate, displayAll }) => {
       {selectedEvents.length > 0 || selectedDate ? (
         <UpperDiv>
           <h2>Upcoming Events</h2>
-          <h2>{selectedDate && moment.unix(selectedDate).format('LL')}</h2>
-          <StyledButton onClick={displayAll} width='200px'>Display All Events</StyledButton>
+          <DatePicker 
+            onChange={selectDate} 
+            onPanelChange={changePanel}
+            allowClear={false}
+            value={calendarValue}
+            style={{margin: '1rem 0'}}/>
+          {selectedDate && <p>Selected date: {moment.unix(selectedDate).format('LL')}</p>}
+          <Button type='link' onClick={displayAll} width='200px'>Display All Events</Button>
         </UpperDiv>
       ) : (
         <div>You have not signed up for any events yet</div>
       )}
       {selectedEvents.length > 0 && (
-        <Collapse accordion bordered={false} style={{background: '#E8E8E8'}}>
+        <Collapse accordion bordered={false} style={{background: 'white'}}>
           {selectedEvents.map(event => {
             return (
               <StyledPanel
@@ -73,11 +78,13 @@ const StyledPanel = styled(Panel)`
   && {
     background: white;
     border-radius: 4px;
-    margin-bottom: 24px;
+    margin: 1rem 0;
     overflow: hidden;
 
     .ant-collapse-header {
-      border-bottom: 1px solid ${({theme}) => theme.gray4};
+      border: 1px solid ${({theme}) => theme.gray5};
+      background: ${({theme}) => theme.gray2};
+      border-radius: 0px 0px 4px 4px;
     }
   }
 `;
@@ -85,23 +92,30 @@ const StyledPanel = styled(Panel)`
 const UpperDiv = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   text-align: center;
   margin-bottom: 20px;
 
   h2{
-      margin: 0;
+      margin: 1rem 0;
   }
+  
   button {
     margin: 0 auto;
-    margin-top: 20px;
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  button:hover {
+    color: ${({theme}) => theme.primary7};
   }
 `;
 
 const CustomStyledCard = styled(StyledCard)`
   && {
     width: 500px;
-    background-color: #E8E8E8;
+    background: white;
     border-radius: 0px;
+    margin-top: 2rem;
   }
 `
 export default UserEvents;
