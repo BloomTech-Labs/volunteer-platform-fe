@@ -11,7 +11,7 @@ import CommentList from './EventComments/CommentsList';
 import {useStateValue} from '../hooks/useStateValue';
 import {
   addComment, addCommentToComment, signUpForRecurringEvent,
-  cancelSignedUpRecurringEvent,
+  cancelSignedUpRecurringEvent, signUpForEvent, cancelSignedUpEvent,
 } from '../actions';
 import uuid4 from 'uuid4';
 
@@ -98,11 +98,19 @@ export const EventCard = ({event, history}) => {
     history.goBack();
   };
   const register = (date) => {
-    signUpForRecurringEvent(event, auth.registeredUser, date, dispatch);
+    if (date){
+      signUpForRecurringEvent(event, auth.registeredUser, date, dispatch);
+      return;
+    }
+    signUpForEvent(event, auth.registeredUser, dispatch);
   };
   
   const unRegister = (date) => {
-    cancelSignedUpRecurringEvent(event, auth.registeredUser, date, dispatch);
+    if (date){
+      cancelSignedUpRecurringEvent(event, auth.registeredUser, date, dispatch);
+      return;
+    }
+    cancelSignedUpEvent(event, auth.registeredUser, dispatch);
   };
   
   const customPanelStyle = {
@@ -116,7 +124,7 @@ export const EventCard = ({event, history}) => {
   };
   
   const {Panel} = Collapse;
-  
+  debugger;
   return (
     <div>
       <div style={{
@@ -170,8 +178,7 @@ export const EventCard = ({event, history}) => {
           <StyledEventTime>
             <div className="time">
               <h6>
-                {localState.recurringInfo.days ? localState.recurringInfo.days :
-                  moment.unix(localState.startTimeStamp).format('LL')}
+                Time:
               </h6>
             </div>
             <div className="info">
@@ -183,37 +190,42 @@ export const EventCard = ({event, history}) => {
             </div>
           </StyledEventTime>
         </div>
-        <div style={{marginLeft: '50%', fontSize: '30px'}}>
-          <Icon type="twitter-circle" theme="filled"
-                style={{paddingRight: '1%'}}/>
-          <Icon type="facebook" theme="filled" style={{paddingRight: '1%'}}/>
-          <Icon type="google-circle" theme="filled"/>
-        </div>
+        {/*<div style={{marginLeft: '50%', fontSize: '30px'}}>*/}
+        {/*<Icon type="twitter-circle" theme="filled"*/}
+        {/*style={{paddingRight: '1%'}}/>*/}
+        {/*<Icon type="facebook" theme="filled" style={{paddingRight: '1%'}}/>*/}
+        {/*<Icon type="google-circle" theme="filled"/>*/}
+        {/*</div>*/}
       </div>
-      {event.recurringInfo &&
-      <Collapse
-        style={{marginTop: '2rem'}}
-        bordered={false}
-        defaultActiveKey={['1']}
-        expandIcon={({isActive}) => <Icon type="caret-right"
-                                          rotate={isActive ? 90 : 0}/>}
-      >
-        {Object.keys(event.registeredVolunteers).map(date => {
-          return <Panel key={date} header={moment.unix(date).format('LLL')}
-                        style={customPanelStyle}>
+      {event.recurringInfo ?
+        <Collapse
+          style={{marginTop: '2rem'}}
+          bordered={false}
+          defaultActiveKey={['1']}
+          expandIcon={({isActive}) => <Icon type="caret-right"
+                                            rotate={isActive ? 90 : 0}/>}
+        >
+          {Object.keys(event.registeredVolunteers).map(date => {
+            return <Panel key={date} header={moment.unix(date).format('LLL')}
+                          style={customPanelStyle}>
+              
+              <h5>Spots Remaining: {event.numberOfVolunteers -
+              event.registeredVolunteers[ date ].length}</h5>
+              {event.registeredVolunteers[ date ].includes(auth.googleAuthUser.uid) ?
+                <StyledButton
+                  onClick={() => unRegister(date)}>Un-Register</StyledButton> :
+                <StyledButton
+                  onClick={() => register(date)}>Register</StyledButton>}
             
-            <h5>Spots Remaining: {event.numberOfVolunteers -
-            event.registeredVolunteers[ date ].length}</h5>
-            {event.registeredVolunteers[ date ].includes(auth.googleAuthUser.uid) ?
-              <StyledButton
-                onClick={() => unRegister(date)}>Un-Register</StyledButton> :
-              <StyledButton
-                onClick={() => register(date)}>Register</StyledButton>}
-          
-          
-          </Panel>;
-        })}
-      </Collapse>}
+            </Panel>;
+          })}
+        </Collapse> : event.registeredVolunteers &&
+        event.registeredVolunteers.includes(auth.googleAuthUser.uid) ?
+          <StyledButton style={{marginLeft: '16rem'}} width={'15rem'}
+                        onClick={() => unRegister()}>Cancel
+            Registration</StyledButton> :
+          <StyledButton style={{marginLeft: '16rem'}} width={'9rem'}
+                        onClick={() => register()}>Register</StyledButton>}
       <CommentList
         comments={event.comments}
         addCommentToComment={handleAddCommentToComment}
@@ -256,6 +268,8 @@ const StyledEventPage = styled(StyledCard)`
       }
     }
   }
+  
+ 
 `;
 
 const StyledEventDetails = styled(StyledCard)`
@@ -278,7 +292,7 @@ const StyledEventDetails = styled(StyledCard)`
 
     .description {
       background-color: white;
-      padding: 1% 0;
+      padding: 2rem;
       text-align: left;
     }
   }
