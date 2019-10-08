@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import {Calendar, Select} from 'antd';
+import { Calendar, Select } from 'antd';
 import moment from 'moment';
-import {useStateValue} from '../hooks/useStateValue';
+import { useStateValue } from '../hooks/useStateValue';
 import {
   getAllEventsByOrg,
   deleteOrganization,
@@ -17,50 +17,41 @@ import {
   OrgInfo,
   EventPanel,
 } from '../components/OrgDashboard';
-import {deleteModal, StyledCard, StyledLine} from '../styled';
+import { deleteModal, StyledCard, StyledLine, StyledLoader } from '../styled';
 
-export const OrganizationDashboard = (props) => {
-  const [{org, events}, dispatch] = useStateValue();
+export const OrganizationDashboard = props => {
+  const [{ events }, dispatch] = useStateValue();
   const [displayOrg, setDisplayOrg] = useState('');
   const [imageUrl, setImageUrl] = useState(null);
   const [selectedDate, setSelectedDate] = useState();
   const [calendarValue, setCalendarValue] = useState(moment());
-  
+
   useEffect(() => {
-    if (org.userOrganizations.length > 0){
-      setDisplayOrg(org.userOrganizations[ 0 ]);
+    if (props.location.state) {
+      setDisplayOrg(props.location.state.org);
+      getAllEventsByOrg(props.location.state.org.orgId, dispatch);
+      getAllRecurringEventsByOrg(props.location.state.org.orgId, dispatch);
+      if (props.location.state.org.imagePath) {
+        getFileUrl(displayOrg.imagePath).then(res => {
+          setImageUrl(res);
+        });
+      } else {
+        setImageUrl(null);
+      }
     }
-  }, [org.userOrganizations]);
-  
-  useEffect(() => {
-    if (displayOrg){
-      getAllEventsByOrg(displayOrg.orgId, dispatch);
-      getAllRecurringEventsByOrg(displayOrg.orgId, dispatch);
-    }
-    if (displayOrg.imagePath){
-      getFileUrl(displayOrg.imagePath).then(res => {
-        setImageUrl(res);
-      });
-    }else{
-      setImageUrl(null);
-    }
-  }, [displayOrg, dispatch]);
-  
-  const changeHandler = value => {
-    setDisplayOrg(org.userOrganizations.find(item => item.orgId === value));
-  };
-  
+  }, [props.location]);
+
   const deleteOrg = e => {
     const deleteOrgModal = deleteModal({
       title: 'Are you sure you want to delete this organization?',
       content: 'This cannot be undone.',
       onOk: () => deleteOrganization(displayOrg.orgId, dispatch),
     });
-    
+
     e.preventDefault();
     deleteOrgModal();
   };
-  
+
   const onFileUpload = path => {
     getFileUrl(path)
       .then(url => {
@@ -74,57 +65,45 @@ export const OrganizationDashboard = (props) => {
       })
       .catch(err => console.log(err));
   };
-  
-  const onSelect = (value, mode) => {
+
+  const onSelect = (value) => {
     const beginning = value.startOf('date');
     const newValue = moment.unix(beginning.unix());
-    if (selectedDate){
+    if (selectedDate) {
       const date2 = newValue.unix();
-      if (selectedDate === date2){
+      if (selectedDate === date2) {
         setSelectedDate(null);
         setCalendarValue(moment());
-      }else{
+      } else {
         setSelectedDate(newValue.unix());
         setCalendarValue(newValue);
       }
-    }else{
+    } else {
       setSelectedDate(newValue.unix());
       setCalendarValue(newValue);
     }
   };
-  
+
   const onPanelChange = (value, mode) => {
     setCalendarValue(moment.unix(value.unix()));
   };
-  
+
   const displayAll = e => {
     e.preventDefault();
     setSelectedDate(null);
     setCalendarValue(moment());
   };
-  
+
   const deleteImage = org => {
     deleteOrganizationImage(org);
   };
-  
+
   return (
     <StyledDashboard>
-      <h4 className={'org-title'}>Dashboard of</h4>
       <h2 className={'org-name'}>{displayOrg.organizationName}</h2>
-      
-      <OrgButtons displayOrg={displayOrg} deleteOrg={deleteOrg}/>
-      <Select
-        defaultValue="select"
-        onChange={changeHandler}
-        value={displayOrg ? displayOrg.orgId : ''}
-        style={{width: '300px', marginBottom: '40px'}}
-      >
-        {org.userOrganizations.map(item => (
-          <Select.Option key={item.orgId} value={item.orgId}>
-            {item.organizationName}
-          </Select.Option>
-        ))}
-      </Select>
+
+      <OrgButtons displayOrg={displayOrg} deleteOrg={deleteOrg} />
+
       <StyledContent>
         <div className={'left-col'}>
           <OrgPhoto
@@ -152,41 +131,46 @@ export const OrganizationDashboard = (props) => {
           </div>
           <StyledAboutUs backgroundcolor={'#E8E8E8'} borderRadius="0px">
             <h5>About Us</h5>
-            <StyledLine width={'40%'}/>
+            <StyledLine width={'40%'} />
             <p>{displayOrg.aboutUs}</p>
           </StyledAboutUs>
         </div>
         <div className={'right-col'}>
-          <OrgInfo displayOrg={displayOrg} changeHandler={changeHandler}/>
-          
-          <EventPanel
-            recurringEvents={events.recurringEvents}
-            events={events.events}
-            selectedDate={selectedDate}
-            displayAll={displayAll}
-          />
+          <OrgInfo displayOrg={displayOrg} />
+          {events.isLoading ? (
+            <StyledLoader />
+          ) : (
+            <EventPanel
+              recurringEvents={events.recurringEvents}
+              events={events.events}
+              selectedDate={selectedDate}
+              displayAll={displayAll}
+            />
+          )}
         </div>
       </StyledContent>
     </StyledDashboard>
   );
 };
 
-const StyledDashboard = styled.div`
+export const StyledDashboard = styled.div`
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   align-items: center;
-  max-height: 100%;
+  max-width: 1020px;
+  margin: 0 auto;
   margin-top: 4rem;
   margin-bottom: 10rem;
 
   .org-title {
-    margin-bottom: 0;
+    margin-bottom: 0.7rem;
   }
 
   .org-name {
     margin-bottom: 2.5rem;
     margin-top: 0;
+    font-size: 40px;
   }
 `;
 
@@ -214,7 +198,7 @@ const StyledContent = styled.div`
   }
 `;
 
-const StyledAboutUs = styled(StyledCard)`
+export const StyledAboutUs = styled(StyledCard)`
   .ant-card-body {
     padding: 6px;
   }
