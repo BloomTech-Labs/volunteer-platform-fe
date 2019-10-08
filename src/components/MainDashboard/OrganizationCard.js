@@ -1,17 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {StyledCard, StyledButton} from '../../styled';
-import {Link} from 'react-router-dom';
+import styled from 'styled-components';
+import { Tag } from 'antd';
+import { StyledCard, StyledButton } from '../../styled';
+import { Link } from 'react-router-dom';
 
-export const OrganizationCard = ({org, history}) => {
-  
-  
+export const OrganizationCard = ({ org }) => {
+  //aboutUs, causeAreas, city, state, streetAddress, website, organizationName
   return (
-    <StyledCard>
+    <StyledOrgCard margin={'0 0 20px 0'}>
+      <h1>{org.organizationName}</h1>
+      {org.causeAreas.map(cause => (
+        <Tag>{cause}</Tag>
+      ))}
+
+      <h4>{`${org.streetAddress} ${org.city}, ${org.state}`}</h4>
+        <h5>{org.website}</h5>
       <Link to={`/organization/${org.orgId}`}>
-        <h1>{org.organizationName}</h1>
+        <button>View More</button>
       </Link>
-    </StyledCard>
+    </StyledOrgCard>
   );
 };
 
@@ -28,11 +36,13 @@ OrganizationCard.propTypes = {
     email: PropTypes.string.isRequired,
     imagePath: PropTypes.string,
     imageUrl: PropTypes.string,
-    POC: PropTypes.arrayOf(PropTypes.shape({
-      firstName: PropTypes.string.isRequired,
-      lastName: PropTypes.string.isRequired,
-      email: PropTypes.string.isRequired,
-    })).isRequired,
+    POC: PropTypes.arrayOf(
+      PropTypes.shape({
+        firstName: PropTypes.string.isRequired,
+        lastName: PropTypes.string.isRequired,
+        email: PropTypes.string.isRequired,
+      })
+    ).isRequired,
     causeAreas: PropTypes.arrayOf(PropTypes.string).isRequired,
     startTime: PropTypes.number.isRequired,
     endTime: PropTypes.number.isRequired,
@@ -40,4 +50,5 @@ OrganizationCard.propTypes = {
   }),
 };
 
+const StyledOrgCard = styled(StyledCard)``;
 export default OrganizationCard;
