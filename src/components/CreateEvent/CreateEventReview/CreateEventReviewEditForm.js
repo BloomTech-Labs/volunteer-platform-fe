@@ -72,8 +72,7 @@ export const CreateEventReviewEditForm = props => {
       firstName &&
       lastName &&
       email &&
-      eventDetails &&
-      website
+      eventDetails
     ) {
       return true;
     }
@@ -345,9 +344,6 @@ export const CreateEventReviewEditForm = props => {
           value={website}
           onChange={e => handleValue(e.target.name, e.target.value)}
         />
-        {error && !website && (
-          <span className="error-message error-span left-aligned">{error}</span>
-        )}
       </div>
 
       <h4>Other Notes</h4>
