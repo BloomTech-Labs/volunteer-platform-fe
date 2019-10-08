@@ -205,13 +205,12 @@ export const getAllRecurringEventsByState = (state, dispatch) => {
         res.forEach(event => {
           const data = event.data();
           data.eventId = event.id;
-          let daysOfEvents = [];
-          if (data.recurringInfo.repeatTimePeriod.includes('Sat/Sun')) {
-            data.registeredVolunteers = findNextEvents(data);
-            event.ref.update({
-              registeredVolunteers: data.registeredVolunteers,
-            });
-          }
+
+          data.registeredVolunteers = findNextEvents(data);
+          event.ref.update({
+            registeredVolunteers: data.registeredVolunteers,
+          });
+
           events.push(data);
         });
 
@@ -241,6 +240,10 @@ export const getAllRecurringEventsByOrg = (orgId, dispatch) => {
         res.forEach(event => {
           const data = event.data();
           data.eventId = event.id;
+          data.registeredVolunteers = findNextEvents(data);
+          event.ref.update({
+            registeredVolunteers: data.registeredVolunteers,
+          });
           events.push(data);
         });
 

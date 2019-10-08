@@ -2,7 +2,7 @@ import moment from 'moment';
 import { findNextCustom } from './findNextCustom';
 import { findNthWeek } from './findNthWeek';
 
-export const eventPassed = date => {
+const eventPassed = date => {
   return moment().unix() - date > 0;
 };
 
@@ -33,6 +33,29 @@ export const findNext = (date, keyWord, info = {}) => {
   }
 };
 
+const findEndDate = (info, arr) => {
+  let endDate = info.occurrenceEndDate || '';
+  let ends = info.occurrenceEnds || ''; //'On', 'Never', 'After'
+  let endsAfter = info.occurrenceEndsAfter || ''; //Number of events
+
+  switch (ends) {
+    case 'On':
+      return { maxDate: moment.unix(endDate), maxEvents: 8 };
+    case 'Never':
+    case '':
+      return { maxDate: moment().add(3, 'months'), maxEvents: 8 };
+    case 'After':
+      if (arr.length > endsAfter) {
+        return false;
+      } else {
+        return {
+          maxDate: moment().add(3, 'months'),
+          maxEvents: endsAfter - arr.length,
+        };
+      }
+  }
+};
+
 export const findNextEvents = event => {
   let dayAbbrevs = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
   let keyWord = event.recurringInfo.repeatTimePeriod.split(' ')[0];
@@ -49,27 +72,24 @@ export const findNextEvents = event => {
         )
       : moment.unix(event.startTimeStamp);
   let passed = eventPassed(eventDay.unix());
-  let isCustomWeekly =
-    event.recurringInfo.repeatTimePeriod.split(' ')[0] === 'Other' &&
-    event.recurringInfo.repeatEveryValue.includes('Week');
-  let isWeekend =
-    event.recurringInfo.repeatTimePeriod.split(' ')[0] === 'Weekends';
-  let isSat_Sun =
-    event.recurringInfo.repeatTimePeriod.split(' ')[0] === 'Sat/Sun';
+  let days = {
+    Weekends: [0, 5, 6],
+    'Sat/Sun': [0, 6],
+    Other: (event.recurringInfo.days || []).map(day => dayAbbrevs[day]),
+  };
+
   let isGood = true;
-  let days = [0, 5, 6];
-  if (isWeekend) {
-    isGood = days.includes(eventDay.day());
+  if (keyWord === 'Weekends' || keyWord === 'Sat/Sun') {
+    isGood = days[keyWord].includes(eventDay.day());
   }
-  days = [0, 6];
-  if (isSat_Sun) {
-    isGood = days.includes(eventDay.day());
+
+  if (
+    keyWord === 'Other' &&
+    event.recurringInfo.repeatEveryValue.includes('Week')
+  ) {
+    isGood = days[keyWord].includes(eventDay.day());
   }
-  days = event.recurringInfo.days || [];
-  days = days.map(day => dayAbbrevs[day]);
-  if (isCustomWeekly) {
-    isGood = days.includes(eventDay.day());
-  }
+
   while (passed || !isGood) {
     eventDay = findNext(eventDay, keyWord, event.recurringInfo);
     passed = eventPassed(eventDay.unix());
@@ -92,27 +112,4 @@ export const findNextEvents = event => {
     }
   }
   return event.registeredVolunteers;
-};
-
-const findEndDate = (info, arr) => {
-  let endDate = info.occurrenceEndDate;
-  let ends = info.occurrenceEnds; //'On', 'Never', 'After'
-  let endsAfter = info.occurrenceEndsAfter; //Number of events
-
-  switch (ends) {
-    case 'On':
-      return { maxDate: moment.unix(endDate), maxEvents: 8 };
-    case 'Never':
-    case '':
-      return { maxDate: moment().add(3, 'months'), maxEvents: 8 };
-    case 'After':
-      if (arr.length > endsAfter) {
-        return false;
-      } else {
-        return {
-          maxDate: moment().add(3, 'months'),
-          maxEvents: endsAfter - arr.length,
-        };
-      }
-  }
 };
