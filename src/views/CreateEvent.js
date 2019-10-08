@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
-
+import styled from 'styled-components';
+import { StyledCard } from '../styled';
+import createEventImg from '../assets/undraw_blooming_jtv6.svg';
 import {
   CreateEventPartOne,
   CreateEventPartTwo,
   CreateEventPartThree,
   CreateEventPartFour,
 } from '../components/CreateEvent';
+import { Steps } from 'antd';
 import CreateEventReview from '../components/CreateEvent/CreateEventReview/CreateEventReview';
 import { useStateValue } from '../hooks/useStateValue';
 import { createEvent, createRecurringEvent } from '../actions';
+
+let { Step } = Steps;
 
 export const CreateEvent = props => {
   const initialEvent = {
@@ -32,27 +37,39 @@ export const CreateEvent = props => {
     },
     recurringInfo: {
       repeatTimePeriod: '',
-      occurrenceEnds: '',
+      occurrenceEnds: 'Never',
       occurrenceEndDate: '',
       occurrenceEndsAfter: '',
+      days: [],
     },
   };
-  const autoFillParts = {
-    1: {},
-    2: {},
-    3: {},
-    4: {},
-  };
   const [localState, setLocalState] = useState(initialEvent);
-  const [autoFillState, setAutoFillState] = useState(autoFillParts);
-  let [pageNumberState, setPageNumberState] = useState({
-    pageNumber: 1,
-  });
+
+  const formTitles = {
+    1: 'Create An Event',
+    2: 'Create An Event',
+    3: 'Almost Finished Creating Your Event!!',
+    4: 'Almost Finished Creating Your Event!!',
+    5: "Here's What We Got",
+  };
+
+  const formParts = {
+    1: CreateEventPartOne,
+    2: CreateEventPartTwo,
+    3: CreateEventPartThree,
+    4: CreateEventPartFour,
+    5: CreateEventReview,
+  };
+  let steps = [0, 1, 2, 3, 4];
+
+  let [pageNumber, setPageNumber] = useState(1);
 
   const [state, dispatch] = useStateValue();
 
   //Destructuring
   const { recurringInfo, recurringEvent } = localState;
+
+  const RenderedFormParts = formParts[pageNumber];
 
   useEffect(() => {
     if (props.location.state.org) {
@@ -108,124 +125,139 @@ export const CreateEvent = props => {
       if (event.recurringInfo.occurrenceEnds === 'After') {
         event.recurringInfo.occurrenceEndDate = '';
       }
-      // console.log('reg', event);
+
       createRecurringEvent(event, dispatch);
     } else {
-      // console.log('rec', event);
       createEvent(event, dispatch);
     }
-    setPageNumberState({
-      pageNumber: 1,
-    });
+    setPageNumber(1);
 
     props.history.push('/org-dashboard');
   };
 
+  const handleChange = (name, value) => {
+    setLocalState({
+      ...localState,
+      [name]: value,
+    });
+  };
   ///Cancel Form
   const cancelForm = () => {
     props.history.push('/org-dashboard');
   };
 
   //Handle Form Parts Submit
-  const handleFormPartSubmit = values => {
-    if (pageNumberState.pageNumber) {
-      setAutoFillState({
-        ...autoFillState,
-        [pageNumberState.pageNumber]: values,
-      });
-    }
-    setLocalState({
-      ...localState,
-      ...values,
-      values,
-    });
-    setPageNumberState({
-      pageNumber: pageNumberState.pageNumber + 1,
-    });
+  const handlePageForward = () => {
+    setPageNumber(pageNumber + 1);
   };
 
   //Go Back a Page Number
   const handlePageBack = () => {
-    setPageNumberState({
-      pageNumber: pageNumberState.pageNumber - 1,
-    });
+    setPageNumber(pageNumber - 1);
   };
 
-  const renderParts = {
-    1: (
-      <CreateEventPartOne
-        state={state}
-        localState={localState}
-        setLocalState={setLocalState}
-        handleSubmit={handleFormPartSubmit}
-        cancelForm={cancelForm}
-        pageNumber={pageNumberState.pageNumber}
-        autoFillState={autoFillState}
-      />
-    ),
-    2: (
-      <CreateEventPartTwo
-        localState={localState}
-        setLocalState={setLocalState}
-        handleSubmit={handleFormPartSubmit}
-        handlePageBack={handlePageBack}
-        pageNumberState={pageNumberState}
-        setPageNumberState={setPageNumberState}
-        autoFillState={autoFillState}
-        setAutoFillState={setAutoFillState}
-      />
-    ),
-    3: (
-      <CreateEventPartThree
-        state={state}
-        localState={localState}
-        setLocalState={setLocalState}
-        handleSubmit={handleFormPartSubmit}
-        handlePageBack={handlePageBack}
-        pageNumber={pageNumberState.pageNumber}
-        autoFillState={autoFillState}
-      />
-    ),
-    4: (
-      <CreateEventPartFour
-        localState={localState}
-        setLocalState={setLocalState}
-        handleSubmit={handleFormPartSubmit}
-        handlePageBack={handlePageBack}
-        pageNumber={pageNumberState.pageNumber}
-        autoFillState={autoFillState}
-      />
-    ),
-    5: (
-      <CreateEventReview
-        localState={localState}
-        setLocalState={setLocalState}
-        handleSubmit={handleFormPartSubmit}
-        handlePageBack={handlePageBack}
-        pageNumber={pageNumberState.pageNumber}
-        autoFillState={autoFillState}
-        handleReviewSubmit={handleReviewSubmit}
-        cancelForm={cancelForm}
-      />
-    ),
-    // 6: <SuccessModal />,
-  };
   console.log('localstate', localState);
   return (
     <div>
-      {pageNumberState.pageNumber && renderParts[pageNumberState.pageNumber]}
-      {/* <CreateEventReview
-        localState={localState}
-        setLocalState={setLocalState}
-        handleSubmit={handleFormPartSubmit}
-        handlePageBack={handlePageBack}
-        pageNumber={pageNumberState.pageNumber}
-        autoFillState={autoFillState}
-        handleReviewSubmit={handleReviewSubmit}
-        cancelForm={cancelForm}
-      /> */}
+      <StyledDiv className={'flex center'}>
+        <CustomStyledCard margin="2rem 0 5rem 0" maxWidth="900px">
+          <h1>{formTitles[pageNumber]}</h1>
+          <StyledImg src={createEventImg} alt="undraw unexpected friends" />
+          <Steps current={pageNumber - 1} progressDot size="small">
+            {steps.map(step => {
+              return <Step key={step} />;
+            })}
+          </Steps>
+          <StyledRenderDiv>
+            <RenderedFormParts
+              state={state}
+              localState={localState}
+              setLocalState={setLocalState}
+              handlePageForward={handlePageForward}
+              handlePageBack={handlePageBack}
+              cancelForm={cancelForm}
+              pageNumber={pageNumber}
+              handleChange={handleChange}
+              handleReviewSubmit={handleReviewSubmit}
+            />
+          </StyledRenderDiv>
+        </CustomStyledCard>
+      </StyledDiv>
     </div>
   );
 };
+
+const StyledDiv = styled.div`
+  background: white;
+  .create-org-header {
+    color: ${props => props.theme.primary8};
+  }
+`;
+
+const CustomStyledCard = styled(StyledCard)`
+  &&& {
+    background: #d9d9d9;
+    text-align: center;
+    cursor: default;
+    transition: none;
+
+    .ant-steps {
+      text-align: left;
+      margin-bottom: 40px;
+
+      .ant-steps-item-finish
+        > .ant-steps-item-container
+        > .ant-steps-item-tail {
+        &::after {
+          background: ${({ theme }) => theme.primary8};
+        }
+      }
+      span.ant-steps-icon-dot {
+        background: ${({ theme }) => theme.primary8};
+      }
+    }
+  }
+`;
+
+const StyledRenderDiv = styled.div`
+  background: ${({ theme }) => theme.gray4};
+  width: 75%;
+  margin: 0 auto;
+  font-weight: bold;
+  padding: 1.5rem 3rem;
+  border-radius: ${({ theme }) => theme.borderRadiusDefault};
+
+  label {
+    color: ${({ theme }) => theme.primary8};
+
+    &::before {
+      color: ${({ theme }) => theme.primary8};
+    }
+  }
+
+  .buttonStyles {
+    display: flex;
+    margin: 50px auto 0;
+    padding-top: 40px;
+    padding-right: 50px;
+    padding-left: 50px;
+    justify-content: space-between;
+    border-top: 2px solid ${({ theme }) => theme.primary8};
+
+    button {
+      margin-left: 15px;
+      margin-right: 15px;
+    }
+  }
+  .error-message.error-span.left-aligned {
+    color: red;
+    font-size: 12px;
+  }
+`;
+
+const StyledImg = styled.img`
+  width: 211px;
+  margin: 2rem auto;
+`;
 
 export default CreateEvent;
