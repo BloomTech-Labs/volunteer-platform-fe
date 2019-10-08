@@ -12,7 +12,7 @@ export const CreateEventPartFour = props => {
   const { website, numberOfVolunteers, otherNotes } = localState;
 
   const isFormValid = () => {
-    if (website && numberOfVolunteers && otherNotes) {
+    if (numberOfVolunteers && otherNotes) {
       return true;
     }
   };
@@ -29,32 +29,32 @@ export const CreateEventPartFour = props => {
   return (
     <StyledDiv>
       <Form layout={'vertical'} onSubmit={() => checkedRequired()}>
-        <div>
-          <Form.Item label={'Webiste'}>
-            <Input
-              name={'website'}
-              value={website}
-              placeholder="Enter Website"
-              style={{ width: '400px' }}
-              onChange={e => handleChange(e.target.name, e.target.value)}
-            />
-            {error && !website && (
-              <span className="error-message error-span left-aligned">
-                {error}
-              </span>
-            )}
+        <h4>Do you have a website?</h4>
+        <div className={'error-flex'}>
+          <Form.Item label={'Website'}>
+            <div className={'input'}>
+              <Input
+                name={'website'}
+                value={website}
+                placeholder="Enter Website"
+                onChange={e => handleChange(e.target.name, e.target.value)}
+              />
+            </div>
           </Form.Item>
         </div>
 
         <div>
-          <Form.Item label="How many volunteers do you need?">
-            <div className={'errorFlex'}>
-              <div className="inputNumber">
+          <h4>How many volunteers do you need?</h4>
+          <Form.Item required>
+            <div className={'error-flex'}>
+              <div className={'inputNumber'}>
                 <InputNumber
                   name={'numberOfVolunteers'}
                   value={numberOfVolunteers}
                   onChange={value => handleChange('numberOfVolunteers', value)}
                 />
+                {'  '}
+                Volunteers
               </div>
               <small>We recommend adding +5 to your need</small>
               <div>
@@ -69,8 +69,8 @@ export const CreateEventPartFour = props => {
         </div>
 
         <Form.Item>
-          <Form.Item label={'Other Notes'}>
-            <div className={'errorFlex'}>
+          <Form.Item label={'Other Notes'} required>
+            <div className={'error-flex'}>
               <div>
                 <TextArea
                   name={'otherNotes'}
@@ -79,7 +79,7 @@ export const CreateEventPartFour = props => {
                   }
                   value={otherNotes}
                   onChange={e => handleChange(e.target.name, e.target.value)}
-                  style={{ width: '400px', height: '200px' }}
+                  style={{ height: '200px' }}
                 />
               </div>
               <div>
@@ -95,17 +95,13 @@ export const CreateEventPartFour = props => {
       </Form>
       <div className="buttonStyles">
         <StyledCancelButton
-          onClick={() => handlePageBack()}
+          onClick={handlePageBack}
           type="secondary"
           key="back"
         >
           Back
         </StyledCancelButton>
-        <StyledButton
-          type="primary"
-          key="next"
-          onClick={() => checkedRequired()}
-        >
+        <StyledButton type="primary" key="next" onClick={checkedRequired}>
           Next
         </StyledButton>
       </div>
@@ -115,11 +111,6 @@ export const CreateEventPartFour = props => {
 const StyledDiv = styled.div`
   display: flex;
   flex-direction: column;
-
-  .errorFlex {
-    display: flex;
-    flex-direction: column;
-  }
 
   .inputNumber {
     margin-bottom: 10px;

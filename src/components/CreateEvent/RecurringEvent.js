@@ -153,7 +153,7 @@ export const RecurringEvent = props => {
   return (
     <StyledDiv>
       <Form>
-        <Form.Item required>
+        <Form.Item>
           <Radio.Group
             name={'recurringEvent'}
             onChange={e => handleChange(e.target.name, e.target.value)}
@@ -166,25 +166,27 @@ export const RecurringEvent = props => {
         </Form.Item>
 
         {recurringInfo.recurringEvent === 'Yes' && (
-          <div>
-            <div>
-              <Form.Item label="Repeat Every">
-                <Select
-                  name={'repeatTimePeriod'}
-                  defaultValue={recurringInfo.repeatTimePeriod}
-                  onChange={value => handleChange('repeatTimePeriod', value)}
-                >
-                  {repeatTimePeriodMap}
-                </Select>
+          <span>
+            <span>
+              <Form.Item label={'Repeat Every'} required>
+                <div className={'input'}>
+                  <Select
+                    name={'repeatTimePeriod'}
+                    defaultValue={recurringInfo.repeatTimePeriod}
+                    onChange={value => handleChange('repeatTimePeriod', value)}
+                  >
+                    {repeatTimePeriodMap}
+                  </Select>
+                </div>
                 {error && !recurringInfo.repeatTimePeriod && (
                   <span className="error-message error-span left-aligned">
                     {error}
                   </span>
                 )}
               </Form.Item>
-            </div>
+            </span>
             <div>
-              <Form.Item label={'Event Ends'}>
+              <Form.Item label={'Event Ends'} required>
                 <Radio.Group
                   name={'Occurrence Ends'}
                   defaultValue={
@@ -233,7 +235,7 @@ export const RecurringEvent = props => {
                 Occurrence
               </Form.Item>
             )}
-          </div>
+          </span>
         )}
       </Form>
 
@@ -337,6 +339,9 @@ export const RecurringEvent = props => {
 };
 
 const StyledDiv = styled.div`
+  .input {
+    width: 80%;
+  }
   .errorFlex {
     display: flex;
     flex-direction: column;

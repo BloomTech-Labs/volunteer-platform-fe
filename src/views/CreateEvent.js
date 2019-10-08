@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
-import {StyledCard} from '../styled';
+import { StyledCard } from '../styled';
 import createEventImg from '../assets/undraw_blooming_jtv6.svg';
 import {
   CreateEventPartOne,
@@ -9,19 +9,18 @@ import {
   CreateEventPartThree,
   CreateEventPartFour,
 } from '../components/CreateEvent';
-import {Steps} from 'antd';
-import CreateEventReview
-  from '../components/CreateEvent/CreateEventReview/CreateEventReview';
-import {useStateValue} from '../hooks/useStateValue';
-import {createEvent, createRecurringEvent} from '../actions';
+import { Steps } from 'antd';
+import CreateEventReview from '../components/CreateEvent/CreateEventReview/CreateEventReview';
+import { useStateValue } from '../hooks/useStateValue';
+import { createEvent, createRecurringEvent } from '../actions';
 
-let {Step} = Steps;
+let { Step } = Steps;
 
 export const CreateEvent = props => {
   const initialEvent = {
     nameOfEvent: '',
     typesOfCauses: [],
-    date: moment('00:00:00', 'HH:mm'),
+    date: '',
     startTime: moment('00:00:00', 'HH:mm'),
     endTime: moment('00:00:00', 'HH:mm'),
     numberOfVolunteers: '',
@@ -45,15 +44,15 @@ export const CreateEvent = props => {
     },
   };
   const [localState, setLocalState] = useState(initialEvent);
-  
+
   const formTitles = {
     1: 'Create An Event',
     2: 'Create An Event',
     3: 'Almost Finished Creating Your Event!!',
     4: 'Almost Finished Creating Your Event!!',
-    5: 'Here\'s What We Got',
+    5: "Here's What We Got",
   };
-  
+
   const formParts = {
     1: CreateEventPartOne,
     2: CreateEventPartTwo,
@@ -62,26 +61,25 @@ export const CreateEvent = props => {
     5: CreateEventReview,
   };
   let steps = [0, 1, 2, 3, 4];
-  
+
   let [pageNumber, setPageNumber] = useState(1);
-  
+
   const [state, dispatch] = useStateValue();
-  
+
   //Destructuring
-  const {recurringInfo, recurringEvent} = localState;
-  
-  const RenderedFormParts = formParts[ pageNumber ];
-  debugger;
+  const { recurringInfo, recurringEvent } = localState;
+
+  const RenderedFormParts = formParts[pageNumber];
+
   useEffect(() => {
-    debugger;
-    if (props.location.state.org){
+    if (props.location.state.org) {
       setLocalState({
         ...localState,
         orgId: props.location.state.org.orgId,
       });
     }
   }, [props.location.state.org]);
-  
+
   //Handle Submit for Form
   const handleReviewSubmit = () => {
     const event = {
@@ -99,16 +97,16 @@ export const CreateEvent = props => {
       startTime: localState.startTime.format('LT'),
       endTime: localState.endTime.format('LT'),
       startTimeStamp: moment(
-        localState.date.format('LL') + ' ' + localState.startTime.format('LT'),
+        localState.date.format('LL') + ' ' + localState.startTime.format('LT')
       ).unix(),
-      endTimeSTamp: moment(
-        localState.date.format('LL') + ' ' + localState.endTime.format('LT'),
+      endTimeStamp: moment(
+        localState.date.format('LL') + ' ' + localState.endTime.format('LT')
       ).unix(),
       numberOfVolunteers: localState.numberOfVolunteers,
       typesOfCauses: localState.typesOfCauses,
       interest: localState.interest,
       volunteerRequirements: localState.volunteerRequirements,
-      pointOfcontact: {
+      pointOfContact: {
         firstName: localState.firstName,
         lastName: localState.lastName,
         email: localState.email,
@@ -117,57 +115,57 @@ export const CreateEvent = props => {
       website: localState.website,
       otherNotes: localState.otherNotes,
     };
-    
-    if (recurringInfo.recurringEvent === 'Yes'){
+
+    if (recurringInfo.recurringEvent === 'Yes') {
       event.recurringInfo = recurringInfo;
-      if (event.recurringInfo.occurrenceEnds === 'On'){
+      if (event.recurringInfo.occurrenceEnds === 'On') {
         event.recurringInfo.occurrenceEndDate = event.recurringInfo.occurrenceEndDate.unix();
         event.recurringInfo.occurrenceEndsAfter = '';
       }
-      if (event.recurringInfo.occurrenceEnds === 'After'){
+      if (event.recurringInfo.occurrenceEnds === 'After') {
         event.recurringInfo.occurrenceEndDate = '';
       }
-      
+
       createRecurringEvent(event, dispatch);
-    }else{
+    } else {
       createEvent(event, dispatch);
     }
     setPageNumber(1);
-    
+
     props.history.push('/org-dashboard');
   };
-  
+
   const handleChange = (name, value) => {
     setLocalState({
       ...localState,
-      [ name ]: value,
+      [name]: value,
     });
   };
   ///Cancel Form
   const cancelForm = () => {
     props.history.push('/org-dashboard');
   };
-  
+
   //Handle Form Parts Submit
   const handlePageForward = () => {
     setPageNumber(pageNumber + 1);
   };
-  
+
   //Go Back a Page Number
   const handlePageBack = () => {
     setPageNumber(pageNumber - 1);
   };
-  
+
   console.log('localstate', localState);
   return (
     <div>
       <StyledDiv className={'flex center'}>
         <CustomStyledCard margin="2rem 0 5rem 0" maxWidth="900px">
-          <h1>{formTitles[ pageNumber ]}</h1>
-          <StyledImg src={createEventImg} alt="undraw unexpected friends"/>
+          <h1>{formTitles[pageNumber]}</h1>
+          <StyledImg src={createEventImg} alt="undraw unexpected friends" />
           <Steps current={pageNumber - 1} progressDot size="small">
             {steps.map(step => {
-              return <Step key={step}/>;
+              return <Step key={step} />;
             })}
           </Steps>
           <StyledRenderDiv>
@@ -211,30 +209,45 @@ const CustomStyledCard = styled(StyledCard)`
         > .ant-steps-item-container
         > .ant-steps-item-tail {
         &::after {
-          background: ${({theme}) => theme.primary8};
+          background: ${({ theme }) => theme.primary8};
         }
       }
       span.ant-steps-icon-dot {
-        background: ${({theme}) => theme.primary8};
+        background: ${({ theme }) => theme.primary8};
       }
     }
   }
 `;
 
 const StyledRenderDiv = styled.div`
-  background: ${({theme}) => theme.gray4};
+  background: ${({ theme }) => theme.gray4};
   width: 75%;
   margin: 0 auto;
   font-weight: bold;
   padding: 1.5rem 3rem;
-  border-radius: ${({theme}) => theme.borderRadiusDefault};
+  border-radius: ${({ theme }) => theme.borderRadiusDefault};
+
+  .input {
+    width: 80%;
+    margin: 0 auto;
+  }
+
+  h4 {
+    margin-bottom: 30px;
+    margin-top: 30px;
+  }
 
   label {
-    color: ${({theme}) => theme.primary8};
+    margin-left: 45px;
+    color: ${({ theme }) => theme.primary8};
 
     &::before {
-      color: ${({theme}) => theme.primary8};
+      color: ${({ theme }) => theme.primary8};
     }
+  }
+  .errorFlex {
+    dispaly: flex;
+    flex-direction: column;
   }
 
   .buttonStyles {
@@ -244,7 +257,7 @@ const StyledRenderDiv = styled.div`
     padding-right: 50px;
     padding-left: 50px;
     justify-content: space-between;
-    border-top: 2px solid ${({theme}) => theme.primary8};
+    border-top: 2px solid ${({ theme }) => theme.primary8};
 
     button {
       margin-left: 15px;

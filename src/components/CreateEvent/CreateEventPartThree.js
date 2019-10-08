@@ -41,16 +41,16 @@ export const CreateEventPartThree = props => {
   return (
     <StyledDiv className={'flex center'}>
       <Form layout={'vertical'} onSubmit={() => checkedRequired()}>
+        <h4>What are some helpful things to know about? </h4>
         <div>
-          <Form.Item label={'What are the requirements?'}>
-            <div className={'errorFlex'}>
-              <div>
+          <Form.Item label={'Requirements for Volunteers'} required>
+            <div className={'error-flex'}>
+              <div className={'input'}>
                 <Select
                   name={'volunteerRequirements'}
                   placeholder="Type here and a tag will appear"
                   mode="multiple"
                   value={volunteerRequirements}
-                  style={{ maxWidth: '400px' }}
                   onChange={value =>
                     handleChange('volunteerRequirements', value)
                   }
@@ -68,17 +68,16 @@ export const CreateEventPartThree = props => {
             </div>
           </Form.Item>
         </div>
-        <div className={''}>
-          <Form.Item label={'interests'}>
-            <div className={'errorFlex'}>
-              <div>
+        <div>
+          <Form.Item label={'interests'} required>
+            <div className={'error-flex'}>
+              <div className={'input'}>
                 <Select
                   name={'interest'}
                   placeholder=""
                   mode="multiple"
                   value={interest}
                   onChange={value => handleChange('interest', value)}
-                  style={{ maxWidth: '400px' }}
                 >
                   {interestTags}
                 </Select>
@@ -94,10 +93,10 @@ export const CreateEventPartThree = props => {
           </Form.Item>
         </div>
 
-        <div className={''}>
+        <div>
           <Form.Item label={'Event Details'} required>
             <div className={'errorFlex'}>
-              <div>
+              <div className={'input'}>
                 <TextArea
                   name={'eventDetails'}
                   placeholder={
@@ -105,7 +104,7 @@ export const CreateEventPartThree = props => {
                   }
                   value={eventDetails}
                   onChange={e => handleChange(e.target.name, e.target.value)}
-                  style={{ width: '400px', height: '200px' }}
+                  style={{ height: '200px' }}
                 />
               </div>
               <div>
@@ -122,7 +121,7 @@ export const CreateEventPartThree = props => {
       <div className="buttonStyles">
         <div>
           <StyledCancelButton
-            onClick={() => handlePageBack()}
+            onClick={handlePageBack}
             key="back"
             type="secondary"
           >
@@ -130,11 +129,7 @@ export const CreateEventPartThree = props => {
           </StyledCancelButton>
         </div>
         <div>
-          <StyledButton
-            type="primary"
-            key="next"
-            onClick={() => checkedRequired()}
-          >
+          <StyledButton type="primary" key="next" onClick={checkedRequired}>
             Next
           </StyledButton>
         </div>
@@ -145,11 +140,6 @@ export const CreateEventPartThree = props => {
 const StyledDiv = styled.div`
   display: flex;
   flex-direction: column;
-
-  .errorFlex {
-    display: flex;
-    flex-direction: column;
-  }
 `;
 
 export default CreateEventPartThree;
