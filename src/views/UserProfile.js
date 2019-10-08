@@ -81,14 +81,6 @@ export const UserProfile = (props) => {
     }
   };
 
-  
-  const checkEvent = (events, value) => {
-    return events.filter(
-      item => moment.unix(item.date).date() === value.date() &&
-        moment.unix(item.date).month() === calendarValue.month() &&
-        moment.unix(item.date).year() === calendarValue.year());
-  };
-
   const onPanelChange = value => {
     setCalendarValue(moment.unix(value.unix()));
   };
@@ -127,7 +119,9 @@ export const UserProfile = (props) => {
             onPanelChange={onPanelChange}
             onSelect={onSelect}
             value={calendarValue}/>
-          <UserGoal/>
+          <UserGoal
+            updateUser={updateUser}
+            user={user}/>
         </div>
         <div className='profile-bottom-right'>
           <UserEvents
