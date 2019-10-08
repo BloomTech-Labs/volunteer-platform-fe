@@ -211,28 +211,32 @@ export const RecurringEvent = props => {
               </Form.Item>
             </div>
             {recurringInfo.occurrenceEnds === 'On' && (
-              <Form.Item>
-                <DatePicker
-                  name={'occurrenceEndDate'}
-                  format={'MM/DD/YYYY'}
-                  onChange={value => handleChange('occurrenceEndDate', value)}
-                  value={recurringInfo.occurrenceEndDate}
-                  disabledDate={current =>
-                    current && current < moment().endOf('day')
-                  }
-                />
-              </Form.Item>
+              <div>
+                <Form.Item label={'End Date'} required>
+                  <DatePicker
+                    name={'occurrenceEndDate'}
+                    format={'MM/DD/YYYY'}
+                    onChange={value => handleChange('occurrenceEndDate', value)}
+                    value={recurringInfo.occurrenceEndDate}
+                    disabledDate={current =>
+                      current && current < moment().endOf('day')
+                    }
+                  />
+                </Form.Item>
+              </div>
             )}
 
             {recurringInfo.occurrenceEnds === 'After' && (
-              <Form.Item>
+              <Form.Item label={'Number of Occurrences'} required>
                 <InputNumber
                   name={'occurrenceEndsAfter'}
                   min={0}
                   defaultValue={recurringInfo.occurrenceEndsAfter || 1}
                   onChange={value => handleChange('occurrenceEndsAfter', value)}
                 />{' '}
-                Occurrence
+                {localState.recurringInfo.occurrenceEndsAfter > 1
+                  ? ' Occurrences'
+                  : 'Occurrence'}
               </Form.Item>
             )}
           </span>
@@ -250,7 +254,7 @@ export const RecurringEvent = props => {
       >
         <Form>
           <div>
-            <div className={''}>
+            <div>
               <Form.Item label={'Repeat Every'}>
                 <InputNumber
                   name={'repeatEvery'}
@@ -342,6 +346,7 @@ const StyledDiv = styled.div`
   .input {
     width: 80%;
   }
+
   .errorFlex {
     display: flex;
     flex-direction: column;

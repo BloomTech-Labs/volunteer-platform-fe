@@ -53,7 +53,7 @@ export const CreateEventPartFour = props => {
                   value={numberOfVolunteers}
                   onChange={value => handleChange('numberOfVolunteers', value)}
                 />{' '}
-                Volunteers
+                {localState.numberOfVolunteers > 1 ? 'Volunteers' : 'Volunteer'}
               </div>
               <small>We recommend adding +5 to your need</small>
               <div>
