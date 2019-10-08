@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyledCancelButton, StyledButton } from '../../styled';
 import styled from 'styled-components';
-import { Input, InputNumber, Form } from 'antd';
+import { Input, InputNumber, Form, Tooltip, Icon } from 'antd';
 
 const { TextArea } = Input;
 
@@ -27,7 +27,7 @@ export const CreateEventPartFour = props => {
   };
 
   return (
-    <StyledDiv>
+    <StyledDiv className={'styledDiv'}>
       <Form layout={'vertical'} onSubmit={() => checkedRequired()}>
         <h4>Do you have a website?</h4>
         <div className={'error-flex'}>
@@ -52,8 +52,7 @@ export const CreateEventPartFour = props => {
                   name={'numberOfVolunteers'}
                   value={numberOfVolunteers}
                   onChange={value => handleChange('numberOfVolunteers', value)}
-                />
-                {'  '}
+                />{' '}
                 Volunteers
               </div>
               <small>We recommend adding +5 to your need</small>
@@ -71,7 +70,7 @@ export const CreateEventPartFour = props => {
         <Form.Item>
           <Form.Item label={'Other Notes'} required>
             <div className={'error-flex'}>
-              <div>
+              <div className={'input'}>
                 <TextArea
                   name={'otherNotes'}
                   placeholder={
@@ -109,9 +108,6 @@ export const CreateEventPartFour = props => {
   );
 };
 const StyledDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-
   .inputNumber {
     margin-bottom: 10px;
   }

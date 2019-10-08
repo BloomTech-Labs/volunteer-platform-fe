@@ -53,7 +53,7 @@ export const CreateEventPartOne = props => {
   };
 
   return (
-    <StyledDiv>
+    <StyledDiv className={'styledDiv'}>
       <Form layout={'vertical'} onSubmit={() => checkRequired()}>
         <div className={'error-flex'}>
           <Form.Item label={'Name of Event'} required>
@@ -158,7 +158,7 @@ export const CreateEventPartOne = props => {
           <Form.Item
             label={
               <Tooltip title={'Select all cause areas that your event helps.'}>
-                Types of Causes
+                Types of Causes <Icon type="question-circle-o" />
               </Tooltip>
             }
             required
@@ -206,15 +206,12 @@ export const CreateEventPartOne = props => {
 };
 
 const StyledDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-
   .city-states-input {
     display: flex;
     justify-content: space-around;
 
     label {
-      margin-left: 15px;
+      margin-left: 25px;
     }
   }
 

@@ -231,7 +231,7 @@ export const RecurringEvent = props => {
                   min={0}
                   defaultValue={recurringInfo.occurrenceEndsAfter || 1}
                   onChange={value => handleChange('occurrenceEndsAfter', value)}
-                />
+                />{' '}
                 Occurrence
               </Form.Item>
             )}

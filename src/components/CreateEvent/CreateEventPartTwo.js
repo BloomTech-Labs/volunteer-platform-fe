@@ -62,7 +62,7 @@ export const CreateEventPartTwo = props => {
   };
 
   const isFormValid = () => {
-    if (firstName && lastName && email) return true;
+    if (firstName && lastName && email && date) return true;
   };
 
   const isRecurringValid = () => {
@@ -91,7 +91,7 @@ export const CreateEventPartTwo = props => {
   console.log(error);
 
   return (
-    <StyledDiv className={'flex center'}>
+    <StyledDiv className={'styledDiv'}>
       <h4>Who is your point of contact?</h4>
       <Form layout={'vertical'} onSubmit={() => checkedRequired()}>
         <div className={'error-flex'}>
@@ -152,17 +152,24 @@ export const CreateEventPartTwo = props => {
           </Form.Item>
         </div>
         <h4>When is the event?</h4>
-        <div>
-          <Form.Item label={'Date'} required>
-            <DatePicker
-              name={'date'}
-              value={date}
-              disabledDate={current =>
-                current && current < moment().endOf('day')
-              }
-              format={'MM/DD/YYYY'}
-              onChange={value => handleDynmaicDate(value)}
-            />
+        <div className={'date-input'}>
+          <Form.Item label={'Date of Event'} required>
+            <div>
+              <DatePicker
+                name={'date'}
+                value={date}
+                disabledDate={current =>
+                  current && current < moment().endOf('day')
+                }
+                format={'MM/DD/YYYY'}
+                onChange={value => handleDynmaicDate(value)}
+              />
+            </div>
+            {error && !date && (
+              <span className="error-message error-span left-aligned">
+                {error}
+              </span>
+            )}
           </Form.Item>
         </div>
 
@@ -175,7 +182,7 @@ export const CreateEventPartTwo = props => {
               title={
                 localState.date
                   ? 'Please select yes if this is a recurring event.'
-                  : 'Please select the date of event first.'
+                  : 'Please select date of event first.'
               }
             >
               <Icon type="question-circle-o" />
@@ -242,13 +249,15 @@ export const CreateEventPartTwo = props => {
   );
 };
 const StyledDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-
   .tooltip-recurring {
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+  .date-input {
+    label {
+      margin-left: 185px;
+    }
   }
   .time-wrapper {
     display: flex;

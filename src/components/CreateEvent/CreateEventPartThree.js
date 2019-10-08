@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Select, Input, Form } from 'antd';
+import { Select, Input, Form, Tooltip, Icon } from 'antd';
 import { StyledCancelButton, StyledButton } from '../../styled';
 import styled from 'styled-components';
 
@@ -39,11 +39,18 @@ export const CreateEventPartThree = props => {
     }
   };
   return (
-    <StyledDiv className={'flex center'}>
+    <StyledDiv className={'styledDiv'}>
       <Form layout={'vertical'} onSubmit={() => checkedRequired()}>
         <h4>What are some helpful things to know about? </h4>
         <div>
-          <Form.Item label={'Requirements for Volunteers'} required>
+          <Form.Item
+            label={
+              <Tooltip title={'Select all requirements of a volunteer.'}>
+                Requirements of Volunteers <Icon type="question-circle-o" />
+              </Tooltip>
+            }
+            required
+          >
             <div className={'error-flex'}>
               <div className={'input'}>
                 <Select
@@ -69,7 +76,14 @@ export const CreateEventPartThree = props => {
           </Form.Item>
         </div>
         <div>
-          <Form.Item label={'interests'} required>
+          <Form.Item
+            label={
+              <Tooltip title={'Select all interest your event covers.'}>
+                Interests <Icon type="question-circle-o" />
+              </Tooltip>
+            }
+            required
+          >
             <div className={'error-flex'}>
               <div className={'input'}>
                 <Select
@@ -137,9 +151,6 @@ export const CreateEventPartThree = props => {
     </StyledDiv>
   );
 };
-const StyledDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
+const StyledDiv = styled.div``;
 
 export default CreateEventPartThree;

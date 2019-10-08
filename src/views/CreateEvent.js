@@ -227,18 +227,24 @@ const StyledRenderDiv = styled.div`
   padding: 1.5rem 3rem;
   border-radius: ${({ theme }) => theme.borderRadiusDefault};
 
+  .styledDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
   .input {
     width: 80%;
     margin: 0 auto;
   }
 
   h4 {
-    margin-bottom: 30px;
-    margin-top: 30px;
+    margin: 30px 0px;
   }
 
   label {
-    margin-left: 45px;
+    margin-left: 55px;
     color: ${({ theme }) => theme.primary8};
 
     &::before {
