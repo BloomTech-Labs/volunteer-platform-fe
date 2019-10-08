@@ -86,6 +86,7 @@ export const editEvent = (event, dispatch) => {
     });
 };
 
+export const GET_EVENTS_BY_ORG_INIT = 'GET_EVENTS_BY_ORG_INIT';
 export const GET_EVENTS_BY_ORG = 'GET_EVENTS_BY_ORG';
 export const GET_EVENTS_BY_ORG_FAILED = 'GET_EVENTS_BY_ORG_FAILED';
 export const ORG_HAS_NO_EVENTS = 'ORG_HAS_NO_EVENTS';
@@ -97,6 +98,7 @@ export const ORG_HAS_NO_EVENTS = 'ORG_HAS_NO_EVENTS';
  * @param {Dispatch} dispatch
  */
 export const getAllEventsByOrg = (orgId, dispatch) => {
+  dispatch(action(GET_EVENTS_BY_ORG_INIT));
   const time = moment().unix();
   store
     .collection('events')
@@ -219,6 +221,8 @@ export const getAllRecurringEventsByState = (state, dispatch) => {
     });
 };
 
+export const GET_RECURRING_EVENTS_BY_ORG_INIT =
+  'GET_RECURRING_EVENTS_BY_ORG_INIT';
 export const GET_RECURRING_EVENTS_BY_ORG = 'GET_RECURRING_EVENTS_BY_ORG';
 export const RECURRING_EVENTS_BY_ORG_EMPTY = 'RECURRING_EVENTS_BY_ORG_EMPTY';
 
@@ -228,6 +232,7 @@ export const RECURRING_EVENTS_BY_ORG_EMPTY = 'RECURRING_EVENTS_BY_ORG_EMPTY';
  * @param {Dispatch} dispatch
  */
 export const getAllRecurringEventsByOrg = (orgId, dispatch) => {
+  dispatch(action(GET_RECURRING_EVENTS_BY_ORG_INIT));
   store
     .collection('recurring events')
     .where('orgId', '==', orgId)
