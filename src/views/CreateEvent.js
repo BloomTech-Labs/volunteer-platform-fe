@@ -43,7 +43,7 @@ export const CreateEvent = props => {
       days: [],
     },
   };
-  
+
   const [localState, setLocalState] = useState(initialEvent);
 
   const formTitles = {
@@ -68,22 +68,12 @@ export const CreateEvent = props => {
   const [state, dispatch] = useStateValue();
 
   //Destructuring
-<<<<<<< HEAD
   const { recurringInfo, recurringEvent } = localState;
 
   const RenderedFormParts = formParts[pageNumber];
 
   useEffect(() => {
     if (props.location.state.org) {
-=======
-  const {recurringInfo, recurringEvent} = localState;
-  
-  const RenderedFormParts = formParts[ pageNumber ];
-  
-  useEffect(() => {
-    
-    if (props.location.state.org){
->>>>>>> staging
       setLocalState({
         ...localState,
         orgId: props.location.state.org.orgId,
@@ -277,8 +267,8 @@ const StyledRenderDiv = styled.div`
     border-top: 2px solid ${({ theme }) => theme.primary8};
 
     button {
-      margin-left: 15px;
-      margin-right: 15px;
+      margin-left: 5px;
+      margin-right: 5px;
     }
   }
   .error-message.error-span.left-aligned {
