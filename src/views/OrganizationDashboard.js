@@ -66,7 +66,7 @@ export const OrganizationDashboard = props => {
       .catch(err => console.log(err));
   };
 
-  const onSelect = (value, mode) => {
+  const onSelect = (value) => {
     const beginning = value.startOf('date');
     const newValue = moment.unix(beginning.unix());
     if (selectedDate) {
@@ -100,7 +100,6 @@ export const OrganizationDashboard = props => {
 
   return (
     <StyledDashboard>
-      <h4 className={'org-title'}>Dashboard of</h4>
       <h2 className={'org-name'}>{displayOrg.organizationName}</h2>
 
       <OrgButtons displayOrg={displayOrg} deleteOrg={deleteOrg} />
@@ -154,22 +153,24 @@ export const OrganizationDashboard = props => {
   );
 };
 
-const StyledDashboard = styled.div`
+export const StyledDashboard = styled.div`
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   align-items: center;
-  max-height: 100%;
+  max-width: 1020px;
+  margin: 0 auto;
   margin-top: 4rem;
   margin-bottom: 10rem;
 
   .org-title {
-    margin-bottom: 0;
+    margin-bottom: 0.7rem;
   }
 
   .org-name {
     margin-bottom: 2.5rem;
     margin-top: 0;
+    font-size: 40px;
   }
 `;
 
@@ -197,7 +198,7 @@ const StyledContent = styled.div`
   }
 `;
 
-const StyledAboutUs = styled(StyledCard)`
+export const StyledAboutUs = styled(StyledCard)`
   .ant-card-body {
     padding: 6px;
   }
