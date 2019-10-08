@@ -66,7 +66,6 @@ const findEndDate = (info, arr) => {
 };
 
 export const findNextEvents = event => {
-  debugger;
   let dayAbbrevs = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
   let keyWord = event.recurringInfo.repeatTimePeriod.split(' ')[0];
   event.registeredVolunteers = event.registeredVolunteers || {};
@@ -109,13 +108,15 @@ export const findNextEvents = event => {
   let end = findEndDate(event.recurringInfo, arrayOfDates);
   if (!end) return event;
   arrayOfDates = arrayOfDates.filter(timeStamp => moment().unix() < timeStamp);
+  let newDates = [];
   while (
     end.maxDate.diff(moment(eventDay).startOf('day')) > 0 &&
-    arrayOfDates.length < end.maxEvents
+    newDates.length < end.maxEvents
   ) {
-    arrayOfDates.push(eventDay.unix());
+    newDates.push(eventDay.unix());
     eventDay = findNext(eventDay, keyWord, event.recurringInfo);
   }
+  arrayOfDates = [...arrayOfDates, ...newDates];
   for (let key of arrayOfDates) {
     if (!event.registeredVolunteers[key]) {
       event.registeredVolunteers[key] = [];
