@@ -19,18 +19,18 @@ export const FilteredComponent = Component => {
     events.forEach(event => {
       event.nextDate = event.startTimeStamp || event.date;
     });
-    // recurringEvents.forEach(event => {
-    //   let nextDate = findNext(
-    //     event.startTimeStamp || event.date,
-    //     event.recurringInfo
-    //   );
-    //   event.nextDate = moment(
-    //     moment.unix(nextDate).format('LL') + ' ' + event.startTime
-    //   ).unix();
-    // });
-    let allEvents = [...events, ...recurringEvents].sort(
-      (a, b) => a.nextDate - b.nextDate
-    );
+    let allEvents = [...events];
+    let newEvent = [];
+    recurringEvents.forEach(event => {
+      for (let date in event.registeredVolunteers) {
+        if (moment().unix() - date < 0) {
+          newEvent = { ...event, nextDate: date };
+          allEvents.push(newEvent);
+        }
+      }
+    });
+
+    allEvents.sort((a, b) => a.nextDate - b.nextDate);
 
     if (!events || !filterCount) {
       return (
