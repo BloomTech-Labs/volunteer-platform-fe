@@ -13,7 +13,16 @@ export const findNext = (date, keyWord, info = {}) => {
     case 'Daily':
       return date.add(1, 'days');
     case 'Weekly':
-      let weekdayOfEvent = date.day();
+      let dayAbbrevs = {
+        Sun: 0,
+        Mon: 1,
+        Tue: 2,
+        Wed: 3,
+        Thu: 4,
+        Fri: 5,
+        Sat: 6,
+      };
+      let weekdayOfEvent = dayAbbrevs[info.repeatTimePeriod.split(' ')[2]];
       return date.day(weekdayOfEvent + 7);
     case 'Monthly':
       return findNthWeek(date.add(1, 'month'), info);
@@ -57,6 +66,7 @@ const findEndDate = (info, arr) => {
 };
 
 export const findNextEvents = event => {
+  debugger;
   let dayAbbrevs = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
   let keyWord = event.recurringInfo.repeatTimePeriod.split(' ')[0];
   event.registeredVolunteers = event.registeredVolunteers || {};

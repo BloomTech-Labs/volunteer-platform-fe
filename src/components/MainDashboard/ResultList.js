@@ -23,7 +23,7 @@ export const ResultList = ({ results, type }) => {
     <StyledResultList>
       {displayResults.map(result =>
         type === 'Events' ? (
-          <Event key={result.eventId} event={result} />
+          <Event key={result.nextDate} event={result} />
         ) : (
           <OrganizationCard key={result.orgId} org={result} />
         )
