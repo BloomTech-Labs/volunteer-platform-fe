@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Select, DatePicker } from 'antd';
-import { WrappedAntForm, AntInput, AntSelect } from '../../styled/index';
+import { Modal, Select, DatePicker, Progress } from 'antd';
+import { WrappedAntForm, AntInput, AntSelect,  } from '../../styled/index';
+import { volunteerProgress } from '../../utility/volunteerProgress';
 import moment from 'moment';
 
 export const UserGoal = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [goalsToEdit, setGoalsToEdit] = useState({});
+  //const [goalsToEdit, setGoalsToEdit] = useState({});
+  const [progress, setProgress] = useState(0);
+  const [displayGoals, setDisplayGoals] = useState({
+    hours: 0,
+    frequency: '',
+    duration: {
+      start: '',
+      end: ''
+    }
+  });
 
   const { Option } = Select;
   const { MonthPicker } = DatePicker;
@@ -16,7 +26,11 @@ export const UserGoal = (props) => {
 
   useEffect(() => {
     if (props.user.goals) {
-      setGoalsToEdit(props.user.goals);
+      setDisplayGoals(props.user.goals);
+    }
+    if (props.user.validatedHours && props.user.goals) {
+      let accHours = volunteerProgress(props.user.goals, props.user.validatedHours);
+      setProgress(accHours);
     }
   }, [props.user])  
 
@@ -44,8 +58,6 @@ export const UserGoal = (props) => {
     setIsModalOpen(false);
   }
 
-  console.log(goalsToEdit);
-
   return (
     <div>
       <h5>Your Current Goals</h5>
@@ -59,7 +71,6 @@ export const UserGoal = (props) => {
         <WrappedAntForm
           layout={'vertical'}
           onSubmit={handleSubmit}
-          autofill={goalsToEdit}
           buttonType="primary"
           submitButton
           submitButtonText="Save"
@@ -88,12 +99,13 @@ export const UserGoal = (props) => {
           />
         </WrappedAntForm>
       </Modal>
-      <div>
-        4 hours/month
-      </div>
+      <div>{displayGoals.hours} hours {displayGoals.frequency}</div>
+      <div>Duration: {displayGoals.duration.start} to {displayGoals.duration.end}</div>
       <div>
         Competing with:
-        
+      </div>
+      <div>
+        <Progress type='circle' percent={progress} />
       </div>
       <div>
         <h5>Challenge a Friend to Beat your Goal</h5>
