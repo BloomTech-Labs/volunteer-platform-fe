@@ -23,11 +23,7 @@ export const OrganizationCard = ({ org }) => {
         </div>
         <h4>{`${org.streetAddress} ${org.city}, ${org.state}`}</h4>
         <h4>{org.website}</h4>
-        <Paragraph ellipsis={{rows: 3}}>
-          {
-            'Nemo in molestiae eaque non placeat ullam similique. Animi sint id corporis quia reiciendis consequatur et sunt voluptatem. Rerum et eum cumque non impedit qui quidem sint. Eos assumenda quibusdam quia molestias quo omnis placeat magnam. Vel sint blanditiis. At ipsum et sequi est repellat id corporis. Id debitis minima non occaecati quae nisi rerum dolor cupiditate. Eum eligendi aut. Et qui voluptas dolor quia maiores id. Neque eos reiciendis quia iure voluptatem facilis aspernatur. Et rerum suscipit. Accusantium eos debitis at nulla blanditiis non dolorem. Expedita officiis architecto quia magni.'
-          }
-        </Paragraph>
+        <Paragraph ellipsis={{ rows: 3 }}>{org.aboutUs}</Paragraph>
       </div>
       <div className="button">
         <Link to={`/organization/${org.orgId}`}>
@@ -57,10 +53,10 @@ const StyledOrgCard = styled(StyledCard)`
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    margin-bottom: 15px; 
+    margin-bottom: 15px;
 
-    .ant-avatar{
-        margin-right: 25px;
+    .ant-avatar {
+      margin-right: 25px;
     }
 
     h1 {

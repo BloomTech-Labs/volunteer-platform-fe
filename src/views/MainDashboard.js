@@ -145,6 +145,7 @@ export const MainDashboard = () => {
         toggleTagExpand={toggleTagExpand}
         activeTab={activeTabKey}
         setActiveTabKey={setActiveTabKey}
+        loading={loadingEvents}
       />
       <div style={{ minHeight: 400, margin: '0 auto' }}>
         {loadingEvents ? (

@@ -22,6 +22,7 @@ export const FilterTopbar = ({
   toggleTagExpand,
   activeTab,
   setActiveTabKey,
+  loading,
 }) => {
   const [state, dispatch] = useStateValue();
   const [filterExpand, setFilterExpand] = useState(false);
@@ -191,7 +192,7 @@ export const FilterTopbar = ({
   };
 
   const onTabChange = key => {
-    setActiveTabKey(key);
+    if (!loading) setActiveTabKey(key);
   };
 
   return (
@@ -200,6 +201,7 @@ export const FilterTopbar = ({
       tabList={tabList}
       activeTabKey={activeTab}
       onTabChange={key => onTabChange(key)}
+      loading={loading}
     >
       {contentList[activeTab]}
     </Card>
