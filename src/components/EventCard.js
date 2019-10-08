@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import manHiking from '../assets/man-hiking.jpg';
 import styled from 'styled-components';
-import { StyledCard } from '../styled';
+import { StyledCard, StyledButton } from '../styled';
 import { Tag, AutoComplete, Icon } from 'antd';
 import moment from 'moment';
 import { findNext } from '../utility/findNextRecurEvent';
@@ -30,6 +30,7 @@ export const EventCard = ({ event, history }) => {
     otherNotes: '',
     nextDate: '',
     recurringInfo: {},
+    clicked: false,
   });
 
   useEffect(() => {
@@ -91,24 +92,34 @@ export const EventCard = ({ event, history }) => {
 
   const backButton = () => {
     history.goBack();
-    return null;
+  };
+  const Register = () => {
+    setLocalState({
+      ...localState,
+      clicked: !localState.clicked
+    })
   };
 
   return (
     <div>
-      <div>
-        <Icon
-          type="left-circle"
-          theme="filled"
-          onClick={backButton}
-          style={{
-            marginLeft: '15%',
-            marginRight: '10px',
-            marginTop: '10px',
-            fontSize: '24px',
-          }}
-        />
-        Previous Page
+      <div style={{display: 'flex', justifyContent:'space-between', margin: '1% 15%'}} >
+        <div>
+          <Icon
+            type="left-circle"
+            theme="filled"
+            onClick={backButton}
+            style={{
+              marginLeft: '15%',
+              marginRight: '10px',
+              marginTop: '10px',
+              fontSize: '30px',
+            }}
+          />
+          <h6>Previous Page </h6>
+        </div>
+        <div>
+          <StyledButton onClick={Register} > Register </StyledButton>
+        </div>
       </div>
       <div style={{ margin: '0 auto', width: '70%' }}>
         <div>
@@ -151,12 +162,12 @@ export const EventCard = ({ event, history }) => {
               </h5>
             </div>
           </StyledEventTime>
-          <div style={{ display: 'column' }}>
-            <Icon type="twitter-circle" theme="filled" />
-            <Icon type="facebook" theme="filled" />
+        </div>
+          <div style={{marginLeft: '50%' , fontSize:'30px' }} >
+            <Icon type="twitter-circle" theme="filled" style={{paddingRight: '1%'}} />
+            <Icon type="facebook" theme="filled" style={{paddingRight: '1%'}} />
             <Icon type="google-circle" theme="filled" />
           </div>
-        </div>
       </div>
       <CommentList
         comments={event.comments}
