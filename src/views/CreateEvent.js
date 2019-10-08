@@ -44,6 +44,7 @@ export const CreateEvent = props => {
       days: [],
     },
   };
+  
   const [localState, setLocalState] = useState(initialEvent);
   
   const formTitles = {
