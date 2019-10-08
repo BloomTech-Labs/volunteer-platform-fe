@@ -19,7 +19,7 @@ import {
 } from '../components/OrgDashboard';
 import {deleteModal, StyledCard, StyledLine} from '../styled';
 
-export const OrganizationDashboard = () => {
+export const OrganizationDashboard = (props) => {
   const [{org, events}, dispatch] = useStateValue();
   const [displayOrg, setDisplayOrg] = useState('');
   const [imageUrl, setImageUrl] = useState(null);
