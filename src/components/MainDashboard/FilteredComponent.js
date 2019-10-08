@@ -33,7 +33,9 @@ export const FilteredComponent = Component => {
 
       results.sort((a, b) => a.nextDate - b.nextDate);
     } else {
-      results = [...organizations];
+      results = [...organizations].sort((a, b) =>
+        a.organizationName > b.organizationName ? 1 : -1
+      );
     }
 
     if (!results.length || !filterCount) {
