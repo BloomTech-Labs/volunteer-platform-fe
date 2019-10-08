@@ -21,8 +21,8 @@ const Editor = ({ onSubmit, submitting }) => {
 };
 
 const SyledEditor = styled.div`
-  margin-left: 15rem;
-  padding-left: 5rem;
+  max-width: 800px;
+  margin-left: 15%;
 `;
 
 Editor.propTypes = {
