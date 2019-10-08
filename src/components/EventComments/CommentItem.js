@@ -22,7 +22,7 @@ const CommentItem = ({name, usersUid, avatarPath, comment, addCommentToComment, 
   }, avatarPath);
   
   const handleSubmit = (values) => {
-      debugger;
+    
     addCommentToComment(values, {name, avatarPath, comment, commentId});
   };
   

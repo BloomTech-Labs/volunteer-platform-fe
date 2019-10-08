@@ -93,7 +93,7 @@ export const DELETE_COMMENT_FAILED = 'DELETE_COMMENT_FAILED';
  * */
 export const deleteComment = (commentToDeleteId, event, dispatch,
   eventType = 'events') => {
-  debugger;
+  
   store.collection(eventType).doc(event.eventId).get().then(res => {
     if (res.exists){
       const data = res.data();
