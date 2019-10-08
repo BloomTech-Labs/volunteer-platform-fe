@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import sad_face from '../assets/sad_face.png';
-import usa_map from '../assets/usa_map.png';
+import sad_face from '../../assets/sad_face.png';
+import usa_map from '../../assets/usa_map.png';
 
 const Container = styled.div`
   width: 80%;
@@ -16,7 +16,7 @@ const Container = styled.div`
   }
 `;
 
-export const NoEventsFound = ({ filtersTouched }) => {
+export const NoResultsFound = ({ filtersTouched }) => {
   return filtersTouched ? (
     <Container>
       <img src={sad_face} alt="Sad face" />

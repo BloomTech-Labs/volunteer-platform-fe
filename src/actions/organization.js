@@ -204,7 +204,6 @@ export const getOrganizationsByState = (state, dispatch) => {
         data.orgId = org.id;
         organizations.push(data);
       });
-      
       dispatch(action(GET_ORGANIZATIONS_BY_STATE_SUCCESS, organizations));
       
     })

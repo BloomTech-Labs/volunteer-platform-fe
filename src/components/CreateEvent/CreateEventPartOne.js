@@ -1,15 +1,27 @@
-import React from 'react';
-import { Select } from 'antd';
-import { WrappedAntForm, AntInput, AntSelect, StyledCard } from '../../styled';
+import React, { useState } from 'react';
+import { Select, Form, Input } from 'antd';
+import { StyledButton, StyledCancelButton } from '../../styled';
 import styled from 'styled-components';
-import createEventImg from '../../assets/undraw_blooming_jtv6.svg';
-import { formLayouts } from '../../utility/formLayouts';
 
 const { Option } = Select;
 
 export const CreateEventPartOne = props => {
-  const { state, handleSubmit, cancelForm, autoFillState, pageNumber } = props;
+  const {
+    state,
+    handlePageForward,
+    localState,
+    handleChange,
+    cancelForm,
+  } = props;
 
+  const {
+    nameOfEvent,
+    typesOfCauses,
+    streetAddress,
+    city,
+    phoneNumber,
+  } = localState;
+  const [error, setError] = useState('');
   //Mapping through tags for antd select
   const causeAreaTags = state.tags.causeAreas.map(tag => {
     return (
@@ -19,160 +31,154 @@ export const CreateEventPartOne = props => {
     );
   });
 
+  const isFormValid = () => {
+    if (
+      nameOfEvent &&
+      typesOfCauses.length > 0 &&
+      streetAddress &&
+      city &&
+      localState.state &&
+      phoneNumber
+    )
+      return true;
+  };
+
+  const checkRequired = () => {
+    if (isFormValid()) {
+      setError('');
+      handlePageForward();
+    } else {
+      setError('This field is required');
+    }
+  };
+
   return (
     <StyledDiv className={'flex center'}>
-      <CustomStyledCard
-        className={'flex center'}
-        style={{ maxWidth: '900px', margin: '2rem 0 5rem 0' }}
-      >
-        <h1>Let's Create An Event</h1>
-        <StyledImg src={createEventImg} alt="undraw unexpected friends" />
-        <StyledCreateEvent>
-          <WrappedAntForm
-            cancelButton={true}
-            cancelButtonText={'Cancel'}
-            handleCancel={cancelForm}
-            onSubmit={handleSubmit}
-            layout={'vertical'}
-            buttonType={'primary'}
-            submitButton
-            submitButtonText={'Next'}
-            autofill={autoFillState[pageNumber]}
-          >
-            <div className={'nameCauseWrapper'}>
-              <div className={''}>
-                <AntInput
-                  name={'Name of Event'}
-                  type="text"
-                  layout={formLayouts.empty}
-                  style={{ width: 240 }}
-                />
-              </div>
-              <div className={''}>
-                <AntSelect
-                  name={'Types of Causes'}
-                  placeholder="Types of Causes"
-                  mode="multiple"
-                  layout={formLayouts.empty}
-                  style={{ width: 240 }}
-                >
-                  {causeAreaTags}
-                </AntSelect>
-              </div>
-            </div>
-            <div className={'addressWrapper'}>
-              <AntInput name={'Street Address'} layout={formLayouts.empty} />
-            </div>
-            <div className={'locationWrapper'}>
-              <div className={'inlineTriple'}>
-                <AntInput
-                  name={'City'}
-                  layout={formLayouts.empty}
-                  placeholder="City"
-                ></AntInput>
-              </div>
-              <div className={'inlineTriple'}>
-                <AntInput
-                  name={'State'}
-                  layout={formLayouts.empty}
-                  placeholder="State"
-                ></AntInput>
-              </div>
-              <div className={'inlineTriple'}>
-                <AntInput
-                  name={'Phone Number'}
-                  pattern={'[0-9]{3}-[0-9]{3}-[0-9]{4}'}
-                  placeholder={'000-000-0000'}
-                  layout={formLayouts.empty}
-                />
-              </div>
-            </div>
-          </WrappedAntForm>
-        </StyledCreateEvent>
-      </CustomStyledCard>
+      <Form layout={'vertical'} onSubmit={() => checkRequired()}>
+        <Form.Item label={'Name of Event'} required>
+          <Input
+            name={'nameOfEvent'}
+            value={nameOfEvent}
+            placeholder="Name of Event"
+            onChange={e => handleChange(e.target.name, e.target.value)}
+          />
+          {error && !nameOfEvent && (
+            <span className="error-message error-span left-aligned">
+              {error}
+            </span>
+          )}
+        </Form.Item>
+
+        <div>
+          <Form.Item label={'Types Of Causes'} required>
+            <Select
+              name={'typesOfCauses'}
+              value={typesOfCauses}
+              placeholder="Types of Causes"
+              mode="multiple"
+              style={{ maxWidth: '400px' }}
+              onChange={value => handleChange('typesOfCauses', value)}
+            >
+              {causeAreaTags}
+            </Select>
+            {error && !typesOfCauses.length > 0 && (
+              <span className="error-message error-span left-aligned">
+                {error}
+              </span>
+            )}
+          </Form.Item>
+        </div>
+        <div className={''}>
+          <Form.Item label={'Street Address'} required>
+            <Input
+              name={'streetAddress'}
+              value={streetAddress}
+              placeholder="Street Address"
+              onChange={e => handleChange(e.target.name, e.target.value)}
+            />
+            {error && !streetAddress && (
+              <span className="error-message error-span left-aligned">
+                {error}
+              </span>
+            )}
+          </Form.Item>
+        </div>
+        <div className={''}>
+          <div className={''}>
+            <Form.Item label="City" required>
+              <Input
+                name={'city'}
+                value={city}
+                placeholder="City"
+                onChange={e => handleChange(e.target.name, e.target.value)}
+              />
+              {error && !city && (
+                <span className="error-message error-span left-aligned">
+                  {error}
+                </span>
+              )}
+            </Form.Item>
+          </div>
+          <div className={''}>
+            <Form.Item label={'State'}>
+              <Input
+                name={'state'}
+                value={localState.state}
+                placeholder="State"
+                onChange={e => handleChange(e.target.name, e.target.value)}
+              />
+              {error && !localState.state && (
+                <span className="error-message error-span left-aligned">
+                  {error}
+                </span>
+              )}
+            </Form.Item>
+          </div>
+          <div className={'inlineTriple'}>
+            <Form.Item label={'Phone Number'}>
+              <Input
+                name={'phoneNumber'}
+                value={phoneNumber}
+                pattern={'[0-9]{3}-[0-9]{3}-[0-9]{4}'}
+                placeholder={'000-000-0000'}
+                onChange={e => handleChange(e.target.name, e.target.value)}
+              />
+              {error && !phoneNumber && (
+                <span className="error-message error-span left-aligned">
+                  {error}
+                </span>
+              )}
+            </Form.Item>
+          </div>
+        </div>
+        <div className="buttonStyles">
+          <div>
+            <StyledCancelButton
+              onClick={() => cancelForm()}
+              key="cancel"
+              type="secondary"
+            >
+              Cancel
+            </StyledCancelButton>
+          </div>
+          <div>
+            <StyledButton
+              type="primary"
+              kye="primary"
+              onClick={() => checkRequired()}
+            >
+              Next
+            </StyledButton>
+          </div>
+        </div>
+      </Form>
     </StyledDiv>
   );
 };
-const StyledCreateEvent = styled.div`
-  width: 100%;
-  font-weight: bold;
-  text-align: left;
-  padding: 8rem;
-  .inline {
-    width: 50%;
-  }
-  .inlineTriple {
-    width: 35%;
-  }
-  .buttonStyles {
-    display: flex;
-    justify-content: space-around;
-  }
-
-  .nameCauseWrapper {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-  }
-  .addressWrapper {
-    width: 100%;
-
-    input {
-      width: 625px;
-    }
-  }
-
-  .locationWrapper {
-    display: flex;
-    flex-direction: space-between;
-
-    input {
-      width: 200px;
-    }
-  }
-
-  label {
-    color: ${({ theme }) => theme.primary8};
-
-    &::before {
-      color: ${({ theme }) => theme.primary8};
-    }
-  }
-  small {
-    color: #bfbfbf;
-  }
-`;
 
 const StyledDiv = styled.div`
-  background: #003d61;
-
-  h1 {
-    color: ${props => props.theme.primary8};
-  }
-
-  h4 {
-    color: ${props => props.theme.primary8};
-  }
-  padding: 2rem;
-`;
-
-const CustomStyledCard = styled(StyledCard)`
-  &&& {
-    background: #fafafa;
-    margin: 3rem;
-    text-align: center;
-    cursor: default;
-    transition: none;
-    max-width: 1088px;
-    &:hover {
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-    }
-  }
-`;
-
-const StyledImg = styled.img`
-  width: 211px;
-  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
 `;
 
 export default CreateEventPartOne;
