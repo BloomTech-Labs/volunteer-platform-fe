@@ -71,9 +71,9 @@ export const CreateEvent = props => {
   const {recurringInfo, recurringEvent} = localState;
   
   const RenderedFormParts = formParts[ pageNumber ];
-  debugger;
+  
   useEffect(() => {
-    debugger;
+    
     if (props.location.state.org){
       setLocalState({
         ...localState,

@@ -21,7 +21,7 @@ export const Navigation = props => {
   }, [props.location.pathname]);
   
   const handleClick = e => {
-    if (e.key === 'Logout'){
+    if (e.key === 'Sign Out'){
       signOut(dispatch);
     }
   };
