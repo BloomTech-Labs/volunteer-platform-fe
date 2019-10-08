@@ -45,8 +45,8 @@ export const Event = ({ event }) => {
           </div>
           <div className="date">
             <h5>On: {moment.unix(event.nextDate).format('LL')}</h5>
-            <h5>from: {event.startTime}</h5>
-            <h5>to: {event.endTime}</h5>
+            <h5>from: {moment.unix(event.startTimeStamp).format('LT')}</h5>
+            <h5>to: {moment.unix(event.endTimeStamp).format('LT')}</h5>
             <h5>Spot(s) Remaining: {event.numberOfVolunteers}</h5>
           </div>
           {ableToDelete && <StyledButton type="danger">Delete</StyledButton>}
