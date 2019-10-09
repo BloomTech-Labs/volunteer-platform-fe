@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import MessageThreads from '../components/Messages/MessageThreads';
 import {StyledCard} from '../styled';
+import GoogleApiWrapper from '../components/Map/MapContainer';
 
 const Message = (props) => {
   
