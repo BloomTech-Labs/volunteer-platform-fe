@@ -61,8 +61,29 @@ export const CreateEvent = props => {
     4: CreateEventPartFour,
     5: CreateEventReview,
   };
-  let steps = [0, 1, 2, 3, 4];
 
+  const steps = [
+    {
+      title: 'In Progress',
+      content: 'Enter Content',
+    },
+    {
+      title: 'In Progress',
+      content: 'Enter Content',
+    },
+    {
+      title: 'In Progress',
+      content: 'Enter Content',
+    },
+    {
+      title: 'In Progress',
+      content: 'Enter Content',
+    },
+    {
+      title: 'In Progress',
+      content: 'Enter Content',
+    },
+  ];
   let [pageNumber, setPageNumber] = useState(1);
 
   const [state, dispatch] = useStateValue();
@@ -167,7 +188,13 @@ export const CreateEvent = props => {
           <StyledImg src={createEventImg} alt="undraw unexpected friends" />
           <Steps current={pageNumber - 1} progressDot size="small">
             {steps.map(step => {
-              return <Step key={step} />;
+              return (
+                <Step
+                  key={step}
+                  title={step.title}
+                  description={step.content}
+                />
+              );
             })}
           </Steps>
           <StyledRenderDiv>
@@ -207,6 +234,9 @@ const CustomStyledCard = styled(StyledCard)`
       text-align: left;
       margin-bottom: 40px;
 
+      .ant-steps-item-title {
+        font-weight: normal;
+      }
       .ant-steps-item-finish
         > .ant-steps-item-container
         > .ant-steps-item-tail {
