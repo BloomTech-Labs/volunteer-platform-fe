@@ -32,7 +32,7 @@ export const EventProfile = props => {
 
   const { event } = events;
 
-  const [localState, setLocalState] = useState({
+  const emptyState = {
     imageUrl: '',
     registeredVolunteers: [],
     interest: [],
@@ -45,10 +45,9 @@ export const EventProfile = props => {
     numberOfVolunteers: null,
     eventDetails: '',
     otherNotes: '',
-    nextDate: '',
     recurringInfo: '',
-    clicked: false,
-  });
+  };
+  const [localState, setLocalState] = useState({ ...emptyState });
 
   useEffect(() => {
     if (props.match.params.id) {
@@ -66,11 +65,11 @@ export const EventProfile = props => {
   useEffect(() => {
     if (event.orgImagePath) {
       getFileUrl(event.orgImagePath).then(path =>
-        setLocalState({ ...localState, ...event, imageUrl: path })
+        setLocalState({ ...emptyState, ...event, imageUrl: path })
       );
     } else {
       setLocalState({
-        ...localState,
+        ...emptyState,
         ...event,
       });
     }
@@ -139,7 +138,7 @@ export const EventProfile = props => {
         unRegister={unRegister}
       />
       <SecondRow localState={localState} />
-      <ThirdRow />
+      <ThirdRow localState={localState} />
       <FourthRow />
       {event.recurringInfo && (
         <RecurSignUp
