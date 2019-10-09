@@ -8,3 +8,4 @@ export * from './CreateOrg';
 export * from './NotFound';
 export * from './UserProfile';
 export * from './OrganizationProfile';
+export * from './EventProfile'

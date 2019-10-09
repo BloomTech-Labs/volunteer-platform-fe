@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { WrappedAntForm, AntTextArea } from '../../styled';
+import { WrappedAntForm, AntTextArea } from '../../../styled';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-const Editor = ({ onSubmit, submitting }) => {
+export const Editor = ({ onSubmit, submitting }) => {
   return (
-    <SyledEditor>
+    <StyledEditor>
       <WrappedAntForm
         onSubmit={onSubmit}
         submitButtonText={'Send'}
@@ -16,13 +16,13 @@ const Editor = ({ onSubmit, submitting }) => {
       >
         <AntTextArea name={'Comment'} />
       </WrappedAntForm>
-    </SyledEditor>
+    </StyledEditor>
   );
 };
 
-const SyledEditor = styled.div`
-  max-width: 800px;
-  margin-left: 15%;
+const StyledEditor = styled.div`
+  width: 80%;
+  margin: 0 auto;
 `;
 
 Editor.propTypes = {

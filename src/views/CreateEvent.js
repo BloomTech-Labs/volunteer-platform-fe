@@ -80,7 +80,7 @@ export const CreateEvent = props => {
       content: 'Enter Content',
     },
     {
-      title: 'In Progress',
+      title: 'Finished',
       content: 'Enter Content',
     },
   ];

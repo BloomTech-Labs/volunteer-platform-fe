@@ -1,6 +1,6 @@
 export * from './CreateEvent'
 export * from './CreateOrg'
-export * from './EventComments'
+export * from './EventProfile'
 export * from './LandingPage'
 export * from './MainDashboard'
 export * from './Messages'

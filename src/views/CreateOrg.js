@@ -88,7 +88,7 @@ export const CreateOrg = props => {
       content: 'Enter Content',
     },
     {
-      title: 'In Progress',
+      title: 'Finished',
       content: 'Enter Content',
     },
   ];

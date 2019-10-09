@@ -1,55 +1,57 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import { Input, message, Icon } from 'antd';
+import {Link} from 'react-router-dom';
+import Autocomplete from 'react-google-autocomplete';
+import {Input, message, Icon} from 'antd';
 
 import {
   HowItWorks,
   TopVolunteers,
   TopNonProfits,
 } from '../components/LandingPage';
-import { device } from '../styled/deviceBreakpoints';
-import { useStateValue } from '../hooks/useStateValue';
-import { stateConversion } from '../utility/stateConversion';
+import {device} from '../styled/deviceBreakpoints';
+import {useStateValue} from '../hooks/useStateValue';
+import {stateConversion} from '../utility/stateConversion';
 import heroImage from '../assets/hero_image4.png';
 
-const { Search } = Input;
+const {Search} = Input;
 
-export const LandingPage = ({ collapsed }) => {
-  const [{ auth }] = useStateValue();
+export const LandingPage = ({collapsed}) => {
+  const [{auth}] = useStateValue();
   const [location, setLocation] = useState('');
-
-  const handleSearch = e => {};
-
+  
+  const handleSearch = e => {
+  };
+  
   const handleChange = e => {
     setLocation(e.target.value);
   };
-
+  
   useEffect(() => {
     axios
       .get(`https://geoip-db.com/json/${process.env.REACT_APP_ipinfoKey}`)
       .then(res => {
         let stateAbbrev = Object.keys(stateConversion).find(
-          key => stateConversion[key] === res.data.state
+          key => stateConversion[ key ] === res.data.state,
         );
         let userCity = res.data.city;
-        if (stateAbbrev) {
+        if (stateAbbrev){
           setLocation(`${userCity}, ${stateAbbrev}`);
-        } else {
+        }else{
           message.warning(
-            'Unable to get your location. Please enter your state below.'
+            'Unable to get your location. Please enter your state below.',
           );
         }
       })
       .catch(err => {
         console.log('Error detecting location');
         message.warning(
-          'Unable to get your location. Please enter your state below.'
+          'Unable to get your location. Please enter your state below.',
         );
       });
   }, []);
-
+  
   return (
     <>
       <StyledHeroDiv image={heroImage} loggedIn={auth.loggedIn}>
@@ -57,30 +59,21 @@ export const LandingPage = ({ collapsed }) => {
           <p>
             Compete with friends, meet new ones, give back to the community.
           </p>
-          <p style={{ marginBottom: '80px', marginTop: '20px' }}>Win-win.</p>
-          <Search
-            placeholder="Enter your city, state"
-            onSearch={handleSearch}
-            enterButton={
-              <Link
-                to={{
-                  pathname: '/dashboard',
-                  state: { userLocation: location },
-                }}
-              >
-                Find Events
-              </Link>
-            }
-            size="large"
-            onChange={handleChange}
-            value={location}
+          <p style={{marginBottom: '80px', marginTop: '20px'}}>Win-win.</p>
+          <Autocomplete
+            style={{width: '90%'}}
+            onPlaceSelected={(place) => {
+              console.log(place);
+            }}
+            types={['(regions)']}
+            componentRestrictions={{country: 'us'}}
           />
         </HeroContent>
       </StyledHeroDiv>
       <ContentDiv collapsed>
-        <HowItWorks />
-        <TopVolunteers />
-        <TopNonProfits />
+        <HowItWorks/>
+        <TopVolunteers/>
+        <TopNonProfits/>
       </ContentDiv>
     </>
   );
@@ -90,7 +83,7 @@ export default LandingPage;
 
 const StyledHeroDiv = styled.div`
   height: 50vh;
-  width: ${({ loggedIn }) => loggedIn && '100vw'};
+  width: ${({loggedIn}) => loggedIn && '100vw'};
   display: flex;
   position: relative;
   justify-content: center;
@@ -119,7 +112,7 @@ const HeroContent = styled.div`
   text-align: center;
   color: white;
   z-index: 10;
-  padding-left: ${({ loggedIn }) => loggedIn && '15rem'};
+  padding-left: ${({loggedIn}) => loggedIn && '15rem'};
 
   @media ${device.laptop} {
   }
@@ -140,7 +133,7 @@ const HeroContent = styled.div`
   }
 
   button {
-    background: ${({ theme }) => theme.accent};
+    background: ${({theme}) => theme.accent};
     border-radius: inherit;
     border: 0;
     cursor: pointer;
@@ -150,7 +143,7 @@ const HeroContent = styled.div`
       padding-top: 5px;
     }
     &:hover {
-      background: ${({ theme }) => theme.accent7};
+      background: ${({theme}) => theme.accent7};
     }
   }
 `;
