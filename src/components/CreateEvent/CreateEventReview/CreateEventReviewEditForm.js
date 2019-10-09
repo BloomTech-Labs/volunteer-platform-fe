@@ -399,6 +399,10 @@ const StyledDiv = styled.div`
   display: flex;
   flex-direction: column;
 
+  input {
+    width: 80%;
+  }
+
   .errorFlex {
     display: flex;
     flex-direction: column;

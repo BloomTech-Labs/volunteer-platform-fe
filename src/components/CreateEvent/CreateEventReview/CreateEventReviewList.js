@@ -23,13 +23,13 @@ export const CreateEventReviewList = props => {
       </div>
 
       <div className="reviewWrapper">
-        <h4>Event Name</h4>
+        <label>Event Name</label>
         <p>{localState.nameOfEvent}</p>
-        <h4>Location</h4>
+        <label>Location</label>
         <p>{localState.streetAddress}</p>
         <p>{localState.city}</p>
         <p>{localState.state}</p>
-        <h4>Tyeps of Causes</h4>
+        <label>Tyeps of Causes</label>
         <p>
           {localState.typesOfCauses &&
             localState.typesOfCauses.map(cause => {
@@ -40,7 +40,7 @@ export const CreateEventReviewList = props => {
               );
             })}
         </p>
-        <h4>Volunteer Requirments</h4>
+        <label>Volunteer Requirments</label>
         <p>
           {localState.volunteerRequirements &&
             localState.volunteerRequirements.map(req => {
@@ -51,9 +51,9 @@ export const CreateEventReviewList = props => {
               );
             })}
         </p>
-        <h4>Volunteers Needed</h4>
+        <label>Volunteers Needed</label>
         <p>{localState.numberOfVolunteers}</p>
-        <h4>Interests</h4>
+        <label>Interests</label>
         <p>
           {localState.interest &&
             localState.interest.map(interest => {
@@ -64,26 +64,26 @@ export const CreateEventReviewList = props => {
               );
             })}
         </p>
-        <h4>Phone Number</h4>
+        <label>Phone Number</label>
         <p>{localState.phoneNumber}</p>
-        <h4>Point of Contact</h4>
+        <label>Point of Contact</label>
         <p>{localState.firstName}</p>
         <p>{localState.lastName}</p>
         <p>{localState.email}</p>
-        <h4>Date</h4>
+        <label>Date</label>
         <p>{localState.date.format('LL')}</p>
         {localState.recurringInfo.recurringEvent === 'Yes' && (
           <RecurringInfoReview localState={localState} />
         )}
-        <h4>Start Time</h4>
+        <label>Start Time</label>
         <p>{localState.startTime.format('LT')}</p>
-        <h4>End Time</h4>
+        <label>End Time</label>
         <p>{localState.endTime.format('LT')}</p>
-        <h4>Event Details</h4>
+        <label>Event Details</label>
         <p>{localState.eventDetails}</p>
-        <h4>Website</h4>
+        <label>Website</label>
         <p>{localState.website}</p>
-        <h4>Other Notes</h4>
+        <label>Other Notes</label>
         <p>{localState.otherNotes}</p>
       </div>
       <div className="buttonStyles">
@@ -110,6 +110,11 @@ export const CreateEventReviewList = props => {
 const StyledDiv = styled.div`
   display: flex;
   flex-direction: column;
+  font-weight: normal;
+
+  p {
+    font-size: 16px;
+  }
 `;
 
 const StyledButtons = styled.div`

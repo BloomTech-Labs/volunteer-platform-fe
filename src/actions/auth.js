@@ -268,3 +268,8 @@ export const getUserById = async(userId) => {
     });
 };
 
+export const SET_USER_SEARCH = 'SET_USER_SEARCH'
+
+export const setUserSearch = (place, dispatch) => {
+    dispatch(action(SET_USER_SEARCH, place))
+}
