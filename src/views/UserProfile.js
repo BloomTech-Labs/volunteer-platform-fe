@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {withRouter} from 'react-router-dom';
 import styled from 'styled-components';
+import { Icon } from 'antd';
 import {useStateValue} from '../hooks/useStateValue';
 import {
-  UserBio, UserInfo, UserEvents, UserGoal, UserStats
+  UserInfo, UserEvents, UserGoal, UserStats
 } from '../components/UserProfile/index';
 import {OrgPhoto} from '../components/OrgDashboard/index';
-import {Calendar} from 'antd';
 import {
   updateRegisteredUser, getFileUrl, deleteUserImage, getUserById,
 } from '../actions';
@@ -19,6 +19,8 @@ export const UserProfile = (props) => {
   const [imageUrl, setImageUrl] = useState(null);
   const [selectedDate, setSelectedDate] = useState();
   const [calendarValue, setCalendarValue] = useState(moment());
+  const [isEditable, setIsEditable] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   
   //I need to use another variable or else if the page is refreshed, state.auth.registeredUser is null so it will throw an error
   
@@ -35,6 +37,7 @@ export const UserProfile = (props) => {
           });
       }else{
         setUser(state.auth.registeredUser);
+        setIsEditable(true);
       }
     }
   }, [state.auth.registeredUser, props.match.params.id]);
@@ -90,12 +93,21 @@ export const UserProfile = (props) => {
     setSelectedDate(null);
     setCalendarValue(moment());
   };
+
+  const updateInfo = (bio, location) => {
+    let updateUser = {
+      ...user, 
+      bio: bio,
+      city: location.city,
+      state: location.state
+    }
+    updateRegisteredUser(updateUser, dispatch);
+  }
   
   return (
     <StyledDiv>
       <div className='profile-container'>
         <h3>Welcome {user.firstName},</h3>
-        
         <div className='profile-top'>
           <OrgPhoto
             imageUrl={state.auth.registeredUser ?
@@ -106,7 +118,10 @@ export const UserProfile = (props) => {
             imageName={state.auth.googleAuthUser ? state.auth.googleAuthUser.uid :
               undefined}
           />
-          <UserInfo user={user}/>
+          <UserInfo 
+            user={user}
+            isEditable={isEditable}
+            updateInfo={updateInfo}/>
         </div>
         <h2>Overview</h2>
         <div className='profile-middle'>
