@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import manHiking from '../assets/man-hiking.jpg';
 import styled from 'styled-components';
-import { StyledCard, StyledButton } from '../styled';
-import { Tag, AutoComplete, Icon, Collapse, message } from 'antd';
 import moment from 'moment';
-import { findNext } from '../utility/findNextRecurEvent';
 import PropTypes from 'prop-types';
-import {Editor, CommentList} from '../components/EventComments';
+import { Tag, Icon, Collapse, message } from 'antd';
+import uuid4 from 'uuid4';
+
 import { useStateValue } from '../hooks/useStateValue';
+import {
+  Editor,
+  CommentList,
+  RecurSignUp,
+  FirstRow,
+  SecondRow,
+  ThirdRow,
+  FourthRow,
+} from '../components/EventProfile';
 import {
   addComment,
   addCommentToComment,
@@ -16,14 +23,39 @@ import {
   signUpForEvent,
   cancelSignedUpEvent,
   deleteCommentClearSuccess,
-  getEventById
+  getEventById,
+  getFileUrl,
 } from '../actions';
-import uuid4 from 'uuid4';
+import { StyledCard, StyledButton } from '../styled';
 
-export const EventProfile = (props) => {
+export const EventProfile = props => {
   const [{ events, auth, comments }, dispatch] = useStateValue();
 
   const { event } = events;
+console.log(auth)
+  const [localState, setLocalState] = useState({
+    imageUrl: '',
+    registeredVolunteers: [],
+    interest: [],
+    typesOfCauses: [],
+    volunteerRequirements: [],
+    orgName: '',
+    nameOfEvent: '',
+    startTimeStamp: '',
+    endTimeStamp: '',
+    numberOfVolunteers: null,
+    eventDetails: '',
+    otherNotes: '',
+    nextDate: '',
+    recurringInfo: '',
+    clicked: false,
+  });
+
+  useEffect(() => {
+    if (props.match.params.id) {
+      getEventById(props.match.params.id, dispatch);
+    }
+  }, []);
 
   useEffect(() => {
     if (comments.deletedComment) {
@@ -33,59 +65,17 @@ export const EventProfile = (props) => {
   }, [comments.deletedComment]);
 
   useEffect(() => {
-    if (props.match.params.id) {
-      getEventById(props.match.params.id, dispatch);
-    }
-  }, []);
-
-  useEffect(() => {}, [comments]);
-
-  const [localState, setLocalState] = useState({
-    interest: [],
-    typesOfCauses: [],
-    volunteerRequirements: [],
-    orgName: '',
-    nameOfEvent: '',
-    startTime: '',
-    endTime: '',
-    numberOfVolunteers: null,
-    eventDetails: '',
-    otherNotes: '',
-    nextDate: '',
-    recurringInfo: {},
-    clicked: false,
-  });
-
-  useEffect(() => {
-    if ('recurringInfo' in event) {
-      let nextDate = findNext(event.startTimeStamp, event.recurringInfo);
-      setLocalState({
-        ...localState,
-        nextDate: moment(
-          moment.unix(nextDate).format('LL') + ' ' + event.startTime
-        ).unix(),
-        ...event,
-      });
+    if (event.orgImagePath) {
+      getFileUrl(event.orgImagePath).then(path =>
+        setLocalState({ ...localState, ...event, imageUrl: path })
+      );
     } else {
       setLocalState({
         ...localState,
-        nextDate: event.startTimeStamp,
         ...event,
       });
     }
   }, [event]);
-
-  const causes = localState.typesOfCauses.map(item => {
-    return <Tag>{(item = [item])}</Tag>;
-  });
-
-  const interest = localState.interest.map(item => {
-    return <Tag>{(item = [item])}</Tag>;
-  });
-
-  const requirements = localState.volunteerRequirements.map(item => {
-    return <Tag>{(item = [item])}</Tag>;
-  });
 
   const submitComment = text => {
     const comment = {
@@ -116,6 +106,7 @@ export const EventProfile = (props) => {
   const backButton = () => {
     props.history.goBack();
   };
+
   const register = date => {
     if (date) {
       signUpForRecurringEvent(event, auth.registeredUser, date, dispatch);
@@ -132,52 +123,47 @@ export const EventProfile = (props) => {
     cancelSignedUpEvent(event, auth.registeredUser, dispatch);
   };
 
-  const customPanelStyle = {
-    background: '#f7f7f7',
-    borderRadius: 4,
-    marginBottom: 24,
-    marginLeft: '16rem',
-    maxWidth: '50%',
-    border: 0,
-    overflow: 'hidden',
-  };
+  const causes = localState.typesOfCauses.map(item => {
+    return <Tag>{(item = [item])}</Tag>;
+  });
 
-  const { Panel } = Collapse;
-  debugger;
+  const interest = localState.interest.map(item => {
+    return <Tag>{(item = [item])}</Tag>;
+  });
+
+  const requirements = localState.volunteerRequirements.map(item => {
+    return <Tag>{(item = [item])}</Tag>;
+  });
+
   return (
-    <div>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          margin: '1% 15%',
-        }}
-      >
-        <div>
-          <Icon
-            type="left-circle"
-            theme="filled"
-            onClick={backButton}
-            style={{
-              marginLeft: '15%',
-              marginRight: '10px',
-              marginTop: '10px',
-              fontSize: '30px',
-            }}
-          />
-          <h6>Previous Page </h6>
-        </div>
+    <StyledEventProfile>
+      <div className="previous-page" onClick={backButton}>
+        <Icon
+          type="left-circle"
+          theme="filled"
+          style={{ fontSize: '25px', marginRight: '15px' }}
+        />
+        <h6>Previous Page </h6>
       </div>
+      <FirstRow
+        localState={localState}
+        auth={auth}
+        register={register}
+        unRegister={unRegister}
+      />
+      {/* <SecondRow />
+      <ThirdRow />
+      <FourthRow /> */}
       <div style={{ margin: '0 auto', width: '70%' }}>
-        <div>
-          <h4> {localState.nameOfEvent} </h4>
-          <h6> {moment.unix(event.startTimeStamp).format('LLL')}</h6>
-          <h6> {localState.orgName} </h6>
-        </div>
         <StyledEventPage>
           <div className="card">
             <div className="photo">
-              <img src={manHiking} alt="dude" width={250} height={250} />
+              <img
+                src={localState.imageUrl}
+                alt={localState.orgName}
+                width={250}
+                height={250}
+              />
             </div>
             <div className="tags">
               <h5>Interests: </h5>
@@ -215,59 +201,13 @@ export const EventProfile = (props) => {
         {/*<Icon type="google-circle" theme="filled"/>*/}
         {/*</div>*/}
       </div>
-      {event.recurringInfo ? (
-        <Collapse
-          style={{ marginTop: '2rem' }}
-          bordered={false}
-          defaultActiveKey={['1']}
-          expandIcon={({ isActive }) => (
-            <Icon type="caret-right" rotate={isActive ? 90 : 0} />
-          )}
-        >
-          {Object.keys(event.registeredVolunteers).map(date => {
-            return (
-              <Panel
-                key={date}
-                header={moment.unix(date).format('LLL')}
-                style={customPanelStyle}
-              >
-                <h5>
-                  Spots Remaining:{' '}
-                  {event.numberOfVolunteers -
-                    event.registeredVolunteers[date].length}
-                </h5>
-                {event.registeredVolunteers[date].includes(
-                  auth.googleAuthUser.uid
-                ) ? (
-                  <StyledButton onClick={() => unRegister(date)}>
-                    Un-Register
-                  </StyledButton>
-                ) : (
-                  <StyledButton onClick={() => register(date)}>
-                    Register
-                  </StyledButton>
-                )}
-              </Panel>
-            );
-          })}
-        </Collapse>
-      ) : event.registeredVolunteers &&
-        event.registeredVolunteers.includes(auth.googleAuthUser.uid) ? (
-        <StyledButton
-          style={{ marginLeft: '16rem' }}
-          width={'15rem'}
-          onClick={() => unRegister()}
-        >
-          Cancel Registration
-        </StyledButton>
-      ) : (
-        <StyledButton
-          style={{ marginLeft: '16rem' }}
-          width={'9rem'}
-          onClick={() => register()}
-        >
-          Register
-        </StyledButton>
+      {event.recurringInfo && (
+        <RecurSignUp
+          localState={localState}
+          auth={auth}
+          register={register}
+          unRegister={unRegister}
+        />
       )}
       <CommentList
         comments={event.comments}
@@ -276,9 +216,26 @@ export const EventProfile = (props) => {
         event={event}
       />
       <Editor onSubmit={submitComment} submitting={comments.isLoading} />
-    </div>
+    </StyledEventProfile>
   );
 };
+
+const StyledEventProfile = styled.div`
+  max-width: 1020px;
+  margin: 15px auto;
+  background-color: ${({ theme }) => theme.gray3};
+
+  .previous-page {
+    margin-left: 10%;
+    padding-top: 20px;
+    display: flex;
+    justify-content: flex-start;
+    width: 15%;
+    min-width: 150px;
+    align-items: center;
+    cursor: pointer;
+  }
+`;
 
 const StyledEventPage = styled(StyledCard)`
   .ant-card-body {
