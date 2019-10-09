@@ -88,7 +88,6 @@ export const CreateEventPartTwo = props => {
       setError('This field is required.');
     }
   };
-  console.log(error);
 
   return (
     <StyledDiv className={'styledDiv'}>
@@ -226,7 +225,7 @@ export const CreateEventPartTwo = props => {
                   value={endTime}
                   format={'h:mm a'}
                   defaultValue={moment('00:00:00', 'HH:mm')}
-                  onChange={value => handleChange('startTime', value)}
+                  onChange={value => handleChange('endTime', value)}
                 />
               </div>
             </Form.Item>

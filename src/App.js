@@ -108,25 +108,25 @@ function App(){
     <StyledApp className="App">
       <Layout style={{background: 'white'}}>
         {state.auth.loggedIn && (
-          <StyledSider
-            height={'100%'}
-            breakpoint="md"
-            collapsedWidth="0"
-            theme={'light'}
-            onBreakpoint={broken => {
-              //console.log(broken);
-            }}
-            onCollapse={(collapsed, type) => {
-              //console.log(collapsed, type);
-            }}
-            trigger={null}
-            collapsed={collapsed ? 1 : 0}
-            reverseArrow={true}
-          >
-            <Affix>
+          <Affix>
+            <StyledSider
+              height={'100%'}
+              breakpoint="md"
+              collapsedWidth="0"
+              theme={'light'}
+              onBreakpoint={broken => {
+                //console.log(broken);
+              }}
+              onCollapse={(collapsed, type) => {
+                //console.log(collapsed, type);
+              }}
+              trigger={null}
+              collapsed={collapsed ? 1 : 0}
+              reverseArrow={true}
+            >
               <Navigation/>
-            </Affix>
-          </StyledSider>
+            </StyledSider>
+          </Affix>
         )}
         <Layout style={{background: 'white'}}>
           <HeaderDiv loggedIn={state.auth.loggedIn}>
@@ -212,7 +212,15 @@ const StyledSider = styled(Sider)`
     left: 0;
     z-index: 100;
     min-height: 100vh;
-    height: ${props => (props.height ? `${props.height}px` : '100%')};
+    height: 100vh;
+    overflow-y: scroll;
+    border-right: 1px solid lightgray;
+    .ant-menu-root {
+      margin-bottom: 10rem;
+    }
+    ::-webkit-scrollbar{
+      display: none;
+    }
   }
 `;
 
