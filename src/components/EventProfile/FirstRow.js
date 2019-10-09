@@ -29,8 +29,43 @@ const NormalRegister = ({ localState, auth, register, unRegister }) => {
   );
 };
 
+const RecurDate = ({ localState, first }) => {
+  return (
+    <>
+      <h5>{moment.unix(first).format('LL')}</h5>
+      <h5>
+        {`${moment.unix(first).format('LT')} -
+            ${moment.unix(localState.endTimeStamp).format('LT')}`}
+      </h5>
+    </>
+  );
+};
+
+const NormalDate = ({ localState }) => {
+  return (
+    <>
+      <h5>
+        {localState.startTimeStamp &&
+          moment.unix(localState.startTimeStamp).format('LL')}
+      </h5>
+      <h5>
+        {localState.startTimeStamp &&
+          `${moment.unix(localState.startTimeStamp).format('LT')} -
+              ${moment.unix(localState.endTimeStamp).format('LT')}`}
+      </h5>
+    </>
+  );
+};
+
 export const FirstRow = ({ localState, auth, register, unRegister }) => {
   let isRecurring = localState.recurringInfo;
+  let first = Object.keys(localState.registeredVolunteers).find(
+    date => moment().unix() - date < 0
+  );
+  let signedUp = isRecurring
+    ? (localState.registeredVolunteers[first] || []).length
+    : localState.registeredVolunteers.length;
+
   return (
     <StyledFirstRow>
       <div className="left-col">
@@ -39,15 +74,11 @@ export const FirstRow = ({ localState, auth, register, unRegister }) => {
         <span>
           {isRecurring && '*This is a recurring event. The next date is:'}
         </span>
-        <h5>
-          {localState.startTimeStamp &&
-            moment.unix(localState.startTimeStamp).format('LL')}
-        </h5>
-        <h5>
-          {localState.startTimeStamp &&
-            `${moment.unix(localState.startTimeStamp).format('LT')} -
-              ${moment.unix(localState.endTimeStamp).format('LT')}`}
-        </h5>
+        {isRecurring ? (
+          <RecurDate localState={localState} first={first} />
+        ) : (
+          <NormalDate localState={localState} />
+        )}
       </div>
 
       <div className="right-col">
@@ -63,11 +94,7 @@ export const FirstRow = ({ localState, auth, register, unRegister }) => {
         )}
         <div className="needed-vols">
           <span>Needed:</span>
-          <h2>
-            {localState.numberOfVolunteers - isRecurring
-              ? localState.registeredVolunteers[0].length
-              : localState.registeredVolunteers.length}
-          </h2>
+          <h2>{localState.numberOfVolunteers - signedUp}</h2>
           <span>volunteers</span>
         </div>
       </div>
