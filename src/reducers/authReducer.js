@@ -13,6 +13,7 @@ import {
   GET_TOP_VOLUNTEERS_FAILED,
   NO_VOLUNTEERS_REGISTERED,
   GET_TOP_VOLUNTEERS,
+  SET_USER_SEARCH
 } from '../actions/auth';
 import {
   SIGN_UP_FOR_EVENT_INIT,
@@ -150,6 +151,11 @@ export const authReducer = (state, action) => {
         ...state,
         cancelSignedUpEventError: 'Error canceling signed up event'
       };
+      case SET_USER_SEARCH:
+          return {
+              ...state,
+              userSearch: action.payload
+          }
     default:
       return state;
   }

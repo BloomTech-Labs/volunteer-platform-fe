@@ -1,57 +1,54 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
-import {Link} from 'react-router-dom';
 import Autocomplete from 'react-google-autocomplete';
-import {Input, message, Icon} from 'antd';
+import { message, Icon } from 'antd';
 
 import {
   HowItWorks,
   TopVolunteers,
   TopNonProfits,
 } from '../components/LandingPage';
-import {device} from '../styled/deviceBreakpoints';
-import {useStateValue} from '../hooks/useStateValue';
-import {stateConversion} from '../utility/stateConversion';
+import { device } from '../styled/deviceBreakpoints';
+import { useStateValue } from '../hooks/useStateValue';
+import { stateConversion } from '../utility/stateConversion';
 import heroImage from '../assets/hero_image4.png';
+import { setUserSearch } from '../actions';
 
-const {Search} = Input;
+export const LandingPage = props => {
+  const [{ auth }, dispatch] = useStateValue();
 
-export const LandingPage = ({collapsed}) => {
-  const [{auth}] = useStateValue();
   const [location, setLocation] = useState('');
-  
-  const handleSearch = e => {
+
+  const handleClick = e => {
+    setUserSearch(location, dispatch);
+    props.history.push('/dashboard');
   };
-  
-  const handleChange = e => {
-    setLocation(e.target.value);
-  };
-  
+
   useEffect(() => {
     axios
       .get(`https://geoip-db.com/json/${process.env.REACT_APP_ipinfoKey}`)
       .then(res => {
         let stateAbbrev = Object.keys(stateConversion).find(
-          key => stateConversion[ key ] === res.data.state,
+          key => stateConversion[key] === res.data.state
         );
         let userCity = res.data.city;
-        if (stateAbbrev){
+        if (stateAbbrev) {
           setLocation(`${userCity}, ${stateAbbrev}`);
-        }else{
+        } else {
           message.warning(
-            'Unable to get your location. Please enter your state below.',
+            'Unable to get your location. Please enter your state below.'
           );
         }
       })
       .catch(err => {
         console.log('Error detecting location');
         message.warning(
-          'Unable to get your location. Please enter your state below.',
+          'Unable to get your location. Please enter your state below.'
         );
       });
   }, []);
-  
+
   return (
     <>
       <StyledHeroDiv image={heroImage} loggedIn={auth.loggedIn}>
@@ -59,21 +56,27 @@ export const LandingPage = ({collapsed}) => {
           <p>
             Compete with friends, meet new ones, give back to the community.
           </p>
-          <p style={{marginBottom: '80px', marginTop: '20px'}}>Win-win.</p>
-          <Autocomplete
-            style={{width: '90%'}}
-            onPlaceSelected={(place) => {
-              console.log(place);
-            }}
-            types={['(regions)']}
-            componentRestrictions={{country: 'us'}}
-          />
+          <p style={{ marginBottom: '80px', marginTop: '20px' }}>Win-win.</p>
+          <div className="google-autocomplete">
+            <Autocomplete
+              className="search"
+              onPlaceSelected={place => {
+                setLocation(place.formatted_address);
+              }}
+              types={['(regions)']}
+              componentRestrictions={{ country: 'us' }}
+              defaultValue={location}
+            />
+            <div className="get-started-btn" onClick={e => handleClick(e)}>
+              <Icon type="search" />
+            </div>
+          </div>
         </HeroContent>
       </StyledHeroDiv>
       <ContentDiv collapsed>
-        <HowItWorks/>
-        <TopVolunteers/>
-        <TopNonProfits/>
+        <HowItWorks />
+        <TopVolunteers />
+        <TopNonProfits />
       </ContentDiv>
     </>
   );
@@ -83,7 +86,7 @@ export default LandingPage;
 
 const StyledHeroDiv = styled.div`
   height: 50vh;
-  width: ${({loggedIn}) => loggedIn && '100vw'};
+  width: ${({ loggedIn }) => loggedIn && '100vw'};
   display: flex;
   position: relative;
   justify-content: center;
@@ -112,7 +115,7 @@ const HeroContent = styled.div`
   text-align: center;
   color: white;
   z-index: 10;
-  padding-left: ${({loggedIn}) => loggedIn && '15rem'};
+  padding-left: ${({ loggedIn }) => loggedIn && '15rem'};
 
   @media ${device.laptop} {
   }
@@ -128,22 +131,41 @@ const HeroContent = styled.div`
     padding: 0 20px;
   }
 
-  .ant-input-search {
-    width: 350px;
-  }
+  .google-autocomplete {
+    display: flex;
+    justify-content: space-between;
+    width: 450px;
+    max-width: 90%;
+    margin: 0 auto;
+    height: 55px;
 
-  button {
-    background: ${({theme}) => theme.accent};
-    border-radius: inherit;
-    border: 0;
-    cursor: pointer;
-
-    .anticon {
-      font-size: 25px;
-      padding-top: 5px;
+    .search {
+      color: black;
+      border: 0;
+      font-family: ${({ theme }) => theme.bodytext};
+      border-radius: 4px 0 0 4px;
+      padding-left: 15px;
+      font-size: 20px;
+      width: 80%;
     }
-    &:hover {
-      background: ${({theme}) => theme.accent7};
+
+    .get-started-btn {
+      width: 20%;
+      border-radius: 0 4px 4px 0;
+      background: ${({ theme }) => theme.accent}
+      cursor: pointer;
+      display: flex;
+      justify-content: space-around;
+      font-size: 20px;
+      align-items: center;
+
+      &:hover {
+        background: ${({ theme }) => theme.accent7};
+      }
+
+      .anticon {
+        font-size: 35px;
+      }
     }
   }
 `;
