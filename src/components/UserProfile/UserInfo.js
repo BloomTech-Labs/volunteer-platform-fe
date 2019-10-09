@@ -62,7 +62,7 @@ export const UserInfo = ({ user, isEditable, updateInfo}) => {
         </div>
         <div className='inner-container'>
           <div className='left'>
-            <p>General Bio</p>
+            <h5>General Bio</h5>
             {isEditing ? (
               <AntTextArea 
                 name='bio'
@@ -105,7 +105,7 @@ export const UserInfo = ({ user, isEditable, updateInfo}) => {
               )}
             </div>
             <div>
-              <p>Follow Me</p>
+              <h5>Follow Me</h5>
               <div className='social-media-btns'>
                 <Icon type='twitter' className='icons'/>
                 <Icon type='instagram' className='icons'/>
