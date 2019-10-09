@@ -12,7 +12,7 @@ export const CreateEventPartFour = props => {
   const { website, numberOfVolunteers, otherNotes } = localState;
 
   const isFormValid = () => {
-    if (numberOfVolunteers && otherNotes) {
+    if (numberOfVolunteers) {
       return true;
     }
   };
@@ -68,7 +68,7 @@ export const CreateEventPartFour = props => {
         </div>
 
         <Form.Item>
-          <Form.Item label={'Other Notes'} required>
+          <Form.Item label={'Other Notes'}>
             <div className={'error-flex'}>
               <div className={'input'}>
                 <TextArea
@@ -80,13 +80,6 @@ export const CreateEventPartFour = props => {
                   onChange={e => handleChange(e.target.name, e.target.value)}
                   style={{ height: '200px' }}
                 />
-              </div>
-              <div>
-                {error && !otherNotes && (
-                  <span className="error-message error-span left-aligned">
-                    {error}
-                  </span>
-                )}
               </div>
             </div>
           </Form.Item>
