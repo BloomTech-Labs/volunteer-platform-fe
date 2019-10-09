@@ -3,7 +3,6 @@ import moment from 'moment';
 export const getAccHoursForDuration = (duration, hours) => {
   let start = moment(duration.start).unix();
   let end = moment(duration.end).endOf('month').unix();
-  console.log(start, end);
   let numHours = 0;
   hours.forEach(item => {
     if (item.date >= start && item.date <= end) {
