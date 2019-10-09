@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useStateValue } from '../../hooks/useStateValue';
 import { Card, Form, Row, Col, Input, Icon, Divider, Select } from 'antd';
 import { StyledCheckableTag as CheckableTag } from '../../styled';
+import Autocomplete from 'react-google-autocomplete';
 
 const tabList = [
   {
@@ -27,12 +28,7 @@ export const FilterTopbar = ({
 }) => {
   const [state, dispatch] = useStateValue();
   const [filterExpand, setFilterExpand] = useState(false);
-  const {
-    onChange,
-    onLocationChange,
-    onTagsChange,
-    onSelectedChange,
-  } = changeHandlers;
+  const { onTagsChange, onSelectedChange, onLocationChange } = changeHandlers;
 
   const toggleFilterExpand = () => {
     setFilterExpand(!filterExpand);
@@ -138,20 +134,22 @@ export const FilterTopbar = ({
           <Divider dashed style={{ marginTop: 16 }} />
           <Row>
             <Row style={{ fontSize: 18 }}>Location</Row>
-            <Form.Item label="City">
-              <Input
-                value={inputState.location.city}
-                name={'city'}
-                onChange={onLocationChange}
-                placeholder="City"
-              />
-            </Form.Item>
-            <Form.Item label="State">
-              <Input
-                value={inputState.location.state}
-                name={'state'}
-                onChange={onLocationChange}
-                placeholder="State Initials"
+            <Form.Item>
+              <Autocomplete
+                style={{
+                  paddingLeft: '15px',
+                  width: '350px',
+                  height: '40px',
+                  border: '1px solid #d9d9d9',
+                  borderRadius: '4px',
+                }}
+                onPlaceSelected={place => {
+                  onLocationChange(place);
+                }}
+                types={['(regions)']}
+                componentRestrictions={{ country: 'us' }}
+                defaultValue={inputState.location}
+                placeholder="Location"
               />
             </Form.Item>
           </Row>
@@ -208,20 +206,22 @@ export const FilterTopbar = ({
         <Divider dashed style={{ marginTop: 16 }} />
         <Row>
           <Row style={{ fontSize: 18 }}>Location</Row>
-          <Form.Item label="City">
-            <Input
-              value={inputState.location.city}
-              name={'city'}
-              onChange={onLocationChange}
-              placeholder="City"
-            />
-          </Form.Item>
-          <Form.Item label="State">
-            <Input
-              value={inputState.location.state}
-              name={'state'}
-              onChange={onLocationChange}
-              placeholder="State Initials"
+          <Form.Item>
+            <Autocomplete
+              style={{
+                paddingLeft: '15px',
+                width: '350px',
+                height: '40px',
+                border: '1px solid #d9d9d9',
+                borderRadius: '4px',
+              }}
+              onPlaceSelected={place => {
+                onLocationChange(place);
+              }}
+              types={['(regions)']}
+              componentRestrictions={{ country: 'us' }}
+              defaultValue={inputState.location}
+              placeholder="Location"
             />
           </Form.Item>
         </Row>
