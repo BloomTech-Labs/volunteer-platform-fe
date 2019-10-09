@@ -6,7 +6,7 @@ import moment from 'moment';
 import {getFileUrl, deleteComment} from '../../actions';
 import {useStateValue} from '../../hooks/useStateValue';
 
-const CommentItem = ({name, usersUid, avatarPath, comment, addCommentToComment, commentId, isLoading, allowReply, replies, createdAt, event}) => {
+export const CommentItem = ({name, usersUid, avatarPath, comment, addCommentToComment, commentId, isLoading, allowReply, replies, createdAt, event}) => {
   
   const [{auth}, dispatch] = useStateValue();
   const [reply, setReply] = useState(false);

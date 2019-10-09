@@ -24,6 +24,7 @@ import {
   NotFound,
   UserProfile,
   OrganizationProfile,
+  EventProfile
 } from './views';
 
 import {
@@ -34,7 +35,7 @@ import {
   RegisterRoute,
 } from './routes/index';
 import Message from './views/Message';
-import Event from './views/Event';
+
 
 const {Sider, Content} = Layout;
 
@@ -179,7 +180,7 @@ function App(){
               
               <Route
                 path={'/events/:id'}
-                render={props => <Event {...props} />}
+                render={props => <EventProfile {...props} />}
               />
               
               <RegisteredAndLoggedInRoute

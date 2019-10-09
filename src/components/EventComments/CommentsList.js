@@ -4,7 +4,7 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-const CommentList = ({comments, addCommentToComment, isLoading, event}) => {
+export const CommentList = ({comments, addCommentToComment, isLoading, event}) => {
   
   return (<SyledCommentList>
       <h1>Event Comments</h1>

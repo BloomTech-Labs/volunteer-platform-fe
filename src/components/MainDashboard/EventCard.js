@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { EventCard } from '../EventCard';
 import { StyledCard, StyledButton } from '../../styled';
 import { useStateValue } from '../../hooks/useStateValue';
 import moment from 'moment';
 import { Tag } from 'antd';
 
-export const Event = ({ event }) => {
+export const EventCard = ({ event }) => {
   //logic
   const [{ org, events, auth }, dispatch] = useStateValue();
 
@@ -70,4 +69,4 @@ const StyledEventCard = styled(StyledCard)`
     text-align: justify;
   }
 `;
-export default Event;
+export default EventCard;

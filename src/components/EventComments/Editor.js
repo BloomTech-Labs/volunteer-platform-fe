@@ -3,7 +3,7 @@ import { WrappedAntForm, AntTextArea } from '../../styled';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-const Editor = ({ onSubmit, submitting }) => {
+export const Editor = ({ onSubmit, submitting }) => {
   return (
     <SyledEditor>
       <WrappedAntForm
