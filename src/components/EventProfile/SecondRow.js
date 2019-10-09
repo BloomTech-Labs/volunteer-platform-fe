@@ -64,6 +64,11 @@ const StyledSecondRow = styled.div`
     .subtag {
       flex-direction: row;
       justify-content: flex-start;
+
+      .ant-tag{
+          background: ${({theme}) => theme.primary8};
+          color: white;
+      }
     }
   }
 `;
