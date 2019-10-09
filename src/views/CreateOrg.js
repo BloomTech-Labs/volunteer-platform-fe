@@ -213,9 +213,6 @@ const CustomStyledCard = styled(StyledCard)`
           background: ${({ theme }) => theme.primary8};
         }
       }
-      span.ant-steps-icon-dot {
-        background: ${({ theme }) => theme.primary8};
-      }
     }
   }
 `;

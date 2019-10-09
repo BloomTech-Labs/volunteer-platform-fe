@@ -83,6 +83,7 @@ export const CreateEvent = props => {
 
   //Handle Submit for Form
   const handleReviewSubmit = () => {
+    console.log('org', props.location.state.org.organizationName);
     const event = {
       orgId: localState.orgId,
       orgName: props.location.state.org.organizationName,
@@ -126,9 +127,10 @@ export const CreateEvent = props => {
       if (event.recurringInfo.occurrenceEnds === 'After') {
         event.recurringInfo.occurrenceEndDate = '';
       }
-
+      // console.log('rec', event);
       createRecurringEvent(event, dispatch);
     } else {
+      // console.log('reg', event);
       createEvent(event, dispatch);
     }
     setPageNumber(1);
@@ -157,7 +159,6 @@ export const CreateEvent = props => {
     setPageNumber(pageNumber - 1);
   };
 
-  console.log('localstate', localState);
   return (
     <div>
       <StyledDiv className={'flex center'}>
@@ -212,9 +213,6 @@ const CustomStyledCard = styled(StyledCard)`
         &::after {
           background: ${({ theme }) => theme.primary8};
         }
-      }
-      span.ant-steps-icon-dot {
-        background: ${({ theme }) => theme.primary8};
       }
     }
   }
