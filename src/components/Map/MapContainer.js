@@ -1,55 +1,80 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Map, GoogleApiWrapper, Marker, InfoWindow} from 'google-maps-react';
-import CurrentLocation from './Map';
+import PropTypes from 'prop-types';
 
-export class MapContainer extends React.Component{
-  state = {
-    showingInfoWindow: true,
-    activeMarker: {},
-    selectedPlace: {},
-  };
+const MapContainer = (props) => {
   
-  onMarkerClick = (props, marker, e) => {
+  const [showingInfoWindow, setShowing] = useState(false);
+  const [activeMarker, setActiveMarker] = useState();
+  const [place, setPlace] = useState();
+  
+  const onMarkerClick = (props, marker, e) => {
     debugger;
-    this.setState({
-      selectedPlace: props,
-      activeMarker: marker,
-      showingInfoWindow: true,
-    });
+    setPlace(props);
+    setActiveMarker(marker);
+    setShowing(true);
   };
   
-  onClose = props => {
+  const onClose = props => {
     debugger;
-    if (this.state.showingInfoWindow){
-      this.setState({
-        showingInfoWindow: false,
-        activeMarker: null,
-      });
-    }
+    setActiveMarker(null);
+    setShowing(false);
   };
   
-  render(){
-    
-    return (
-      <CurrentLocation
-        centerAroundCurrentLocation
-        google={this.props.google}
+  const defaultMapStyles = {
+    width: '100%',
+    height: '100%',
+  };
+  debugger;
+  return (
+    <div style={{
+      position: 'relative',
+      width: props.width || '500px',
+      height: props.height || '500px',
+      marginLeft: props.marginLeft || '16rem',
+    }}>
+      <Map google={props.google}
+           zoom={props.zoom || 12}
+           style={props.mapStyles || defaultMapStyles}
+           initialCenter={{lat: props.lat, lng: props.lng}}
       >
-        <Marker onClick={this.onMarkerClick}
-                name={'current location'}/>
+        {props.markers && props.markers.map(marker => {
+          return <Marker onClick={onMarkerClick} title={marker.title}
+                         name={marker.name}
+                         position={marker.position}/>;
+        })}
         <InfoWindow
-          marker={this.state.activeMarker}
-          visable={this.state.showingInfoWindow}
-          onClose={this.onClose}
+          marker={activeMarker}
+          visible={showingInfoWindow}
+          onClose={onClose}
         >
           <div>
-            <h4>{this.state.selectedPlace.name}</h4>
+            <h6>Name: {place && place.name}</h6>
+            <p>Address: {place && place.address}</p>
           </div>
         </InfoWindow>
-      </CurrentLocation>
-    );
-  };
-}
+      </Map>
+    </div>
+  );
+};
+
+MapContainer.propTypes = {
+  mapStyles: PropTypes.object,
+  lat: PropTypes.number.isRequired,
+  lng: PropTypes.number.isRequired,
+  zoom: PropTypes.number,
+  
+  markers: PropTypes.arrayOf(PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    address: PropTypes.string.isRequired,
+    
+    position: PropTypes.shape({
+      lat: PropTypes.number.isRequired,
+      lng: PropTypes.number.isRequired,
+    }),
+  })),
+};
 
 export default GoogleApiWrapper(
   porps => ({apiKey: process.env.REACT_APP_apiKey}))(

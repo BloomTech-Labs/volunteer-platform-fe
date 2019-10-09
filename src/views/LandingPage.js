@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
-import {Link} from 'react-router-dom';
 import Autocomplete from 'react-google-autocomplete';
-import {Input, message, Icon} from 'antd';
+import {message} from 'antd';
 
 import {
   HowItWorks,
@@ -15,14 +14,9 @@ import {useStateValue} from '../hooks/useStateValue';
 import {stateConversion} from '../utility/stateConversion';
 import heroImage from '../assets/hero_image4.png';
 
-const {Search} = Input;
-
 export const LandingPage = ({collapsed}) => {
   const [{auth}] = useStateValue();
   const [location, setLocation] = useState('');
-  
-  const handleSearch = e => {
-  };
   
   const handleChange = e => {
     setLocation(e.target.value);
@@ -70,6 +64,7 @@ export const LandingPage = ({collapsed}) => {
           />
         </HeroContent>
       </StyledHeroDiv>
+      
       <ContentDiv collapsed>
         <HowItWorks/>
         <TopVolunteers/>
