@@ -9,14 +9,14 @@ const MapContainer = (props) => {
   const [place, setPlace] = useState();
   
   const onMarkerClick = (props, marker, e) => {
-    debugger;
+    
     setPlace(props);
     setActiveMarker(marker);
     setShowing(true);
   };
   
   const onClose = props => {
-    debugger;
+    
     setActiveMarker(null);
     setShowing(false);
   };
@@ -31,7 +31,7 @@ const MapContainer = (props) => {
       position: 'relative',
       width: props.width || '500px',
       height: props.height || '500px',
-      marginLeft: props.marginLeft || '16rem',
+      margin: '0 auto',
     }}>
       <Map google={props.google}
            zoom={props.zoom || 12}
@@ -63,6 +63,9 @@ MapContainer.propTypes = {
   lat: PropTypes.number.isRequired,
   lng: PropTypes.number.isRequired,
   zoom: PropTypes.number,
+  width: PropTypes.string,
+  height: PropTypes.string,
+  marginLeft: PropTypes.string,
   
   markers: PropTypes.arrayOf(PropTypes.shape({
     title: PropTypes.string.isRequired,
