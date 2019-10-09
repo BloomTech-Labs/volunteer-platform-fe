@@ -133,7 +133,7 @@ export const CreateEventPartOne = props => {
             </Form.Item>
           </div>
         </div>
-        <div classNam={'error-flex'}>
+        <div className={'error-flex'}>
           <Form.Item label={'Phone Number'} required>
             <div className={'input'}>
               <Input
