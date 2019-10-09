@@ -70,7 +70,28 @@ export const CreateOrg = props => {
     6: EditForm,
   };
 
-  const steps = [0, 1, 2, 3, 4];
+  const steps = [
+    {
+      title: 'In Progress',
+      content: 'Enter Content',
+    },
+    {
+      title: 'In Progress',
+      content: 'Enter Content',
+    },
+    {
+      title: 'In Progress',
+      content: 'Enter Content',
+    },
+    {
+      title: 'In Progress',
+      content: 'Enter Content',
+    },
+    {
+      title: 'Finished',
+      content: 'Enter Content',
+    },
+  ];
 
   const RenderedPart = possibleParts[partCount];
 
@@ -168,7 +189,7 @@ export const CreateOrg = props => {
         <StyledImg src={createOrgImg} alt="undraw unexpected friends" />
         <Steps current={partCount - 1} progressDot size="small">
           {steps.map(step => (
-            <Step key={step} />
+            <Step key={step} title={step.title} description={step.content} />
           ))}
         </Steps>
         <StyledRenderDiv>
