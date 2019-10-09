@@ -3,7 +3,7 @@ import {withRouter} from 'react-router-dom';
 import styled from 'styled-components';
 import {useStateValue} from '../hooks/useStateValue';
 import {
-  UserBio, UserInfo, UserEvents, UserGoal,
+  UserBio, UserInfo, UserEvents, UserGoal, UserStats
 } from '../components/UserProfile/index';
 import {OrgPhoto} from '../components/OrgDashboard/index';
 import {Calendar} from 'antd';
@@ -62,8 +62,8 @@ export const UserProfile = (props) => {
     updateRegisteredUser(user, dispatch);
   };
   
-  const onSelect = (value, mode) => {
-    const beginning = value.startOf('date');
+  const selectDate = (date) => {
+    const beginning = date.startOf('date');
     const newValue = moment.unix(beginning.unix());
     
     if (selectedDate){
@@ -81,15 +81,7 @@ export const UserProfile = (props) => {
     }
   };
 
-  
-  const checkEvent = (events, value) => {
-    return events.filter(
-      item => moment.unix(item.date).date() === value.date() &&
-        moment.unix(item.date).month() === calendarValue.month() &&
-        moment.unix(item.date).year() === calendarValue.year());
-  };
-
-  const onPanelChange = value => {
+  const changePanel = value => {
     setCalendarValue(moment.unix(value.unix()));
   };
   
@@ -101,39 +93,41 @@ export const UserProfile = (props) => {
   
   return (
     <StyledDiv>
-      <h3>Welcome {user.firstName},</h3>
-      
-      <div className='profile-top'>
-        <OrgPhoto
-          imageUrl={state.auth.registeredUser ?
-            state.auth.registeredUser.imageUrl : null}
-          imageOwner={user}
-          deleteImage={deleteImage}
-          onFileUpload={onFileUpload}
-          imageName={state.auth.googleAuthUser ? state.auth.googleAuthUser.uid :
-            undefined}
-        />
-        <UserBio
-          user={user}
-          updateUser={updateUser}/>
-      </div>
-      <div className='profile-middle'>
-        <UserInfo user={user}/>
-      </div>
-      <div className='profile-bottom'>
-        <div className='profile-bottom-left'>
-          <Calendar
-            fullscreen={false}
-            onPanelChange={onPanelChange}
-            onSelect={onSelect}
-            value={calendarValue}/>
-          <UserGoal/>
+      <div className='profile-container'>
+        <h3>Welcome {user.firstName},</h3>
+        
+        <div className='profile-top'>
+          <OrgPhoto
+            imageUrl={state.auth.registeredUser ?
+              state.auth.registeredUser.imageUrl : null}
+            imageOwner={user}
+            deleteImage={deleteImage}
+            onFileUpload={onFileUpload}
+            imageName={state.auth.googleAuthUser ? state.auth.googleAuthUser.uid :
+              undefined}
+          />
+          <UserInfo user={user}/>
         </div>
-        <div className='profile-bottom-right'>
-          <UserEvents
-            events={user.registeredEvents}
-            selectedDate={selectedDate}
-            displayAll={displayAll}/>
+        <h2>Overview</h2>
+        <div className='profile-middle'>
+          <UserGoal
+            updateUser={updateUser}
+            user={user}/>
+        </div>
+        <div className='profile-bottom'>
+          <div className='profile-bottom-left'>
+            <h4>Stats</h4>
+            <UserStats user={user}/>
+          </div>
+          <div className='profile-bottom-right'>
+            <UserEvents
+              events={user.registeredEvents}
+              calendarValue={calendarValue}
+              changePanel={changePanel}
+              selectDate={selectDate}
+              selectedDate={selectedDate}
+              displayAll={displayAll}/>
+          </div>
         </div>
       </div>
     </StyledDiv>
@@ -143,10 +137,14 @@ export const UserProfile = (props) => {
 export default withRouter(UserProfile);
 
 const StyledDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-left: 250px;
+  background: ${({theme}) => theme.gray2};
+
+  .profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 250px;
+  }
 
   h3 {
     align-self: flex-start;
@@ -161,11 +159,16 @@ const StyledDiv = styled.div`
     align-items: flex-start;
     justify-content: flex-start;
     height: 260px;
+
+    .ant-card {
+      padding: 0;
+      margin: 0;
+    }
   }
 
   .profile-bottom {
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
   }
 
   .profile-bottom-left {

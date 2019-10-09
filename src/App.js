@@ -9,7 +9,7 @@ import {
   signedIn,
   signedOut,
   subscribeToMessages,
-  generateRandomEvents,
+  updateRecurringEvents,
 } from './actions';
 import {HeaderDiv, FooterDiv} from './components';
 import Navigation from './components/SiteParts/Navigation';
@@ -214,6 +214,9 @@ const StyledSider = styled(Sider)`
     height: 100vh;
     overflow-y: scroll;
     border-right: 1px solid lightgray;
+    .ant-menu-root {
+      margin-bottom: 10rem;
+    }
     ::-webkit-scrollbar{
       display: none;
     }

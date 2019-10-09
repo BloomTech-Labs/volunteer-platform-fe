@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import {Event, OrganizationCard} from '../MainDashboard';
+import { Event, OrganizationCard } from '../MainDashboard';
 import { NoResultsFound } from './NoResultsFound';
 import { Pagination } from 'antd';
 
@@ -20,20 +20,23 @@ export const ResultList = ({ results, type }) => {
   };
 
   return displayResults.length ? (
-    <StyledResultList>
-      {displayResults.map(result =>
-        type === 'Events' ? (
-          <Event key={result.eventId} event={result} />
-        ) : (
-          <OrganizationCard key={result.orgId} org={result} />
-        )
-      )}
+    <>
+      <StyledResultList>
+        {displayResults.map(result =>
+          type === 'Events' ? (
+            <Event key={`${result.nextDate}${result.eventId}`} event={result} />
+          ) : (
+            <OrganizationCard key={result.orgId} org={result} />
+          )
+        )}
+      </StyledResultList>
       <Pagination
         current={current}
         onChange={changePage}
         total={results.length}
+        style={{width: '80%', margin: '0 auto'}}
       />
-    </StyledResultList>
+    </>
   ) : (
     <NoResultsFound />
   );
@@ -45,6 +48,7 @@ const StyledResultList = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: space-evenly;
 `;
 
 export default ResultList;

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useStateValue } from '../../hooks/useStateValue';
-import { Card, Form, Row, Input, Icon, Divider } from 'antd';
+import { Card, Form, Row, Col, Input, Icon, Divider, Select } from 'antd';
 import { StyledCheckableTag as CheckableTag } from '../../styled';
-
 
 const tabList = [
   {
@@ -20,13 +19,20 @@ export const FilterTopbar = ({
   inputState,
   tagFilterState,
   tagExpandState,
+  selectedTags,
   toggleTagExpand,
   activeTab,
   setActiveTabKey,
+  loading,
 }) => {
   const [state, dispatch] = useStateValue();
   const [filterExpand, setFilterExpand] = useState(false);
-  const { onChange, onLocationChange, onTagsChange } = changeHandlers;
+  const {
+    onChange,
+    onLocationChange,
+    onTagsChange,
+    onSelectedChange,
+  } = changeHandlers;
 
   const toggleFilterExpand = () => {
     setFilterExpand(!filterExpand);
@@ -41,7 +47,7 @@ export const FilterTopbar = ({
     toggleTagExpand,
   }) => {
     const [collapsed, setCollapsed] = useState(!tagExpandState[collectionName]);
-    
+
     const collapsedCount = 14;
     const [visibleCount, setVisibleCount] = useState(collapsedCount);
 
@@ -90,72 +96,104 @@ export const FilterTopbar = ({
     return <Row>{children}</Row>;
   };
 
+  const SelectableTags = ({ tags, onChange, collectionName, selectedTags }) => {
+    const { Option } = Select;
+    let children = [];
+
+    const changeHandler = selected => {
+      onChange(selected, collectionName);
+    };
+
+    for (let i = 0; i < tags.length; i++) {
+      children.push(<Option key={tags[i]}>{tags[i]}</Option>);
+    }
+
+    return (
+      <Select
+        name={collectionName}
+        onChange={changeHandler}
+        value={selectedTags[collectionName]}
+        showArrow
+        mode={'multiple'}
+        placeholder="Choose..."
+        style={{ width: 350 }}
+      >
+        {children}
+      </Select>
+    );
+  };
+
   const contentList = {
     Events: (
-      <Form layout="inline">
-        <CheckableTags
-          tags={state.tags.causeAreas}
-          onChange={onTagsChange}
-          collectionName="causeAreas"
-          tagFilterState={tagFilterState}
-          tagExpandState={tagExpandState}
-          toggleTagExpand={toggleTagExpand}
-        />
-        <Divider dashed style={{ marginTop: 16 }} />
-        <Row>
-          <Row style={{ fontSize: 18 }}>Location</Row>
-          <Form.Item label="City">
-            <Input
-              value={inputState.location.city}
-              name={'city'}
-              onChange={onLocationChange}
-              placeholder="City"
-            />
-          </Form.Item>
-          <Form.Item label="State">
-            <Input
-              value={inputState.location.state}
-              name={'state'}
-              onChange={onLocationChange}
-              placeholder="State Initials"
-            />
-          </Form.Item>
-        </Row>
-        <Divider dashed style={{ marginBottom: 8 }} />
-        <Row>
-          <a
-            style={{ marginLeft: 8, fontSize: 12 }}
-            onClick={toggleFilterExpand}
-          >
-            {filterExpand ? 'Hide Filters' : 'More Filters'}{' '}
-            <Icon type={filterExpand ? 'up' : 'down'} />
-          </a>
-        </Row>
-        <div style={{ display: filterExpand ? 'block' : 'none' }}>
-          <h5 style={{ fontFamily: 'Montserrat' }}>Interests</h5>
+      <div>
+        <Form layout="inline">
+          <CheckableTags
+            tags={state.tags.causeAreas}
+            onChange={onTagsChange}
+            collectionName="causeAreas"
+            tagFilterState={tagFilterState}
+            tagExpandState={tagExpandState}
+            toggleTagExpand={toggleTagExpand}
+          />
+          <Divider dashed style={{ marginTop: 16 }} />
           <Row>
-            <CheckableTags
-              tags={state.tags.interests}
-              onChange={onTagsChange}
-              collectionName="interests"
-              tagFilterState={tagFilterState}
-              tagExpandState={tagExpandState}
-              toggleTagExpand={toggleTagExpand}
-            />
+            <Row style={{ fontSize: 18 }}>Location</Row>
+            <Form.Item label="City">
+              <Input
+                value={inputState.location.city}
+                name={'city'}
+                onChange={onLocationChange}
+                placeholder="City"
+              />
+            </Form.Item>
+            <Form.Item label="State">
+              <Input
+                value={inputState.location.state}
+                name={'state'}
+                onChange={onLocationChange}
+                placeholder="State Initials"
+              />
+            </Form.Item>
           </Row>
-          <h5 style={{ fontFamily: 'Montserrat' }}>Volunteer Requirements</h5>
+          <Divider dashed style={{ marginBottom: 8 }} />
           <Row>
-            <CheckableTags
-              tags={state.tags.requirements}
-              onChange={onTagsChange}
-              collectionName="requirements"
-              tagFilterState={tagFilterState}
-              tagExpandState={tagExpandState}
-              toggleTagExpand={toggleTagExpand}
-            />
+            <a
+              style={{ marginLeft: 8, fontSize: 12 }}
+              onClick={toggleFilterExpand}
+            >
+              {filterExpand ? 'Hide Filters' : 'More Filters'}{' '}
+              <Icon type={filterExpand ? 'up' : 'down'} />
+            </a>
           </Row>
-        </div>
-      </Form>
+        </Form>
+        <Form
+          layout="inline"
+          style={{ display: filterExpand ? 'block' : 'none' }}
+        >
+          <Row>
+            <Col span={12}>
+              <Form.Item label="Interests">
+                <SelectableTags
+                  tags={state.tags.interests}
+                  onChange={onSelectedChange}
+                  collectionName="interests"
+                  selectedTags={selectedTags}
+                />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item label="Requirements">
+                <SelectableTags
+                  tags={state.tags.requirements}
+                  onChange={onSelectedChange}
+                  collectionName="requirements"
+                  selectedTags={selectedTags}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+      </div>
     ),
     Organizations: (
       <Form layout="inline">
@@ -192,7 +230,7 @@ export const FilterTopbar = ({
   };
 
   const onTabChange = key => {
-    setActiveTabKey(key);
+    if (!loading) setActiveTabKey(key);
   };
 
   return (
@@ -201,6 +239,7 @@ export const FilterTopbar = ({
       tabList={tabList}
       activeTabKey={activeTab}
       onTabChange={key => onTabChange(key)}
+      loading={loading}
     >
       {contentList[activeTab]}
     </Card>

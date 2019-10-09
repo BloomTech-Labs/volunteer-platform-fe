@@ -1,5 +1,4 @@
 import React from 'react';
-import { findNext } from '../../utility/findNextRecurEvent';
 import moment from 'moment';
 
 export const FilteredComponent = Component => {
@@ -7,8 +6,8 @@ export const FilteredComponent = Component => {
     { events, filter, tagFilter, recurringEvents, organizations, activeTab },
     ...props
   ) => {
-    const { location } = filter;
     const { interests, requirements, causeAreas } = tagFilter;
+    const { location } = filter;
     const { state, city } = location;
 
     let filterCount = 0;
@@ -16,34 +15,35 @@ export const FilteredComponent = Component => {
     for (let key in requirements) requirements[key] && filterCount++;
     for (let key in causeAreas) causeAreas[key] && filterCount++;
 
-    events.forEach(event => {
-      event.nextDate = event.startTimeStamp || event.date;
-    });
-    // recurringEvents.forEach(event => {
-    //   let nextDate = findNext(
-    //     event.startTimeStamp || event.date,
-    //     event.recurringInfo
-    //   );
-    //   event.nextDate = moment(
-    //     moment.unix(nextDate).format('LL') + ' ' + event.startTime
-    //   ).unix();
-    // });
-    let allEvents = [...events, ...recurringEvents].sort(
-      (a, b) => a.nextDate - b.nextDate
-    );
+    let results = [];
+    if (activeTab === 'Events') {
+      events.forEach(event => {
+        event.nextDate = event.startTimeStamp || event.date;
+      });
+      results = [...events];
+      let newEvent = [];
+      recurringEvents.forEach(event => {
+        for (let date in event.registeredVolunteers) {
+          if (moment().unix() - date < 0) {
+            newEvent = { ...event, nextDate: date };
+            results.push(newEvent);
+          }
+        }
+      });
 
-    if (!events || !filterCount) {
-      return (
-        <Component
-          results={activeTab === 'Events' ? allEvents : organizations}
-          type={activeTab}
-          {...props}
-        />
+      results.sort((a, b) => a.nextDate - b.nextDate);
+    } else {
+      results = [...organizations].sort((a, b) =>
+        a.organizationName > b.organizationName ? 1 : -1
       );
     }
 
-    let filteredEvents = allEvents;
-    filteredEvents.forEach(event => (event.sortRank = 0));
+    if (!results.length || !filterCount) {
+      return <Component results={results} type={activeTab} {...props} />;
+    }
+
+    let filteredResults = results;
+    filteredResults.forEach(result => (result.sortRank = 0));
 
     /* This is a crude way to sort events. For each filter match, sortRank
      * is incremented. At the end, we sort the results by sortRank. Any
@@ -53,57 +53,56 @@ export const FilteredComponent = Component => {
      */
 
     if (state) {
-      filteredEvents.forEach(event => {
-        if (event.state.toLowerCase().includes(state.toLowerCase())) {
-          event.sortRank = event.sortRank + 1;
+      filteredResults.forEach(result => {
+        if (result.state.toLowerCase().includes(state.toLowerCase())) {
+          result.sortRank = result.sortRank + 1;
         }
       });
     }
     if (city) {
-      filteredEvents.forEach(event => {
-        if (event.city.toLowerCase().includes(city.toLowerCase())) {
-          event.sortRank = event.sortRank + 1;
+      filteredResults.forEach(result => {
+        if (result.city.toLowerCase().includes(city.toLowerCase())) {
+          result.sortRank = result.sortRank + 1;
         }
       });
     }
-    if (causeAreas) {
-      filteredEvents.forEach(event => {
-        event.typesOfCauses.forEach(causeArea => {
-          if (tagFilter.causeAreas[causeArea])
-            event.sortRank = event.sortRank + 1;
+
+    let testForTags = {
+      causeAreas: {
+        present: false,
+        name: activeTab === 'Events' ? 'typesOfCauses' : 'causeAreas',
+      },
+      interests: { present: false, name: 'interest' },
+      requirements: { present: false, name: 'volunteerRequirements' },
+    };
+
+    for (let key in testForTags) {
+      for (let tag in tagFilter[key]) {
+        if (tagFilter[key][tag]) {
+          testForTags[key]['present'] = true;
+          break;
+        }
+      }
+
+      if (testForTags[key]['present']) {
+        let name = testForTags[key]['name'];
+        filteredResults.forEach(result => {
+          result[name].forEach(tag => {
+            if (tagFilter[key][tag]) {
+              result.sortRank = result.sortRank + 1;
+            }
+          });
         });
-      });
-    }
-    if (interests) {
-      filteredEvents.forEach(event => {
-        event.interest.forEach(interest => {
-          if (tagFilter.interests[interest])
-            event.sortRank = event.sortRank + 1;
-        });
-      });
-    }
-    if (requirements) {
-      filteredEvents.forEach(event => {
-        event.volunteerRequirements.forEach(requirement => {
-          if (tagFilter.requirements[requirement])
-            event.sortRank = event.sortRank + 1;
-        });
-      });
+      }
     }
 
-    filteredEvents.sort((a, b) => {
+    filteredResults.sort((a, b) => {
       if (a.sortRank === b.sortRank) {
         return a.nextDate - b.nextDate;
       } else return a.sortRank < b.sortRank ? 1 : -1;
     });
-    filteredEvents = filteredEvents.filter(event => event.sortRank > 0);
+    filteredResults = filteredResults.filter(result => result.sortRank > 0);
 
-    return (
-      <Component
-        results={activeTab === 'Events' ? allEvents : organizations}
-        type={activeTab}
-        {...props}
-      />
-    );
+    return <Component results={filteredResults} type={activeTab} {...props} />;
   };
 };

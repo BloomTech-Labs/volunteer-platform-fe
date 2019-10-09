@@ -153,7 +153,7 @@ export const RecurringEvent = props => {
   return (
     <StyledDiv>
       <Form>
-        <Form.Item required>
+        <Form.Item>
           <Radio.Group
             name={'recurringEvent'}
             onChange={e => handleChange(e.target.name, e.target.value)}
@@ -166,25 +166,27 @@ export const RecurringEvent = props => {
         </Form.Item>
 
         {recurringInfo.recurringEvent === 'Yes' && (
-          <div>
-            <div>
-              <Form.Item label="Repeat Every">
-                <Select
-                  name={'repeatTimePeriod'}
-                  defaultValue={recurringInfo.repeatTimePeriod}
-                  onChange={value => handleChange('repeatTimePeriod', value)}
-                >
-                  {repeatTimePeriodMap}
-                </Select>
+          <span>
+            <span>
+              <Form.Item label={'Repeat Every'} required>
+                <div className={'input'}>
+                  <Select
+                    name={'repeatTimePeriod'}
+                    defaultValue={recurringInfo.repeatTimePeriod}
+                    onChange={value => handleChange('repeatTimePeriod', value)}
+                  >
+                    {repeatTimePeriodMap}
+                  </Select>
+                </div>
                 {error && !recurringInfo.repeatTimePeriod && (
                   <span className="error-message error-span left-aligned">
                     {error}
                   </span>
                 )}
               </Form.Item>
-            </div>
+            </span>
             <div>
-              <Form.Item label={'Event Ends'}>
+              <Form.Item label={'Event Ends'} required>
                 <Radio.Group
                   name={'Occurrence Ends'}
                   defaultValue={
@@ -209,31 +211,35 @@ export const RecurringEvent = props => {
               </Form.Item>
             </div>
             {recurringInfo.occurrenceEnds === 'On' && (
-              <Form.Item>
-                <DatePicker
-                  name={'occurrenceEndDate'}
-                  format={'MM/DD/YYYY'}
-                  onChange={value => handleChange('occurrenceEndDate', value)}
-                  value={recurringInfo.occurrenceEndDate}
-                  disabledDate={current =>
-                    current && current < moment().endOf('day')
-                  }
-                />
-              </Form.Item>
+              <div>
+                <Form.Item label={'End Date'} required>
+                  <DatePicker
+                    name={'occurrenceEndDate'}
+                    format={'MM/DD/YYYY'}
+                    onChange={value => handleChange('occurrenceEndDate', value)}
+                    value={recurringInfo.occurrenceEndDate}
+                    disabledDate={current =>
+                      current && current < moment().endOf('day')
+                    }
+                  />
+                </Form.Item>
+              </div>
             )}
 
             {recurringInfo.occurrenceEnds === 'After' && (
-              <Form.Item>
+              <Form.Item label={'Number of Occurrences'} required>
                 <InputNumber
                   name={'occurrenceEndsAfter'}
                   min={0}
                   defaultValue={recurringInfo.occurrenceEndsAfter || 1}
                   onChange={value => handleChange('occurrenceEndsAfter', value)}
-                />
-                Occurrence
+                />{' '}
+                {localState.recurringInfo.occurrenceEndsAfter > 1
+                  ? ' Occurrences'
+                  : 'Occurrence'}
               </Form.Item>
             )}
-          </div>
+          </span>
         )}
       </Form>
 
@@ -248,7 +254,7 @@ export const RecurringEvent = props => {
       >
         <Form>
           <div>
-            <div className={''}>
+            <div>
               <Form.Item label={'Repeat Every'}>
                 <InputNumber
                   name={'repeatEvery'}
@@ -337,6 +343,10 @@ export const RecurringEvent = props => {
 };
 
 const StyledDiv = styled.div`
+  .input {
+    width: 80%;
+  }
+
   .errorFlex {
     display: flex;
     flex-direction: column;

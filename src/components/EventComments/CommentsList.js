@@ -25,8 +25,8 @@ const CommentList = ({comments, addCommentToComment, isLoading, event}) => {
 };
 
 const SyledCommentList = styled.div`
-margin-left: 15rem;
-padding: 1rem 3rem;
+max-width: 800px;
+margin-left: 15%;
 `;
 
 CommentList.propTypes = {
