@@ -1,6 +1,7 @@
 import {action} from './action';
 import {deleteFile} from './files';
 import firebase, {store} from '../firebase/FirebaseConfig';
+import {getLatLong} from '../utility/geoCode';
 
 /**
  * Auth Actions
@@ -82,7 +83,7 @@ export const getOrganizationByOrgId = (orgId, dispatch) => {
       if (res.exists){
         const org = res.data();
         org.orgId = res.id;
-        dispatch(action(GET_ORG_BY_ID, org));
+        
       }
     });
 };
