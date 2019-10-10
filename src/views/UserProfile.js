@@ -1,10 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import {withRouter} from 'react-router-dom';
 import styled from 'styled-components';
-import { Icon } from 'antd';
 import {useStateValue} from '../hooks/useStateValue';
 import {
-  UserInfo, UserEvents, UserGoal, UserStats
+  UserInfo, UserEvents, UserGoal, UserStats, UserGraph
 } from '../components/UserProfile/index';
 import {OrgPhoto} from '../components/OrgDashboard/index';
 import {
@@ -133,6 +132,8 @@ export const UserProfile = (props) => {
           <div className='profile-bottom-left'>
             <h4>Stats</h4>
             <UserStats user={user}/>
+            <h4>Stats so far</h4>
+            <UserGraph user={user}/>
           </div>
           <div className='profile-bottom-right'>
             <UserEvents
