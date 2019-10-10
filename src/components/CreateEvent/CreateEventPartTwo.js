@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input, Form, DatePicker, TimePicker, Tooltip, Icon } from 'antd';
+
 import RecurringEvent from './RecurringEvent';
 import moment from 'moment';
 import styled from 'styled-components';
@@ -17,15 +18,18 @@ export const CreateEventPartTwo = props => {
   const {
     firstName,
     lastName,
-    email,
     date,
     startTime,
     endTime,
     dynamicDates,
     recurringInfo,
+    phoneNumber,
   } = localState;
 
   const [error, setError] = useState('');
+  useEffect(() => {
+    window.scrollTo(0, 100);
+  }, []);
 
   const handleDynmaicDate = date => {
     const dynamicDay = date._d.toString().split(' ')[0];
@@ -62,7 +66,7 @@ export const CreateEventPartTwo = props => {
   };
 
   const isFormValid = () => {
-    if (firstName && lastName && email && date) return true;
+    if (firstName && lastName && phoneNumber && date) return true;
   };
 
   const isRecurringValid = () => {
@@ -132,17 +136,17 @@ export const CreateEventPartTwo = props => {
           </Form.Item>
         </div>
         <div className={'error-flex'}>
-          <Form.Item label={'Email'} required>
+          <Form.Item label={'Phone Number'} required>
             <div className={'input'}>
               <Input
-                name={'email'}
-                value={email}
-                placeholder="Email"
+                name={'phoneNumber'}
+                value={phoneNumber}
+                placeholder="Phone Number"
                 onChange={e => handleChange(e.target.name, e.target.value)}
               />
             </div>
             <div>
-              {error && !email && (
+              {error && !phoneNumber && (
                 <span className="error-message error-span left-aligned">
                   {error}
                 </span>
@@ -254,7 +258,7 @@ const StyledDiv = styled.div`
   }
   .date-input {
     label {
-      margin-left: 185px;
+      margin-left: 390px;
     }
   }
   .to-p {

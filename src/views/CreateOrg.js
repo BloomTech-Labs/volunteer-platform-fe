@@ -83,6 +83,9 @@ export const CreateOrg = props => {
     {
       title: '',
     },
+    {},
+    {},
+    {},
     {
       title: 'Finished',
     },
@@ -184,7 +187,7 @@ export const CreateOrg = props => {
         <StyledImg src={createOrgImg} alt="undraw unexpected friends" />
         <Steps current={partCount - 1} progressDot size="small">
           {steps.map(step => (
-            <Step key={step} title={step.title} description={step.content} />
+            <Step key={step} title={step.title} />
           ))}
         </Steps>
       </TopContent>
@@ -222,6 +225,9 @@ export const TopContent = styled(StyledCard)`
 
     .ant-steps-item-finish > .ant-steps-item-container > .ant-steps-item-tail {
       &::after {
+        background: ${({ theme }) => theme.primary8};
+      }
+      span.ant-steps-icon-dot {
         background: ${({ theme }) => theme.primary8};
       }
     }

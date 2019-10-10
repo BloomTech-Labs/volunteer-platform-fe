@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
-import { StyledCard } from '../styled';
+import { deleteModal } from '../styled';
 import createEventImg from '../assets/undraw_blooming_jtv6.svg';
 import {
   CreateEventPartOne,
@@ -14,6 +14,7 @@ import CreateEventReview from '../components/CreateEvent/CreateEventReview/Creat
 import { useStateValue } from '../hooks/useStateValue';
 import { createEvent, createRecurringEvent } from '../actions';
 import { TopContent, StyledRenderDiv } from './CreateOrg';
+
 let { Step } = Steps;
 
 export const CreateEvent = props => {
@@ -64,24 +65,13 @@ export const CreateEvent = props => {
 
   const steps = [
     {
-      title: 'In Progress',
-      content: 'Enter Content',
+      title: 'Start',
     },
-    {
-      title: 'In Progress',
-      content: 'Enter Content',
-    },
-    {
-      title: 'In Progress',
-      content: 'Enter Content',
-    },
-    {
-      title: 'In Progress',
-      content: 'Enter Content',
-    },
+    {},
+    {},
+    {},
     {
       title: 'Finished',
-      content: 'Enter Content',
     },
   ];
   let [pageNumber, setPageNumber] = useState(1);
@@ -89,7 +79,7 @@ export const CreateEvent = props => {
   const [state, dispatch] = useStateValue();
 
   //Destructuring
-  const { recurringInfo, recurringEvent } = localState;
+  const { recurringInfo } = localState;
 
   const RenderedFormParts = formParts[pageNumber];
 
@@ -104,7 +94,6 @@ export const CreateEvent = props => {
 
   //Handle Submit for Form
   const handleReviewSubmit = () => {
-    console.log('org', props.location.state.org.organizationName);
     const event = {
       orgId: localState.orgId,
       orgName: props.location.state.org.organizationName,
@@ -114,8 +103,6 @@ export const CreateEvent = props => {
       streetAddress: localState.streetAddress,
       city: localState.city,
       state: localState.state,
-      email: localState.email,
-      phoneNumber: localState.phoneNumber,
       date: localState.date.unix(),
       startTime: localState.startTime.format('LT'),
       endTime: localState.endTime.format('LT'),
@@ -132,7 +119,7 @@ export const CreateEvent = props => {
       pointOfContact: {
         firstName: localState.firstName,
         lastName: localState.lastName,
-        email: localState.email,
+        phoneNumber: localState.phoneNumber,
       },
       eventDetails: localState.eventDetails,
       website: localState.website,
@@ -167,10 +154,15 @@ export const CreateEvent = props => {
   };
   ///Cancel Form
   const cancelForm = () => {
-    props.history.push('/org-dashboard');
+    const cancelFormModal = deleteModal({
+      title: 'Are you suure you want to cancel ?',
+      content: 'All information will be delete.',
+      onOk: () => props.history.push('/org-dashboard'),
+    });
+    cancelFormModal();
   };
 
-  //Handle Form Parts Submit
+  //Handle Form Part Submit
   const handlePageForward = () => {
     setPageNumber(pageNumber + 1);
   };
@@ -224,7 +216,7 @@ const CustomRenderDiv = styled(StyledRenderDiv)`
   }
 
   label {
-    margin-left: 55px;
+    margin-left: 95px;
     color: ${({ theme }) => theme.primary8};
 
     &::before {
@@ -257,7 +249,7 @@ const CustomRenderDiv = styled(StyledRenderDiv)`
     justify-content: space-around;
 
     label {
-      margin-left: 20px;
+      margin-left: 40px;
     }
   }
   .time-wrapper {
