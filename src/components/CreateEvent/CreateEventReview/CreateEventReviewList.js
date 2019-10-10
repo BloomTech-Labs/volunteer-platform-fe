@@ -13,7 +13,7 @@ export const CreateEventReviewList = props => {
   };
 
   return (
-    <StyledDiv className={'flex center'}>
+    <StyledDiv className={'styledReviewDiv'}>
       <div>
         <StyledButtons>
           <div className="icon" onClick={editForm}>
@@ -107,15 +107,7 @@ export const CreateEventReviewList = props => {
   );
 };
 
-const StyledDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  font-weight: normal;
-
-  p {
-    font-size: 16px;
-  }
-`;
+const StyledDiv = styled.div``;
 
 const StyledButtons = styled.div`
   width: 100%;

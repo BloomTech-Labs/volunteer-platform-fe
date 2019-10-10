@@ -263,15 +263,6 @@ const StyledRenderDiv = styled.div`
     margin-top: 10px;
   }
 
-  .input {
-    width: 80%;
-    margin: 0 auto;
-  }
-
-  h4 {
-    margin: 30px 0px;
-  }
-
   label {
     margin-left: 55px;
     color: ${({ theme }) => theme.primary8};
@@ -280,9 +271,41 @@ const StyledRenderDiv = styled.div`
       color: ${({ theme }) => theme.primary8};
     }
   }
+  .input {
+    width: 80%;
+    margin: 0 auto;
+  }
+  .inline {
+    width: 40%;
+  }
+
+  h4 {
+    margin: 30px 0px;
+  }
+
   .errorFlex {
     dispaly: flex;
     flex-direction: column;
+  }
+
+  .error-message.error-span.left-aligned {
+    color: red;
+    font-size: 12px;
+  }
+  .city-states-input {
+    display: flex;
+    justify-content: space-around;
+
+    label {
+      margin-left: 20px;
+    }
+  }
+  .time-wrapper {
+    display: flex;
+    justify-content: center;
+    label {
+      margin-left: 0px;
+    }
   }
 
   .buttonStyles {
@@ -298,10 +321,6 @@ const StyledRenderDiv = styled.div`
       margin-left: 5px;
       margin-right: 5px;
     }
-  }
-  .error-message.error-span.left-aligned {
-    color: red;
-    font-size: 12px;
   }
 `;
 

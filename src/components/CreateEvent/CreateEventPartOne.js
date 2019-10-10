@@ -44,7 +44,7 @@ export const CreateEventPartOne = props => {
   };
 
   const checkRequired = () => {
-    if (isFormValid()) {
+    if (!isFormValid()) {
       setError('');
       handlePageForward();
     } else {
@@ -205,19 +205,6 @@ export const CreateEventPartOne = props => {
   );
 };
 
-const StyledDiv = styled.div`
-  .city-states-input {
-    display: flex;
-    justify-content: space-around;
-
-    label {
-      margin-left: 25px;
-    }
-  }
-
-  .inline {
-    width: 40%;
-  }
-`;
+const StyledDiv = styled.div``;
 
 export default CreateEventPartOne;
