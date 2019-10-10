@@ -43,7 +43,7 @@ const StyledDiv = styled.div`
   display: flex;
   flex-direction: column;
   margin: 40px auto;
-  padding: 0px 30px;
+  width: 100%;
   h2 {
     font-size: 24px;
     color: ${({ theme }) => theme.primary8};

@@ -18,7 +18,8 @@ export default LeadingCard;
 const StyledCard = styled(Card)`
   background: #fff7e6;
   width: 210px;
-  margin: 1rem 1.5rem;
+  margin: 1rem 3rem;
+  margin-left: 0rem;
 
   @media ${device.tablet} {
     margin: 0.6rem;

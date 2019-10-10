@@ -160,10 +160,6 @@ export const EventProfile = props => {
 };
 
 const StyledEventProfile = styled.div`
-  max-width: 1020px;
-  margin: 15px auto;
-  background-color: ${({ theme }) => theme.gray2};
-
   .previous-page {
     margin-left: 10%;
     padding-top: 20px;
@@ -174,6 +170,7 @@ const StyledEventProfile = styled.div`
     align-items: center;
     cursor: pointer;
   }
+  width: 100%;
 `;
 
 EventProfile.propTypes = {

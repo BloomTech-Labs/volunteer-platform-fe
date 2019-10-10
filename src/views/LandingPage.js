@@ -51,8 +51,8 @@ export const LandingPage = props => {
 
   return (
     <>
-      <StyledHeroDiv image={heroImage} loggedIn={auth.loggedIn}>
-        <HeroContent loggedIn={auth.loggedIn}>
+      <StyledHeroDiv image={heroImage} collapsed={props.collapsed}>
+        <HeroContent collapsed={props.collapsed}>
           <p>
             Compete with friends, meet new ones, give back to the community.
           </p>
@@ -73,7 +73,7 @@ export const LandingPage = props => {
           </div>
         </HeroContent>
       </StyledHeroDiv>
-      <ContentDiv collapsed>
+      <ContentDiv collapsed ={props.collapsed}>
         <HowItWorks />
         <TopVolunteers />
         <TopNonProfits />
@@ -171,7 +171,17 @@ const HeroContent = styled.div`
 `;
 
 const ContentDiv = styled.div`
-  max-width: 1305px;
-  margin: 0 auto;
-  padding-left: ${props => props.collapsed && '15rem'};
+  && {
+    padding-bottom: ${props => props.theme.footerPadding};
+    background: ${({ theme }) => theme.gray2};
+    max-width: ${({ theme }) => theme.maxWidth};
+    margin: 15px auto 45px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    @media ${device.laptop} {
+      max-width: 90%;
+    }
+  }
 `;

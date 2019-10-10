@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import styled from 'styled-components'
 import { message } from 'antd';
 import { useStateValue } from '../hooks/useStateValue';
 import {
@@ -43,7 +44,7 @@ export const MainDashboard = () => {
 
   //fetching user's location by IP
   useEffect(() => {
-      console.log(auth)
+    console.log(auth);
     if (auth.userSearch) {
       setInputState({ ...inputState, location: auth.userSearch });
     } else {
@@ -164,7 +165,7 @@ export const MainDashboard = () => {
   const FilteredList = FilteredComponent(ResultList);
 
   return (
-    <div className="main-content" style={{ maxWidth: 1020, margin: '0 auto' }}>
+    <StyledDiv>
       <h2>Browse {activeTabKey}</h2>
       <FilterTopbar
         changeHandlers={{
@@ -197,8 +198,10 @@ export const MainDashboard = () => {
           />
         )}
       </div>
-    </div>
+    </StyledDiv>
   );
 };
+
+const StyledDiv = styled.div``;
 
 export default MainDashboard;
