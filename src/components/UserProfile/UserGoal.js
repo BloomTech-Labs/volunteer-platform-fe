@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Modal, Select, DatePicker, Input, Icon, Button } from 'antd';
-import { WrappedAntForm, AntInput, AntSelect,  } from '../../styled/index';
-
+import { WrappedAntForm, AntInputNumber, AntSelect } from '../../styled/index';
 import moment from 'moment';
 
 export const UserGoal = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  //const [goalsToEdit, setGoalsToEdit] = useState({});
+  const [goalsToEdit, setGoalsToEdit] = useState({
+    Hours: '',
+    Frequency: undefined,   //need to be undefined or else placeholder will not show
+    start: null,
+    end: null
+  });
   const [displayGoals, setDisplayGoals] = useState({
-    hours: 0,
+    hours: '',
     frequency: '',
     duration: {
       start: '',
@@ -27,8 +31,15 @@ export const UserGoal = (props) => {
   useEffect(() => {
     if (props.user.goals) {
       setDisplayGoals(props.user.goals);
+      setGoalsToEdit({
+        Hours: props.user.goals.hours,
+        Frequency: props.user.goals.frequency ? props.user.goals.frequency : undefined,   
+        start: props.user.goals.duration.start ? moment(props.user.goals.duration.start) : null,
+        end: props.user.goals.duration.end ? moment(props.user.goals.duration.end) : null
+      })
     }
   }, [props.user])  
+
 
   const handleSubmit = (values) => {
     console.log(values);
@@ -47,16 +58,46 @@ export const UserGoal = (props) => {
     }
 
     props.updateUser(updatedUser);
+    setGoalsToEdit({
+      Hours: '',
+      Frequency: '',
+      start: null,
+      end: null
+    });
     setIsModalOpen(false);
   }
 
   const cancelSetGoal = () => {
+    setGoalsToEdit({
+      Hours: '',
+      Frequency: undefined,
+      start: null,
+      end: null
+    });
     setIsModalOpen(false);
+  }
+
+  const removeGoal = () => {
+    let newGoals = {
+      hours: '',
+      frequency: '',
+      duration: {
+        start: null,
+        end: null
+      }
+    }
+
+    let updatedUser = {
+      ...props.user,
+      goals: newGoals
+    }
+    props.updateUser(updatedUser);
+
   }
 
   return (
     <StyledDiv>
-      <Modal 
+      <StyledModal 
         title='Set Your Goal'
         visible={isModalOpen}
         closable={false}
@@ -65,6 +106,7 @@ export const UserGoal = (props) => {
         <WrappedAntForm
           layout={'vertical'}
           onSubmit={handleSubmit}
+          autofill={goalsToEdit}
           buttonType="primary"
           submitButton
           submitButtonText="Save"
@@ -72,37 +114,60 @@ export const UserGoal = (props) => {
           cancelButtonText={'Cancel'}
           handleCancel={cancelSetGoal}
         >
-          <AntInput 
-            name={' Hours '}
-            placeholder='Enter number of hours'/>
-          <AntSelect 
-            name={' Frequency'}
-            placeholder='Select frequency'>
-            <Option key='per week' value='per week'>hours per week</Option>
-            <Option key='per month' value='per month'>hours per month</Option>
-          </AntSelect>
-          <MonthPicker 
-            name={'Start'}
-            placeholder={'Start month'}
-            format={'MMM-YYYY'}
-          />
-          <MonthPicker 
-            name={'End'}
-            placeholder={'Start month'}
-            format={'MMM-YYYY'}
-          />
-        </WrappedAntForm>
-      </Modal>
-      <div className='left'>
-        <Button type='link' icon='plus-circle' onClick={openModal}>Set Goals</Button>
-        <div>
-          <h5>Current Goal</h5>
-          <p>{displayGoals.hours} hours {displayGoals.frequency}</p>
-        </div>
-        <div>
+          <div className='form-row'>
+            <AntInputNumber 
+              name={' Hours '}
+              placeholder='Number of hours'
+              min={0} 
+              style={{width: '200px'}}/>
+            <AntSelect 
+              name={' Frequency'}
+              placeholder='Select frequency'
+              style={{width: '200px'}}
+            >
+              <Option key='per week' value='per week'>hours per week</Option>
+              <Option key='per month' value='per month'>hours per month</Option>
+            </AntSelect>
+          </div>
           <h5>Duration</h5>
-          <p>{displayGoals.duration.start} to {displayGoals.duration.end}</p>
-        </div>
+          <div className='form-row'>
+            <MonthPicker 
+              name={'Start'}
+              placeholder={'Start month'}
+              format={'MMM-YYYY'}
+              style={{width: '200px'}}
+            />
+            <MonthPicker 
+              name={'End'}
+              placeholder={'End month'}
+              format={'MMM-YYYY'}
+              style={{width: '200px'}}
+            />
+          </div>
+        </WrappedAntForm>
+      </StyledModal>
+        <div className='left'>
+        <Button type='link' icon='plus-circle' onClick={openModal}>Set Goals</Button>
+        {displayGoals.frequency ? (
+          <>
+            <div>
+              <div className='row'>
+                <h5>Current Goal</h5>
+                <Button type='link' icon='minus-circle' onClick={removeGoal}>Remove</Button>
+              </div>
+              <p>{displayGoals.hours} hours {displayGoals.frequency}</p>
+            </div>
+            <div>
+              <h5>Duration</h5>
+              <p>{displayGoals.duration.start} to {displayGoals.duration.end}</p>
+            </div>
+          </>
+        ) : (
+          <>
+            <h5>Current Goal</h5>
+            <p>You do not have any goals at the moment</p>
+          </>
+        )}
       </div>
       <div className='right'>
         <div>
@@ -142,6 +207,16 @@ const StyledDiv = styled.div`
     flex-direction: column;
     align-items: flex-start;
 
+    .row {
+      display: flex,
+      justify-content: flex-start;
+      align-items: flex-end;
+
+      h5 {
+        margin-right: 1rem;
+      }
+    }
+
     button {
       color: rgba(0, 0, 0, 0.6);
       padding: 0;
@@ -163,3 +238,24 @@ const StyledDiv = styled.div`
     }
   }
 `
+
+const StyledModal = styled(Modal)`
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .form-row {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      flex-wrap: wrap;
+    }
+
+    button {
+      align-self: center;
+      margin: 1rem 1.5rem;
+    }
+  }
+` 
