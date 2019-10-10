@@ -44,7 +44,7 @@ const Messages = ({messageId, selectedUid}) => {
           to={`users/${messageThread[ 0 ].id}`}>{messageThread[ 0 ].name}</Link>;
       }else{
         return <Link
-          to={`organizations/${selectedUid}`}>{org.userOrganizations.filter(
+          to={`organization/${selectedUid}`}>{org.userOrganizations.filter(
           org => org.orgId === from)[ 0 ].organizationName}</Link>;
       }
     }else{
@@ -54,7 +54,7 @@ const Messages = ({messageId, selectedUid}) => {
         ' ' + auth.googleAuthUser.lastName}</Link>;
       }else{
         return <Link
-          to={`organizations/${messageThread[ 0 ].id}`}>{messageThread[ 0 ].name}</Link>;
+          to={`organization/${messageThread[ 0 ].id}`}>{messageThread[ 0 ].name}</Link>;
       }
     }
   };
