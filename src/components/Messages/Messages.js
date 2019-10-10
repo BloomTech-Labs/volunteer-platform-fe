@@ -10,6 +10,7 @@ const Messages = ({messageId, selectedUid}) => {
   const [{auth, messages, org}, dispatch] = useStateValue();
   const [text, setText] = useState();
   const [imageUrl, setImageUrl] = useState('');
+  const messageRef = React.createRef();
   
   let messageThread = [];
   if (messages.messages[ selectedUid ] &&
@@ -28,6 +29,11 @@ const Messages = ({messageId, selectedUid}) => {
         setImageUrl(url);
       });
     }
+    
+    const scrollHeight = messageRef.current.scrollHeight;
+    const height = messageRef.current.clientHeight;
+    const maxScrollTop = scrollHeight - height;
+    messageRef.current.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
   }, [messageId, selectedUid]);
   
   const getAuthor = (from) => {
@@ -85,7 +91,7 @@ const Messages = ({messageId, selectedUid}) => {
           org => org.orgId === selectedUid)[ 0 ].imageUrl;
       }
     }else{
-      if (from === auth.googleAuthUser.uid){
+      if (from === auth.googleAuthUser.uid && auth.registeredUser){
         return auth.registeredUser.imageUrl;
       }else{
         return imageUrl;
@@ -111,7 +117,7 @@ const Messages = ({messageId, selectedUid}) => {
   
   return (
     <StyledMessages>
-      <StyledMessageThread>
+      <StyledMessageThread ref={messageRef}>
         {messageThread.length > 0 &&
         messageThread[ 0 ].messages.map((message, i) => {
           debugger;
@@ -201,6 +207,7 @@ p {
 const StyledMessageThread = styled.div`
   height: 65Vh;
   overflow-y: scroll;
+  s
 `;
 
 export default Messages;
