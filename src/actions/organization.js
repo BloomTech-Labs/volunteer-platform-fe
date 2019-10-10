@@ -49,6 +49,7 @@ export const subscribeToUserOrganizations = (uid, dispatch) => {
     .collection('organizations')
     .where('organizationOwnerUID', '==', uid)
     .onSnapshot(snapShot => {
+      
       const orgs = [];
       if (!snapShot.empty){
         localStorage.setItem('createdOrg', 'true');
@@ -144,6 +145,7 @@ export const deleteOrganizationImage = (organization) => {
   
   deleteFile(organization.imagePath);
   delete organization.imagePath;
+  delete organization.imageUrl;
   
   store.collection('organizations')
     .doc(organization.orgId)

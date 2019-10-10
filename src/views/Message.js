@@ -10,9 +10,7 @@ const Message = (props) => {
   
   return (
     <StyledMessage width={props.width}>
-      <StyledCard>
-        <MessageThreads {...props}/>
-      </StyledCard>
+      <MessageThreads {...props}/>
     </StyledMessage>
   );
 };
