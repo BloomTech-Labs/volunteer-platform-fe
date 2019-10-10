@@ -57,12 +57,12 @@ const MessageThreads = (props) => {
   };
   
   return (
-    <Layout>
+    <StyledLayout>
       <div className={'row'}>
-        <Menu
+        <StyledMenu
           onClick={handleClick}
           style={{width: 256}}
-          defaultSelectedKeys={['1']}
+          selectedKeys={selectedThread && selectedThread.id}
           mode="inline"
         >
           {selectedUid &&
@@ -81,16 +81,24 @@ const MessageThreads = (props) => {
               </Badge>
             </StyledMenuItem>;
           })}
-        </Menu>
+        </StyledMenu>
         {selectedThread &&
         <Messages messageId={selectedThread.id} selectedUid={selectedUid}/>}
         {!selectedThread && <h2>No messages to display</h2>}
       </div>
     
-    </Layout>
+    </StyledLayout>
   
   );
 };
+
+const StyledLayout = styled(Layout)`
+.row {
+  border: 2px solid ${props => props.theme.gray5};
+  border-radius: ${props => props.theme.borderRadiusDefault};
+  width: 100%;
+}
+`;
 
 const StyledMenuItem = styled(Menu.Item)`
 &&{
@@ -101,6 +109,11 @@ const StyledMenuItem = styled(Menu.Item)`
 span > p {
   color: white;
 }
+
+`;
+
+const StyledMenu = styled(Menu)`
+border-radius: ${props => props.theme.borderRadiusDefault};
 `;
 
 export default MessageThreads;
