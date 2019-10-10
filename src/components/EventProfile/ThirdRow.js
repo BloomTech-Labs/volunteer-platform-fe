@@ -3,34 +3,29 @@ import styled from 'styled-components';
 import MapContainer from '../Map/MapContainer';
 import {useStateValue} from '../../hooks/useStateValue';
 
-export const ThirdRow = () => {
-  const [{events}, dispatch] = useStateValue();
-  debugger;
+export const ThirdRow = ({localState}) => {
+  
   const markers = [
     {
-      title: events.event.nameOfEvent,
-      name: events.event.organizationName,
-      address: events.event.streetAddress + ' ' + events.event.city + ', ' +
-        events.event.state,
-      pos: {
-        lat: events.event.lat,
-        lng: events.event.lng,
-      },
+      title: localState.nameOfEvent,
+      name: localState.nameOfEvent,
+      address: `${localState.streetAddress} ${localState.city}, ${localState.state}`,
+      position: {lat: localState.lat, lng: localState.lng},
     },
   ];
   
   return (
     <StyledThirdRow>
       <div className="details">
-        <h5>Details</h5>
-        <p>{events.event.eventDetails}</p>
+        <h4>Details</h4>
+        <p className='details-info'>{localState.eventDetails}</p>
       </div>
       <div className="map">
-        <h5>Find us at</h5>
-        {events.event.lat &&
-        <MapContainer markers={markers} lng={events.event.lng}
-                      lat={events.event.lat} width={'250px'}
-                      height={'250px'}
+        <h4>Find us at</h4>
+        {localState.lat &&
+        <MapContainer marginLeft={'0'} height={'250px'} width={'250px'}
+                      lat={localState.lat} lng={localState.lng}
+                      markers={markers}
         />}
       </div>
     </StyledThirdRow>
@@ -42,18 +37,25 @@ const StyledThirdRow = styled.div`
   margin: 0 auto 24px;
   min-height: 150px;
   display: flex;
-  .details {
-    width: 70%;
-    
-    
-    p {
-      background-color: white;
-      padding: 1rem;
+  justify-content: space-between;
+
+  .details, .map {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+  }
+
+  .details{
+    width: 65%;
+    .details-info{
+        background: white;
+        border-radius: 4px;
+        min-height: 200px;
     }
   }
+
   .map{
-    width: 30%;
-    position: relative;
+      width: 30%;
   }
 `;
 
