@@ -58,15 +58,6 @@ const MessageThreads = (props) => {
   
   return (
     <Layout>
-      {selectedUid && auth.googleAuthUser && selectedUid ===
-      auth.googleAuthUser.uid &&
-      <h1>Users Messages</h1>}
-      {selectedUid &&
-      org.userOrganizations.filter(org => org.orgId === selectedUid).length >
-      0 &&
-      <h1>{org.userOrganizations.filter(
-        org => org.orgId === selectedUid)[ 0 ].organizationName}'s
-        Messages</h1>}
       <div className={'row'}>
         <Menu
           onClick={handleClick}

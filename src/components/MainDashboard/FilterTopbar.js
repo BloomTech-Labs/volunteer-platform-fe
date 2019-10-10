@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useStateValue } from '../../hooks/useStateValue';
-import { Card, Form, Row, Col, Input, Icon, Divider, Select } from 'antd';
-import { StyledCheckableTag as CheckableTag } from '../../styled';
+import { Form, Row, Col, Input, Icon, Divider, Select } from 'antd'
+import { StyledCheckableTag as CheckableTag, StyledCard } from '../../styled';
 import Autocomplete from 'react-google-autocomplete';
 
 const tabList = [
@@ -234,7 +234,7 @@ export const FilterTopbar = ({
   };
 
   return (
-    <Card
+    <StyledCard
       bordered={false}
       tabList={tabList}
       activeTabKey={activeTab}
@@ -242,6 +242,6 @@ export const FilterTopbar = ({
       loading={loading}
     >
       {contentList[activeTab]}
-    </Card>
+    </StyledCard>
   );
 };

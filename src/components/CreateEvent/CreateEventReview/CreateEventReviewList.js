@@ -6,17 +6,20 @@ import { confirmModal } from '../../../styled';
 import RecurringInfoReview from './RecurringInfoReview';
 
 export const CreateEventReviewList = props => {
-  const { localState, handleReviewSubmit, handlePageBack, setEdit } = props;
+  const { localState, handleReviewSubmit, cancelForm, setEdit } = props;
 
   const editForm = () => {
     setEdit(true);
   };
 
-  const confirmFormModal = confirmModal({
-    title: 'Creating an Event',
-    content: 'Please ensure all the information is correct.',
-    onOk: () => handleReviewSubmit(),
-  });
+  const confirmForm = () => {
+    const confirmFormModal = confirmModal({
+      title: 'Creating an Event',
+      content: 'Please ensure all the information is correct.',
+      onOk: () => handleReviewSubmit(),
+    });
+    confirmFormModal();
+  };
 
   return (
     <StyledDiv className={'styledReviewDiv'}>
@@ -123,19 +126,11 @@ export const CreateEventReviewList = props => {
         </div>
       </div>
       <div className="buttonStyles">
-        <StyledCancelButton
-          key="cancel"
-          type="second"
-          onClick={() => handlePageBack()}
-        >
-          Back
+        <StyledCancelButton key="cancel" type="second" onClick={cancelForm}>
+          Cancel
         </StyledCancelButton>
 
-        <StyledButton
-          key="submit"
-          type="primary"
-          onClick={() => handleReviewSubmit()}
-        >
+        <StyledButton key="submit" type="primary" onClick={confirmForm}>
           Confirm
         </StyledButton>
       </div>

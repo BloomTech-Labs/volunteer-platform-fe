@@ -15,7 +15,7 @@ export const WorksCard = props => {
 const StyledDiv = styled.div`
   height: 350px;
   width: 300px;
-  background: ${({ theme }) => theme.gray3};
+  background: ${({ theme }) => theme.gray1};
   text-align: center;
   display: flex;
   flex-direction: column;
