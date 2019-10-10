@@ -381,24 +381,24 @@ export const CreateEventReviewEditForm = props => {
             />
           </div>
         </Form.Item>
+        <div className="buttonStyles">
+          <StyledCancelButton
+            key="cancel"
+            type="secondary"
+            onClick={() => handleForm()}
+          >
+            Cancel
+          </StyledCancelButton>
+          <StyledButton
+            onClick={() => checkRequired()}
+            key="save"
+            type="primary"
+            width="fit-content"
+          >
+            Save and Review
+          </StyledButton>
+        </div>
       </Form>
-      <div className="buttonStyles">
-        <StyledCancelButton
-          key="cancel"
-          type="secondary"
-          onClick={() => handleForm()}
-        >
-          Cancel
-        </StyledCancelButton>
-        <StyledButton
-          onClick={() => checkRequired()}
-          key="save"
-          type="primary"
-          width="fit-content"
-        >
-          Save and Review
-        </StyledButton>
-      </div>
     </StyledDiv>
   );
 };

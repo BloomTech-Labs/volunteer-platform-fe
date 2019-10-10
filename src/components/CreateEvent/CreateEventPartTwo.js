@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input, Form, DatePicker, TimePicker, Tooltip, Icon } from 'antd';
 
 import RecurringEvent from './RecurringEvent';
@@ -27,6 +27,9 @@ export const CreateEventPartTwo = props => {
   } = localState;
 
   const [error, setError] = useState('');
+  useEffect(() => {
+    window.scrollTo(0, 100);
+  }, []);
 
   const handleDynmaicDate = date => {
     const dynamicDay = date._d.toString().split(' ')[0];
@@ -255,7 +258,7 @@ const StyledDiv = styled.div`
   }
   .date-input {
     label {
-      margin-left: 185px;
+      margin-left: 390px;
     }
   }
   .to-p {

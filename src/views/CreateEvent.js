@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
-import { StyledCard, deleteModal } from '../styled';
+import { deleteModal } from '../styled';
 import createEventImg from '../assets/undraw_blooming_jtv6.svg';
 import {
   CreateEventPartOne,
@@ -14,6 +14,7 @@ import CreateEventReview from '../components/CreateEvent/CreateEventReview/Creat
 import { useStateValue } from '../hooks/useStateValue';
 import { createEvent, createRecurringEvent } from '../actions';
 import { TopContent, StyledRenderDiv } from './CreateOrg';
+
 let { Step } = Steps;
 
 export const CreateEvent = props => {
@@ -161,7 +162,7 @@ export const CreateEvent = props => {
     cancelFormModal();
   };
 
-  //Handle Form Parts Submit
+  //Handle Form Part Submit
   const handlePageForward = () => {
     setPageNumber(pageNumber + 1);
   };
@@ -215,7 +216,7 @@ const CustomRenderDiv = styled(StyledRenderDiv)`
   }
 
   label {
-    margin-left: 55px;
+    margin-left: 95px;
     color: ${({ theme }) => theme.primary8};
 
     &::before {
@@ -248,7 +249,7 @@ const CustomRenderDiv = styled(StyledRenderDiv)`
     justify-content: space-around;
 
     label {
-      margin-left: 20px;
+      margin-left: 40px;
     }
   }
   .time-wrapper {

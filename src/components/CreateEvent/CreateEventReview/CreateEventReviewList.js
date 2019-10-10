@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyledButton, StyledCancelButton } from '../../../styled';
 import { Icon, Tag } from 'antd';
 import styled from 'styled-components';
@@ -126,13 +126,16 @@ export const CreateEventReviewList = props => {
         </div>
       </div>
       <div className="buttonStyles">
-        <StyledCancelButton key="cancel" type="second" onClick={cancelForm}>
-          Cancel
-        </StyledCancelButton>
-
-        <StyledButton key="submit" type="primary" onClick={confirmForm}>
-          Confirm
-        </StyledButton>
+        <div>
+          <StyledCancelButton key="cancel" type="second" onClick={cancelForm}>
+            Cancel
+          </StyledCancelButton>
+        </div>
+        <div>
+          <StyledButton key="submit" type="primary" onClick={confirmForm}>
+            Confirm
+          </StyledButton>
+        </div>
       </div>
     </StyledDiv>
   );

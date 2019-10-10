@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyledCancelButton, StyledButton } from '../../styled';
 import styled from 'styled-components';
-import { Input, InputNumber, Form, Tooltip, Icon } from 'antd';
+import { Input, InputNumber, Form } from 'antd';
 
 const { TextArea } = Input;
 
@@ -10,6 +10,10 @@ export const CreateEventPartFour = props => {
   const { handlePageBack, handlePageForward, localState, handleChange } = props;
 
   const { website, numberOfVolunteers, otherNotes } = localState;
+
+  useEffect(() => {
+    window.scrollTo(0, 100);
+  }, []);
 
   const isFormValid = () => {
     if (numberOfVolunteers) {
@@ -45,7 +49,7 @@ export const CreateEventPartFour = props => {
 
         <div>
           <h4>How many volunteers do you need?</h4>
-          <Form.Item required>
+          <Form.Item label={'Number of Volunteers'} required>
             <div className={'error-flex'}>
               <div className={'inputNumber'}>
                 <InputNumber
@@ -84,19 +88,19 @@ export const CreateEventPartFour = props => {
             </div>
           </Form.Item>
         </Form.Item>
+        <div className="buttonStyles">
+          <StyledCancelButton
+            onClick={handlePageBack}
+            type="secondary"
+            key="back"
+          >
+            Back
+          </StyledCancelButton>
+          <StyledButton type="primary" key="next" onClick={checkedRequired}>
+            Next
+          </StyledButton>
+        </div>
       </Form>
-      <div className="buttonStyles">
-        <StyledCancelButton
-          onClick={handlePageBack}
-          type="secondary"
-          key="back"
-        >
-          Back
-        </StyledCancelButton>
-        <StyledButton type="primary" key="next" onClick={checkedRequired}>
-          Next
-        </StyledButton>
-      </div>
     </StyledDiv>
   );
 };

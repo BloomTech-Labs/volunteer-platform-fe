@@ -82,6 +82,9 @@ export const RecurringEvent = props => {
   };
 
   const isModalValid = () => {
+    if (recurringInfo.repeatEvery > 0) {
+      return true;
+    }
     if (
       recurringInfo.repeatEveryValue === 'Day' ||
       recurringInfo.repeatEveryValue === 'Days'
@@ -105,16 +108,11 @@ export const RecurringEvent = props => {
   };
 
   const checkedRequired = () => {
-    if (
-      recurringInfo.repeatTimePeriod === 'Other' &&
-      recurringInfo.repeatEvery > 0
-    ) {
-      if (isModalValid()) {
-        closeModal();
-        setError('');
-      } else {
-        setError('This field is required.');
-      }
+    if (isModalValid()) {
+      closeModal();
+      setError('');
+    } else {
+      setError('This field is required.');
     }
   };
 
@@ -244,7 +242,7 @@ export const RecurringEvent = props => {
       </Form>
 
       <Modal
-        title="Add a Custom Repeat Time Period"
+        title="Adding a Custom Repeat Time Period"
         width={720}
         closable
         onOk={() => checkedRequired()}
@@ -254,20 +252,26 @@ export const RecurringEvent = props => {
       >
         <Form>
           <div>
-            <div>
+            <div className={'errorFlex'}>
               <Form.Item label={'Repeat Every'}>
-                <InputNumber
-                  name={'repeatEvery'}
-                  style={{ margin: 'o auto' }}
-                  defaultValue={recurringInfo.repeatEvery}
-                  onChange={value => handleChange('repeatEvery', value)}
-                  min={0}
-                />
-                {error && !recurringInfo.repeatEvery && (
-                  <span className="error-message error-span left-aligned">
-                    {error}
-                  </span>
-                )}
+                <div>
+                  <InputNumber
+                    name={'repeatEvery'}
+                    defaultValue={recurringInfo.repeatEvery}
+                    onChange={value => handleChange('repeatEvery', value)}
+                    min={0}
+                  />
+                </div>
+                <div>
+                  {error && !recurringInfo.repeatEvery && (
+                    <span
+                      className="error-message error-span left-aligned"
+                      style={{ color: 'red', frontSize: '12px' }}
+                    >
+                      Must be higher than 0.
+                    </span>
+                  )}
+                </div>
               </Form.Item>
             </div>
             <div>
@@ -275,12 +279,16 @@ export const RecurringEvent = props => {
                 <Select
                   name={'repeatEveryValue'}
                   value={recurringInfo.repeatEveryValue}
+                  placeholder="Choose a time period"
                   onChange={value => handleChange('repeatEveryValue', value)}
                 >
                   {periodOfTimeMap}
                 </Select>
                 {error && !recurringInfo.repeatEveryValue && (
-                  <span className="error-message error-span left-aligned">
+                  <span
+                    className="error-message error-span left-aligned"
+                    style={{ color: 'red', frontSize: '12px' }}
+                  >
                     {error}
                   </span>
                 )}

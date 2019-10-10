@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Select, Form, Input, Tooltip, Icon } from 'antd';
 import { StyledButton, StyledCancelButton } from '../../styled';
 import styled from 'styled-components';
@@ -16,7 +16,7 @@ export const CreateEventPartOne = props => {
 
   const { nameOfEvent, typesOfCauses, streetAddress, city } = localState;
   const [error, setError] = useState('');
-  //Mapping through tags for antd select
+
   const causeAreaTags = state.tags.causeAreas.map(tag => {
     return (
       <Option key={tag} value={tag}>
