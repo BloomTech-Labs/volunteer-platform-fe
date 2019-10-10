@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import moment from 'moment';
 import {Input, Comment, Avatar, Tooltip} from 'antd';
 import {sendMessage, getFileUrl} from '../../actions';
+import {Link} from 'react-router-dom';
 
 const Messages = ({messageId, selectedUid}) => {
   const [{auth, messages, org}, dispatch] = useStateValue();
@@ -22,12 +23,35 @@ const Messages = ({messageId, selectedUid}) => {
   
   useEffect(() => {
     
-    if (messageThread[ 0 ].imagePath){
+    if (messageThread[ 0 ] && messageThread[ 0 ].imagePath){
       getFileUrl(messageThread[ 0 ].imagePath).then(url => {
         setImageUrl(url);
       });
     }
-  }, [messageThread]);
+  }, [messageId, selectedUid]);
+  
+  const getAuthor = (from) => {
+    debugger;
+    if (messageThread[ 0 ].contactType === 'users'){
+      if (from === messageThread[ 0 ].id){
+        return <Link
+          to={`users/${messageThread[ 0 ].id}`}>{messageThread[ 0 ].name}</Link>;
+      }else{
+        return <Link
+          to={`organizations/${selectedUid}`}>{org.userOrganizations.filter(
+          org => org.orgId === from)[ 0 ].organizationName}</Link>;
+      }
+    }else{
+      if (from === auth.googleAuthUser.uid){
+        return <Link
+          to={`users/${auth.googleAuthUser.uid}`}>{auth.googleAuthUser.firstName +
+        ' ' + auth.googleAuthUser.lastName}</Link>;
+      }else{
+        return <Link
+          to={`organizations/${messageThread[ 0 ].id}`}>{messageThread[ 0 ].name}</Link>;
+      }
+    }
+  };
   
   const send = () => {
     
@@ -52,6 +76,39 @@ const Messages = ({messageId, selectedUid}) => {
     sendMessage(to, from, message);
   };
   
+  const getAvatarUrl = (from) => {
+    if (messageThread[ 0 ].contactType === 'users'){
+      if (from === messageThread[ 0 ].id){
+        return imageUrl;
+      }else{
+        return org.userOrganizations.filter(
+          org => org.orgId === selectedUid)[ 0 ].imageUrl;
+      }
+    }else{
+      if (from === auth.googleAuthUser.uid){
+        return auth.registeredUser.imageUrl;
+      }else{
+        return imageUrl;
+      }
+    }
+  };
+  
+  const getCommentClassName = (from) => {
+    if (messageThread[ 0 ].contactType === 'users'){
+      if (from === messageThread[ 0 ].id){
+        return 'other';
+      }else{
+        return 'me';
+      }
+    }else{
+      if (from === auth.googleAuthUser.uid){
+        return 'me';
+      }else{
+        return 'other';
+      }
+    }
+  };
+  
   return (
     <StyledMessages>
       <StyledMessageThread>
@@ -60,18 +117,11 @@ const Messages = ({messageId, selectedUid}) => {
           debugger;
           return (
             <Comment
-              className={message.from === auth.googleAuthUser.uid ? 'me' :
-                'other'}
-              author={message.from === auth.googleAuthUser.uid &&
-              auth.registeredUser ? auth.registeredUser.firstName + ' ' +
-                auth.registeredUser.lastName :
-                messageThread[ 0 ].name}
+              className={getCommentClassName(message.from)}
+              author={getAuthor(message.from)}
               avatar={
                 <Avatar
-                  src={message.from === auth.googleAuthUser.uid &&
-                  auth.registeredUser ?
-                    auth.registeredUser.imageUrl : imageUrl
-                  }
+                  src={getAvatarUrl(message.from)}
                   icon={'user'}
                   alt={message.from === auth.googleAuthUser.uid &&
                   auth.registeredUser ? auth.registeredUser.firstName + ' ' +
