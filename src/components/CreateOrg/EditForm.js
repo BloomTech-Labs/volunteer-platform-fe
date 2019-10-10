@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { causeAreas } from '../../reducers/initialState';
 import { StyledButton, StyledCancelButton } from '../../styled';
 import { EditPOC } from './EditPOC';
-
+import Autocomplete from 'react-google-autocomplete';
 const { Option } = Select;
 const { TextArea } = Input;
 
@@ -81,28 +81,47 @@ export const EditForm = ({ storedData, cancelForm, setBackToReview }) => {
             placeholder="Name of Organization"
           />
         </Form.Item>
-        <Form.Item label={'Address'}>
-          <Input
-            value={localState['streetAddress']}
-            onChange={e => handleChange(e.target.name, e.target.value)}
-            name={'streetAddress'}
-            placeholder="Street Address"
-          />
-          <div className="inline">
-            <Input
-              value={localState['city']}
+        {localState.address ? (
+          <Form.Item label="Address">
+            <Autocomplete
+              className="google-autocomplete"
+              value={localState['address']}
               onChange={e => handleChange(e.target.name, e.target.value)}
-              name={'city'}
-              placeholder="City"
+              onPlaceSelected={place => {
+                setLocalState({
+                  ...localState,
+                  address: place.formatted_address,
+                });
+              }}
+              name={'address'}
+              types={['address']}
+              componentRestrictions={{ country: 'us' }}
             />
+          </Form.Item>
+        ) : (
+          <Form.Item label={'Address'}>
             <Input
-              value={localState['state']}
+              value={localState['streetAddress']}
               onChange={e => handleChange(e.target.name, e.target.value)}
-              name={'state'}
-              placeholder="State"
+              name={'streetAddress'}
+              placeholder="Street Address"
             />
-          </div>
-        </Form.Item>
+            <div className="inline">
+              <Input
+                value={localState['city']}
+                onChange={e => handleChange(e.target.name, e.target.value)}
+                name={'city'}
+                placeholder="City"
+              />
+              <Input
+                value={localState['state']}
+                onChange={e => handleChange(e.target.name, e.target.value)}
+                name={'state'}
+                placeholder="State"
+              />
+            </div>
+          </Form.Item>
+        )}
         <Form.Item
           label={
             <Tooltip
@@ -206,6 +225,7 @@ export const EditForm = ({ storedData, cancelForm, setBackToReview }) => {
             placeholder={
               'A short paragraph such as mission, vision, and values of your non profit would go here...'
             }
+            autosize
           />
           <Input
             name={'website'}
@@ -248,6 +268,7 @@ const StyledForm = styled(Form)`
   .weekday-select {
     width: 310px;
     margin: 0 auto 20px;
+    display: block;
   }
   .daysOfWeekPicker {
     display: flex;
@@ -255,6 +276,7 @@ const StyledForm = styled(Form)`
     width: 70%;
     margin: 0 auto;
     height: 200px;
+    
 
     .weekdays-group,
     .weekend-group {
@@ -296,6 +318,25 @@ const StyledForm = styled(Form)`
 
     input {
       width: 30%;
+    }
+  }
+
+  .google-autocomplete {
+    width: 100%;
+    height: 32px;
+    display: inline-block;
+    padding: 4px 11px;
+    font-size: 14px;
+    line-height: 1.5;
+    background-color: #fff;
+    border-radius: 4px;
+    border: 1px solid rgb(217, 217, 217);
+    font-family: ${({ theme }) => theme.bodytext};
+
+    &::placeholder{
+       color: rgba(0, 0, 0, 0.35);
+       font-size: 14px;
+       font-family: ${({ theme }) => theme.bodytext};
     }
   }
 `;

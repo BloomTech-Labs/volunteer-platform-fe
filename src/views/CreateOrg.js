@@ -136,6 +136,9 @@ export const CreateOrg = props => {
       [5]: { ...localState[5], ...values },
     });
     setPartCount(partCount => partCount + 1);
+    document
+      .getElementById('scroll-org-header')
+      .scrollIntoView({ behavior: 'smooth' });
   };
 
   const clickPrevious = () => {
@@ -182,7 +185,9 @@ export const CreateOrg = props => {
 
   return (
     <StyledDiv>
-      <h1 className="create-org-header">{possibleHeaders[partCount]}</h1>
+      <h1 className="create-org-header align-center" id={'scroll-org-header'}>
+        {possibleHeaders[partCount]}
+      </h1>
       <TopContent>
         <StyledImg src={createOrgImg} alt="undraw unexpected friends" />
         <Steps current={partCount - 1} progressDot size="small">
@@ -209,7 +214,9 @@ export const CreateOrg = props => {
 
 const StyledDiv = styled.div`
   background: ${({ theme }) => theme.gray2};
-  text-align: center;
+  .align-center {
+    text-align: center;
+  }
   .create-org-header {
     color: ${props => props.theme.gray9};
   }
@@ -218,7 +225,7 @@ const StyledDiv = styled.div`
 export const TopContent = styled(StyledCard)`
   display: flex;
   flex-direction: column;
-
+  text-align: center;
   .ant-steps {
     text-align: left;
     margin-bottom: 40px;
