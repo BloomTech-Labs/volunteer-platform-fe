@@ -9,9 +9,11 @@ export const UserGraph = (props) => {
 
   useEffect(() => {
     if (props.user.validatedHours && props.user.goals) {
-      let results = groupHoursByMonths(props.user.validatedHours, props.user.goals.duration);
+      let results = groupHoursByMonths(props.user.validatedHours);
       setData(results);
-      setDomain([props.user.goals.duration.start, props.user.goals.duration.end])
+    } else {
+      let results = groupHoursByMonths([]);
+      setData(results);
     }
   }, [props.user])
 
