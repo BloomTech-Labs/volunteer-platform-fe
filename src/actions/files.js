@@ -60,6 +60,5 @@ export const deleteFile = (path) => {
   firebase.storage().ref().child(path).delete().then(res => {
   
   }).catch(err => {
-    console.log(err);
   });
 };

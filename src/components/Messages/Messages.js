@@ -123,6 +123,7 @@ const Messages = ({messageId, selectedUid}) => {
           debugger;
           return (
             <Comment
+              key={message.createdAt}
               className={getCommentClassName(message.from)}
               author={getAuthor(message.from)}
               avatar={
