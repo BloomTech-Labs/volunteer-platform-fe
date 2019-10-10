@@ -239,7 +239,7 @@ const StyledContent = styled(Content)`
     flex-direction: column;
 
     @media (min-width: 1088px){
-        width: 1088px;
+        min-width: 750px;
     }
     @media ${device.laptop} {
       max-width: 90%;

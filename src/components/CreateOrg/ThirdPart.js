@@ -31,7 +31,7 @@ export const ThirdPart = ({ clickNext, storedData, clickPrevious }) => {
   return (
     <DivForStyling>
       <Form layout={'vertical'} onSubmit={() => clickNext(localState)}>
-        <h4>What are your hours of operation?</h4>
+        <h4 className="align-center">What are your hours of operation?</h4>
         <h5>1. Days of the week</h5>
 
         <Select
@@ -97,12 +97,12 @@ export const ThirdPart = ({ clickNext, storedData, clickPrevious }) => {
 };
 
 const DivForStyling = styled.div`
+  text-align: center;
   h5 {
     color: ${({ theme }) => theme.primary8};
     text-align: left;
     margin-left: 25%;
   }
-
   .weekday-select {
     width: 40%;
     margin: 0 auto 20px;

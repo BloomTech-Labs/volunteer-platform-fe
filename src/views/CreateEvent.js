@@ -231,10 +231,7 @@ const CustomRenderDiv = styled(StyledRenderDiv)`
       color: ${({ theme }) => theme.primary8};
     }
   }
-  .input {
-    width: 80%;
-    margin: 0 auto;
-  }
+  
   .inline {
     width: 40%;
   }
