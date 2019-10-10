@@ -10,14 +10,14 @@ export const StyledCard = ({ ...rest }) => {
 const StyledAntCard = styled(Card)`
   && {
     display: flex;
-    width: 100%;
-    margin: ${props => (props.margin ? props.margin : 0)};
-    max-width: ${props => (props.maxWidth ? props.maxWidth : '800px')};
+    margin: ${props => props.margin || '25px auto'};
+    width: ${props => props.width || '100%'};
     border-radius: ${props =>
       props.borderRadius || props.theme.borderRadiusDefault};
-    background-color: ${props =>
-      props.backgroundcolor ? props.backgroundcolor : props.theme.gray2};
+    background-color: ${props => props.backgroundcolor || props.theme.gray1};
     letter-spacing: 0.2px;
+    border: 1px solid ${({ theme }) => theme.gray4};
+    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.15);
     .ant-card-body {
       width: 100%;
     }

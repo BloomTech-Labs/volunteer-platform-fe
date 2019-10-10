@@ -67,7 +67,8 @@ const theme = {
   
   borderRadiusDefault: '10px',
   footerHeight: '130px',
-  footerPadding: '130px', // footer height plus extra
+  footerPadding: '130px', 
+  maxWidth: '1088px', 
 };
 
 ReactDOM.render(

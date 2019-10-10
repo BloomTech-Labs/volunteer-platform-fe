@@ -15,7 +15,7 @@ import { registerOrganization, updateOrganization } from '../actions';
 import { useStateValue } from '../hooks/useStateValue';
 import { StyledCard, deleteModal } from '../styled';
 import createOrgImg from '../assets/undraw_unexpected_friends.svg';
-
+import { device } from '../styled/deviceBreakpoints';
 const { Step } = Steps;
 
 export const CreateOrg = props => {
@@ -72,24 +72,19 @@ export const CreateOrg = props => {
 
   const steps = [
     {
-      title: 'In Progress',
-      content: 'Enter Content',
+      title: 'Start',
     },
     {
-      title: 'In Progress',
-      content: 'Enter Content',
+      title: '',
     },
     {
-      title: 'In Progress',
-      content: 'Enter Content',
+      title: '',
     },
     {
-      title: 'In Progress',
-      content: 'Enter Content',
+      title: '',
     },
     {
       title: 'Finished',
-      content: 'Enter Content',
     },
   ];
 
@@ -183,68 +178,72 @@ export const CreateOrg = props => {
   };
 
   return (
-    <StyledDiv className={'flex center'}>
-      <CustomStyledCard margin="2rem 0 5rem 0" maxWidth="900px">
-        <h1 className="create-org-header">{possibleHeaders[partCount]}</h1>
+    <StyledDiv>
+      <h1 className="create-org-header">{possibleHeaders[partCount]}</h1>
+      <TopContent>
         <StyledImg src={createOrgImg} alt="undraw unexpected friends" />
         <Steps current={partCount - 1} progressDot size="small">
           {steps.map(step => (
             <Step key={step} title={step.title} description={step.content} />
           ))}
         </Steps>
-        <StyledRenderDiv>
-          <RenderedPart
-            clickNext={clickNext}
-            storedData={localState[partCount]}
-            cancelForm={cancelForm}
-            clickPrevious={clickPrevious}
-            submitForm={submitForm}
-            setBackToReview={setBackToReview}
-            setEdit={setOrgToEdit}
-            isEditing={isEditing}
-          />
-        </StyledRenderDiv>
-      </CustomStyledCard>
+      </TopContent>
+      <StyledRenderDiv>
+        <RenderedPart
+          clickNext={clickNext}
+          storedData={localState[partCount]}
+          cancelForm={cancelForm}
+          clickPrevious={clickPrevious}
+          submitForm={submitForm}
+          setBackToReview={setBackToReview}
+          setEdit={setOrgToEdit}
+          isEditing={isEditing}
+        />
+      </StyledRenderDiv>
     </StyledDiv>
   );
 };
 
 const StyledDiv = styled.div`
-  background: white;
+  background: ${({ theme }) => theme.gray2};
+  text-align: center;
   .create-org-header {
-    color: ${props => props.theme.primary8};
+    color: ${props => props.theme.gray9};
   }
 `;
 
-const CustomStyledCard = styled(StyledCard)`
-  &&& {
-    background: #d9d9d9;
-    text-align: center;
-    cursor: default;
-    transition: none;
+export const TopContent = styled(StyledCard)`
+  display: flex;
+  flex-direction: column;
 
-    .ant-steps {
-      text-align: left;
-      margin-bottom: 40px;
+  .ant-steps {
+    text-align: left;
+    margin-bottom: 40px;
 
-      .ant-steps-item-finish
-        > .ant-steps-item-container
-        > .ant-steps-item-tail {
-        &::after {
-          background: ${({ theme }) => theme.primary8};
-        }
+    .ant-steps-item-finish > .ant-steps-item-container > .ant-steps-item-tail {
+      &::after {
+        background: ${({ theme }) => theme.primary8};
       }
     }
   }
+  .ant-steps-item-process
+    .ant-steps-item-icon
+    > .ant-steps-icon
+    .ant-steps-icon-dot {
+    background: ${({ theme }) => theme.primary8};
+  }
+
+  .ant-steps-item-finish
+    .ant-steps-item-icon
+    > .ant-steps-icon
+    .ant-steps-icon-dot {
+    background: ${({ theme }) => theme.primary8};
+  }
 `;
 
-const StyledRenderDiv = styled.div`
-  background: ${({ theme }) => theme.gray4};
-  width: 75%;
-  margin: 0 auto;
+export const StyledRenderDiv = styled(StyledCard)`
   font-weight: bold;
   padding: 1.5rem 3rem;
-  border-radius: ${({ theme }) => theme.borderRadiusDefault};
 
   label {
     color: ${({ theme }) => theme.primary8};
