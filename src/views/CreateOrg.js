@@ -72,24 +72,13 @@ export const CreateOrg = props => {
 
   const steps = [
     {
-      title: 'In Progress',
-      content: 'Enter Content',
+      title: 'Start',
     },
-    {
-      title: 'In Progress',
-      content: 'Enter Content',
-    },
-    {
-      title: 'In Progress',
-      content: 'Enter Content',
-    },
-    {
-      title: 'In Progress',
-      content: 'Enter Content',
-    },
+    {},
+    {},
+    {},
     {
       title: 'Finished',
-      content: 'Enter Content',
     },
   ];
 
@@ -189,7 +178,7 @@ export const CreateOrg = props => {
         <StyledImg src={createOrgImg} alt="undraw unexpected friends" />
         <Steps current={partCount - 1} progressDot size="small">
           {steps.map(step => (
-            <Step key={step} title={step.title} description={step.content} />
+            <Step key={step} title={step.title} />
           ))}
         </Steps>
         <StyledRenderDiv>
@@ -233,6 +222,9 @@ const CustomStyledCard = styled(StyledCard)`
         &::after {
           background: ${({ theme }) => theme.primary8};
         }
+      }
+      span.ant-steps-icon-dot {
+        background: ${({ theme }) => theme.primary8};
       }
     }
   }

@@ -14,13 +14,7 @@ export const CreateEventPartOne = props => {
     cancelForm,
   } = props;
 
-  const {
-    nameOfEvent,
-    typesOfCauses,
-    streetAddress,
-    city,
-    phoneNumber,
-  } = localState;
+  const { nameOfEvent, typesOfCauses, streetAddress, city } = localState;
   const [error, setError] = useState('');
   //Mapping through tags for antd select
   const causeAreaTags = state.tags.causeAreas.map(tag => {
@@ -37,8 +31,7 @@ export const CreateEventPartOne = props => {
       typesOfCauses.length > 0 &&
       streetAddress &&
       city &&
-      localState.state &&
-      phoneNumber
+      localState.state
     )
       return true;
   };
@@ -133,26 +126,7 @@ export const CreateEventPartOne = props => {
             </Form.Item>
           </div>
         </div>
-        <div className={'error-flex'}>
-          <Form.Item label={'Phone Number'} required>
-            <div className={'input'}>
-              <Input
-                name={'phoneNumber'}
-                value={phoneNumber}
-                pattern={'[0-9]{3}-[0-9]{3}-[0-9]{4}'}
-                placeholder={'000-000-0000'}
-                onChange={e => handleChange(e.target.name, e.target.value)}
-              />
-            </div>
-            <div>
-              {error && !phoneNumber && (
-                <span className="error-message error-span left-aligned">
-                  {error}
-                </span>
-              )}
-            </div>
-          </Form.Item>
-        </div>
+
         <h4>What type of cause areas does the event help with?</h4>
         <div className={'error-flex'}>
           <Form.Item

@@ -68,10 +68,9 @@ export const CreateEventReviewEditForm = props => {
       volunteerRequirements.length > 0 &&
       interest.length > 0 &&
       numberOfVolunteers > 0 &&
-      phoneNumber &&
       firstName &&
       lastName &&
-      email &&
+      phoneNumber &&
       eventDetails
     ) {
       return true;
@@ -256,20 +255,7 @@ export const CreateEventReviewEditForm = props => {
             </div>
           </div>
         </Form.Item>
-        <Form.Item label={'Phone Number'} required>
-          <div className={'input'}>
-            <Input
-              name={'phoneNumber'}
-              value={phoneNumber}
-              onChange={e => handleValue(e.target.name, e.target.value)}
-            />
-            {error && !phoneNumber && (
-              <span className="error-message error-span left-aligned">
-                {error}
-              </span>
-            )}
-          </div>
-        </Form.Item>
+
         <p className={'title'}>*Point of Contact</p>
         <Form.Item label={'First Name'}>
           <div className={'input'}>
@@ -299,14 +285,14 @@ export const CreateEventReviewEditForm = props => {
             )}
           </div>
         </Form.Item>
-        <Form.Item label={'Email'}>
+        <Form.Item label={'Phone Number'} required>
           <div className={'input'}>
             <Input
-              name={'email'}
-              value={email}
+              name={'phoneNumber'}
+              value={phoneNumber}
               onChange={e => handleValue(e.target.name, e.target.value)}
             />
-            {error && !email && (
+            {error && !phoneNumber && (
               <span className="error-message error-span left-aligned">
                 {error}
               </span>

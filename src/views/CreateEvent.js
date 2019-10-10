@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
-import { StyledCard } from '../styled';
+import { StyledCard, deleteModal } from '../styled';
 import createEventImg from '../assets/undraw_blooming_jtv6.svg';
 import {
   CreateEventPartOne,
@@ -64,24 +64,13 @@ export const CreateEvent = props => {
 
   const steps = [
     {
-      title: 'In Progress',
-      content: 'Enter Content',
+      title: 'Start',
     },
-    {
-      title: 'In Progress',
-      content: 'Enter Content',
-    },
-    {
-      title: 'In Progress',
-      content: 'Enter Content',
-    },
-    {
-      title: 'In Progress',
-      content: 'Enter Content',
-    },
+    {},
+    {},
+    {},
     {
       title: 'Finished',
-      content: 'Enter Content',
     },
   ];
   let [pageNumber, setPageNumber] = useState(1);
@@ -104,7 +93,6 @@ export const CreateEvent = props => {
 
   //Handle Submit for Form
   const handleReviewSubmit = () => {
-    console.log('org', props.location.state.org.organizationName);
     const event = {
       orgId: localState.orgId,
       orgName: props.location.state.org.organizationName,
@@ -114,8 +102,6 @@ export const CreateEvent = props => {
       streetAddress: localState.streetAddress,
       city: localState.city,
       state: localState.state,
-      email: localState.email,
-      phoneNumber: localState.phoneNumber,
       date: localState.date.unix(),
       startTime: localState.startTime.format('LT'),
       endTime: localState.endTime.format('LT'),
@@ -132,7 +118,7 @@ export const CreateEvent = props => {
       pointOfContact: {
         firstName: localState.firstName,
         lastName: localState.lastName,
-        email: localState.email,
+        phoneNumber: localState.phoneNumber,
       },
       eventDetails: localState.eventDetails,
       website: localState.website,
@@ -167,7 +153,13 @@ export const CreateEvent = props => {
   };
   ///Cancel Form
   const cancelForm = () => {
-    props.history.push('/org-dashboard');
+    console.log('hello');
+    const cancelFormModal = deleteModal({
+      title: 'Are you suure you want to cancel ?',
+      content: 'All information will be delete.',
+      onOk: () => props.history.push('/org-dashboard'),
+    });
+    cancelFormModal();
   };
 
   //Handle Form Parts Submit
@@ -188,13 +180,7 @@ export const CreateEvent = props => {
           <StyledImg src={createEventImg} alt="undraw unexpected friends" />
           <Steps current={pageNumber - 1} progressDot size="small">
             {steps.map(step => {
-              return (
-                <Step
-                  key={step}
-                  title={step.title}
-                  description={step.content}
-                />
-              );
+              return <Step key={step} title={step.title} className={'dot'} />;
             })}
           </Steps>
           <StyledRenderDiv>
@@ -243,6 +229,10 @@ const CustomStyledCard = styled(StyledCard)`
         &::after {
           background: ${({ theme }) => theme.primary8};
         }
+      }
+
+      span.ant-steps-icon-dot {
+        background: ${({ theme }) => theme.primary8};
       }
     }
   }

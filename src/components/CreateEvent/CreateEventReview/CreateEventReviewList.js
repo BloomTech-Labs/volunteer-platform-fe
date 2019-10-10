@@ -2,7 +2,7 @@ import React from 'react';
 import { StyledButton, StyledCancelButton } from '../../../styled';
 import { Icon, Tag } from 'antd';
 import styled from 'styled-components';
-import createEventImg from '../../../assets/undraw_blooming_jtv6.svg';
+import { confirmModal } from '../../../styled';
 import RecurringInfoReview from './RecurringInfoReview';
 
 export const CreateEventReviewList = props => {
@@ -11,6 +11,12 @@ export const CreateEventReviewList = props => {
   const editForm = () => {
     setEdit(true);
   };
+
+  const confirmFormModal = confirmModal({
+    title: 'Creating an Event',
+    content: 'Please ensure all the information is correct.',
+    onOk: () => handleReviewSubmit(),
+  });
 
   return (
     <StyledDiv className={'styledReviewDiv'}>
@@ -28,7 +34,7 @@ export const CreateEventReviewList = props => {
           <p>{localState.nameOfEvent}</p>
         </div>
         <div>
-          <p className={'title'}>Location</p>
+          ` <p className={'title'}>Location</p>`
           <p>{localState.streetAddress}</p>
         </div>
 
@@ -81,14 +87,10 @@ export const CreateEventReviewList = props => {
           </p>
         </div>
         <div>
-          <p className={'title'}>Phone Number</p>
-          <p>{localState.phoneNumber}</p>
-        </div>
-        <div>
           <p className={'title'}>Point of Contact</p>
           <p>{localState.firstName}</p>
           <p>{localState.lastName}</p>
-          <p>{localState.email}</p>
+          <p>{localState.phoneNumber}</p>
         </div>
         <div>
           <p className={'title'}>When is the event?</p>
