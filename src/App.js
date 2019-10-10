@@ -35,7 +35,7 @@ import {
   RegisterRoute,
 } from './routes/index';
 import Message from './views/Message';
-import {device} from './styled/deviceBreakpoints'
+import { device } from './styled/deviceBreakpoints';
 const { Sider, Content } = Layout;
 
 function App() {
@@ -138,6 +138,11 @@ function App() {
               />
             )}
           </HeaderDiv>
+          <Route
+            exact
+            path={'/'}
+            render={props => <LandingPage {...props} collapsed={collapsed} />}
+          />
           <StyledContent
             width={dimensions.width}
             loggedIn={state.auth.loggedIn}
@@ -145,13 +150,7 @@ function App() {
             <Switch>
               <LoginRoute path={'/login'} component={Login} />
               <LoginRoute path={'/signup'} component={Login} />
-              <Route
-                exact
-                path={'/'}
-                render={props => (
-                  <LandingPage {...props} collapsed={collapsed} />
-                )}
-              />
+
               <Route
                 path={'/organization/:id'}
                 component={OrganizationProfile}
@@ -186,7 +185,7 @@ function App() {
                 path={`/profile/:id`}
                 component={UserProfile}
               />
-              <Route component={NotFound} />
+              <Route path='/:anything' component={NotFound} />
             </Switch>
           </StyledContent>
           <FooterDiv />
@@ -239,8 +238,8 @@ const StyledContent = styled(Content)`
     display: flex;
     flex-direction: column;
 
-    @media ${device.laptop}{
-        max-width: 90%;
+    @media ${device.laptop} {
+      max-width: 90%;
     }
   }
 `;
