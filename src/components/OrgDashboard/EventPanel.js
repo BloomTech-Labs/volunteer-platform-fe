@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
-import { Collapse } from 'antd';
-import { findNext } from '../../utility/findNextRecurEvent';
-import { StyledCard, StyledButton } from '../../styled';
+import {Collapse} from 'antd';
+import {findNext} from '../../utility/findNextRecurEvent';
+import {StyledCard, StyledButton} from '../../styled';
 
-const { Panel } = Collapse;
+const {Panel} = Collapse;
 
 export const EventPanel = ({
   events,
@@ -20,37 +20,37 @@ export const EventPanel = ({
   let selectedEvents = [...events];
   let newEvent = [];
   recurringEvents.forEach(event => {
-    for (let date in event.registeredVolunteers) {
-      if (moment().unix() - date < 0) {
-        newEvent = { ...event, nextDate: date, isRecurring: true };
+    for (let date in event.registeredVolunteers){
+      if (moment().unix() - date < 0){
+        newEvent = {...event, nextDate: date, isRecurring: true};
         selectedEvents.push(newEvent);
       }
     }
   });
-
+  
   const filterEvents = (arr, property) => {
     return arr.filter(event => {
-      const isBigger = event[property] >= selectedDate;
+      const isBigger = event[ property ] >= selectedDate;
       const lessThanNextDay =
-        event[property] <
+        event[ property ] <
         moment
           .unix(selectedDate)
           .add(1, 'day')
           .startOf('day')
           .unix();
-
-      if (isBigger && lessThanNextDay) {
+      
+      if (isBigger && lessThanNextDay){
         return true;
       }
       return false;
     });
   };
-
-  if (selectedDate) {
+  
+  if (selectedDate){
     selectedEvents = filterEvents(selectedEvents, 'nextDate');
   }
   selectedEvents.sort((a, b) => a.nextDate - b.nextDate);
-console.log(events, recurringEvents)
+  console.log(events, recurringEvents);
   return (
     <StyledCard backgroundcolor={'#E8E8E8'} borderRadius={'0px'}>
       {selectedEvents.length > 0 || selectedDate ? (
@@ -65,12 +65,12 @@ console.log(events, recurringEvents)
         <div>No events have been created yet.</div>
       )}
       {selectedEvents.length > 0 && (
-        <Collapse accordion bordered={false} style={{ background: '#E8E8E8' }}>
-          {selectedEvents.map(event => {
+        <Collapse accordion bordered={false} style={{background: '#E8E8E8'}}>
+          {selectedEvents.map((event, i) => {
             return (
               <StyledPanel
                 header={event.nameOfEvent}
-                key={event.nextDate}
+                key={event.eventId + i}
               >
                 <h5>{moment.unix(event.nextDate).format('LL')}</h5>
                 <p>{event.isRecurring && 'This is a recurring event.'}</p>
@@ -96,7 +96,7 @@ const StyledPanel = styled(Panel)`
     overflow: hidden;
 
     .ant-collapse-header {
-      border-bottom: 1px solid ${({ theme }) => theme.gray4};
+      border-bottom: 1px solid ${({theme}) => theme.gray4};
     }
   }
 `;

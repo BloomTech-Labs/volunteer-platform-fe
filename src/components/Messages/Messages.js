@@ -1,13 +1,14 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useStateValue} from '../../hooks/useStateValue';
 import styled from 'styled-components';
 import moment from 'moment';
-import {Input} from 'antd';
-import {sendMessage} from '../../actions';
+import {Input, Comment, Avatar, Tooltip} from 'antd';
+import {sendMessage, getFileUrl} from '../../actions';
 
 const Messages = ({messageId, selectedUid}) => {
-  const [{auth, messages}, dispatch] = useStateValue();
+  const [{auth, messages, org}, dispatch] = useStateValue();
   const [text, setText] = useState();
+  const [imageUrl, setImageUrl] = useState('');
   
   let messageThread = [];
   if (messages.messages[ selectedUid ] &&
@@ -18,6 +19,15 @@ const Messages = ({messageId, selectedUid}) => {
   }
   
   const {Search} = Input;
+  
+  useEffect(() => {
+    
+    if (messageThread[ 0 ].imagePath){
+      getFileUrl(messageThread[ 0 ].imagePath).then(url => {
+        setImageUrl(url);
+      });
+    }
+  }, [messageThread]);
   
   const send = () => {
     
@@ -47,19 +57,38 @@ const Messages = ({messageId, selectedUid}) => {
       <StyledMessageThread>
         {messageThread.length > 0 &&
         messageThread[ 0 ].messages.map((message, i) => {
+          debugger;
           return (
-            <div key={message + ' ' + i}
-                 className={message.to === selectedUid ? 'other' :
-                   'me'}
-            >
-              {message.to === selectedUid &&
-              <p>{messageThread[ 0 ].name}: {moment.unix(message.createdAt)
-                .format('LLL')}</p>}
-              {message.to !== selectedUid &&
-              <p>Me: {moment.unix(message.createdAt)
-                .format('LLL')}</p>}
-              <p className={'message'}>{message.text} </p>
-            </div>
+            <Comment
+              className={message.from === auth.googleAuthUser.uid ? 'me' :
+                'other'}
+              author={message.from === auth.googleAuthUser.uid &&
+              auth.registeredUser ? auth.registeredUser.firstName + ' ' +
+                auth.registeredUser.lastName :
+                messageThread[ 0 ].name}
+              avatar={
+                <Avatar
+                  src={message.from === auth.googleAuthUser.uid &&
+                  auth.registeredUser ?
+                    auth.registeredUser.imageUrl : imageUrl
+                  }
+                  icon={'user'}
+                  alt={message.from === auth.googleAuthUser.uid &&
+                  auth.registeredUser ? auth.registeredUser.firstName + ' ' +
+                    auth.registeredUser.lastName : ''}
+                />
+              }
+              content={
+                <p>
+                  {message.text}
+                </p>
+              }
+              datetime={
+                <Tooltip title={moment().format('LLL')}>
+                  <span>{moment.unix(message.createdAt).fromNow()}</span>
+                </Tooltip>
+              }
+            />
           );
         })}
         {messageThread.length === 0 && <h2>No messages to display</h2>}
@@ -77,50 +106,51 @@ const Messages = ({messageId, selectedUid}) => {
 };
 
 const StyledMessages = styled.div`
-                
-                width: 100%;
-                
-                
-                p {
-                margin: 0;
-                color: #cbcbcb;
-              }
-                
-                .me {
-                border-radius: 20px;
-                margin-top: 1rem;
-                max-width: 60%;
-                background-color: #3e999f;
-                padding: .5rem 2rem;
-                margin-left: 1rem;
-              }
-                
-                .me:last-child {
-                margin-bottom: 3rem;
-              }
-                
-                .other {
-                margin-left: 40%;
-                border-radius: 20px;
-                margin-top: 1rem;
-                max-width: 60%;
-                background-color: #0074D9;
-                padding: .5rem 2rem;
-              }
-                
-                .other:last-child {
-                margin-bottom: 3rem;
-              }
-                
-                .message {
-                margin: 0 0 0 2rem;
-                font-size: 1.5rem;
-                color: black;
-                `;
+
+width: 100%;
+
+p {
+  margin: 0;
+  color: ${props => props.theme.gray10}
+}
+
+.me {
+  max-width: 60%;
+  margin-left: 1rem;
+  border-radius: 10px;
+  padding: 0 1rem;
+  margin-bottom: 1rem;
+  background-color: ${props => props.theme.primary6};
+}
+
+.me:last-child {
+  margin-bottom: 3rem;
+  
+}
+
+.other {
+  margin-left: 40%;
+  margin-bottom: 1rem;
+  max-width: 60%;
+  background-color: ${props => props.theme.accent6};
+  padding: 0 1rem;
+  border-radius: 10px;
+}
+
+.other:last-child {
+  margin-bottom: 3rem;
+ 
+}
+
+.message {
+  margin: 0 0 0 2rem;
+  font-size: 1.5rem;
+  color: black;
+`;
 
 const StyledMessageThread = styled.div`
-                height: 65Vh;
-                overflow-y: scroll;
-                `;
+  height: 65Vh;
+  overflow-y: scroll;
+`;
 
 export default Messages;

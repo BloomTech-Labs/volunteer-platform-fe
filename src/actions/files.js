@@ -19,7 +19,6 @@ import uuid4 from 'uuid4';
 export async function uploadImage(file, onError, onSuccess,
   imageName = uuid4()){
   
-  
   const storage = firebase.storage();
   const nameSplit = file.name.split('.');
   const imageType = nameSplit[ nameSplit.length - 1 ];
@@ -42,7 +41,6 @@ export async function uploadImage(file, onError, onSuccess,
  * @returns {Promise<any>} promise will return the url for the file path
  */
 export const getFileUrl = async(path) => {
-  
   const storageRef = firebase.storage().ref();
   return await storageRef.child(path).getDownloadURL().then(res => {
     

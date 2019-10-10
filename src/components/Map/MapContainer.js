@@ -25,7 +25,7 @@ const MapContainer = (props) => {
     width: '100%',
     height: '100%',
   };
-  debugger;
+  
   return (
     <div style={{
       position: 'relative',

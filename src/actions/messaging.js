@@ -132,15 +132,19 @@ export const subscribeToMessages = (contact, dispatch) => {
     .doc(contact.uid)
     .collection('messages')
     .orderBy('updatedAt', 'desc')
-    .onSnapshot(snapshot => {
+    .onSnapshot((snapshot) => {
       if (snapshot.empty){
         dispatch(action(USER_HAS_NO_MESSAGES, contact.uid));
         return;
       }
       const messageThreads = [];
-      snapshot.forEach(doc => {
+      snapshot.forEach(async doc => {
         const messageThread = doc.data();
         messageThread.id = doc.id;
+        if (!messageThread.imagePath){
+          messageThread.imagePath = `images/${messageThread.id}`;
+          doc.ref.update(messageThread);
+        }
         messageThreads.push(messageThread);
       });
       
@@ -169,3 +173,4 @@ export const markMessagesRead = (contact, messageThread) => {
       console.log(err);
     });
 };
+
