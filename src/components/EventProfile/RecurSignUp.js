@@ -35,11 +35,11 @@ export const RecurSignUp = ({ localState, auth, register, unRegister }) => {
               {localState.registeredVolunteers[date].includes(
                 auth.googleAuthUser.uid
               ) ? (
-                <StyledButton width={'25%'} onClick={() => unRegister(date)}>
+                <StyledButton width={'25%'} onClick={(e) => unRegister(e, date)}>
                   Un-Register
                 </StyledButton>
               ) : (
-                <StyledButton width={'25%'} onClick={() => register(date)}>
+                <StyledButton width={'25%'} onClick={(e) => register(e, date)}>
                   Register
                 </StyledButton>
               )}

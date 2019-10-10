@@ -4,6 +4,7 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import { Icon, message } from 'antd';
 import uuid4 from 'uuid4';
+import { confirmModal } from '../styled';
 
 import { useStateValue } from '../hooks/useStateValue';
 import {
@@ -105,20 +106,40 @@ export const EventProfile = props => {
     props.history.goBack();
   };
 
-  const register = date => {
-    if (date) {
-      signUpForRecurringEvent(event, auth.registeredUser, date, dispatch);
-      return;
-    }
-    signUpForEvent(event, auth.registeredUser, dispatch);
+  
+  const register = (e, date) => {
+    const confirmRegModal = confirmModal({
+      title: 'Are you sure you want to sign up?',
+      content: 'Please click OK to confirm your registration',
+      onOk: () => {
+        if (date) {
+          signUpForRecurringEvent(event, auth.registeredUser, date, dispatch);
+          return;
+        }
+        signUpForEvent(event, auth.registeredUser, dispatch);
+      }
+    })
+
+    e.preventDefault();
+    confirmRegModal();
   };
 
-  const unRegister = date => {
-    if (date) {
-      cancelSignedUpRecurringEvent(event, auth.registeredUser, date, dispatch);
-      return;
-    }
-    cancelSignedUpEvent(event, auth.registeredUser, dispatch);
+  const unRegister = (e, date) => {
+    const confirmUnRegModal = confirmModal({
+      title: 'Are you sure you want to cancel your registration?',
+      content: 'You will no longer be able to attend the event once you clicked OK. You may register again if you change your mind.',
+      okType: 'danger',
+      onOk: () => {
+        if (date) {
+          cancelSignedUpRecurringEvent(event, auth.registeredUser, date, dispatch);
+          return;
+        }
+        cancelSignedUpEvent(event, auth.registeredUser, dispatch);
+      }
+    })
+
+    e.preventDefault();
+    confirmUnRegModal();
   };
 
   return (
