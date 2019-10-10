@@ -50,8 +50,9 @@ const Messages = ({messageId, selectedUid}) => {
     }else{
       if (from === auth.googleAuthUser.uid){
         return <Link
-          to={`profile/${auth.googleAuthUser.uid}`}>{auth.googleAuthUser.firstName +
-        ' ' + auth.googleAuthUser.lastName}</Link>;
+          to={`profile/${auth.googleAuthUser.uid}`}>{auth.registeredUser &&
+        auth.registeredUser.firstName +
+        ' ' + auth.registeredUser.lastName}</Link>;
       }else{
         return <Link
           to={`organization/${messageThread[ 0 ].id}`}>{messageThread[ 0 ].name}</Link>;
@@ -120,7 +121,7 @@ const Messages = ({messageId, selectedUid}) => {
       <StyledMessageThread ref={messageRef}>
         {messageThread.length > 0 &&
         messageThread[ 0 ].messages.map((message, i) => {
-          debugger;
+          
           return (
             <Comment
               key={message.createdAt}
