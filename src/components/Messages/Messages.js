@@ -41,7 +41,7 @@ const Messages = ({messageId, selectedUid}) => {
     if (messageThread[ 0 ].contactType === 'users'){
       if (from === messageThread[ 0 ].id){
         return <Link
-          to={`users/${messageThread[ 0 ].id}`}>{messageThread[ 0 ].name}</Link>;
+          to={`profile/${messageThread[ 0 ].id}`}>{messageThread[ 0 ].name}</Link>;
       }else{
         return <Link
           to={`organization/${selectedUid}`}>{org.userOrganizations.filter(
@@ -50,7 +50,7 @@ const Messages = ({messageId, selectedUid}) => {
     }else{
       if (from === auth.googleAuthUser.uid){
         return <Link
-          to={`users/${auth.googleAuthUser.uid}`}>{auth.googleAuthUser.firstName +
+          to={`profile/${auth.googleAuthUser.uid}`}>{auth.googleAuthUser.firstName +
         ' ' + auth.googleAuthUser.lastName}</Link>;
       }else{
         return <Link
