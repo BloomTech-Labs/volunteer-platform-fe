@@ -201,7 +201,7 @@ export const CreateEventPartTwo = props => {
         <h4>What time?</h4>
         <div className={'time-wrapper'}>
           <Form.Item label={'Start Time'} required>
-            <div className={'time-input'}>
+            <div className={'time-input inline'}>
               <TimePicker
                 name={'startTime'}
                 use12Hours
@@ -212,13 +212,12 @@ export const CreateEventPartTwo = props => {
               />
             </div>
           </Form.Item>
-
           <div className="to-p">
             <p>to</p>
           </div>
           <div>
             <Form.Item label={'End Time'} required>
-              <div className={'time-input'}>
+              <div className={'time-input inline'}>
                 <TimePicker
                   name={'endTime'}
                   use12Hours
@@ -258,14 +257,6 @@ const StyledDiv = styled.div`
       margin-left: 185px;
     }
   }
-  .time-wrapper {
-    display: flex;
-    justify-content: center;
-    label {
-      margin-left: 0px;
-    }
-  }
-
   .to-p {
     margin: 35px 20px 0px;
   }

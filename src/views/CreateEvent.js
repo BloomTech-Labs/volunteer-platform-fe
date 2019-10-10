@@ -13,7 +13,7 @@ import { Steps } from 'antd';
 import CreateEventReview from '../components/CreateEvent/CreateEventReview/CreateEventReview';
 import { useStateValue } from '../hooks/useStateValue';
 import { createEvent, createRecurringEvent } from '../actions';
-
+import { TopContent, StyledRenderDiv } from './CreateOrg';
 let { Step } = Steps;
 
 export const CreateEvent = props => {
@@ -181,95 +181,46 @@ export const CreateEvent = props => {
   };
 
   return (
-    <div>
-      <StyledDiv className={'flex center'}>
-        <CustomStyledCard margin="2rem 0 5rem 0" maxWidth="900px">
-          <h1>{formTitles[pageNumber]}</h1>
-          <StyledImg src={createEventImg} alt="undraw unexpected friends" />
-          <Steps current={pageNumber - 1} progressDot size="small">
-            {steps.map(step => {
-              return (
-                <Step
-                  key={step}
-                  title={step.title}
-                  description={step.content}
-                />
-              );
-            })}
-          </Steps>
-          <StyledRenderDiv>
-            <RenderedFormParts
-              state={state}
-              localState={localState}
-              setLocalState={setLocalState}
-              handlePageForward={handlePageForward}
-              handlePageBack={handlePageBack}
-              cancelForm={cancelForm}
-              pageNumber={pageNumber}
-              handleChange={handleChange}
-              handleReviewSubmit={handleReviewSubmit}
-            />
-          </StyledRenderDiv>
-        </CustomStyledCard>
-      </StyledDiv>
-    </div>
+    <StyledDiv>
+      <h1>{formTitles[pageNumber]}</h1>
+      <TopContent>
+        <StyledImg src={createEventImg} alt="undraw unexpected friends" />
+        <Steps current={pageNumber - 1} progressDot size="small">
+          {steps.map(step => {
+            return (
+              <Step key={step} title={step.title} description={step.content} />
+            );
+          })}
+        </Steps>
+      </TopContent>
+      <CustomRenderDiv>
+        <RenderedFormParts
+          state={state}
+          localState={localState}
+          setLocalState={setLocalState}
+          handlePageForward={handlePageForward}
+          handlePageBack={handlePageBack}
+          cancelForm={cancelForm}
+          pageNumber={pageNumber}
+          handleChange={handleChange}
+          handleReviewSubmit={handleReviewSubmit}
+        />
+      </CustomRenderDiv>
+    </StyledDiv>
   );
 };
 
 const StyledDiv = styled.div`
-  background: white;
-  .create-org-header {
-    color: ${props => props.theme.primary8};
-  }
+  background: ${({ theme }) => theme.gray2};
+  text-align: center;
 `;
 
-const CustomStyledCard = styled(StyledCard)`
-  &&& {
-    background: #d9d9d9;
-    text-align: center;
-    cursor: default;
-    transition: none;
-
-    .ant-steps {
-      text-align: left;
-      margin-bottom: 40px;
-
-      .ant-steps-item-title {
-        font-weight: normal;
-      }
-      .ant-steps-item-finish
-        > .ant-steps-item-container
-        > .ant-steps-item-tail {
-        &::after {
-          background: ${({ theme }) => theme.primary8};
-        }
-      }
-    }
-  }
-`;
-
-const StyledRenderDiv = styled.div`
-  background: ${({ theme }) => theme.gray4};
-  width: 75%;
-  margin: 0 auto;
-  font-weight: bold;
-  padding: 1.5rem 3rem;
-  border-radius: ${({ theme }) => theme.borderRadiusDefault};
-
+const CustomRenderDiv = styled(StyledRenderDiv)`
   .styledDiv {
     display: flex;
     flex-direction: column;
     justify-content: center;
     margin-top: 10px;
-  }
-
-  .input {
-    width: 80%;
-    margin: 0 auto;
-  }
-
-  h4 {
-    margin: 30px 0px;
   }
 
   label {
@@ -280,9 +231,41 @@ const StyledRenderDiv = styled.div`
       color: ${({ theme }) => theme.primary8};
     }
   }
+  .input {
+    width: 80%;
+    margin: 0 auto;
+  }
+  .inline {
+    width: 40%;
+  }
+
+  h4 {
+    margin: 30px 0px;
+  }
+
   .errorFlex {
     dispaly: flex;
     flex-direction: column;
+  }
+
+  .error-message.error-span.left-aligned {
+    color: red;
+    font-size: 12px;
+  }
+  .city-states-input {
+    display: flex;
+    justify-content: space-around;
+
+    label {
+      margin-left: 20px;
+    }
+  }
+  .time-wrapper {
+    display: flex;
+    justify-content: center;
+    label {
+      margin-left: 0px;
+    }
   }
 
   .buttonStyles {
@@ -298,10 +281,6 @@ const StyledRenderDiv = styled.div`
       margin-left: 5px;
       margin-right: 5px;
     }
-  }
-  .error-message.error-span.left-aligned {
-    color: red;
-    font-size: 12px;
   }
 `;
 

@@ -99,265 +99,303 @@ export const CreateEventReviewEditForm = props => {
   };
 
   return (
-    <StyledDiv className={'flex center'}>
+    <StyledDiv className={'styledReviewDiv'}>
       <div>
         <StyledButtons>
           <div className="icon">
-            <Icon type="save" onClick={() => checkRequired()} />
+            <Icon type="save" onClick={checkRequired} />
           </div>
           <div className="icon">
             <Icon type="edit" theme="twoTone" twoToneColor="#52c41a" />
           </div>
         </StyledButtons>
       </div>
-
-      <h4>Event Name</h4>
-      <div>
-        <Input
-          name={'nameOfEvent'}
-          value={nameOfEvent}
-          onChange={e => handleValue(e.target.name, e.target.value)}
-        />
-        {error && !nameOfEvent && (
-          <span className="error-message error-span left-aligned">{error}</span>
-        )}
-      </div>
-
-      <h4>Location</h4>
-      <div>
-        <Input
-          name={'streetAddress'}
-          value={streetAddress}
-          onChange={e => handleValue(e.target.name, e.target.value)}
-        />
-        {error && !streetAddress && (
-          <span className="error-message error-span left-aligned">{error}</span>
-        )}
-      </div>
-      <div>
-        <Input
-          name={'city'}
-          value={city}
-          onChange={e => handleValue(e.target.name, e.target.value)}
-        />
-        {error && !city && (
-          <span className="error-message error-span left-aligned">{error}</span>
-        )}
-      </div>
-      <div>
-        <Input
-          name={'state'}
-          value={localState.state}
-          onChange={e => handleValue(e.target.name, e.target.value)}
-        />
-        {error && !localState.state && (
-          <span className="error-message error-span left-aligned">{error}</span>
-        )}
-      </div>
-
-      <h4>Tyeps of Causes</h4>
-      <div>
-        <div className={'errorFlex'}>
-          <div>
-            <Select
-              name={'Types of Causes'}
-              mode="multiple"
-              value={typesOfCauses}
-              onChange={value => handleValue('typesOfCauses', value)}
-            >
-              {causeAreaTags}
-            </Select>
-          </div>
-          <div>
-            {error && !typesOfCauses.length > 0 && (
+      <Form layout={'vertical'} onSubmit={() => checkRequired()}>
+        <Form.Item label={'Name of Event'} required>
+          <div className={'input'}>
+            <Input
+              name={'nameOfEvent'}
+              value={nameOfEvent}
+              onChange={e => handleValue(e.target.name, e.target.value)}
+            />
+            {error && !nameOfEvent && (
               <span className="error-message error-span left-aligned">
                 {error}
               </span>
             )}
           </div>
+        </Form.Item>
+        <p className={'title'}>Location</p>
+        <Form.Item label={'Street Address'} required>
+          <div className={'input'}>
+            <Input
+              name={'streetAddress'}
+              value={streetAddress}
+              onChange={e => handleValue(e.target.name, e.target.value)}
+            />
+            {error && !streetAddress && (
+              <span className="error-message error-span left-aligned">
+                {error}
+              </span>
+            )}
+          </div>
+        </Form.Item>
+        <div className={'city-states-input'}>
+          <Form.Item label={'City'} required>
+            <div className={'input'}>
+              <Input
+                name={'city'}
+                value={city}
+                onChange={e => handleValue(e.target.name, e.target.value)}
+              />
+              {error && !city && (
+                <span className="error-message error-span left-aligned">
+                  {error}
+                </span>
+              )}
+            </div>
+          </Form.Item>
+          <Form.Item label={'State'} required>
+            <div className={'input'}>
+              <Input
+                name={'state'}
+                value={localState.state}
+                onChange={e => handleValue(e.target.name, e.target.value)}
+              />
+              {error && !localState.state && (
+                <span className="error-message error-span left-aligned">
+                  {error}
+                </span>
+              )}
+            </div>
+          </Form.Item>
         </div>
-      </div>
+        <Form.Item label={'Types of Causes'} required>
+          <div className={'errorFlex'}>
+            <div className={'input'}>
+              <Select
+                name={'Types of Causes'}
+                mode="multiple"
+                value={typesOfCauses}
+                onChange={value => handleValue('typesOfCauses', value)}
+              >
+                {causeAreaTags}
+              </Select>
+            </div>
+            <div>
+              {error && !typesOfCauses.length > 0 && (
+                <span className="error-message error-span left-aligned">
+                  {error}
+                </span>
+              )}
+            </div>
+          </div>
+        </Form.Item>
 
-      <h4>Volunteer Requirments</h4>
-      <div className={'errorFlex'}>
-        <div>
-          <Select
-            name={'Volunteer Requirements'}
-            mode="multiple"
-            value={volunteerRequirements}
-            onChange={value => handleValue('volunteerRequirements', value)}
-            style={{ width: '325px' }}
-          >
-            {requirementTags}
-          </Select>
-        </div>
-        <div>
-          {error && !volunteerRequirements.length > 0 && (
-            <span className="error-message error-span left-aligned">
-              {error}
-            </span>
-          )}
-        </div>
-      </div>
-
-      <h4>Interests</h4>
-      <div className={'errorFlex'}>
-        <div>
-          <Select
-            name={'Interest'}
-            mode="multiple"
-            value={interest}
-            onChange={value => handleValue('interest', value)}
-          >
-            {interestTags}
-          </Select>
-        </div>
-        <div>
-          {error && !interest.length > 0 && (
-            <span className="error-message error-span left-aligned">
-              {error}
-            </span>
-          )}
-        </div>
-      </div>
-
-      <h4>Volunteers Needed</h4>
-      <div className={'errorFlex'}>
-        <div>
-          <InputNumber
-            name={'Number of Volunteers'}
-            min={0}
-            value={numberOfVolunteers}
-            onChange={value => handleValue('numberOfVolunteers', value)}
-          />
-        </div>
-        <div>
-          {error && !numberOfVolunteers > 0 && (
-            <span className="error-message error-span left-aligned">
-              {error}
-            </span>
-          )}
-        </div>
-      </div>
-
-      <h4>Phone Number</h4>
-      <div>
-        <Input
-          name={'phoneNumber'}
-          value={phoneNumber}
-          onChange={e => handleValue(e.target.name, e.target.value)}
+        <Form.Item label={'Volunteer Requirements'} required>
+          <div className={'errorFlex'}>
+            <div className={'input'}>
+              <Select
+                name={'Volunteer Requirements'}
+                mode="multiple"
+                value={volunteerRequirements}
+                onChange={value => handleValue('volunteerRequirements', value)}
+              >
+                {requirementTags}
+              </Select>
+            </div>
+            <div>
+              {error && !volunteerRequirements.length > 0 && (
+                <span className="error-message error-span left-aligned">
+                  {error}
+                </span>
+              )}
+            </div>
+          </div>
+        </Form.Item>
+        <Form.Item label={'Interest'} required>
+          <div className={'errorFlex'}>
+            <div className={'input'}>
+              <Select
+                name={'Interest'}
+                mode="multiple"
+                value={interest}
+                onChange={value => handleValue('interest', value)}
+              >
+                {interestTags}
+              </Select>
+            </div>
+            <div>
+              {error && !interest.length > 0 && (
+                <span className="error-message error-span left-aligned">
+                  {error}
+                </span>
+              )}
+            </div>
+          </div>
+        </Form.Item>
+        <p className={'title'}>*How many volunteers do you need?</p>
+        <Form.Item required>
+          <div className={'errorFlex'}>
+            <div className={'input'}>
+              <InputNumber
+                name={'Number of Volunteers'}
+                min={0}
+                value={numberOfVolunteers}
+                onChange={value => handleValue('numberOfVolunteers', value)}
+              />
+              {'  '}
+              {localState.numberOfVolunteers > 1 ? 'Volunteers' : 'Volunteer'}
+            </div>
+            <div>
+              {error && !numberOfVolunteers > 0 && (
+                <span className="error-message error-span left-aligned">
+                  {error}
+                </span>
+              )}
+            </div>
+          </div>
+        </Form.Item>
+        <Form.Item label={'Phone Number'} required>
+          <div className={'input'}>
+            <Input
+              name={'phoneNumber'}
+              value={phoneNumber}
+              onChange={e => handleValue(e.target.name, e.target.value)}
+            />
+            {error && !phoneNumber && (
+              <span className="error-message error-span left-aligned">
+                {error}
+              </span>
+            )}
+          </div>
+        </Form.Item>
+        <p className={'title'}>*Point of Contact</p>
+        <Form.Item label={'First Name'}>
+          <div className={'input'}>
+            <Input
+              name={'firstName'}
+              value={firstName}
+              onChange={e => handleValue(e.target.name, e.target.value)}
+            />
+            {error && !firstName && (
+              <span className="error-message error-span left-aligned">
+                {error}
+              </span>
+            )}
+          </div>
+        </Form.Item>
+        <Form.Item label={'Last Name'}>
+          <div className={'input'}>
+            <Input
+              name={'lastName'}
+              value={lastName}
+              onChange={e => handleValue(e.target.name, e.target.value)}
+            />
+            {error && !lastName && (
+              <span className="error-message error-span left-aligned">
+                {error}
+              </span>
+            )}
+          </div>
+        </Form.Item>
+        <Form.Item label={'Email'}>
+          <div className={'input'}>
+            <Input
+              name={'email'}
+              value={email}
+              onChange={e => handleValue(e.target.name, e.target.value)}
+            />
+            {error && !email && (
+              <span className="error-message error-span left-aligned">
+                {error}
+              </span>
+            )}
+          </div>
+        </Form.Item>
+        <p className={'title'}>*When is the event?</p>
+        <Form.Item required>
+          <div className={'input'}>
+            <DatePicker
+              name={'Date'}
+              format={'MM/DD/YYYY'}
+              value={date}
+              onChange={value => handleValue('date', value)}
+            />
+          </div>
+        </Form.Item>
+        <RecurringEvent
+          localState={localState}
+          setLocalState={setLocalState}
+          dynamicDates={dynamicDates}
         />
-        {error && !phoneNumber && (
-          <span className="error-message error-span left-aligned">{error}</span>
-        )}
-      </div>
-
-      <h4>Point of Contact</h4>
-      <div>
-        <Input
-          name={'firstName'}
-          value={firstName}
-          onChange={e => handleValue(e.target.name, e.target.value)}
-        />
-        {error && !firstName && (
-          <span className="error-message error-span left-aligned">{error}</span>
-        )}
-      </div>
-      <div>
-        <Input
-          name={'lastName'}
-          value={lastName}
-          onChange={e => handleValue(e.target.name, e.target.value)}
-        />
-        {error && !lastName && (
-          <span className="error-message error-span left-aligned">{error}</span>
-        )}
-      </div>
-      <div>
-        <Input
-          name={'email'}
-          value={email}
-          onChange={e => handleValue(e.target.name, e.target.value)}
-        />
-        {error && !email && (
-          <span className="error-message error-span left-aligned">{error}</span>
-        )}
-      </div>
-
-      <h4>When is the event?</h4>
-      <div>
-        <DatePicker
-          name={'Date'}
-          format={'MM/DD/YYYY'}
-          value={date}
-          onChange={value => handleValue('date', value)}
-        />
-      </div>
-
-      <RecurringEvent
-        localState={localState}
-        setLocalState={setLocalState}
-        dynamicDates={dynamicDates}
-      />
-      <h4>What time?</h4>
-      <div className={'timeWrapper'}>
-        <div>
-          <TimePicker
-            name={'Start Time'}
-            use12Hours
-            format={'h:mm a'}
-            value={startTime}
-            onChange={value => handleValue('startTime', value)}
-          />
+        <p className={'title'}>*What time?</p>
+        <div className={'time-wrapper'}>
+          <Form.Item required>
+            <div className={'input'}>
+              <TimePicker
+                name={'Start Time'}
+                use12Hours
+                format={'h:mm a'}
+                value={startTime}
+                onChange={value => handleValue('startTime', value)}
+              />
+            </div>
+          </Form.Item>
+          <div className="to-p-review">
+            <p>to</p>
+          </div>
+          <Form.Item required>
+            <div className={'input'}>
+              <TimePicker
+                name={'End Time'}
+                use12Hours
+                format={'h:mm a'}
+                value={endTime}
+                onChange={value => handleValue('endTime', value)}
+              />
+            </div>
+          </Form.Item>
         </div>
-        <div>to</div>
-        <div>
-          <TimePicker
-            name={'End Time'}
-            use12Hours
-            format={'h:mm a'}
-            value={endTime}
-            onChange={value => handleValue('endTime', value)}
-          />
-        </div>
-      </div>
-      <h4>Event Details</h4>
-      <div>
-        <TextArea
-          name={'eventDetails'}
-          placeholder={
-            'What the volunteer would do at the event would go here.'
-          }
-          value={eventDetails}
-          onChange={e => handleValue(e.target.name, e.target.value)}
-          style={{ height: 115 }}
-        />
-        {error && !eventDetails && (
-          <span className="error-message error-span left-aligned">{error}</span>
-        )}
-      </div>
-
-      <h4>Website</h4>
-      <div>
-        <Input
-          name={'website'}
-          value={website}
-          onChange={e => handleValue(e.target.name, e.target.value)}
-        />
-      </div>
-
-      <h4>Other Notes</h4>
-      <div>
-        <TextArea
-          name={'otherNotes'}
-          placeholder={'Any additional helpful tips for the event go here.'}
-          value={otherNotes}
-          onChange={e => handleValue(e.target.name, e.target.value)}
-          style={{ height: 115 }}
-          notRequired
-        />
-      </div>
-
+        <Form.Item label={'Event Details'} required>
+          <div className={'input'}>
+            <TextArea
+              name={'eventDetails'}
+              placeholder={
+                'What the volunteer would do at the event would go here.'
+              }
+              value={eventDetails}
+              onChange={e => handleValue(e.target.name, e.target.value)}
+              style={{ height: 115 }}
+            />
+            {error && !eventDetails && (
+              <span className="error-message error-span left-aligned">
+                {error}
+              </span>
+            )}
+          </div>
+        </Form.Item>
+        <Form.Item label={'Website'}>
+          <div className={'input'}>
+            <Input
+              name={'website'}
+              value={website}
+              onChange={e => handleValue(e.target.name, e.target.value)}
+            />
+          </div>
+        </Form.Item>
+        <Form.Item label={'Other Notes'}>
+          <div className={'input'}>
+            <TextArea
+              name={'otherNotes'}
+              placeholder={'Any additional helpful tips for the event go here.'}
+              value={otherNotes}
+              onChange={e => handleValue(e.target.name, e.target.value)}
+              style={{ height: 115 }}
+            />
+          </div>
+        </Form.Item>
+      </Form>
       <div className="buttonStyles">
         <StyledCancelButton
           key="cancel"
@@ -383,7 +421,7 @@ const StyledButtons = styled.div`
   width: 100%;
   display: flex;
   justify-content: flex-end;
-
+  margin-left: 60px;
   .icon {
     display: flex;
     justify-content: center;
@@ -395,24 +433,10 @@ const StyledButtons = styled.div`
     cursor: pointer;
   }
 `;
+
 const StyledDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  input {
-    width: 80%;
-  }
-
-  .errorFlex {
-    display: flex;
-    flex-direction: column;
-  }
-  .timeWrapper {
-    display: flex;
-  }
-  .error-message.error-span.left-aligned {
-    color: red;
-    font-size: 12px;
+  .to-p-review {
+    margin: 5px 20px 0px 45px;
   }
 `;
 
