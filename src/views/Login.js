@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Avatar, Comment, Icon } from 'antd';
-
+import volunteerPic1 from '../assets/volunteerPic2.png';
 import { WrappedAntForm, AntInput, StyledLine, StyledLink } from '../styled';
 import {
   signIn,
@@ -118,17 +118,14 @@ export const Login = props => {
               {pathName === '/login' ? 'Sign up here.' : 'Sign in here.'}
             </CustomStyledLink>
             {pathName === '/signup' && (
-              <Comment
-                avatar={<Avatar size={128} icon={'user'} />}
-                className={'comment'}
-                content={
-                  <h2>
-                    '"Both as a volunteer and a non-profit staff member this has
-                    been the best tool to connect volunteers, community and
-                    nonProfits." --James Anderson'
-                  </h2>
-                }
-              />
+              <div className="testimonial">
+                <Avatar size={128} src={volunteerPic1} />
+                <h4>
+                  "Both as a volunteer and a non-profit staff member this has
+                  been the best tool to connect volunteers, community and
+                  non-profits."<br></br> -- James Anderson
+                </h4>
+              </div>
             )}
           </StyledCenter>
         </StyledCenter>
@@ -179,12 +176,17 @@ const StyledLogin = styled.div`
   .ant-btn {
     margin-bottom: 2rem;
   }
-  .comment {
-    max-width: 90%;
-  }
-
-  .ant-comment-avatar {
-    margin-right: 2rem;
+  .testimonial {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin: 15px;
+    h4 {
+      width: 70%;
+    }
+    .ant-avatar {
+      width: 100%;
+    }
   }
 `;
 
