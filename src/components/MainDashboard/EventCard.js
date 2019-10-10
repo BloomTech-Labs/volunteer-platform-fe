@@ -6,7 +6,7 @@ import { useStateValue } from '../../hooks/useStateValue';
 import moment from 'moment';
 import { Tag } from 'antd';
 
-export const EventCard = ({ event }) => {
+export const EventCard = ({ event, recurDate }) => {
   //logic
   const [{ org, events, auth }, dispatch] = useStateValue();
 
@@ -50,7 +50,7 @@ export const EventCard = ({ event }) => {
           </div>
           {ableToDelete && <StyledButton type="danger">Delete</StyledButton>}
         </div>
-        <button><Link to={{pathname: `/events/${event.eventId}`}}> View More </Link></button>
+        <button><Link to={{pathname: `/events/${event.eventId}`, state: {selectedDate: event.nextDate }, }}> View More </Link></button>
       </StyledEventCard>
   );
 };
