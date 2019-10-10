@@ -22,7 +22,7 @@ export const SecondRow = ({ localState }) => {
         </div>
       )}
       <div className="tags">
-        <h5 className='first'>Interests: </h5>
+        <h5>Interests: </h5>
         <div className="subtag">{interest}</div>
         <h5>Causes: </h5>
         <div className="subtag">{causes}</div>
@@ -41,8 +41,8 @@ const StyledSecondRow = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  .first{
-      margin-top: 0;
+  h5{
+      font-weight: 600;
   }
   .photo {
     width: 30%;
@@ -58,17 +58,19 @@ const StyledSecondRow = styled.div`
     border-radius: 4px;
     flex-direction: column;
     justify-content: space-between;
-    padding-top: 0.4em;
-    padding-bottom: 0.4em;
+    height: 100%;
 
     .subtag {
       flex-direction: row;
       justify-content: flex-start;
 
-      .ant-tag{
-          background: ${({theme}) => theme.primary8};
-          color: white;
+      .ant-tag {
+        background: ${({ theme }) => theme.primary8};
+        color: white;
       }
+    }
+    .last {
+      padding-bottom: 0.81em;
     }
   }
 `;
