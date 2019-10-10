@@ -21,7 +21,7 @@ export const Signup = props => {
     phoneNumber: '',
     email: '',
     uid: '',
-    DOB: moment(),
+    DOB: moment(moment().subtract(18, 'years')),
   };
   const [localState, setLocalState] = useState(user);
   //const [modalOpen, setModalOpen] = useState(false);
@@ -52,14 +52,14 @@ export const Signup = props => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    localState.DOB = localState.DOB.format('LL');
-    register(localState, dispatch);
+    register({...localState, DOB: localState.DOB.format('LL')}, dispatch);
     regUserSuccessModal();
   };
 
   const regUserSuccessModal = successModal({
     title: 'Registration Success!',
     maskStyle: { background: `rgba(97, 37, 0, 0.2)` },
+    onOk: () => props.history.push('/dashboard'),
   });
 
   const cancelRegister = () => {
