@@ -44,7 +44,7 @@ export const CreateEventPartOne = props => {
   };
 
   const checkRequired = () => {
-    if (!isFormValid()) {
+    if (isFormValid()) {
       setError('');
       handlePageForward();
     } else {

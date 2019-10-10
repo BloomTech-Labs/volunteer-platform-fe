@@ -39,7 +39,6 @@ export const CreateEventReview = props => {
 
 const StyledRenderedDiv = styled.div`
   background: ${({ theme }) => theme.gray4};
-
   margin: 0 auto;
   padding: 1.5rem 3rem;
   border-radius: ${({ theme }) => theme.borderRadiusDefault};

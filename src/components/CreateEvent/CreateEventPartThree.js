@@ -31,7 +31,7 @@ export const CreateEventPartThree = props => {
       return true;
   };
   const checkedRequired = () => {
-    if (!isFormValid()) {
+    if (isFormValid()) {
       setError('');
       handlePageForward();
     } else {
