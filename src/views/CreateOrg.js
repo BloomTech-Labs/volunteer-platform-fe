@@ -83,9 +83,6 @@ export const CreateOrg = props => {
     {
       title: '',
     },
-    {},
-    {},
-    {},
     {
       title: 'Finished',
     },
