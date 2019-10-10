@@ -253,6 +253,10 @@ const StyledModal = styled(Modal)`
       flex-wrap: wrap;
     }
 
+    h5 {
+      align-self: flex-start;
+    }
+
     button {
       align-self: center;
       margin: 1rem 1.5rem;
