@@ -9,7 +9,6 @@ export const StyledCard = ({ ...rest }) => {
 
 const StyledAntCard = styled(Card)`
   && {
-    display: flex;
     margin: ${props => props.margin || '25px auto'};
     width: ${props => props.width || '100%'};
     border-radius: ${props =>
