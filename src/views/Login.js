@@ -79,13 +79,11 @@ export const Login = props => {
                   name={'First Name'}
                   placeholder={'First Name'}
                   layout={formItemLayout}
-                  style={{ backgroundColor: '#e8f0fe' }}
                 />
                 <AntInput
                   name={'Last Name'}
                   placeholder={'Last Name'}
                   layout={formItemLayout}
-                  style={{ backgroundColor: '#e8f0fe' }}
                 />
               </div>
             )}
