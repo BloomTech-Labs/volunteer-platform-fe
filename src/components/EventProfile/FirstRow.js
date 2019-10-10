@@ -17,11 +17,11 @@ const NormalRegister = ({ localState, auth, register, unRegister }) => {
     <>
       {auth.googleAuthUser &&
       localState.registeredVolunteers.includes(auth.googleAuthUser.uid) ? (
-        <StyledButton width={'20rem'} onClick={() => unRegister()}>
+        <StyledButton width={'100%'} onClick={(e) => unRegister(e)}>
           Cancel Registration
         </StyledButton>
       ) : (
-        <StyledButton width={'20rem'} onClick={() => register()}>
+        <StyledButton width={'100%'} onClick={(e) => register(e)}>
           Register
         </StyledButton>
       )}
