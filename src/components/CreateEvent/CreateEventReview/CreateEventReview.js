@@ -50,7 +50,6 @@ const StyledRenderedDiv = styled.div`
     margin-top: 10px;
 
     label {
-      margin-left: 90px;
       color: ${({ theme }) => theme.primary8};
       &::before {
         color: ${({ theme }) => theme.primary8};
@@ -63,7 +62,6 @@ const StyledRenderedDiv = styled.div`
 
     .city-states-input {
       label {
-        margin-left: 20px;
       }
     }
   }

@@ -63,7 +63,7 @@ export const CreateEventPartFour = props => {
               <div>
                 {error && !numberOfVolunteers && (
                   <span className="error-message error-span left-aligned">
-                    {error}
+                    Must be higher than 0.
                   </span>
                 )}
               </div>

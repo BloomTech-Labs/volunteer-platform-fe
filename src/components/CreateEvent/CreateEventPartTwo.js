@@ -258,7 +258,7 @@ const StyledDiv = styled.div`
   }
   .date-input {
     label {
-      margin-left: 390px;
+      margin-left: 220px;
     }
   }
   .to-p {
