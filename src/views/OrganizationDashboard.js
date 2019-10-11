@@ -25,7 +25,7 @@ export const OrganizationDashboard = props => {
   const [imageUrl, setImageUrl] = useState(null);
   const [selectedDate, setSelectedDate] = useState();
   const [calendarValue, setCalendarValue] = useState(moment());
-  
+  console.log(props)
   useEffect(() => {
     if (props.location.state){
       setDisplayOrg(props.location.state.org);

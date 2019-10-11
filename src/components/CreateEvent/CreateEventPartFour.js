@@ -11,10 +11,6 @@ export const CreateEventPartFour = props => {
 
   const { website, numberOfVolunteers, otherNotes } = localState;
 
-  useEffect(() => {
-    window.scrollTo(0, 100);
-  }, []);
-
   const isFormValid = () => {
     if (numberOfVolunteers) {
       return true;
