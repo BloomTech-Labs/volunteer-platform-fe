@@ -11,7 +11,7 @@ export const HeaderDiv = ({ style, children, loggedIn }) => {
   useEffect(() => {
     window.addEventListener('scroll', () => {
       let activeClass = 'scrolled';
-      if (window.scrollY <= 20) {
+      if (window.scrollY <= 30) {
         activeClass = 'top';
       }
       setScrollClass(activeClass);

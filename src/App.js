@@ -8,7 +8,7 @@ import {
   subscribeToUserOrganizations,
   signedIn,
   signedOut,
-  subscribeToMessages
+  subscribeToMessages,
 } from './actions';
 import { HeaderDiv, FooterDiv } from './components';
 import Navigation from './components/SiteParts/Navigation';
@@ -107,13 +107,14 @@ function App() {
   useEffect(() => {
     window.addEventListener('scroll', () => {
       let activeClass = 'scrolled';
-      if (window.scrollY <= 20) {
+      if (window.scrollY <= 30) {
         activeClass = 'top';
       }
       setScrollClass(activeClass);
     });
   }, []);
 
+  return (
     <StyledApp className="App">
       <Layout style={{ background: '#fafafa' }}>
         {state.auth.loggedIn && (
@@ -197,7 +198,7 @@ function App() {
                 path={`/profile/:id`}
                 component={UserProfile}
               />
-              <Route path='/:anything' component={NotFound} />
+              <Route path="/:anything" component={NotFound} />
             </Switch>
           </StyledContent>
           <FooterDiv />
@@ -230,9 +231,9 @@ const StyledMenuButton = styled(Icon)`
 
 const StyledSider = styled(Sider)`
   &&& {
-    position: absolute;
+    position: fixed;
+    left: 0px;
     top: 64px;
-    left: 0;
     z-index: 100;
     min-height: 100vh;
     height: 100vh;
@@ -259,6 +260,7 @@ const StyledApp = styled.div`
   flex-direction: column;
   min-height: 100vh;
   position: relative;
+  margin-top: 64px;
 `;
 
 const StyledContent = styled(Content)`
@@ -270,8 +272,8 @@ const StyledContent = styled(Content)`
     display: flex;
     flex-direction: column;
 
-    @media (min-width: 1088px){
-        min-width: 750px;
+    @media (min-width: 1088px) {
+      min-width: 750px;
     }
     @media ${device.laptop} {
       max-width: 90%;
