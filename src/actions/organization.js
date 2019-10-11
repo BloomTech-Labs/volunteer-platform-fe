@@ -66,6 +66,7 @@ export const subscribeToUserOrganizations = (uid, dispatch) => {
   
 };
 
+export const GET_ORG_BY_ID_INIT = 'GET_ORG_BY_ID_INIT';
 export const GET_ORG_BY_ID = 'GET_ORG_BY_ID';
 export const GET_ORG_BY_ID_FAILED = 'GET_ORG_BY_ID_FAILED';
 
@@ -76,6 +77,7 @@ export const GET_ORG_BY_ID_FAILED = 'GET_ORG_BY_ID_FAILED';
  * @param {Dispatch} dispatch
  */
 export const getOrganizationByOrgId = (orgId, dispatch) => {
+    dispatch(action(GET_ORG_BY_ID_INIT));
   store
     .collection('organizations')
     .doc(orgId)
@@ -84,7 +86,7 @@ export const getOrganizationByOrgId = (orgId, dispatch) => {
       if (res.exists){
         const org = res.data();
         org.orgId = res.id;
-        
+        dispatch(action(GET_ORG_BY_ID, org));
       }
     });
 };
