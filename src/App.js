@@ -9,7 +9,6 @@ import {
   signedIn,
   signedOut,
   subscribeToMessages,
-  updateRecurringEvents,
 } from './actions';
 import { HeaderDiv, FooterDiv } from './components';
 import Navigation from './components/SiteParts/Navigation';
@@ -103,6 +102,18 @@ function App() {
     }
   };
 
+  const [scrollClass, setScrollClass] = useState('top');
+
+  useEffect(() => {
+    window.addEventListener('scroll', () => {
+      let activeClass = 'scrolled';
+      if (window.scrollY <= 30) {
+        activeClass = 'top';
+      }
+      setScrollClass(activeClass);
+    });
+  }, []);
+
   return (
     <StyledApp className="App">
       <Layout style={{ background: '#fafafa' }}>
@@ -122,17 +133,19 @@ function App() {
               trigger={null}
               collapsed={collapsed ? 1 : 0}
               reverseArrow={true}
+              className={scrollClass}
             >
               <Navigation />
             </StyledSider>
           </Affix>
         )}
+
         <Layout style={{ background: '#fafafa' }}>
           <HeaderDiv loggedIn={state.auth.loggedIn}>
             {state.auth.loggedIn && (
               <StyledMenuButton
                 collapsed={collapsed ? 1 : 0}
-                className="trigger"
+                className={`trigger ${scrollClass}`}
                 type={collapsed ? 'menu-unfold' : 'menu-fold'}
                 onClick={() => setCollapsed(!collapsed)}
               />
@@ -185,7 +198,7 @@ function App() {
                 path={`/profile/:id`}
                 component={UserProfile}
               />
-              <Route path='/:anything' component={NotFound} />
+              <Route path="/:anything" component={NotFound} />
             </Switch>
           </StyledContent>
           <FooterDiv />
@@ -197,17 +210,30 @@ function App() {
 
 const StyledMenuButton = styled(Icon)`
   && {
-    margin-left: ${props => (props.collapsed ? '30px' : '230px')};
+    position: fixed;
+    top: 16px;
+    /* left: ${props => (props.collapsed ? '16px' : '216px')}; */
+    left: 16px;
     font-size: 2rem;
-    margin-top: 20px;
-    transition: all 0.2s;
+    line-height: 1;
+    z-index: 9001;
+    transition: top 0.2s;
+    transition: font-size 0.2s;
+
+    &.scrolled {
+      font-size: 1rem;
+      transition: font-size 0.2s;
+      top: 9px;
+      transition: top 0.3s;
+    }
   }
 `;
 
 const StyledSider = styled(Sider)`
   &&& {
-    position: absolute;
-    left: 0;
+    position: fixed;
+    left: 0px;
+    top: 64px;
     z-index: 100;
     min-height: 100vh;
     height: 100vh;
@@ -219,6 +245,13 @@ const StyledSider = styled(Sider)`
     ::-webkit-scrollbar {
       display: none;
     }
+
+    transition: all 0.2s;
+
+    &.scrolled {
+      top: 32px;
+      transition: all 0.2s;
+    }
   }
 `;
 
@@ -227,6 +260,7 @@ const StyledApp = styled.div`
   flex-direction: column;
   min-height: 100vh;
   position: relative;
+  margin-top: 64px;
 `;
 
 const StyledContent = styled(Content)`
@@ -238,8 +272,8 @@ const StyledContent = styled(Content)`
     display: flex;
     flex-direction: column;
 
-    @media (min-width: 1088px){
-        min-width: 750px;
+    @media (min-width: 1088px) {
+      min-width: 750px;
     }
     @media ${device.laptop} {
       max-width: 90%;
