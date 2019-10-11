@@ -20,6 +20,9 @@ export const LandingPage = props => {
 
   const [location, setLocation] = useState('');
 
+  // just under the top header
+  message.config({ top: 72 });
+
   const handleClick = e => {
     setUserSearch(location, dispatch);
     props.history.push('/dashboard');
@@ -73,7 +76,7 @@ export const LandingPage = props => {
           </div>
         </HeroContent>
       </StyledHeroDiv>
-      <ContentDiv collapsed ={props.collapsed}>
+      <ContentDiv collapsed={props.collapsed}>
         <HowItWorks />
         <TopVolunteers />
         <TopNonProfits />
@@ -152,7 +155,7 @@ const HeroContent = styled.div`
     .get-started-btn {
       width: 20%;
       border-radius: 0 4px 4px 0;
-      background: ${({ theme }) => theme.accent}
+      background: ${({ theme }) => theme.accent};
       cursor: pointer;
       display: flex;
       justify-content: space-around;
