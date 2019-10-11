@@ -216,14 +216,13 @@ const CustomRenderDiv = styled(StyledRenderDiv)`
   }
 
   label {
-    margin-left: 95px;
     color: ${({ theme }) => theme.primary8};
 
     &::before {
       color: ${({ theme }) => theme.primary8};
     }
   }
-  
+
   .inline {
     width: 40%;
   }
@@ -243,11 +242,7 @@ const CustomRenderDiv = styled(StyledRenderDiv)`
   }
   .city-states-input {
     display: flex;
-    justify-content: space-around;
-
-    label {
-      margin-left: 40px;
-    }
+    justify-content: space-between;
   }
   .time-wrapper {
     display: flex;

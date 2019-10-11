@@ -31,7 +31,6 @@ export const CreateEventReviewEditForm = props => {
     phoneNumber,
     firstName,
     lastName,
-    email,
     date,
     startTime,
     endTime,
@@ -99,7 +98,7 @@ export const CreateEventReviewEditForm = props => {
 
   return (
     <StyledDiv className={'styledReviewDiv'}>
-      <div>
+      <div className={'iconWrapper'}>
         <StyledButtons>
           <div className="icon">
             <Icon type="save" onClick={checkRequired} />
@@ -407,10 +406,8 @@ const StyledButtons = styled.div`
   width: 100%;
   display: flex;
   justify-content: flex-end;
-  margin-left: 60px;
+
   .icon {
-    display: flex;
-    justify-content: center;
     align-items: center;
     font-size: 2rem;
     border-radius: 50%;

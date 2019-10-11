@@ -31,8 +31,8 @@ export const CreateEventReviewList = props => {
         </StyledButtons>
       </div>
 
-      <div className={'review-wrapper'}>
-        <div>
+      <StyledDiv className={'styledDiv'}>
+        <div className={'text'}>
           <p className={'title'}>Event Name</p>
           <p>{localState.nameOfEvent}</p>
         </div>
@@ -41,7 +41,7 @@ export const CreateEventReviewList = props => {
           <p>{localState.streetAddress}</p>
         </div>
 
-        <div className={'city-states-input'}>
+        <div className={''}>
           <p>{localState.city}</p>
           <p>{localState.state}</p>
         </div>
@@ -121,10 +121,10 @@ export const CreateEventReviewList = props => {
           <p>{localState.website}</p>
         </div>
         <div>
-          <p className={'title'}>Other Notes</p>
+          <p className={''}>Other Notes</p>
           <p>{localState.otherNotes}</p>
         </div>
-      </div>
+      </StyledDiv>
       <div className="buttonStyles">
         <div>
           <StyledCancelButton key="cancel" type="second" onClick={cancelForm}>
@@ -147,11 +147,8 @@ const StyledButtons = styled.div`
   width: 100%;
   display: flex;
   justify-content: flex-end;
-
   .icon {
     display: flex;
-    justify-content: center;
-    align-items: center;
     font-size: 2rem;
     border-radius: 50%;
     width: 50px;
@@ -161,7 +158,6 @@ const StyledButtons = styled.div`
 
   .review-wrapper {
     display: flex;
-    justify-content: flex-start;
 
     .to {
       margin: 0px 5px;
