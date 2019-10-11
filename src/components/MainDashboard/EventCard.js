@@ -50,7 +50,7 @@ export const EventCard = ({ event, recurDate }) => {
           </div>
           {ableToDelete && <StyledButton type="danger">Delete</StyledButton>}
         </div>
-        <button><Link to={{pathname: `/events/${event.eventId}`, state: {selectedDate: event.nextDate }, }}> View More </Link></button>
+        <button><Link to={{pathname: `/events/${event.eventId}`, state: {selectedDate: event.nextDate, numOfVol: event.numberOfVolunteers }, }}> View More </Link></button>
       </StyledEventCard>
   );
 };

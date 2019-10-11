@@ -57,7 +57,7 @@ const NormalDate = ({ localState }) => {
   );
 };
 
-export const FirstRow = ({ localState, auth, register, unRegister, selectedDate }) => {
+export const FirstRow = ({ localState, auth, register, unRegister, selectedDate, numOfVol }) => {
   let isRecurring = localState.recurringInfo;
   let first = Object.keys(localState.registeredVolunteers).find(
     date => moment().unix() - date < 0
@@ -94,7 +94,7 @@ export const FirstRow = ({ localState, auth, register, unRegister, selectedDate 
         )}
         <div className="needed-vols">
           <span>Needed:</span>
-          <h2>{localState.numberOfVolunteers - signedUp}</h2>
+          <h2>{numOfVol - signedUp}</h2>
           <span>volunteers</span>
         </div>
       </div>
