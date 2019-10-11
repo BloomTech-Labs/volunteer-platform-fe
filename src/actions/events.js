@@ -636,7 +636,7 @@ export const cancelSignedUpRecurringEvent = (event, user, date, dispatch) => {
   let updatedUser = {
     ...user,
     registeredEvents: user.registeredEvents.filter(
-      item => item.eventId !== event.eventId,
+      item => !(item.eventId === event.eventId && item.date === targetDate)
     ),
   };
   
