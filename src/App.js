@@ -142,15 +142,14 @@ function App() {
 
         <Layout style={{ background: '#fafafa' }}>
           <HeaderDiv loggedIn={state.auth.loggedIn}>
-            {state.auth.loggedIn &&
-              state.auth.signedUp && (
-                <StyledMenuButton
-                  collapsed={collapsed ? 1 : 0}
-                  className={`trigger ${scrollClass}`}
-                  type={collapsed ? 'menu-unfold' : 'menu-fold'}
-                  onClick={() => setCollapsed(!collapsed)}
-                />
-              )}
+            {state.auth.loggedIn && state.auth.signedUp && (
+              <StyledMenuButton
+                collapsed={collapsed ? 1 : 0}
+                className={`trigger ${scrollClass}`}
+                type={collapsed ? 'menu-unfold' : 'menu-fold'}
+                onClick={() => setCollapsed(!collapsed)}
+              />
+            )}
           </HeaderDiv>
           <Route
             exact
@@ -185,15 +184,11 @@ function App() {
               <RegisterRoute path={'/register'} component={Signup} />
               <RegisteredAndLoggedInRoute
                 path={'/messages'}
-                render={props => (
-                  <Message {...props} width={dimensions.width} />
-                )}
+                component={Message}
+                width={dimensions.width}
               />
 
-              <ProtectedRoute
-                path={'/events/:id'}
-                render={props => <EventProfile {...props} />}
-              />
+              <ProtectedRoute path={'/events/:id'} component={EventProfile} />
 
               <RegisteredAndLoggedInRoute
                 path={`/profile/:id`}

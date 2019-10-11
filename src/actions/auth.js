@@ -83,7 +83,7 @@ export const signIn = (
           .auth()
           .signInWithEmailAndPassword(email, password)
           .then(res => {
-              debugger;
+               
             const user = { ...res.user };
             user.displayName = firstName + ' ' + lastName;
             signedIn(user, dispatch);
