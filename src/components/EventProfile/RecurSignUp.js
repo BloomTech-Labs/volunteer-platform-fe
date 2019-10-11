@@ -2,18 +2,9 @@ import React from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
 import { Collapse, Icon } from 'antd';
-import { StyledButton } from '../../styled';
+import { StyledButton, StyledCard } from '../../styled';
 
 const { Panel } = Collapse;
-
-const customPanelStyle = {
-  background: '#f7f7f7',
-  borderRadius: 4,
-  margin: '0 auto 24px',
-  maxWidth: '80%',
-  border: 0,
-  overflow: 'hidden',
-};
 
 export const RecurSignUp = ({ localState, auth, register, unRegister }) => {
   let current = Object.keys(localState.registeredVolunteers).filter(
@@ -34,7 +25,7 @@ export const RecurSignUp = ({ localState, auth, register, unRegister }) => {
             <Panel
               key={date}
               header={moment.unix(date).format('LLL')}
-              style={customPanelStyle}
+              className="panel"
             >
               <h5>
                 Spots Remaining:{' '}
@@ -44,11 +35,11 @@ export const RecurSignUp = ({ localState, auth, register, unRegister }) => {
               {localState.registeredVolunteers[date].includes(
                 auth.googleAuthUser.uid
               ) ? (
-                <StyledButton onClick={() => unRegister(date)}>
+                <StyledButton width={'25%'} onClick={(e) => unRegister(e, date)}>
                   Un-Register
                 </StyledButton>
               ) : (
-                <StyledButton onClick={() => register(date)}>
+                <StyledButton width={'25%'} onClick={(e) => register(e, date)}>
                   Register
                 </StyledButton>
               )}
@@ -60,7 +51,14 @@ export const RecurSignUp = ({ localState, auth, register, unRegister }) => {
   );
 };
 
-const StyledRecurSignUp = styled.div`
+const StyledRecurSignUp = styled(StyledCard)`
   width: 100%;
-  margin-bottom: 50px;
+  .panel {
+    width: 100%;
+    background: ${({ theme }) => theme.gray3};
+    margin: 0 auto 24px;
+    overflow: hidden;
+    border-radius: 4px;
+    border: 0;
+  }
 `;

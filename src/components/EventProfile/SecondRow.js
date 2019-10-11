@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Tag } from 'antd';
+import { Tag, Col } from 'antd';
+import {StyledCard} from '../../styled'
 
 export const SecondRow = ({ localState }) => {
   const causes = localState.typesOfCauses.map(item => {
@@ -17,58 +18,56 @@ export const SecondRow = ({ localState }) => {
   return (
     <StyledSecondRow>
       {localState.imageUrl && (
-        <div className="photo">
+        <Col className="photo" span={6}>
           <img src={localState.imageUrl} alt={localState.orgName} />
-        </div>
+        </Col>
       )}
-      <div className="tags">
-        <h5 className='first'>Interests: </h5>
+      <Col className="tags" span={18}>
+        <h5>Interests: </h5>
         <div className="subtag">{interest}</div>
         <h5>Causes: </h5>
         <div className="subtag">{causes}</div>
         <h5>Requirements: </h5>
         <div className="subtag last">{requirements}</div>
-      </div>
+      </Col>
     </StyledSecondRow>
   );
 };
 
-const StyledSecondRow = styled.div`
-  width: 80%;
-  margin: 0 auto 24px;
+const StyledSecondRow = styled(StyledCard)`
+  width: 100%;
   min-height: 150px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  .first{
-      margin-top: 0;
+  h5{
+      font-weight: 600;
   }
   .photo {
-    width: 30%;
     img {
       width: 100%;
       border-radius: 4px;
     }
   }
   .tags {
-    width: 67%;
     padding-left: 5%;
-    border: 2px solid ${({ theme }) => theme.gray6};
     border-radius: 4px;
     flex-direction: column;
     justify-content: space-between;
-    padding-top: 0.4em;
-    padding-bottom: 0.4em;
+    height: 100%;
 
     .subtag {
       flex-direction: row;
       justify-content: flex-start;
 
-      .ant-tag{
-          background: ${({theme}) => theme.primary8};
-          color: white;
+      .ant-tag {
+        background: ${({ theme }) => theme.primary8};
+        color: white;
       }
+    }
+    .last {
+      padding-bottom: 0.81em;
     }
   }
 `;

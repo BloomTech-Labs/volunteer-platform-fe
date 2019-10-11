@@ -1,13 +1,13 @@
 import React from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
-
-import { StyledButton } from '../../styled';
+import { Col } from 'antd';
+import { StyledButton, StyledCard } from '../../styled';
 
 const RecurRegister = () => {
   return (
     <a href={'#recurSignUp'}>
-      <StyledButton width={'20rem'}>Register</StyledButton>
+      <StyledButton width={'100%'}>Register</StyledButton>
     </a>
   );
 };
@@ -17,11 +17,11 @@ const NormalRegister = ({ localState, auth, register, unRegister }) => {
     <>
       {auth.googleAuthUser &&
       localState.registeredVolunteers.includes(auth.googleAuthUser.uid) ? (
-        <StyledButton width={'20rem'} onClick={() => unRegister()}>
+        <StyledButton width={'100%'} onClick={(e) => unRegister(e)}>
           Cancel Registration
         </StyledButton>
       ) : (
-        <StyledButton width={'20rem'} onClick={() => register()}>
+        <StyledButton width={'100%'} onClick={(e) => register(e)}>
           Register
         </StyledButton>
       )}
@@ -68,7 +68,7 @@ export const FirstRow = ({ localState, auth, register, unRegister }) => {
 
   return (
     <StyledFirstRow>
-      <div className="left-col">
+      <Col className="left-col" span={18}>
         <h2>{localState.nameOfEvent}</h2>
         <h4>{localState.orgName}</h4>
         <span>
@@ -79,9 +79,9 @@ export const FirstRow = ({ localState, auth, register, unRegister }) => {
         ) : (
           <NormalDate localState={localState} />
         )}
-      </div>
+      </Col>
 
-      <div className="right-col">
+      <Col className="right-col" span={6}>
         {isRecurring ? (
           <RecurRegister />
         ) : (
@@ -97,18 +97,14 @@ export const FirstRow = ({ localState, auth, register, unRegister }) => {
           <h2>{localState.numberOfVolunteers - signedUp}</h2>
           <span>volunteers</span>
         </div>
-      </div>
+      </Col>
     </StyledFirstRow>
   );
 };
 
-const StyledFirstRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 80%;
-  margin: 0 auto 24px;
+const StyledFirstRow = styled(StyledCard)`
   min-height: 150px;
-
+  width: 100%;
   h2,
   h4,
   h5 {
@@ -122,13 +118,13 @@ const StyledFirstRow = styled.div`
   }
 
   .needed-vols {
-    background: white;
-    width: 20rem;
+    border: 2px solid ${({theme}) => theme.gray3}
+    width: 100%;
     display: flex;
     flex-direction: column;
-    height: fit-content;
     align-items: center;
     border-radius: 4px;
+    margin-top: 15px;
   }
 `;
 

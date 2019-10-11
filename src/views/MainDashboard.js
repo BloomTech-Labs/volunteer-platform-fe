@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import styled from 'styled-components'
 import { message } from 'antd';
 import { useStateValue } from '../hooks/useStateValue';
 import {
@@ -17,7 +18,7 @@ import { stateConversion } from '../utility/stateConversion';
 import { StyledLoader } from '../styled';
 
 export const MainDashboard = () => {
-  const [{ events, tags, org }, dispatch] = useStateValue();
+  const [{ events, tags, org, auth }, dispatch] = useStateValue();
   const [loadingEvents, setLoadingEvents] = useState(true);
   const [filtersTouched, setFiltersTouched] = useState(false);
   const [tagFilterState, setTagFilterState] = useState({
@@ -35,11 +36,45 @@ export const MainDashboard = () => {
     causeAreas: false,
   });
   const [inputState, setInputState] = useState({
-    location: { state: '', city: '' },
+    location: '',
     tags: { interests: [], requirements: [], causeAreas: [] },
   });
   const [activeTabKey, setActiveTabKey] = useState('Events');
   const [initialResults, setInitialResults] = useState([]);
+
+  //fetching user's location by IP
+  useEffect(() => {
+    console.log(auth);
+    if (auth.userSearch) {
+      setInputState({ ...inputState, location: auth.userSearch });
+    } else {
+      axios
+        .get(`https://geoip-db.com/json/${process.env.REACT_APP_ipinfoKey}`)
+        .then(res => {
+          let stateAbbrev = Object.keys(stateConversion).find(
+            key => stateConversion[key] === res.data.state
+          );
+          let userCity = res.data.city;
+          if (stateAbbrev) {
+            setInputState({
+              ...inputState,
+              location: `${userCity}, ${stateAbbrev}`,
+            });
+          } else {
+            message.warning(
+              'Unable to get your location. Please enter your state below.'
+            );
+          }
+        })
+        .catch(err => {
+          console.log('Error detecting location');
+          message.warning(
+            'Unable to get your location. Please enter your state below.'
+          );
+        })
+        .finally(() => setLoadingEvents(false));
+    }
+  }, [auth.userSearch]);
 
   useEffect(() => {
     const tagCollections = ['interests', 'requirements', 'causeAreas'];
@@ -66,45 +101,13 @@ export const MainDashboard = () => {
     setTagFilterState({ ...tagFilterState, ...newTags });
   }, [selectedTags]);
 
-  //fetching user's location by IP
   useEffect(() => {
-    axios
-      .get(`https://geoip-db.com/json/${process.env.REACT_APP_ipinfoKey}`)
-      .then(res => {
-        let stateAbbrev = Object.keys(stateConversion).find(
-          key => stateConversion[key] === res.data.state
-        );
-        let userCity = res.data.city;
-        if (stateAbbrev) {
-          setInputState({
-            ...inputState,
-            location: {
-              ...inputState.location,
-              state: stateAbbrev,
-              city: userCity,
-            },
-          });
-        } else {
-          message.warning(
-            'Unable to get your location. Please enter your state below.'
-          );
-        }
-      })
-      .catch(err => {
-        console.log('Error detecting location');
-        message.warning(
-          'Unable to get your location. Please enter your state below.'
-        );
-      })
-      .finally(() => setLoadingEvents(false));
-  }, []);
-
-  useEffect(() => {
-    if (inputState.location.state.length === 2) {
+    if (inputState.location) {
+      let state = inputState.location.split(', ')[1];
       setLoadingEvents(true);
-      getAllEventsByState(inputState.location.state, dispatch);
-      getAllRecurringEventsByState(inputState.location.state, dispatch);
-      getOrganizationsByState(inputState.location.state, dispatch);
+      getAllEventsByState(state, dispatch);
+      getAllRecurringEventsByState(state, dispatch);
+      getOrganizationsByState(state, dispatch);
       setTimeout(() => {
         setLoadingEvents(false);
       }, 1000);
@@ -112,7 +115,7 @@ export const MainDashboard = () => {
         setFiltersTouched(true);
       }, 1000);
     }
-  }, [inputState.location.state]);
+  }, [inputState.location]);
 
   useEffect(() => {
     if (activeTabKey === 'Events')
@@ -124,16 +127,9 @@ export const MainDashboard = () => {
     setInitialResults([...events.events, ...events.recurringEvents]);
   }, [events]);
 
-  const onChange = e => {
-    setInputState({ ...inputState, [e.target.name]: e.target.value });
+  const onLocationChange = place => {
+    setInputState({ ...inputState, location: place.formatted_address });
   };
-  const onLocationChange = e => {
-    setInputState({
-      ...inputState,
-      location: { ...inputState.location, [e.target.name]: e.target.value },
-    });
-  };
-
   const onTagsChange = (e, name, collection) => {
     setFiltersTouched(true);
     if (e === null)
@@ -154,7 +150,6 @@ export const MainDashboard = () => {
   const onSelectedChange = (selected, collection) => {
     setFiltersTouched(true);
     selected.forEach(tag => {
-      console.log(tag);
       onTagsChange(true, tag, collection);
     });
     setSelectedTags({ ...selectedTags, [collection]: selected });
@@ -170,14 +165,13 @@ export const MainDashboard = () => {
   const FilteredList = FilteredComponent(ResultList);
 
   return (
-    <div className="main-content" style={{ maxWidth: 1020, margin: '0 auto' }}>
+    <StyledDiv>
       <h2>Browse {activeTabKey}</h2>
       <FilterTopbar
         changeHandlers={{
-          onChange,
-          onLocationChange,
           onTagsChange,
           onSelectedChange,
+          onLocationChange,
         }}
         inputState={inputState}
         tagFilterState={tagFilterState}
@@ -204,8 +198,10 @@ export const MainDashboard = () => {
           />
         )}
       </div>
-    </div>
+    </StyledDiv>
   );
 };
+
+const StyledDiv = styled.div``;
 
 export default MainDashboard;

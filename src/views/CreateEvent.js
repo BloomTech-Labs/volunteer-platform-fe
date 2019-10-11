@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
-import { StyledCard } from '../styled';
+import { deleteModal } from '../styled';
 import createEventImg from '../assets/undraw_blooming_jtv6.svg';
 import {
   CreateEventPartOne,
@@ -13,19 +13,21 @@ import { Steps } from 'antd';
 import CreateEventReview from '../components/CreateEvent/CreateEventReview/CreateEventReview';
 import { useStateValue } from '../hooks/useStateValue';
 import { createEvent, createRecurringEvent } from '../actions';
+import { TopContent, StyledRenderDiv } from './CreateOrg';
 
 let { Step } = Steps;
 
 export const CreateEvent = props => {
   const initialEvent = {
     nameOfEvent: '',
+    address: '',
     typesOfCauses: [],
     date: '',
     startTime: moment('00:00:00', 'HH:mm'),
     endTime: moment('00:00:00', 'HH:mm'),
     numberOfVolunteers: '',
     phoneNumber: '',
-    pointOfcontact: '',
+    pointOfContact: '',
     volunteerRequirements: [],
     interest: [],
     website: '',
@@ -61,14 +63,24 @@ export const CreateEvent = props => {
     4: CreateEventPartFour,
     5: CreateEventReview,
   };
-  let steps = [0, 1, 2, 3, 4];
 
+  const steps = [
+    {
+      title: 'Start',
+    },
+    {},
+    {},
+    {},
+    {
+      title: 'Finished',
+    },
+  ];
   let [pageNumber, setPageNumber] = useState(1);
 
   const [state, dispatch] = useStateValue();
 
   //Destructuring
-  const { recurringInfo, recurringEvent } = localState;
+  const { recurringInfo } = localState;
 
   const RenderedFormParts = formParts[pageNumber];
 
@@ -77,24 +89,22 @@ export const CreateEvent = props => {
       setLocalState({
         ...localState,
         orgId: props.location.state.org.orgId,
+        address: props.location.state.org.address,
+        typesOfCauses: props.location.state.org.causeAreas,
+        website: props.location.state.org.website,
+        POC: props.location.state.org.POC,
       });
     }
   }, [props.location.state.org]);
 
   //Handle Submit for Form
   const handleReviewSubmit = () => {
-    console.log('org', props.location.state.org.organizationName);
     const event = {
       orgId: localState.orgId,
       orgName: props.location.state.org.organizationName,
       orgImagePath: props.location.state.org.imagePath || '',
-      orgPage: '',
       nameOfEvent: localState.nameOfEvent,
-      streetAddress: localState.streetAddress,
-      city: localState.city,
-      state: localState.state,
-      email: localState.email,
-      phoneNumber: localState.phoneNumber,
+      address: localState.address,
       date: localState.date.unix(),
       startTime: localState.startTime.format('LT'),
       endTime: localState.endTime.format('LT'),
@@ -109,9 +119,9 @@ export const CreateEvent = props => {
       interest: localState.interest,
       volunteerRequirements: localState.volunteerRequirements,
       pointOfContact: {
-        firstName: localState.firstName,
-        lastName: localState.lastName,
+        fullName: localState.fullName,
         email: localState.email,
+        phoneNumber: localState.phoneNumber,
       },
       eventDetails: localState.eventDetails,
       website: localState.website,
@@ -135,7 +145,7 @@ export const CreateEvent = props => {
     }
     setPageNumber(1);
 
-    props.history.push('/org-dashboard');
+    props.history.push('/org-dashboard', { org: props.location.state.org });
   };
 
   const handleChange = (name, value) => {
@@ -146,86 +156,67 @@ export const CreateEvent = props => {
   };
   ///Cancel Form
   const cancelForm = () => {
-    props.history.push('/org-dashboard');
+    const cancelFormModal = deleteModal({
+      title: 'Are you sure you want to cancel ?',
+      content: 'All information will be delete.',
+      onOk: () =>
+        props.history.push('/org-dashboard', { org: props.location.state.org }),
+    });
+    cancelFormModal();
   };
 
-  //Handle Form Parts Submit
+  //Handle Form Part Submit
   const handlePageForward = () => {
     setPageNumber(pageNumber + 1);
+    document
+      .getElementById('scroll-event-header')
+      .scrollIntoView({ behavior: 'smooth' });
   };
 
   //Go Back a Page Number
   const handlePageBack = () => {
     setPageNumber(pageNumber - 1);
+    document
+      .getElementById('scroll-event-header')
+      .scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <div>
-      <StyledDiv className={'flex center'}>
-        <CustomStyledCard margin="2rem 0 5rem 0" maxWidth="900px">
-          <h1>{formTitles[pageNumber]}</h1>
-          <StyledImg src={createEventImg} alt="undraw unexpected friends" />
-          <Steps current={pageNumber - 1} progressDot size="small">
-            {steps.map(step => {
-              return <Step key={step} />;
-            })}
-          </Steps>
-          <StyledRenderDiv>
-            <RenderedFormParts
-              state={state}
-              localState={localState}
-              setLocalState={setLocalState}
-              handlePageForward={handlePageForward}
-              handlePageBack={handlePageBack}
-              cancelForm={cancelForm}
-              pageNumber={pageNumber}
-              handleChange={handleChange}
-              handleReviewSubmit={handleReviewSubmit}
-            />
-          </StyledRenderDiv>
-        </CustomStyledCard>
-      </StyledDiv>
-    </div>
+    <StyledDiv>
+      <h1 id={'scroll-event-header'}>{formTitles[pageNumber]}</h1>
+      <TopContent>
+        <StyledImg src={createEventImg} alt="undraw unexpected friends" />
+        <Steps current={pageNumber - 1} progressDot size="small">
+          {steps.map(step => {
+            return (
+              <Step key={step} title={step.title} description={step.content} />
+            );
+          })}
+        </Steps>
+      </TopContent>
+      <CustomRenderDiv>
+        <RenderedFormParts
+          state={state}
+          localState={localState}
+          setLocalState={setLocalState}
+          handlePageForward={handlePageForward}
+          handlePageBack={handlePageBack}
+          cancelForm={cancelForm}
+          pageNumber={pageNumber}
+          handleChange={handleChange}
+          handleReviewSubmit={handleReviewSubmit}
+        />
+      </CustomRenderDiv>
+    </StyledDiv>
   );
 };
 
 const StyledDiv = styled.div`
-  background: white;
-  .create-org-header {
-    color: ${props => props.theme.primary8};
-  }
+  background: ${({ theme }) => theme.gray2};
+  text-align: center;
 `;
 
-const CustomStyledCard = styled(StyledCard)`
-  &&& {
-    background: #d9d9d9;
-    text-align: center;
-    cursor: default;
-    transition: none;
-
-    .ant-steps {
-      text-align: left;
-      margin-bottom: 40px;
-
-      .ant-steps-item-finish
-        > .ant-steps-item-container
-        > .ant-steps-item-tail {
-        &::after {
-          background: ${({ theme }) => theme.primary8};
-        }
-      }
-    }
-  }
-`;
-
-const StyledRenderDiv = styled.div`
-  background: ${({ theme }) => theme.gray4};
-  width: 75%;
-  margin: 0 auto;
-  font-weight: bold;
-  padding: 1.5rem 3rem;
-  border-radius: ${({ theme }) => theme.borderRadiusDefault};
-
+const CustomRenderDiv = styled(StyledRenderDiv)`
   .styledDiv {
     display: flex;
     flex-direction: column;
@@ -233,26 +224,41 @@ const StyledRenderDiv = styled.div`
     margin-top: 10px;
   }
 
-  .input {
-    width: 80%;
-    margin: 0 auto;
-  }
-
-  h4 {
-    margin: 30px 0px;
-  }
-
   label {
-    margin-left: 55px;
     color: ${({ theme }) => theme.primary8};
 
     &::before {
       color: ${({ theme }) => theme.primary8};
     }
   }
+
+  .inline {
+    width: 40%;
+  }
+
+  h4 {
+    margin: 30px 0px;
+  }
+
   .errorFlex {
     dispaly: flex;
     flex-direction: column;
+  }
+
+  .error-message.error-span.left-aligned {
+    color: red;
+    font-size: 12px;
+  }
+  .city-states-input {
+    display: flex;
+    justify-content: space-between;
+  }
+  .time-wrapper {
+    display: flex;
+    justify-content: center;
+    label {
+      margin-left: 0px;
+    }
   }
 
   .buttonStyles {
@@ -268,10 +274,6 @@ const StyledRenderDiv = styled.div`
       margin-left: 5px;
       margin-right: 5px;
     }
-  }
-  .error-message.error-span.left-aligned {
-    color: red;
-    font-size: 12px;
   }
 `;
 

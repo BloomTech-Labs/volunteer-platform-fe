@@ -1,6 +1,7 @@
 import {action} from './action';
 import {deleteFile} from './files';
 import firebase, {store} from '../firebase/FirebaseConfig';
+import {getLatLong} from '../utility/geoCode';
 
 /**
  * Auth Actions
@@ -48,6 +49,7 @@ export const subscribeToUserOrganizations = (uid, dispatch) => {
     .collection('organizations')
     .where('organizationOwnerUID', '==', uid)
     .onSnapshot(snapShot => {
+      
       const orgs = [];
       if (!snapShot.empty){
         localStorage.setItem('createdOrg', 'true');
@@ -82,7 +84,7 @@ export const getOrganizationByOrgId = (orgId, dispatch) => {
       if (res.exists){
         const org = res.data();
         org.orgId = res.id;
-        dispatch(action(GET_ORG_BY_ID, org));
+        
       }
     });
 };
@@ -143,6 +145,7 @@ export const deleteOrganizationImage = (organization) => {
   
   deleteFile(organization.imagePath);
   delete organization.imagePath;
+  delete organization.imageUrl;
   
   store.collection('organizations')
     .doc(organization.orgId)

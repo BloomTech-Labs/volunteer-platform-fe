@@ -11,7 +11,7 @@ import {
   Form,
 } from 'antd';
 import styled from 'styled-components';
-
+import Autocomplete from 'react-google-autocomplete';
 import RecurringEvent from '../RecurringEvent';
 
 const { TextArea } = Input;
@@ -22,8 +22,7 @@ export const CreateEventReviewEditForm = props => {
   const { localState, setLocalState, setEdit } = props;
   const {
     nameOfEvent,
-    streetAddress,
-    city,
+    address,
     typesOfCauses,
     volunteerRequirements,
     interest,
@@ -31,7 +30,6 @@ export const CreateEventReviewEditForm = props => {
     phoneNumber,
     firstName,
     lastName,
-    email,
     date,
     startTime,
     endTime,
@@ -61,17 +59,15 @@ export const CreateEventReviewEditForm = props => {
   const isFormValid = () => {
     if (
       nameOfEvent &&
-      streetAddress &&
-      city &&
+      address &&
       localState.state &&
       typesOfCauses.length > 0 &&
       volunteerRequirements.length > 0 &&
       interest.length > 0 &&
       numberOfVolunteers > 0 &&
-      phoneNumber &&
       firstName &&
       lastName &&
-      email &&
+      phoneNumber &&
       eventDetails
     ) {
       return true;
@@ -99,282 +95,275 @@ export const CreateEventReviewEditForm = props => {
   };
 
   return (
-    <StyledDiv className={'flex center'}>
-      <div>
+    <StyledDiv className={'styledReviewDiv'}>
+      <div className={'iconWrapper'}>
         <StyledButtons>
           <div className="icon">
-            <Icon type="save" onClick={() => checkRequired()} />
+            <Icon type="save" onClick={checkRequired} />
           </div>
           <div className="icon">
             <Icon type="edit" theme="twoTone" twoToneColor="#52c41a" />
           </div>
         </StyledButtons>
       </div>
-
-      <h4>Event Name</h4>
-      <div>
-        <Input
-          name={'nameOfEvent'}
-          value={nameOfEvent}
-          onChange={e => handleValue(e.target.name, e.target.value)}
-        />
-        {error && !nameOfEvent && (
-          <span className="error-message error-span left-aligned">{error}</span>
-        )}
-      </div>
-
-      <h4>Location</h4>
-      <div>
-        <Input
-          name={'streetAddress'}
-          value={streetAddress}
-          onChange={e => handleValue(e.target.name, e.target.value)}
-        />
-        {error && !streetAddress && (
-          <span className="error-message error-span left-aligned">{error}</span>
-        )}
-      </div>
-      <div>
-        <Input
-          name={'city'}
-          value={city}
-          onChange={e => handleValue(e.target.name, e.target.value)}
-        />
-        {error && !city && (
-          <span className="error-message error-span left-aligned">{error}</span>
-        )}
-      </div>
-      <div>
-        <Input
-          name={'state'}
-          value={localState.state}
-          onChange={e => handleValue(e.target.name, e.target.value)}
-        />
-        {error && !localState.state && (
-          <span className="error-message error-span left-aligned">{error}</span>
-        )}
-      </div>
-
-      <h4>Tyeps of Causes</h4>
-      <div>
-        <div className={'errorFlex'}>
-          <div>
-            <Select
-              name={'Types of Causes'}
-              mode="multiple"
-              value={typesOfCauses}
-              onChange={value => handleValue('typesOfCauses', value)}
-            >
-              {causeAreaTags}
-            </Select>
-          </div>
-          <div>
-            {error && !typesOfCauses.length > 0 && (
+      <Form layout={'vertical'} onSubmit={() => checkRequired()}>
+        <Form.Item label={'Name of Event'} required>
+          <div className={'input'}>
+            <Input
+              name={'nameOfEvent'}
+              value={nameOfEvent}
+              onChange={e => handleValue(e.target.name, e.target.value)}
+            />
+            {error && !nameOfEvent && (
               <span className="error-message error-span left-aligned">
                 {error}
               </span>
             )}
           </div>
-        </div>
-      </div>
+        </Form.Item>
+        <Form.Item label="Address">
+          <Autocomplete
+            className="google-autocomplete"
+            value={address}
+            onChange={e => handleValue(e.target.name, e.target.value)}
+            onPlaceSelected={place => {
+              handleValue('address', place.formatted_address);
+            }}
+            name={'address'}
+            types={['address']}
+            componentRestrictions={{ country: 'us' }}
+          />
+        </Form.Item>
+        <Form.Item label={'Types of Causes'} required>
+          <div className={'errorFlex'}>
+            <div className={'input'}>
+              <Select
+                name={'Types of Causes'}
+                mode="multiple"
+                value={typesOfCauses}
+                onChange={value => handleValue('typesOfCauses', value)}
+              >
+                {causeAreaTags}
+              </Select>
+            </div>
+            <div>
+              {error && !typesOfCauses.length > 0 && (
+                <span className="error-message error-span left-aligned">
+                  {error}
+                </span>
+              )}
+            </div>
+          </div>
+        </Form.Item>
 
-      <h4>Volunteer Requirments</h4>
-      <div className={'errorFlex'}>
-        <div>
-          <Select
-            name={'Volunteer Requirements'}
-            mode="multiple"
-            value={volunteerRequirements}
-            onChange={value => handleValue('volunteerRequirements', value)}
-            style={{ width: '325px' }}
+        <Form.Item label={'Volunteer Requirements'} required>
+          <div className={'errorFlex'}>
+            <div className={'input'}>
+              <Select
+                name={'Volunteer Requirements'}
+                mode="multiple"
+                value={volunteerRequirements}
+                onChange={value => handleValue('volunteerRequirements', value)}
+              >
+                {requirementTags}
+              </Select>
+            </div>
+            <div>
+              {error && !volunteerRequirements.length > 0 && (
+                <span className="error-message error-span left-aligned">
+                  {error}
+                </span>
+              )}
+            </div>
+          </div>
+        </Form.Item>
+        <Form.Item label={'Interest'} required>
+          <div className={'errorFlex'}>
+            <div className={'input'}>
+              <Select
+                name={'Interest'}
+                mode="multiple"
+                value={interest}
+                onChange={value => handleValue('interest', value)}
+              >
+                {interestTags}
+              </Select>
+            </div>
+            <div>
+              {error && !interest.length > 0 && (
+                <span className="error-message error-span left-aligned">
+                  {error}
+                </span>
+              )}
+            </div>
+          </div>
+        </Form.Item>
+        <p className={'title'}>*How many volunteers do you need?</p>
+        <Form.Item required>
+          <div className={'errorFlex'}>
+            <div className={'input'}>
+              <InputNumber
+                name={'Number of Volunteers'}
+                min={0}
+                value={numberOfVolunteers}
+                onChange={value => handleValue('numberOfVolunteers', value)}
+              />
+              {'  '}
+              {localState.numberOfVolunteers > 1 ? 'Volunteers' : 'Volunteer'}
+            </div>
+            <div>
+              {error && !numberOfVolunteers > 0 && (
+                <span className="error-message error-span left-aligned">
+                  {error}
+                </span>
+              )}
+            </div>
+          </div>
+        </Form.Item>
+
+        <p className={'title'}>*Point of Contact</p>
+        <Form.Item label={'First Name'}>
+          <div className={'input'}>
+            <Input
+              name={'firstName'}
+              value={firstName}
+              onChange={e => handleValue(e.target.name, e.target.value)}
+            />
+            {error && !firstName && (
+              <span className="error-message error-span left-aligned">
+                {error}
+              </span>
+            )}
+          </div>
+        </Form.Item>
+        <Form.Item label={'Last Name'}>
+          <div className={'input'}>
+            <Input
+              name={'lastName'}
+              value={lastName}
+              onChange={e => handleValue(e.target.name, e.target.value)}
+            />
+            {error && !lastName && (
+              <span className="error-message error-span left-aligned">
+                {error}
+              </span>
+            )}
+          </div>
+        </Form.Item>
+        <Form.Item label={'Phone Number'} required>
+          <div className={'input'}>
+            <Input
+              name={'phoneNumber'}
+              value={phoneNumber}
+              onChange={e => handleValue(e.target.name, e.target.value)}
+            />
+            {error && !phoneNumber && (
+              <span className="error-message error-span left-aligned">
+                {error}
+              </span>
+            )}
+          </div>
+        </Form.Item>
+        <p className={'title'}>*When is the event?</p>
+        <Form.Item required>
+          <div className={'input'}>
+            <DatePicker
+              name={'Date'}
+              format={'MM/DD/YYYY'}
+              value={date}
+              onChange={value => handleValue('date', value)}
+            />
+          </div>
+        </Form.Item>
+        <RecurringEvent
+          localState={localState}
+          setLocalState={setLocalState}
+          dynamicDates={dynamicDates}
+        />
+        <p className={'title'}>*What time?</p>
+        <div className={'time-wrapper'}>
+          <Form.Item required>
+            <div className={'input'}>
+              <TimePicker
+                name={'Start Time'}
+                use12Hours
+                format={'h:mm a'}
+                value={startTime}
+                onChange={value => handleValue('startTime', value)}
+              />
+            </div>
+          </Form.Item>
+          <div className="to-p-review">
+            <p>to</p>
+          </div>
+          <Form.Item required>
+            <div className={'input'}>
+              <TimePicker
+                name={'End Time'}
+                use12Hours
+                format={'h:mm a'}
+                value={endTime}
+                onChange={value => handleValue('endTime', value)}
+              />
+            </div>
+          </Form.Item>
+        </div>
+        <Form.Item label={'Event Details'} required>
+          <div className={'input'}>
+            <TextArea
+              name={'eventDetails'}
+              placeholder={
+                'What the volunteer would do at the event would go here.'
+              }
+              value={eventDetails}
+              onChange={e => handleValue(e.target.name, e.target.value)}
+              style={{ height: 115 }}
+            />
+            {error && !eventDetails && (
+              <span className="error-message error-span left-aligned">
+                {error}
+              </span>
+            )}
+          </div>
+        </Form.Item>
+        <Form.Item label={'Website'}>
+          <div className={'input'}>
+            <Input
+              name={'website'}
+              value={website}
+              onChange={e => handleValue(e.target.name, e.target.value)}
+            />
+          </div>
+        </Form.Item>
+        <Form.Item label={'Other Notes'}>
+          <div className={'input'}>
+            <TextArea
+              name={'otherNotes'}
+              placeholder={'Any additional helpful tips for the event go here.'}
+              value={otherNotes}
+              onChange={e => handleValue(e.target.name, e.target.value)}
+              style={{ height: 115 }}
+            />
+          </div>
+        </Form.Item>
+        <div className="buttonStyles">
+          <StyledCancelButton
+            key="cancel"
+            type="secondary"
+            onClick={() => handleForm()}
           >
-            {requirementTags}
-          </Select>
-        </div>
-        <div>
-          {error && !volunteerRequirements.length > 0 && (
-            <span className="error-message error-span left-aligned">
-              {error}
-            </span>
-          )}
-        </div>
-      </div>
-
-      <h4>Interests</h4>
-      <div className={'errorFlex'}>
-        <div>
-          <Select
-            name={'Interest'}
-            mode="multiple"
-            value={interest}
-            onChange={value => handleValue('interest', value)}
+            Cancel
+          </StyledCancelButton>
+          <StyledButton
+            onClick={() => checkRequired()}
+            key="save"
+            type="primary"
+            width="fit-content"
           >
-            {interestTags}
-          </Select>
+            Save and Review
+          </StyledButton>
         </div>
-        <div>
-          {error && !interest.length > 0 && (
-            <span className="error-message error-span left-aligned">
-              {error}
-            </span>
-          )}
-        </div>
-      </div>
-
-      <h4>Volunteers Needed</h4>
-      <div className={'errorFlex'}>
-        <div>
-          <InputNumber
-            name={'Number of Volunteers'}
-            min={0}
-            value={numberOfVolunteers}
-            onChange={value => handleValue('numberOfVolunteers', value)}
-          />
-        </div>
-        <div>
-          {error && !numberOfVolunteers > 0 && (
-            <span className="error-message error-span left-aligned">
-              {error}
-            </span>
-          )}
-        </div>
-      </div>
-
-      <h4>Phone Number</h4>
-      <div>
-        <Input
-          name={'phoneNumber'}
-          value={phoneNumber}
-          onChange={e => handleValue(e.target.name, e.target.value)}
-        />
-        {error && !phoneNumber && (
-          <span className="error-message error-span left-aligned">{error}</span>
-        )}
-      </div>
-
-      <h4>Point of Contact</h4>
-      <div>
-        <Input
-          name={'firstName'}
-          value={firstName}
-          onChange={e => handleValue(e.target.name, e.target.value)}
-        />
-        {error && !firstName && (
-          <span className="error-message error-span left-aligned">{error}</span>
-        )}
-      </div>
-      <div>
-        <Input
-          name={'lastName'}
-          value={lastName}
-          onChange={e => handleValue(e.target.name, e.target.value)}
-        />
-        {error && !lastName && (
-          <span className="error-message error-span left-aligned">{error}</span>
-        )}
-      </div>
-      <div>
-        <Input
-          name={'email'}
-          value={email}
-          onChange={e => handleValue(e.target.name, e.target.value)}
-        />
-        {error && !email && (
-          <span className="error-message error-span left-aligned">{error}</span>
-        )}
-      </div>
-
-      <h4>When is the event?</h4>
-      <div>
-        <DatePicker
-          name={'Date'}
-          format={'MM/DD/YYYY'}
-          value={date}
-          onChange={value => handleValue('date', value)}
-        />
-      </div>
-
-      <RecurringEvent
-        localState={localState}
-        setLocalState={setLocalState}
-        dynamicDates={dynamicDates}
-      />
-      <h4>What time?</h4>
-      <div className={'timeWrapper'}>
-        <div>
-          <TimePicker
-            name={'Start Time'}
-            use12Hours
-            format={'h:mm a'}
-            value={startTime}
-            onChange={value => handleValue('startTime', value)}
-          />
-        </div>
-        <div>to</div>
-        <div>
-          <TimePicker
-            name={'End Time'}
-            use12Hours
-            format={'h:mm a'}
-            value={endTime}
-            onChange={value => handleValue('endTime', value)}
-          />
-        </div>
-      </div>
-      <h4>Event Details</h4>
-      <div>
-        <TextArea
-          name={'eventDetails'}
-          placeholder={
-            'What the volunteer would do at the event would go here.'
-          }
-          value={eventDetails}
-          onChange={e => handleValue(e.target.name, e.target.value)}
-          style={{ height: 115 }}
-        />
-        {error && !eventDetails && (
-          <span className="error-message error-span left-aligned">{error}</span>
-        )}
-      </div>
-
-      <h4>Website</h4>
-      <div>
-        <Input
-          name={'website'}
-          value={website}
-          onChange={e => handleValue(e.target.name, e.target.value)}
-        />
-      </div>
-
-      <h4>Other Notes</h4>
-      <div>
-        <TextArea
-          name={'otherNotes'}
-          placeholder={'Any additional helpful tips for the event go here.'}
-          value={otherNotes}
-          onChange={e => handleValue(e.target.name, e.target.value)}
-          style={{ height: 115 }}
-          notRequired
-        />
-      </div>
-
-      <div className="buttonStyles">
-        <StyledCancelButton
-          key="cancel"
-          type="secondary"
-          onClick={() => handleForm()}
-        >
-          Cancel
-        </StyledCancelButton>
-        <StyledButton
-          onClick={() => checkRequired()}
-          key="save"
-          type="primary"
-          width="fit-content"
-        >
-          Save and Review
-        </StyledButton>
-      </div>
+      </Form>
     </StyledDiv>
   );
 };
@@ -385,8 +374,6 @@ const StyledButtons = styled.div`
   justify-content: flex-end;
 
   .icon {
-    display: flex;
-    justify-content: center;
     align-items: center;
     font-size: 2rem;
     border-radius: 50%;
@@ -394,21 +381,31 @@ const StyledButtons = styled.div`
     height: 50px;
     cursor: pointer;
   }
+  
 `;
-const StyledDiv = styled.div`
-  display: flex;
-  flex-direction: column;
 
-  .errorFlex {
-    display: flex;
-    flex-direction: column;
+const StyledDiv = styled.div`
+  .to-p-review {
+    margin: 5px 20px 0px 45px;
   }
-  .timeWrapper {
-    display: flex;
-  }
-  .error-message.error-span.left-aligned {
-    color: red;
-    font-size: 12px;
+
+  .google-autocomplete {
+    width: 100%;
+    height: 32px;
+    display: inline-block;
+    padding: 4px 11px;
+    font-size: 14px;
+    line-height: 1.5;
+    background-color: #fff;
+    border-radius: 4px;
+    border: 1px solid rgb(217, 217, 217);
+    font-family: ${({ theme }) => theme.bodytext};
+
+    &::placeholder{
+       color: rgba(0, 0, 0, 0.35);
+       font-size: 14px;
+       font-family: ${({ theme }) => theme.bodytext};
+    }
   }
 `;
 

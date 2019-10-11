@@ -4,6 +4,7 @@ import moment from 'moment';
 import faker from 'faker';
 import {interests, causeAreas, requirements} from '../reducers/initialState';
 import {findNextEvents} from '../utility/findNextRecurEvent';
+import {getLatLong} from '../utility/geoCode';
 
 /**
  * Auth Actions
@@ -278,7 +279,27 @@ export const getEventById = (eventId, dispatch, eventType = 'events') => {
       }
       const event = res.data();
       event.eventId = res.id;
-      dispatch(action(GET_EVENT_BY_ID, event));
+      
+      if (event.lat === undefined || event.lng === undefined){
+        
+        const address = event.streetAddress + ' ' + event.city + ', ' +
+          event.state;
+        getLatLong(address).then(({lat, lng}) => {
+          
+          event.lat = lat;
+          event.lng = lng;
+          res.ref.update(event).then(ressult => {
+            dispatch(GET_EVENT_BY_ID, event);
+          }).catch(err => {
+            console.log(err);
+          });
+        });
+        
+      }else{
+        
+        dispatch(action(GET_EVENT_BY_ID, event));
+      }
+      
     });
 };
 
@@ -524,7 +545,7 @@ export const SIGN_UP_FOR_RECURRING_EVENT_FAILURE =
  */
 
 export const signUpForRecurringEvent = (event, user, date, dispatch) => {
-  debugger;
+  
   let volunteers = event.registeredVolunteers || {};
   let targetDate = date;
   let events = user.registeredEvents || [];
@@ -599,7 +620,7 @@ export const CANCEL_SIGNED_UP_RECURRING_EVENT_FAILURE =
  */
 
 export const cancelSignedUpRecurringEvent = (event, user, date, dispatch) => {
-  debugger;
+  
   let targetDate = date;
   let updatedVolunteers = event.registeredVolunteers[ targetDate ].filter(
     uid => uid !== user.uid,
@@ -615,7 +636,7 @@ export const cancelSignedUpRecurringEvent = (event, user, date, dispatch) => {
   let updatedUser = {
     ...user,
     registeredEvents: user.registeredEvents.filter(
-      item => item.eventId !== event.eventId,
+      item => !(item.eventId === event.eventId && item.date === targetDate)
     ),
   };
   
@@ -645,7 +666,7 @@ export const cancelSignedUpRecurringEvent = (event, user, date, dispatch) => {
 export const updateRecurringEvents = () => {
   store.collection('recurring events').get().then(res => {
     res.forEach(event => {
-      debugger;
+      
       const data = event.data();
       if (data.pointOfContact === undefined){
         data.pointOfContact = data.pointOfcontact;

@@ -56,14 +56,14 @@ const StyledDiv = styled.div`
   h2 {
     font-size: 24px;
     color: ${({theme}) => theme.primary8};
-    margin: 4rem 1rem 2rem 1rem;
+    margin: 4rem 0rem 1rem;
   }
 
   .nonprofits-cards {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-end;
-    justify-content: center;
+    justify-content: flex-start;
     width: 100%;
     margin-bottom: 40px;
     

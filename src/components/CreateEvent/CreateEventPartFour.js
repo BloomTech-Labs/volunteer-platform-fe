@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyledCancelButton, StyledButton } from '../../styled';
 import styled from 'styled-components';
-import { Input, InputNumber, Form, Tooltip, Icon } from 'antd';
+import { Input, InputNumber, Form } from 'antd';
 
 const { TextArea } = Input;
 
@@ -42,10 +42,10 @@ export const CreateEventPartFour = props => {
             </div>
           </Form.Item>
         </div>
+        <h4>How many volunteers do you need?</h4>
 
-        <div>
-          <h4>How many volunteers do you need?</h4>
-          <Form.Item required>
+        <div className={'volunteer-number-input'}>
+          <Form.Item label={'Number of Volunteers'} required>
             <div className={'error-flex'}>
               <div className={'inputNumber'}>
                 <InputNumber
@@ -59,7 +59,7 @@ export const CreateEventPartFour = props => {
               <div>
                 {error && !numberOfVolunteers && (
                   <span className="error-message error-span left-aligned">
-                    {error}
+                    Must be higher than 0.
                   </span>
                 )}
               </div>
@@ -84,23 +84,28 @@ export const CreateEventPartFour = props => {
             </div>
           </Form.Item>
         </Form.Item>
+        <div className="buttonStyles">
+          <StyledCancelButton
+            onClick={handlePageBack}
+            type="secondary"
+            key="back"
+          >
+            Back
+          </StyledCancelButton>
+          <StyledButton type="primary" key="next" onClick={checkedRequired}>
+            Next
+          </StyledButton>
+        </div>
       </Form>
-      <div className="buttonStyles">
-        <StyledCancelButton
-          onClick={handlePageBack}
-          type="secondary"
-          key="back"
-        >
-          Back
-        </StyledCancelButton>
-        <StyledButton type="primary" key="next" onClick={checkedRequired}>
-          Next
-        </StyledButton>
-      </div>
     </StyledDiv>
   );
 };
 const StyledDiv = styled.div`
+  .volunteer-number-input {
+    label {
+      margin-left: 190px;
+    }
+  }
   .inputNumber {
     margin-bottom: 10px;
   }

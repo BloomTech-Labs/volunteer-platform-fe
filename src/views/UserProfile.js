@@ -1,10 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import {withRouter} from 'react-router-dom';
 import styled from 'styled-components';
-import { Icon } from 'antd';
 import {useStateValue} from '../hooks/useStateValue';
 import {
-  UserInfo, UserEvents, UserGoal, UserStats
+  UserInfo, UserEvents, UserGoal, UserStats, UserGraph,
 } from '../components/UserProfile/index';
 import {OrgPhoto} from '../components/OrgDashboard/index';
 import {
@@ -83,7 +82,7 @@ export const UserProfile = (props) => {
       setCalendarValue(newValue);
     }
   };
-
+  
   const changePanel = value => {
     setCalendarValue(moment.unix(value.unix()));
   };
@@ -93,16 +92,16 @@ export const UserProfile = (props) => {
     setSelectedDate(null);
     setCalendarValue(moment());
   };
-
+  
   const updateInfo = (bio, location) => {
     let updateUser = {
-      ...user, 
+      ...user,
       bio: bio,
       city: location.city,
-      state: location.state
-    }
+      state: location.state,
+    };
     updateRegisteredUser(updateUser, dispatch);
-  }
+  };
   
   return (
     <StyledDiv>
@@ -110,15 +109,15 @@ export const UserProfile = (props) => {
         <h3>Welcome {user.firstName},</h3>
         <div className='profile-top'>
           <OrgPhoto
-            imageUrl={state.auth.registeredUser ?
-              state.auth.registeredUser.imageUrl : null}
+            imageUrl={user && user.imageUrl ? user.imageUrl : ''}
             imageOwner={user}
             deleteImage={deleteImage}
             onFileUpload={onFileUpload}
-            imageName={state.auth.googleAuthUser ? state.auth.googleAuthUser.uid :
+            imageName={state.auth.googleAuthUser ?
+              state.auth.googleAuthUser.uid :
               undefined}
           />
-          <UserInfo 
+          <UserInfo
             user={user}
             isEditable={isEditable}
             updateInfo={updateInfo}/>
@@ -133,6 +132,8 @@ export const UserProfile = (props) => {
           <div className='profile-bottom-left'>
             <h4>Stats</h4>
             <UserStats user={user}/>
+            <h4>Stats for {moment().year()} so far</h4>
+            <UserGraph user={user}/>
           </div>
           <div className='profile-bottom-right'>
             <UserEvents
@@ -158,7 +159,6 @@ const StyledDiv = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    margin-left: 250px;
   }
 
   h3 {

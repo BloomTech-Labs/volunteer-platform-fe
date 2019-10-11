@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Switch, Route } from 'react-router';
 import styled from 'styled-components';
 import firebase from './firebase/FirebaseConfig';
-import { Layout, Button, Icon, Affix } from 'antd';
+import { Layout, Icon, Affix } from 'antd';
 import { useStateValue } from './hooks/useStateValue';
 import {
   subscribeToUserOrganizations,
   signedIn,
   signedOut,
-  subscribeToMessages,
-  updateRecurringEvents,
+  subscribeToMessages
 } from './actions';
 import { HeaderDiv, FooterDiv } from './components';
 import Navigation from './components/SiteParts/Navigation';
@@ -35,7 +34,7 @@ import {
   RegisterRoute,
 } from './routes/index';
 import Message from './views/Message';
-
+import { device } from './styled/deviceBreakpoints';
 const { Sider, Content } = Layout;
 
 function App() {
@@ -115,9 +114,8 @@ function App() {
     });
   }, []);
 
-  return (
     <StyledApp className="App">
-      <Layout style={{ background: 'white' }}>
+      <Layout style={{ background: '#fafafa' }}>
         {state.auth.loggedIn && (
           <Affix>
             <StyledSider
@@ -140,17 +138,23 @@ function App() {
             </StyledSider>
           </Affix>
         )}
-        <Layout style={{ background: 'white' }}>
-          {state.auth.loggedIn && (
-            <StyledMenuButton
-              collapsed={collapsed ? 1 : 0}
-              className={`trigger ${scrollClass}`}
-              size="large"
-              type={collapsed ? 'menu-unfold' : 'menu-fold'}
-              onClick={() => setCollapsed(!collapsed)}
-            />
-          )}
-          <HeaderDiv loggedIn={state.auth.loggedIn}></HeaderDiv>
+
+        <Layout style={{ background: '#fafafa' }}>
+          <HeaderDiv loggedIn={state.auth.loggedIn}>
+            {state.auth.loggedIn && (
+              <StyledMenuButton
+                collapsed={collapsed ? 1 : 0}
+                className={`trigger ${scrollClass}`}
+                type={collapsed ? 'menu-unfold' : 'menu-fold'}
+                onClick={() => setCollapsed(!collapsed)}
+              />
+            )}
+          </HeaderDiv>
+          <Route
+            exact
+            path={'/'}
+            render={props => <LandingPage {...props} collapsed={collapsed} />}
+          />
           <StyledContent
             width={dimensions.width}
             loggedIn={state.auth.loggedIn}
@@ -158,13 +162,7 @@ function App() {
             <Switch>
               <LoginRoute path={'/login'} component={Login} />
               <LoginRoute path={'/signup'} component={Login} />
-              <Route
-                exact
-                path={'/'}
-                render={props => (
-                  <LandingPage {...props} collapsed={collapsed} />
-                )}
-              />
+
               <Route
                 path={'/organization/:id'}
                 component={OrganizationProfile}
@@ -199,7 +197,7 @@ function App() {
                 path={`/profile/:id`}
                 component={UserProfile}
               />
-              <Route component={NotFound} />
+              <Route path='/:anything' component={NotFound} />
             </Switch>
           </StyledContent>
           <FooterDiv />
@@ -266,6 +264,18 @@ const StyledApp = styled.div`
 const StyledContent = styled(Content)`
   && {
     padding-bottom: ${props => props.theme.footerPadding};
+    background: ${({ theme }) => theme.gray2};
+    max-width: ${({ theme }) => theme.maxWidth};
+    margin: 15px auto 45px;
+    display: flex;
+    flex-direction: column;
+
+    @media (min-width: 1088px){
+        min-width: 750px;
+    }
+    @media ${device.laptop} {
+      max-width: 90%;
+    }
   }
 `;
 

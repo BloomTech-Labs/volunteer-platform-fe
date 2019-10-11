@@ -11,7 +11,7 @@ body {
     'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue',
     Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
     'Segoe UI Symbol';
-  background: #fff;
+  background: #fafafa;
 }
 
 h1,
@@ -30,7 +30,6 @@ p {
 }
 
 h1 {
-  font-family: 'Arvo', serif;
   font-size: 38px;
   line-height: 1.23;
 }
@@ -98,3 +97,6 @@ h4 {
 .branding {
   font-family: 'Arvo', serif;
 }
+
+
+

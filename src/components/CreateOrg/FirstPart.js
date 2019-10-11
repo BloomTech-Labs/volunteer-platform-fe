@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Icon, Select, Form, Input, Tooltip } from 'antd';
 import { causeAreas } from '../../reducers/initialState';
 import { StyledButton, StyledCancelButton } from '../../styled';
+import Autocomplete from 'react-google-autocomplete';
 
 const Option = Select.Option;
 
@@ -10,9 +11,7 @@ export const FirstPart = ({ clickNext, storedData, cancelForm }) => {
   const [localState, setLocalState] = useState({ ...storedData });
   const [errorMessage, setErrorMessage] = useState({
     organizationName: false,
-    streetAddress: false,
-    city: false,
-    state: false,
+    address: false,
     causeAreas: false,
   });
 
@@ -52,52 +51,28 @@ export const FirstPart = ({ clickNext, storedData, cancelForm }) => {
             {errorMessage['organizationName']}
           </span>
         )}
-        <Form.Item label="Street Address" required>
-          <Input
-            value={localState['streetAddress']}
+        <Form.Item label="Address" required>
+          <Autocomplete
+            className="google-autocomplete"
+            value={localState['address']}
             onChange={e => handleChange(e.target.name, e.target.value)}
-            name={'streetAddress'}
-            placeholder={'123 Bruce Willis Dr.'}
+            onPlaceSelected={place => {
+              setLocalState({
+                ...localState,
+                address: place.formatted_address,
+              });
+            }}
+            name={'address'}
+            types={['address']}
+            componentRestrictions={{ country: 'us' }}
           />
         </Form.Item>
-        {errorMessage['streetAddress'] && (
+        {errorMessage['address'] && (
           <span className="error-message error-span left-aligned">
-            {errorMessage['streetAddress']}
+            {errorMessage['address']}
           </span>
         )}
-        <div className="inline">
-          <div className="col">
-            <Form.Item label={'City'} required>
-              <Input
-                value={localState['city']}
-                onChange={e => handleChange(e.target.name, e.target.value)}
-                name={'city'}
-                placeholder={'Los Angeles'}
-              />
-            </Form.Item>
-            {errorMessage['city'] && (
-              <span className="error-message error-span left-aligned">
-                {errorMessage['city']}
-              </span>
-            )}
-          </div>
-          <div className="col">
-            <Form.Item label="State" required>
-              <Input
-                value={localState['state']}
-                onChange={e => handleChange(e.target.name, e.target.value)}
-                name={'state'}
-                placeholder={'California'}
-              />
-            </Form.Item>
-            {errorMessage['state'] && (
-              <span className="error-message error-span left-aligned">
-                {errorMessage['state']}
-              </span>
-            )}
-          </div>
-        </div>
-        <h4>What type of cause is your organization serving?</h4>
+        <h4 className='align-center'>What type of cause is your organization serving?</h4>
         <div className="ant-select-causes">
           <Form.Item
             label={
@@ -166,6 +141,25 @@ const DivForStyling = styled.div`
   .error-message.error-span.left-aligned {
     color: red;
     font-size: 12px;
+  }
+
+  .google-autocomplete {
+    width: 100%;
+    height: 32px;
+    display: inline-block;
+    padding: 4px 11px;
+    font-size: 14px;
+    line-height: 1.5;
+    background-color: #fff;
+    border-radius: 4px;
+    border: 1px solid rgb(217, 217, 217);
+    font-family: ${({ theme }) => theme.bodytext};
+
+    &::placeholder{
+       color: rgba(0, 0, 0, 0.35);
+       font-size: 14px;
+       font-family: ${({ theme }) => theme.bodytext};
+    }
   }
 `;
 export default FirstPart;

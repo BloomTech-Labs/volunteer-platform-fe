@@ -68,9 +68,9 @@ const theme = {
   borderRadiusDefault: '10px',
   footerHeight: '130px',
   footerPadding: '160px', // footer height plus extra
-  maxWidth: '1088px',
-
   headerHeight: '64px', // set by antd
+  
+  maxWidth: '1088px',
   maxBleed: '1136px',
   sideGutters: '16px',
 };

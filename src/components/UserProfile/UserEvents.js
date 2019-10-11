@@ -55,7 +55,7 @@ export const UserEvents = ({ events, changePanel, calendarValue, selectDate, sel
             return (
               <StyledPanel
                 header={event.nameOfEvent}
-                key={event.eventId}
+                key={event.eventId + '-' + event.date}
               >
                 <h5>Date: {moment.unix(event.date).format('LL')}</h5>
                 <h5>Time: {`${event.startTime}~${event.endTime}`}</h5>

@@ -25,16 +25,15 @@ export const OrganizationDashboard = props => {
   const [imageUrl, setImageUrl] = useState(null);
   const [selectedDate, setSelectedDate] = useState();
   const [calendarValue, setCalendarValue] = useState(moment());
-
+  
   useEffect(() => {
     if (props.location.state) {
       setDisplayOrg(props.location.state.org);
       getAllEventsByOrg(props.location.state.org.orgId, dispatch);
       getAllRecurringEventsByOrg(props.location.state.org.orgId, dispatch);
-      if (props.location.state.org.imagePath) {
-        getFileUrl(displayOrg.imagePath).then(res => {
-          setImageUrl(res);
-        });
+
+      if (props.location.state.org.imageUrl) {
+        setImageUrl(props.location.state.org.imageUrl);
       } else {
         setImageUrl(null);
       }
@@ -66,7 +65,7 @@ export const OrganizationDashboard = props => {
       .catch(err => console.log(err));
   };
 
-  const onSelect = (value) => {
+  const onSelect = value => {
     const beginning = value.startOf('date');
     const newValue = moment.unix(beginning.unix());
     if (selectedDate) {
@@ -96,6 +95,7 @@ export const OrganizationDashboard = props => {
 
   const deleteImage = org => {
     deleteOrganizationImage(org);
+    setImageUrl(null);
   };
 
   return (

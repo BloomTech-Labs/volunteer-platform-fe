@@ -7,7 +7,6 @@ export const StyledButton = styled( Button )`
     border: 1px solid ${({theme, standard}) => !standard && theme.primary8};
     color: white;
     border-radius: 4px;
-    font-family: Arvo;
     width: ${({width}) => width || '120px'};
     padding: 0.5rem 2rem;
     font-size: 16px;
