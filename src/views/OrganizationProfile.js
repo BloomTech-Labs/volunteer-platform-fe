@@ -23,12 +23,14 @@ export const OrganizationProfile = ({ match, history }) => {
   const [selectedDate, setSelectedDate] = useState();
   const [calendarValue, setCalendarValue] = useState(moment());
   const { organization } = org;
+  
   useEffect(() => {
     getOrganizationByOrgId(match.params.id, dispatch);
     getAllEventsByOrg(match.params.id, dispatch);
     getAllRecurringEventsByOrg(match.params.id, dispatch);
   }, [match.params.id]);
 
+  console.log(org)
   const createMessageThread = () => {
     const from = {
       type: 'users',

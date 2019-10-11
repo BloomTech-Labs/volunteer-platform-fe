@@ -117,7 +117,7 @@ function App() {
   return (
     <StyledApp className="App">
       <Layout style={{ background: '#fafafa' }}>
-        {state.auth.loggedIn && (
+        {state.auth.loggedIn && state.auth.signedUp && (
           <Affix>
             <StyledSider
               height={'100%'}
@@ -142,14 +142,15 @@ function App() {
 
         <Layout style={{ background: '#fafafa' }}>
           <HeaderDiv loggedIn={state.auth.loggedIn}>
-            {state.auth.loggedIn && (
-              <StyledMenuButton
-                collapsed={collapsed ? 1 : 0}
-                className={`trigger ${scrollClass}`}
-                type={collapsed ? 'menu-unfold' : 'menu-fold'}
-                onClick={() => setCollapsed(!collapsed)}
-              />
-            )}
+            {state.auth.loggedIn &&
+              state.auth.signedUp && (
+                <StyledMenuButton
+                  collapsed={collapsed ? 1 : 0}
+                  className={`trigger ${scrollClass}`}
+                  type={collapsed ? 'menu-unfold' : 'menu-fold'}
+                  onClick={() => setCollapsed(!collapsed)}
+                />
+              )}
           </HeaderDiv>
           <Route
             exact
@@ -164,7 +165,7 @@ function App() {
               <LoginRoute path={'/login'} component={Login} />
               <LoginRoute path={'/signup'} component={Login} />
 
-              <Route
+              <ProtectedRoute
                 path={'/organization/:id'}
                 component={OrganizationProfile}
               />
@@ -182,14 +183,14 @@ function App() {
                 component={OrganizationDashboard}
               />
               <RegisterRoute path={'/register'} component={Signup} />
-              <Route
+              <RegisteredAndLoggedInRoute
                 path={'/messages'}
                 render={props => (
                   <Message {...props} width={dimensions.width} />
                 )}
               />
 
-              <Route
+              <ProtectedRoute
                 path={'/events/:id'}
                 render={props => <EventProfile {...props} />}
               />
