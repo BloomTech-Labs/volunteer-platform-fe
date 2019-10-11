@@ -7,9 +7,7 @@ import RecurringInfoReview from './RecurringInfoReview';
 
 export const CreateEventReviewList = props => {
   const { localState, handleReviewSubmit, cancelForm, setEdit } = props;
-  useEffect(() => {
-    window.scrollTo(0, 100);
-  }, []);
+
   const editForm = () => {
     setEdit(true);
   };
@@ -33,7 +31,7 @@ export const CreateEventReviewList = props => {
         </StyledButtons>
       </div>
 
-      <div className={'review-wrapper'}>
+      <StyledDiv className={'styledDiv'}>
         <div className={'text'}>
           <p className={'title'}>Event Name</p>
           <p>{localState.nameOfEvent}</p>
@@ -126,7 +124,7 @@ export const CreateEventReviewList = props => {
           <p className={''}>Other Notes</p>
           <p>{localState.otherNotes}</p>
         </div>
-      </div>
+      </StyledDiv>
       <div className="buttonStyles">
         <div>
           <StyledCancelButton key="cancel" type="second" onClick={cancelForm}>
@@ -148,11 +146,9 @@ const StyledDiv = styled.div``;
 const StyledButtons = styled.div`
   width: 100%;
   display: flex;
-
+  justify-content: flex-end;
   .icon {
     display: flex;
-    justify-content: center;
-    align-items: center;
     font-size: 2rem;
     border-radius: 50%;
     width: 50px;

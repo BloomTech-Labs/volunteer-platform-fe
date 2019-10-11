@@ -46,9 +46,9 @@ export const CreateEventPartFour = props => {
             </div>
           </Form.Item>
         </div>
+        <h4>How many volunteers do you need?</h4>
 
-        <div>
-          <h4>How many volunteers do you need?</h4>
+        <div className={'volunteer-number-input'}>
           <Form.Item label={'Number of Volunteers'} required>
             <div className={'error-flex'}>
               <div className={'inputNumber'}>
@@ -105,6 +105,11 @@ export const CreateEventPartFour = props => {
   );
 };
 const StyledDiv = styled.div`
+  .volunteer-number-input {
+    label {
+      margin-left: 190px;
+    }
+  }
   .inputNumber {
     margin-bottom: 10px;
   }
