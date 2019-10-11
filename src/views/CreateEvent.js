@@ -92,7 +92,7 @@ export const CreateEvent = props => {
         address: props.location.state.org.address,
         typesOfCauses: props.location.state.org.causeAreas,
         website: props.location.state.org.website,
-        POC: props.location.state.org.POC
+        POC: props.location.state.org.POC,
       });
     }
   }, [props.location.state.org]);
@@ -145,7 +145,7 @@ export const CreateEvent = props => {
     }
     setPageNumber(1);
 
-    props.history.push('/org-dashboard', {org: props.location.state.org});
+    props.history.push('/org-dashboard', { org: props.location.state.org });
   };
 
   const handleChange = (name, value) => {
@@ -157,9 +157,10 @@ export const CreateEvent = props => {
   ///Cancel Form
   const cancelForm = () => {
     const cancelFormModal = deleteModal({
-      title: 'Are you suure you want to cancel ?',
+      title: 'Are you sure you want to cancel ?',
       content: 'All information will be delete.',
-      onOk: () => props.history.push('/org-dashboard'),
+      onOk: () =>
+        props.history.push('/org-dashboard', { org: props.location.state.org }),
     });
     cancelFormModal();
   };
@@ -170,7 +171,6 @@ export const CreateEvent = props => {
     document
       .getElementById('scroll-event-header')
       .scrollIntoView({ behavior: 'smooth' });
-    
   };
 
   //Go Back a Page Number
