@@ -4,23 +4,18 @@ import { useStateValue } from '../hooks/useStateValue';
 
 export const RegisterRoute = ({ component: Component, ...rest }) => {
   const [state] = useStateValue();
-  debugger;
   return (
-    <>
-      (
-      <Route
-        {...rest}
-        render={props => {
-          return localStorage.getItem('loggedIn') === 'true' &&
-            localStorage.getItem('userRegistered') !== 'true' ? (
-            <Component {...props} />
-          ) : (
-            <Redirect to={'/dashboard'} />
-          );
-        }}
-      />
-      )
-    </>
+    <Route
+      {...rest}
+      render={props => {
+        return localStorage.getItem('loggedIn') === 'true' &&
+          localStorage.getItem('userRegistered') !== 'true' ? (
+          <Component {...props} />
+        ) : (
+          <Redirect to={'/dashboard'} />
+        );
+      }}
+    />
   );
 };
 
