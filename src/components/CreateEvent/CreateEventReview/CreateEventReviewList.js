@@ -7,7 +7,9 @@ import RecurringInfoReview from './RecurringInfoReview';
 
 export const CreateEventReviewList = props => {
   const { localState, handleReviewSubmit, cancelForm, setEdit } = props;
-
+  useEffect(() => {
+    window.scrollTo(0, 100);
+  }, []);
   const editForm = () => {
     setEdit(true);
   };
@@ -32,7 +34,7 @@ export const CreateEventReviewList = props => {
       </div>
 
       <div className={'review-wrapper'}>
-        <div>
+        <div className={'text'}>
           <p className={'title'}>Event Name</p>
           <p>{localState.nameOfEvent}</p>
         </div>
@@ -41,7 +43,7 @@ export const CreateEventReviewList = props => {
           <p>{localState.streetAddress}</p>
         </div>
 
-        <div className={'city-states-input'}>
+        <div className={''}>
           <p>{localState.city}</p>
           <p>{localState.state}</p>
         </div>
@@ -121,7 +123,7 @@ export const CreateEventReviewList = props => {
           <p>{localState.website}</p>
         </div>
         <div>
-          <p className={'title'}>Other Notes</p>
+          <p className={''}>Other Notes</p>
           <p>{localState.otherNotes}</p>
         </div>
       </div>
@@ -146,7 +148,6 @@ const StyledDiv = styled.div``;
 const StyledButtons = styled.div`
   width: 100%;
   display: flex;
-  justify-content: flex-end;
 
   .icon {
     display: flex;
@@ -161,7 +162,6 @@ const StyledButtons = styled.div`
 
   .review-wrapper {
     display: flex;
-    justify-content: flex-start;
 
     .to {
       margin: 0px 5px;
