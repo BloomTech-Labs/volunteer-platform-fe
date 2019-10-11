@@ -11,7 +11,7 @@ import {
   Form,
 } from 'antd';
 import styled from 'styled-components';
-
+import Autocomplete from 'react-google-autocomplete';
 import RecurringEvent from '../RecurringEvent';
 
 const { TextArea } = Input;
@@ -22,8 +22,7 @@ export const CreateEventReviewEditForm = props => {
   const { localState, setLocalState, setEdit } = props;
   const {
     nameOfEvent,
-    streetAddress,
-    city,
+    address,
     typesOfCauses,
     volunteerRequirements,
     interest,
@@ -60,8 +59,7 @@ export const CreateEventReviewEditForm = props => {
   const isFormValid = () => {
     if (
       nameOfEvent &&
-      streetAddress &&
-      city &&
+      address &&
       localState.state &&
       typesOfCauses.length > 0 &&
       volunteerRequirements.length > 0 &&
@@ -123,51 +121,19 @@ export const CreateEventReviewEditForm = props => {
             )}
           </div>
         </Form.Item>
-        <p className={'title'}>Location</p>
-        <Form.Item label={'Street Address'} required>
-          <div className={'input'}>
-            <Input
-              name={'streetAddress'}
-              value={streetAddress}
-              onChange={e => handleValue(e.target.name, e.target.value)}
-            />
-            {error && !streetAddress && (
-              <span className="error-message error-span left-aligned">
-                {error}
-              </span>
-            )}
-          </div>
+        <Form.Item label="Address">
+          <Autocomplete
+            className="google-autocomplete"
+            value={address}
+            onChange={e => handleValue(e.target.name, e.target.value)}
+            onPlaceSelected={place => {
+              handleValue('address', place.formatted_address);
+            }}
+            name={'address'}
+            types={['address']}
+            componentRestrictions={{ country: 'us' }}
+          />
         </Form.Item>
-        <div className={'city-states-input'}>
-          <Form.Item label={'City'} required>
-            <div className={'input'}>
-              <Input
-                name={'city'}
-                value={city}
-                onChange={e => handleValue(e.target.name, e.target.value)}
-              />
-              {error && !city && (
-                <span className="error-message error-span left-aligned">
-                  {error}
-                </span>
-              )}
-            </div>
-          </Form.Item>
-          <Form.Item label={'State'} required>
-            <div className={'input'}>
-              <Input
-                name={'state'}
-                value={localState.state}
-                onChange={e => handleValue(e.target.name, e.target.value)}
-              />
-              {error && !localState.state && (
-                <span className="error-message error-span left-aligned">
-                  {error}
-                </span>
-              )}
-            </div>
-          </Form.Item>
-        </div>
         <Form.Item label={'Types of Causes'} required>
           <div className={'errorFlex'}>
             <div className={'input'}>
@@ -415,11 +381,31 @@ const StyledButtons = styled.div`
     height: 50px;
     cursor: pointer;
   }
+  
 `;
 
 const StyledDiv = styled.div`
   .to-p-review {
     margin: 5px 20px 0px 45px;
+  }
+
+  .google-autocomplete {
+    width: 100%;
+    height: 32px;
+    display: inline-block;
+    padding: 4px 11px;
+    font-size: 14px;
+    line-height: 1.5;
+    background-color: #fff;
+    border-radius: 4px;
+    border: 1px solid rgb(217, 217, 217);
+    font-family: ${({ theme }) => theme.bodytext};
+
+    &::placeholder{
+       color: rgba(0, 0, 0, 0.35);
+       font-size: 14px;
+       font-family: ${({ theme }) => theme.bodytext};
+    }
   }
 `;
 

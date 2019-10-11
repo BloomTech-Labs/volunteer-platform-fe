@@ -37,15 +37,9 @@ export const CreateEventReviewList = props => {
           <p>{localState.nameOfEvent}</p>
         </div>
         <div>
-          ` <p className={'title'}>Location</p>`
-          <p>{localState.streetAddress}</p>
+          <p className={'title'}>Address</p>
+          <p>{localState.address}</p>
         </div>
-
-        <div className={''}>
-          <p>{localState.city}</p>
-          <p>{localState.state}</p>
-        </div>
-
         <div>
           <p className={'title'}>Tyeps of Causes</p>
           <p>
