@@ -57,47 +57,44 @@ const MessageThreads = (props) => {
   };
   
   return (
-    <StyledLayout>
-      <div className={'row'}>
-        <StyledMenu
-          onClick={handleClick}
-          style={{width: 256}}
-          selectedKeys={selectedThread && selectedThread.id}
-          mode="inline"
-        >
-          {selectedUid &&
-          messages.messages[ selectedUid ] &&
-          messages.messages[ selectedUid ].map(thread => {
-            return <StyledMenuItem key={thread.id}>
-              <Badge style={{
-                color: '#fff',
-                backgroundColor: '#1890ff',
-                marginBottom: '30px',
-              }}
-                     count={thread.unreadMessages}>
+    <StyledRow width={props.width}>
+      <StyledMenu
+        onClick={handleClick}
+        style={{width: 256}}
+        selectedKeys={selectedThread && selectedThread.id}
+        mode="inline"
+      >
+        {selectedUid &&
+        messages.messages[ selectedUid ] &&
+        messages.messages[ selectedUid ].map(thread => {
+          return <StyledMenuItem key={thread.id}>
+            <Badge style={{
+              color: '#fff',
+              backgroundColor: '#1890ff',
+              marginBottom: '30px',
+            }}
+                   count={thread.unreadMessages}>
                 <span style={{
                   marginRight: '1rem',
                 }}>{thread.name}</span>
-              </Badge>
-            </StyledMenuItem>;
-          })}
-        </StyledMenu>
-        {selectedThread &&
-        <Messages messageId={selectedThread.id} selectedUid={selectedUid}/>}
-        {!selectedThread && <h2>No messages to display</h2>}
-      </div>
-    
-    </StyledLayout>
+            </Badge>
+          </StyledMenuItem>;
+        })}
+      </StyledMenu>
+      {selectedThread &&
+      <Messages messageId={selectedThread.id} selectedUid={selectedUid}/>}
+      {!selectedThread && <h2>No messages to display</h2>}
+    </StyledRow>
   
   );
 };
 
-const StyledLayout = styled(Layout)`
-.row {
-  border: 2px solid ${props => props.theme.gray5};
-  border-radius: ${props => props.theme.borderRadiusDefault};
-  width: 100%;
-}
+const StyledRow = styled.div`
+display: flex;
+border: 2px solid ${props => props.theme.gray5};
+border-radius: ${props => props.theme.borderRadiusDefault};
+width: ${props => props.width > 900 ? 'calc(100% - 23rem)' : '92%'};
+margin-left: ${props => props.width > 900 ? '23rem' : '0'};
 `;
 
 const StyledMenuItem = styled(Menu.Item)`

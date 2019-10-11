@@ -10,13 +10,14 @@ const Message = (props) => {
   
   return (
     <StyledMessage width={props.width}>
-      <MessageThreads {...props}/>
+      <MessageThreads width={props.width} {...props}/>
     </StyledMessage>
   );
 };
 
 const StyledMessage = styled.div`
-margin-left: ${props => props.width < 900 ? 0 : '15rem'}
+width: 100vw;
+margin-left: ${props => props.width > 900 ? '-15rem' : 0};
 `;
 
 Message.propTypes = {
