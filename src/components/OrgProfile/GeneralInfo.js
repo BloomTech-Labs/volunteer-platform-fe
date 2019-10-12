@@ -7,6 +7,12 @@ import moment from 'moment';
 import MapContainer from '../../components/Map/MapContainer';
 
 export const GeneralInfo = ({ organization }) => {
+  const markers = [
+    {
+      name: organization.organizationName,
+      position: { lat: organization.lat, lng: organization.lng },
+    },
+  ];
   return (
     <StyledGeneralInfo>
       <div className="col">
@@ -23,17 +29,21 @@ export const GeneralInfo = ({ organization }) => {
         </div>
         <div className="section">
           <h4>Location</h4>
-          <span>
+          <span style={{marginBottom: '25px'}}>
             <Icon type="environment" theme="twoTone" twoToneColor={'#005a87'} />
             {organization.address}
           </span>
         </div>
-        <MapContainer
-          lat={organization.lat}
-          lng={organization.lng}
-          width={'500px'}
-          height={'150px'}
-        />
+        {organization.lat && (
+          <MapContainer
+            lat={organization.lat}
+            lng={organization.lng}
+            width={'450px'}
+            height={'150px'}
+            markers={markers}
+            zoom={16}
+          />
+        )}
       </div>
       <div className="col">
         <div className="section">
