@@ -4,6 +4,7 @@ import { StyledCard } from '../../styled';
 import { Tag, Icon } from 'antd';
 import { setDaysOpen } from '../../utility/setDaysOpen';
 import moment from 'moment';
+import MapContainer from '../../components/Map/MapContainer';
 
 export const GeneralInfo = ({ organization }) => {
   return (
@@ -27,6 +28,12 @@ export const GeneralInfo = ({ organization }) => {
             {organization.address}
           </span>
         </div>
+        <MapContainer
+          lat={organization.lat}
+          lng={organization.lng}
+          width={'500px'}
+          height={'150px'}
+        />
       </div>
       <div className="col">
         <div className="section">

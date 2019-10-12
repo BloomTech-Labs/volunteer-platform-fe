@@ -3,7 +3,7 @@ import {Map, GoogleApiWrapper, Marker, InfoWindow} from 'google-maps-react';
 import PropTypes from 'prop-types';
 
 const MapContainer = (props) => {
-  
+
   const [showingInfoWindow, setShowing] = useState(false);
   const [activeMarker, setActiveMarker] = useState();
   const [place, setPlace] = useState();
@@ -80,5 +80,5 @@ MapContainer.propTypes = {
 };
 
 export default GoogleApiWrapper(
-  porps => ({apiKey: process.env.REACT_APP_apiKey}))(
+  props => ({apiKey: process.env.REACT_APP_apiKey}))(
   MapContainer);
