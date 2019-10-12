@@ -60,7 +60,7 @@ export const EventPanel = ({
       )
   }
   return (
-    <StyledCard width={'60%'} margin={'0'}>
+    <StyledCard width={'60%'} margin={'0'} style={{height: '320px', overflowY: 'scroll'}}>
       {selectedEvents.length > 0 || selectedDate ? (
         <UpperDiv>
           {selectedDate && (
