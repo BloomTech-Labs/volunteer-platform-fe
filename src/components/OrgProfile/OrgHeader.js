@@ -17,11 +17,7 @@ export const OrgHeader = ({ organization, createMessageThread }) => {
           <StyledButton onClick={createMessageThread}>Message</StyledButton>
         </div>
         <div className="bottom-row">
-          <p>
-            {
-              'Homeboy Industries provides hope, training, and support ot formerly gang-involved and previously incarcerated men and women allowing them to redirect their lives and become contributing members of our community'
-            }
-          </p>
+          <p>{organization.aboutUs}</p>
         </div>
       </div>
       {organization.imageUrl && (
