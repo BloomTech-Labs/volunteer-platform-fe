@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
-import {Collapse} from 'antd';
-import {findNext} from '../../utility/findNextRecurEvent';
-import {StyledCard, StyledButton} from '../../styled';
+import { Collapse } from 'antd';
+import { findNext } from '../../utility/findNextRecurEvent';
+import { StyledCard, StyledButton } from '../../styled';
 
-const {Panel} = Collapse;
+const { Panel } = Collapse;
 
 export const EventPanel = ({
   events,
@@ -20,58 +20,66 @@ export const EventPanel = ({
   let selectedEvents = [...events];
   let newEvent = [];
   recurringEvents.forEach(event => {
-    for (let date in event.registeredVolunteers){
-      if (moment().unix() - date < 0){
-        newEvent = {...event, nextDate: date, isRecurring: true};
+    for (let date in event.registeredVolunteers) {
+      if (moment().unix() - date < 0) {
+        newEvent = { ...event, nextDate: date, isRecurring: true };
         selectedEvents.push(newEvent);
       }
     }
   });
-  
+
   const filterEvents = (arr, property) => {
     return arr.filter(event => {
-      const isBigger = event[ property ] >= selectedDate;
+      const isBigger = event[property] >= selectedDate;
       const lessThanNextDay =
-        event[ property ] <
+        event[property] <
         moment
           .unix(selectedDate)
           .add(1, 'day')
           .startOf('day')
           .unix();
-      
-      if (isBigger && lessThanNextDay){
+
+      if (isBigger && lessThanNextDay) {
         return true;
       }
       return false;
     });
   };
-  
-  if (selectedDate){
+
+  if (selectedDate) {
     selectedEvents = filterEvents(selectedEvents, 'nextDate');
   }
   selectedEvents.sort((a, b) => a.nextDate - b.nextDate);
-  console.log(events, recurringEvents);
+
+  const PanelHeader = event => {
+      return (
+          <div className='panel-header'>
+              <span>{event.event.nameOfEvent}</span>
+              <span>{moment.unix(event.event.nextDate).format('LL')}</span>
+          </div>
+      )
+  }
   return (
-    <StyledCard backgroundcolor={'#E8E8E8'} borderRadius={'0px'}>
+    <StyledCard width={'60%'} margin={'0'}>
       {selectedEvents.length > 0 || selectedDate ? (
         <UpperDiv>
-          <h2>Upcoming Events</h2>
-          <h2>{selectedDate && moment.unix(selectedDate).format('LL')}</h2>
-          <StyledButton onClick={displayAll} width={'40%'}>
-            Display All Events
-          </StyledButton>
+          {selectedDate && (
+            <>
+              <h4>{moment.unix(selectedDate).format('LL')}</h4>
+              <StyledButton onClick={displayAll} width={'40%'}>
+                Display All Events
+              </StyledButton>
+            </>
+          )}
         </UpperDiv>
       ) : (
         <div>No events have been created yet.</div>
       )}
       {selectedEvents.length > 0 && (
-        <Collapse accordion bordered={false} style={{background: '#E8E8E8'}}>
+        <Collapse accordion bordered={false} >
           {selectedEvents.map((event, i) => {
             return (
-              <StyledPanel
-                header={event.nameOfEvent}
-                key={event.eventId + i}
-              >
+              <StyledPanel header={<PanelHeader event={event}/>} key={event.eventId + i}>
                 <h5>{moment.unix(event.nextDate).format('LL')}</h5>
                 <p>{event.isRecurring && 'This is a recurring event.'}</p>
                 <h5>Point of Contact</h5>
@@ -90,13 +98,19 @@ export const EventPanel = ({
 
 const StyledPanel = styled(Panel)`
   && {
-    background: white;
+    background: ${({theme}) => theme.gray2};
     border-radius: 4px;
     margin-bottom: 24px;
     overflow: hidden;
-
+    
     .ant-collapse-header {
-      border-bottom: 1px solid ${({theme}) => theme.gray4};
+      border: 1px solid ${({ theme }) => theme.gray5};
+    }
+
+    .panel-header{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
     }
   }
 `;

@@ -92,27 +92,58 @@ export const OrganizationProfile = ({ match, history }) => {
                   displayAll={displayAll}
                 />
               )}
-              <Calendar
-                fullscreen={false}
-                disabledDate={current =>
-                  current && current < moment().startOf('day')
-                }
-                onSelect={onSelect}
-                onPanelChange={onPanelChange}
-                value={calendarValue}
-                style={{
-                  width: 300,
-                  border: '1px solid #d9d9d9',
-                  borderRadius: 4,
-                }}
-              />
+              <div className="calendar-container">
+                <Calendar
+                  className="calendar"
+                  fullscreen={false}
+                  disabledDate={current =>
+                    current && current < moment().startOf('day')
+                  }
+                  onSelect={onSelect}
+                  onPanelChange={onPanelChange}
+                  value={calendarValue}
+                />
+              </div>
             </div>
           </div>
-          <GeneralInfo organization={organization} />
+          <div className="third-row">
+            <h2>General Info</h2>
+            <GeneralInfo organization={organization} />
+          </div>
         </StyledOrgProfile>
       )}
     </>
   );
 };
 
-const StyledOrgProfile = styled(StyledDashboard)``;
+const StyledOrgProfile = styled(StyledDashboard)`
+  .second-row,
+  .third-row {
+    width: 100%;
+  }
+  .inline {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  .calendar-container {
+    border: 1px solid ${({ theme }) => theme.gray5};
+    border-radius: ${({ theme }) => theme.borderRadiusDefault};
+    background: white;
+    width: 30%;
+    max-height: 320px;
+  }
+  .calendar {
+    .ant-fullcalendar-selected-day .ant-fullcalendar-value {
+      background: ${({ theme }) => theme.primary8};
+      box-shadow: 0 0 0 1px ${({ theme }) => theme.primary8} inset;
+    }
+    .ant-fullcalendar-today .ant-fullcalendar-value {
+      box-shadow: 0 0 0 1px ${({ theme }) => theme.primary8} inset;
+    }
+    .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+      border-color: ${({ theme }) => theme.primary8};
+      color: ${({ theme }) => theme.primary8};
+    }
+  }
+`;
