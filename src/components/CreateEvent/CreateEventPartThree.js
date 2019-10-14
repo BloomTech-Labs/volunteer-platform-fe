@@ -17,9 +17,7 @@ export const CreateEventPartThree = props => {
   } = props;
 
   const { volunteerRequirements, interest, eventDetails } = localState;
-  useEffect(() => {
-    window.scrollTo(0, 100);
-  }, []);
+  
   const requirementTags = state.tags.requirements.map(tag => {
     return <Option key={tag}>{tag}</Option>;
   });

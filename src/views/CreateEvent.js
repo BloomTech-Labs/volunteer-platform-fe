@@ -20,13 +20,14 @@ let { Step } = Steps;
 export const CreateEvent = props => {
   const initialEvent = {
     nameOfEvent: '',
+    address: '',
     typesOfCauses: [],
     date: '',
     startTime: moment('00:00:00', 'HH:mm'),
     endTime: moment('00:00:00', 'HH:mm'),
     numberOfVolunteers: '',
     phoneNumber: '',
-    pointOfcontact: '',
+    pointOfContact: '',
     volunteerRequirements: [],
     interest: [],
     website: '',
@@ -88,6 +89,10 @@ export const CreateEvent = props => {
       setLocalState({
         ...localState,
         orgId: props.location.state.org.orgId,
+        address: props.location.state.org.address,
+        typesOfCauses: props.location.state.org.causeAreas,
+        website: props.location.state.org.website,
+        POC: props.location.state.org.POC,
       });
     }
   }, [props.location.state.org]);
@@ -98,11 +103,8 @@ export const CreateEvent = props => {
       orgId: localState.orgId,
       orgName: props.location.state.org.organizationName,
       orgImagePath: props.location.state.org.imagePath || '',
-      orgPage: '',
       nameOfEvent: localState.nameOfEvent,
-      streetAddress: localState.streetAddress,
-      city: localState.city,
-      state: localState.state,
+      address: localState.address,
       date: localState.date.unix(),
       startTime: localState.startTime.format('LT'),
       endTime: localState.endTime.format('LT'),
@@ -117,8 +119,8 @@ export const CreateEvent = props => {
       interest: localState.interest,
       volunteerRequirements: localState.volunteerRequirements,
       pointOfContact: {
-        firstName: localState.firstName,
-        lastName: localState.lastName,
+        fullName: localState.fullName,
+        email: localState.email,
         phoneNumber: localState.phoneNumber,
       },
       eventDetails: localState.eventDetails,
@@ -143,7 +145,7 @@ export const CreateEvent = props => {
     }
     setPageNumber(1);
 
-    props.history.push('/org-dashboard');
+    props.history.push('/org-dashboard', { org: props.location.state.org });
   };
 
   const handleChange = (name, value) => {
@@ -155,9 +157,10 @@ export const CreateEvent = props => {
   ///Cancel Form
   const cancelForm = () => {
     const cancelFormModal = deleteModal({
-      title: 'Are you suure you want to cancel ?',
+      title: 'Are you sure you want to cancel ?',
       content: 'All information will be delete.',
-      onOk: () => props.history.push('/org-dashboard'),
+      onOk: () =>
+        props.history.push('/org-dashboard', { org: props.location.state.org }),
     });
     cancelFormModal();
   };
@@ -165,16 +168,22 @@ export const CreateEvent = props => {
   //Handle Form Part Submit
   const handlePageForward = () => {
     setPageNumber(pageNumber + 1);
+    document
+      .getElementById('scroll-event-header')
+      .scrollIntoView({ behavior: 'smooth' });
   };
 
   //Go Back a Page Number
   const handlePageBack = () => {
     setPageNumber(pageNumber - 1);
+    document
+      .getElementById('scroll-event-header')
+      .scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
     <StyledDiv>
-      <h1>{formTitles[pageNumber]}</h1>
+      <h1 id={'scroll-event-header'}>{formTitles[pageNumber]}</h1>
       <TopContent>
         <StyledImg src={createEventImg} alt="undraw unexpected friends" />
         <Steps current={pageNumber - 1} progressDot size="small">

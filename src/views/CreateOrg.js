@@ -84,9 +84,6 @@ export const CreateOrg = props => {
     {
       title: '',
     },
-    {},
-    {},
-    {},
     {
       title: 'Finished',
     },
@@ -146,6 +143,9 @@ export const CreateOrg = props => {
   
   const clickPrevious = () => {
     setPartCount(partCount => partCount - 1);
+    document
+      .getElementById('scroll-org-header')
+      .scrollIntoView({ behavior: 'smooth' });
   };
   
   const setBackToReview = values => {

@@ -4,7 +4,6 @@ import {useStateValue} from '../hooks/useStateValue';
 
 export const ProtectedRoute = ({component: Component, ...rest}) => {
   const [state] = useStateValue();
-  
   return (<Route
     {...rest}
     render={props => {
