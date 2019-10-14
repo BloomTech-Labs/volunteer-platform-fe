@@ -33,6 +33,23 @@
  * @property {number} age - users age
  * @property {string} [imagePath] - path where profile image is stored.
  * @property {string} [imageUrl] - avatar image url
+ * @property {RegisteredEvent[]} [registeredEvents] - array of events user is registered for.
+ */
+
+/**
+ * @typedef RegisteredEvent
+ * @type {Object}
+ * @property {Number} date
+ * @property {Number} endTime
+ * @property {Number} startTime
+ * @property {String} eventId
+ * @property {String} location
+ * @property {String} nameOfEvent
+ * @property {String} orgId
+ * @property {PointOfContact} pointOfContact
+ * @property {Number} hours
+ * @property {Boolean} isVerified
+ *
  */
 
 /**
@@ -85,7 +102,17 @@
  * @property {String} description Description of the event.
  * @property {String} volunteerRequirements Requirements volunteers must meet.
  * @property {Comment[]} comments Comments for the event.
+ * @property {RegisteredVolunteer[]} registeredVolunteers Array of users who have registered for the event.
  *
+ */
+
+/**
+ * @typedef RegisteredVolunteer
+ * @type  {Object}
+ * @property {String} userId Users uid.
+ * @property {String} name Users first and last name
+ * @property {Number} hours Number of hours user is verified for.
+ * @property {Boolean} isVerified True if the org verified the hours.
  */
 
 /**
