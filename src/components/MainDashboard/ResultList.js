@@ -11,7 +11,7 @@ export const ResultList = ({ results, type }) => {
     results.slice(0, itemPerPage)
   );
 
-  const changePage = page => {
+  const changePage = (page) => {
     setCurrent(page);
     setDisplayResults(
       results.slice(itemPerPage * (page - 1), itemPerPage * page)

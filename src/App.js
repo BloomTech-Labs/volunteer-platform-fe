@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {Switch, Route} from 'react-router';
 import styled from 'styled-components';
 import firebase from './firebase/FirebaseConfig';
@@ -46,7 +46,7 @@ function App(){
     height: document.body.clientHeight,
   });
   const [subscriptions, setSubscriptions] = useState({});
-  
+
   /**
    * Set up google auth on change event handler.
    */
@@ -113,7 +113,7 @@ function App(){
       }
       setScrollClass(activeClass);
     });
-  }, []);
+  }, [state.auth.googleAuthUser]);
 
   return (
     <StyledApp className="App">
