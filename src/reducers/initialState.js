@@ -68,7 +68,7 @@ export const initialState = {
     isLoading: false,
     signUpEventError: null,
     cancelSignedUpEventError: null,
-    userSearch: null
+    userSearch: null,
   },
   org: {
     createdOrg: false,

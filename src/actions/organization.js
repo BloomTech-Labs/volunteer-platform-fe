@@ -29,13 +29,13 @@ export const registerOrganization = (org, dispatch) => {
     })
     .catch(err => {
       console.log(err);
-      dispatch({ type: CREATE_ORGANIZATION_FAIL });
+      dispatch({ type: CREATE_ORGANIZATION_FAIL, payload: err.message });
     });
 };
 
+export const GET_USER_ORGANIZATIONS_INIT = 'GET_USER_ORGANIZATIONS_INIT';
 export const GET_USER_ORGANIZATIONS = 'GET_USER_ORGANIZATIONS';
 export const GET_USER_ORGANIZATIONS_FAILED = 'GET_USER_ORGANIZATIONS_FAILED';
-export const USER_HAS_NO_ORGANIZATIONS = 'USER_HAS_NO_ORGANIZATIONS';
 
 /**
  * Gets all the users organizations
@@ -44,6 +44,7 @@ export const USER_HAS_NO_ORGANIZATIONS = 'USER_HAS_NO_ORGANIZATIONS';
  * @param {Dispatch} dispatch From useStateValue hook
  */
 export const subscribeToUserOrganizations = (uid, dispatch) => {
+  dispatch(action(GET_USER_ORGANIZATIONS_INIT));
   return store
     .collection('organizations')
     .where('organizationOwnerUID', '==', uid)
@@ -90,7 +91,12 @@ export const getOrganizationByOrgId = (orgId, dispatch) => {
           org.lng = lng;
         });
         dispatch(action(GET_ORG_BY_ID, org));
+      }else {
+        dispatch(action(GET_ORG_BY_ID_FAILED));
       }
+    })
+    .catch(err => {
+      dispatch(action(GET_ORG_BY_ID_FAILED, err));
     });
 };
 
@@ -120,6 +126,7 @@ export const updateOrganization = (orgId, updates, dispatch) => {
     });
 };
 
+export const DELETE_ORG_INIT = 'DELETE_ORG_INIT';
 export const DELETE_ORG = 'DELETE_ORG';
 export const DELETE_ORG_FAILED = 'DELETE_ORG_FAILED';
 
@@ -130,6 +137,7 @@ export const DELETE_ORG_FAILED = 'DELETE_ORG_FAILED';
  * @param {Dispatch} dispatch
  */
 export const deleteOrganization = (orgId, dispatch) => {
+  dispatch(action(DELETE_ORG_INIT));
   store
     .collection('organizations')
     .doc(orgId)
@@ -163,6 +171,7 @@ export const deleteOrganizationImage = organization => {
     });
 };
 
+export const GET_TOP_ORGANIZATIONS_INIT = 'GET_TOP_ORGANIZATIONS_INIT';
 export const GET_TOP_ORGANIZATIONS = 'GET_TOP_ORGANIZATIONS';
 export const THERE_ARE_NO_ORGANIZATIONS = 'THERE_ARE_NO_ORGANIZATIONS';
 export const GET_TOP_ORGANIZATIONS_FAILED = 'GET_TOP_ORGANIZATIONS_FAILED';
@@ -173,6 +182,7 @@ export const GET_TOP_ORGANIZATIONS_FAILED = 'GET_TOP_ORGANIZATIONS_FAILED';
  * @param {Dispatch} dispatch
  */
 export const getTopOrganizations = dispatch => {
+  dispatch(action(GET_TOP_ORGANIZATIONS_INIT));
   store
     .collection('organizations')
     .limit(20)
