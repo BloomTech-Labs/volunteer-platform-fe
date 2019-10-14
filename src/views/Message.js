@@ -7,7 +7,7 @@ import {StyledCard} from '../styled';
 import GoogleApiWrapper from '../components/Map/MapContainer';
 
 const Message = (props) => {
-  
+  console.log(props)
   return (
     <StyledMessage width={props.width}>
       <MessageThreads {...props}/>

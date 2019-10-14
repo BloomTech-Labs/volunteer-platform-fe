@@ -153,15 +153,8 @@ export const Navigation = props => {
             );
           })}
         <Menu.Divider />
-        <Menu.Item
-          className="nav-bottom"
-          key={state.auth.loggedIn ? 'Sign Out' : 'Login'}
-        >
-          {state.auth.loggedIn ? (
-            <Link to="/dashboard">Sign Out</Link>
-          ) : (
-            <Link to={'/login'}>Login</Link>
-          )}
+        <Menu.Item className="nav-bottom" key={'Sign Out'}>
+          <Link to="/dashboard">Sign Out</Link>
         </Menu.Item>
         <Menu.Item className="nav-bottom">
           <Link to="#">Support</Link>
