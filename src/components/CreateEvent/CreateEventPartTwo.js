@@ -1,10 +1,21 @@
-import React, { useState } from 'react';
-import { Input, Form, DatePicker, TimePicker, Tooltip, Icon } from 'antd';
+import React, { useState, useEffect } from 'react';
+import {
+  Input,
+  Form,
+  DatePicker,
+  TimePicker,
+  Tooltip,
+  Icon,
+  Select,
+} from 'antd';
+
 import RecurringEvent from './RecurringEvent';
 import moment from 'moment';
 import styled from 'styled-components';
 
 import { StyledCancelButton, StyledButton } from '../../styled';
+
+const { Option } = Select;
 
 export const CreateEventPartTwo = props => {
   const {
@@ -15,17 +26,19 @@ export const CreateEventPartTwo = props => {
     handleChange,
   } = props;
   const {
-    firstName,
-    lastName,
+    fullName,
     email,
     date,
     startTime,
     endTime,
     dynamicDates,
     recurringInfo,
+    phoneNumber,
+    POC,
   } = localState;
 
   const [error, setError] = useState('');
+
 
   const handleDynmaicDate = date => {
     const dynamicDay = date._d.toString().split(' ')[0];
@@ -62,7 +75,7 @@ export const CreateEventPartTwo = props => {
   };
 
   const isFormValid = () => {
-    if (firstName && lastName && email && date) return true;
+    if (fullName && email && phoneNumber && date) return true;
   };
 
   const isRecurringValid = () => {
@@ -89,41 +102,49 @@ export const CreateEventPartTwo = props => {
     }
   };
 
+  const handlePOCSelect = value => {
+      let chosen = POC[value]
+    setLocalState({
+      ...localState,
+      fullName: chosen.fullName,
+      phoneNumber: chosen.phone,
+      email: chosen.email,
+    });
+  };
+
+  console.log(POC);
   return (
     <StyledDiv className={'styledDiv'}>
       <h4>Who is your point of contact?</h4>
       <Form layout={'vertical'} onSubmit={() => checkedRequired()}>
+        {POC.length > 0 && (
+          <div className="POC-select">
+            <Select
+              name={'pocSelect'}
+              className={'poc-select'}
+              onChange={value => handlePOCSelect(value)}
+              placeholder={'Select a point of contact.'}
+            >
+              {POC.map((contact, i) => (
+                <Option key={i}>
+                  {contact.fullName}
+                </Option>
+              ))}
+            </Select>
+          </div>
+        )}
         <div className={'error-flex'}>
-          <Form.Item label={'First Name'} required>
+          <Form.Item label={'Full Name'} required>
             <div className={'input'}>
               <Input
-                name={'firstName'}
-                value={firstName}
-                placeholder="First Name"
+                name={'fullName'}
+                value={fullName}
+                placeholder="Full Name"
                 onChange={e => handleChange(e.target.name, e.target.value)}
               />
             </div>
             <div>
-              {error && !firstName && (
-                <span className="error-message error-span left-aligned">
-                  {error}
-                </span>
-              )}
-            </div>
-          </Form.Item>
-        </div>
-        <div className={'error-flex'}>
-          <Form.Item label={'Last Name'} required>
-            <div className={'input'}>
-              <Input
-                name={'lastName'}
-                value={lastName}
-                placeholder="Last Name"
-                onChange={e => handleChange(e.target.name, e.target.value)}
-              />
-            </div>
-            <div>
-              {error && !lastName && (
+              {error && !fullName && (
                 <span className="error-message error-span left-aligned">
                   {error}
                 </span>
@@ -143,6 +164,25 @@ export const CreateEventPartTwo = props => {
             </div>
             <div>
               {error && !email && (
+                <span className="error-message error-span left-aligned">
+                  {error}
+                </span>
+              )}
+            </div>
+          </Form.Item>
+        </div>
+        <div className={'error-flex'}>
+          <Form.Item label={'Phone Number'} required>
+            <div className={'input'}>
+              <Input
+                name={'phoneNumber'}
+                value={phoneNumber}
+                placeholder="Phone Number"
+                onChange={e => handleChange(e.target.name, e.target.value)}
+              />
+            </div>
+            <div>
+              {error && !phoneNumber && (
                 <span className="error-message error-span left-aligned">
                   {error}
                 </span>
@@ -254,11 +294,17 @@ const StyledDiv = styled.div`
   }
   .date-input {
     label {
-      margin-left: 185px;
+      margin-left: 220px;
     }
   }
   .to-p {
     margin: 35px 20px 0px;
+  }
+
+  .poc-select{
+      width: 40%;
+      margin: 0 auto 15px;
+      display:block;
   }
 `;
 

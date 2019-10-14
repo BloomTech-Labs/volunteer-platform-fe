@@ -132,7 +132,7 @@ export const UserProfile = (props) => {
           <div className='profile-bottom-left'>
             <h4>Stats</h4>
             <UserStats user={user}/>
-            <h4>Stats so far</h4>
+            <h4>Stats for {moment().year()} so far</h4>
             <UserGraph user={user}/>
           </div>
           <div className='profile-bottom-right'>

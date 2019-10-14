@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
-import { StyledCard } from '../styled';
+import { deleteModal } from '../styled';
 import createEventImg from '../assets/undraw_blooming_jtv6.svg';
 import {
   CreateEventPartOne,
@@ -14,18 +14,20 @@ import CreateEventReview from '../components/CreateEvent/CreateEventReview/Creat
 import { useStateValue } from '../hooks/useStateValue';
 import { createEvent, createRecurringEvent } from '../actions';
 import { TopContent, StyledRenderDiv } from './CreateOrg';
+
 let { Step } = Steps;
 
 export const CreateEvent = props => {
   const initialEvent = {
     nameOfEvent: '',
+    address: '',
     typesOfCauses: [],
     date: '',
     startTime: moment('00:00:00', 'HH:mm'),
     endTime: moment('00:00:00', 'HH:mm'),
     numberOfVolunteers: '',
     phoneNumber: '',
-    pointOfcontact: '',
+    pointOfContact: '',
     volunteerRequirements: [],
     interest: [],
     website: '',
@@ -64,24 +66,13 @@ export const CreateEvent = props => {
 
   const steps = [
     {
-      title: 'In Progress',
-      content: 'Enter Content',
+      title: 'Start',
     },
-    {
-      title: 'In Progress',
-      content: 'Enter Content',
-    },
-    {
-      title: 'In Progress',
-      content: 'Enter Content',
-    },
-    {
-      title: 'In Progress',
-      content: 'Enter Content',
-    },
+    {},
+    {},
+    {},
     {
       title: 'Finished',
-      content: 'Enter Content',
     },
   ];
   let [pageNumber, setPageNumber] = useState(1);
@@ -89,7 +80,7 @@ export const CreateEvent = props => {
   const [state, dispatch] = useStateValue();
 
   //Destructuring
-  const { recurringInfo, recurringEvent } = localState;
+  const { recurringInfo } = localState;
 
   const RenderedFormParts = formParts[pageNumber];
 
@@ -98,24 +89,22 @@ export const CreateEvent = props => {
       setLocalState({
         ...localState,
         orgId: props.location.state.org.orgId,
+        address: props.location.state.org.address,
+        typesOfCauses: props.location.state.org.causeAreas,
+        website: props.location.state.org.website,
+        POC: props.location.state.org.POC,
       });
     }
   }, [props.location.state.org]);
 
   //Handle Submit for Form
   const handleReviewSubmit = () => {
-    console.log('org', props.location.state.org.organizationName);
     const event = {
       orgId: localState.orgId,
       orgName: props.location.state.org.organizationName,
       orgImagePath: props.location.state.org.imagePath || '',
-      orgPage: '',
       nameOfEvent: localState.nameOfEvent,
-      streetAddress: localState.streetAddress,
-      city: localState.city,
-      state: localState.state,
-      email: localState.email,
-      phoneNumber: localState.phoneNumber,
+      address: localState.address,
       date: localState.date.unix(),
       startTime: localState.startTime.format('LT'),
       endTime: localState.endTime.format('LT'),
@@ -130,9 +119,9 @@ export const CreateEvent = props => {
       interest: localState.interest,
       volunteerRequirements: localState.volunteerRequirements,
       pointOfContact: {
-        firstName: localState.firstName,
-        lastName: localState.lastName,
+        fullName: localState.fullName,
         email: localState.email,
+        phoneNumber: localState.phoneNumber,
       },
       eventDetails: localState.eventDetails,
       website: localState.website,
@@ -156,7 +145,7 @@ export const CreateEvent = props => {
     }
     setPageNumber(1);
 
-    props.history.push('/org-dashboard');
+    props.history.push('/org-dashboard', { org: props.location.state.org });
   };
 
   const handleChange = (name, value) => {
@@ -167,22 +156,34 @@ export const CreateEvent = props => {
   };
   ///Cancel Form
   const cancelForm = () => {
-    props.history.push('/org-dashboard');
+    const cancelFormModal = deleteModal({
+      title: 'Are you sure you want to cancel ?',
+      content: 'All information will be delete.',
+      onOk: () =>
+        props.history.push('/org-dashboard', { org: props.location.state.org }),
+    });
+    cancelFormModal();
   };
 
-  //Handle Form Parts Submit
+  //Handle Form Part Submit
   const handlePageForward = () => {
     setPageNumber(pageNumber + 1);
+    document
+      .getElementById('scroll-event-header')
+      .scrollIntoView({ behavior: 'smooth' });
   };
 
   //Go Back a Page Number
   const handlePageBack = () => {
     setPageNumber(pageNumber - 1);
+    document
+      .getElementById('scroll-event-header')
+      .scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
     <StyledDiv>
-      <h1>{formTitles[pageNumber]}</h1>
+      <h1 id={'scroll-event-header'}>{formTitles[pageNumber]}</h1>
       <TopContent>
         <StyledImg src={createEventImg} alt="undraw unexpected friends" />
         <Steps current={pageNumber - 1} progressDot size="small">
@@ -224,17 +225,13 @@ const CustomRenderDiv = styled(StyledRenderDiv)`
   }
 
   label {
-    margin-left: 55px;
     color: ${({ theme }) => theme.primary8};
 
     &::before {
       color: ${({ theme }) => theme.primary8};
     }
   }
-  .input {
-    width: 80%;
-    margin: 0 auto;
-  }
+
   .inline {
     width: 40%;
   }
@@ -254,11 +251,7 @@ const CustomRenderDiv = styled(StyledRenderDiv)`
   }
   .city-states-input {
     display: flex;
-    justify-content: space-around;
-
-    label {
-      margin-left: 20px;
-    }
+    justify-content: space-between;
   }
   .time-wrapper {
     display: flex;

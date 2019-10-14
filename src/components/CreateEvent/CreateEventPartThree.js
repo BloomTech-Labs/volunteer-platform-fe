@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Select, Input, Form, Tooltip, Icon } from 'antd';
 import { StyledCancelButton, StyledButton } from '../../styled';
 import styled from 'styled-components';
@@ -17,7 +17,7 @@ export const CreateEventPartThree = props => {
   } = props;
 
   const { volunteerRequirements, interest, eventDetails } = localState;
-
+  
   const requirementTags = state.tags.requirements.map(tag => {
     return <Option key={tag}>{tag}</Option>;
   });
@@ -131,9 +131,7 @@ export const CreateEventPartThree = props => {
             </div>
           </Form.Item>
         </div>
-      </Form>
-      <div className="buttonStyles">
-        <div>
+        <div className="buttonStyles">
           <StyledCancelButton
             onClick={handlePageBack}
             key="back"
@@ -141,13 +139,12 @@ export const CreateEventPartThree = props => {
           >
             Back
           </StyledCancelButton>
-        </div>
-        <div>
+
           <StyledButton type="primary" key="next" onClick={checkedRequired}>
             Next
           </StyledButton>
         </div>
-      </div>
+      </Form>
     </StyledDiv>
   );
 };

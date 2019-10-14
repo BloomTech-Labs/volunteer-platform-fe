@@ -16,7 +16,7 @@ export const LastPart = ({ clickNext, storedData, clickPrevious }) => {
   return (
     <DivForStyling>
       <Form layout={'vertical'} onSubmit={() => clickNext(localState)}>
-        <h4>Tell Us about Your Organization</h4>
+        <h4 className='align-center'>Tell Us about Your Organization</h4>
         <div className="inputs">
           <Form.Item label={'About Us'}>
             <TextArea

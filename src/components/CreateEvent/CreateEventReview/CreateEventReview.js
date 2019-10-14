@@ -11,6 +11,7 @@ export const CreateEventReview = props => {
     setLocalState,
     handleReviewSubmit,
     handlePageBack,
+    cancelForm,
   } = props;
 
   return (
@@ -28,7 +29,7 @@ export const CreateEventReview = props => {
         <CreateEventReviewList
           localState={localState}
           handleReviewSubmit={handleReviewSubmit}
-          handlePageBack={handlePageBack}
+          cancelForm={cancelForm}
           edit={edit}
           setEdit={setEdit}
         />
@@ -38,7 +39,6 @@ export const CreateEventReview = props => {
 };
 
 const StyledRenderedDiv = styled.div`
-  background: ${({ theme }) => theme.gray4};
   margin: 0 auto;
   padding: 1.5rem 3rem;
   border-radius: ${({ theme }) => theme.borderRadiusDefault};
@@ -50,7 +50,6 @@ const StyledRenderedDiv = styled.div`
     margin-top: 10px;
 
     label {
-      margin-left: 45px;
       color: ${({ theme }) => theme.primary8};
       &::before {
         color: ${({ theme }) => theme.primary8};
@@ -59,6 +58,11 @@ const StyledRenderedDiv = styled.div`
     .title {
       margin-botton: 20px;
       color: ${({ theme }) => theme.primary8};
+    }
+
+    .city-states-input {
+      label {
+      }
     }
   }
 

@@ -4,17 +4,17 @@ import {useStateValue} from '../hooks/useStateValue';
 
 export const RegisteredAndLoggedInRoute = ({
   component: Component,
+  width,
   ...rest
 }) => {
   const [state] = useStateValue();
-  
   return (
     <Route
       {...rest}
       render={props => {
         return (localStorage.getItem('loggedIn') === 'true' &&
           localStorage.getItem('userRegistered') === 'true') ? (
-          <Component {...props} />
+          <Component {...props} width={width} />
         ) : (
           <Redirect to={'/register'}/>
         );

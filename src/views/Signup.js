@@ -1,18 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Avatar, Card, message } from 'antd';
-
-import {
-  WrappedAntForm,
-  AntInput,
-  AntInputNumber,
-  successModal,
-} from '../styled';
+import { Avatar, message, Form, Input, DatePicker } from 'antd';
+import Autocomplete from 'react-google-autocomplete';
+import { successModal, StyledCancelButton, StyledButton } from '../styled';
 import { useStateValue } from '../hooks/useStateValue';
 import { register } from '../actions';
 import sampleProfile from '../assets/undraw_profile.svg';
 import { device } from '../styled/deviceBreakpoints';
-
+import moment from 'moment';
 export const Signup = props => {
   const [state, dispatch] = useStateValue();
 
@@ -22,15 +17,13 @@ export const Signup = props => {
   let user = {
     firstName: '',
     lastName: '',
-    city: '',
-    state: '',
-    zipCode: '',
+    address: '',
     phoneNumber: '',
     email: '',
     uid: '',
-    age: 18,
+    DOB: moment(moment().subtract(18, 'years')),
   };
-  const [localState, setState] = useState(user);
+  const [localState, setLocalState] = useState(user);
   //const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
@@ -53,23 +46,28 @@ export const Signup = props => {
       if (state.auth.googleAuthUser.photoURL) {
         user.photoURL = state.auth.googleAuthUser.photoURL;
       }
-      setState({ ...user });
+      setLocalState({ ...user });
     }
   }, [state]);
 
-  const handleSubmit = values => {
-    values.uid = localState.uid;
-    register(values, dispatch);
+  const handleSubmit = e => {
+    e.preventDefault();
+    register({...localState, DOB: localState.DOB.format('LL')}, dispatch);
     regUserSuccessModal();
   };
 
   const regUserSuccessModal = successModal({
     title: 'Registration Success!',
     maskStyle: { background: `rgba(97, 37, 0, 0.2)` },
+    onOk: () => props.history.push('/dashboard'),
   });
 
   const cancelRegister = () => {
     message.warning('Registration is required to continue using Voluntier');
+  };
+
+  const handleChange = (name, value) => {
+    setLocalState({ ...localState, [name]: value });
   };
 
   return (
@@ -85,37 +83,81 @@ export const Signup = props => {
       ) : (
         <img src={sampleProfile} alt="undraw profile" />
       )}
-      <WrappedAntForm
-        layout={'vertical'}
-        onSubmit={handleSubmit}
-        autofill={localState}
-        buttonType="primary"
-        submitButton
-        submitButtonText="Register"
-        buttonLoading={state.auth.isLoading}
-        cancelButton={true}
-        cancelButtonText={'Cancel'}
-        handleCancel={cancelRegister}
-      >
-        <div className="inputGroup">
-          <div className="row">
-            <AntInput name={'First Name'} layout={formItemLayout} />
-            <AntInput name={'Last Name'} layout={formItemLayout} />
-          </div>
-          <div className="row">
-            <AntInput name={'City'} layout={formItemLayout} />
-            <AntInput name={'State'} layout={formItemLayout} />
-          </div>
-          <div className="row">
-            <AntInput name={'Email'} layout={formItemLayout} />
-            <AntInput name={'Zip Code'} layout={formItemLayoutShort} />
-          </div>
-          <div className="row">
-            <AntInput name={'Phone Number'} layout={formItemLayout} />
-            <AntInputNumber name={'Age'} layout={formItemLayoutShort} />
-          </div>
+      <Form layout={'vertical'} onSubmit={handleSubmit}>
+        <div className="row-half">
+          <Form.Item label="First Name" required>
+            <Input
+              name={'firstName'}
+              value={localState.firstName}
+              onChange={e => handleChange('firstName', e.target.value)}
+            />
+          </Form.Item>
+          <Form.Item label="Last Name" required>
+            <Input
+              name={'lastName'}
+              value={localState.lastName}
+              onChange={e => handleChange('lastName', e.target.value)}
+            />
+          </Form.Item>
         </div>
-      </WrappedAntForm>
+        <div className="row-full">
+          <Form.Item label="Address" required>
+            <Autocomplete
+              name="address"
+              className="google-autocomplete"
+              onPlaceSelected={place => {
+                setLocalState({
+                  ...localState,
+                  address: place.formatted_address,
+                });
+              }}
+              types={['address']}
+              componentRestrictions={{ country: 'us' }}
+              value={localState.address}
+              onChange={e => handleChange('address', e.target.value)}
+            />
+          </Form.Item>
+        </div>
+        <div className="row-half">
+          <Form.Item label="Email" required>
+            <Input
+              name={'email'}
+              value={localState.email}
+              onChange={e => handleChange('email', e.target.value)}
+            />
+          </Form.Item>
+          <Form.Item label="Phone Number" required>
+            <Input
+              name={'phoneNumber'}
+              value={localState.phoneNumber}
+              onChange={e => handleChange('phoneNumber', e.target.value)}
+            />
+          </Form.Item>
+        </div>
+        <div className="row-center">
+          <Form.Item label="Date of Birth" required>
+            <DatePicker
+              name="DOB"
+              value={localState.DOB}
+              onChange={e => handleChange('DOB', e)}
+              format={['MM/DD/YY', 'MM/DD/YYYY', 'MM-DD-YYYY', 'MM-DD-YY']}
+            />
+          </Form.Item>
+        </div>
+        <div className="buttonStyles">
+          <StyledCancelButton onClick={cancelRegister} type="primary">
+            Cancel
+          </StyledCancelButton>
+          <StyledButton
+            onClick={handleSubmit}
+            disabled={state.auth.isLoading}
+            loading={state.auth.isLoading}
+            type="primary"
+          >
+            Register
+          </StyledButton>
+        </div>
+      </Form>
     </StyledDiv>
   );
 };
@@ -125,7 +167,7 @@ export default Signup;
 const StyledDiv = styled.div`
   && {
     display: flex;
-    background: ${({theme}) => theme.gray1};
+    background: ${({ theme }) => theme.gray1};
     flex-direction: column;
     align-items: center;
     text-align: center;
@@ -135,44 +177,46 @@ const StyledDiv = styled.div`
     flex-direction: column;
     justify-center: space-between;
     padding-bottom: 3rem;
+    label {
+      color: ${({ theme }) => theme.primary8};
 
+      &::before {
+        color: ${({ theme }) => theme.primary8};
+      }
+    }
     img {
       width: 200px;
       margin: 1.5rem auto;
     }
 
-    button {
-      align-self: center;
-      width: 120px;
-      padding: 0.5rem 2rem;
-      font-size: 16px;
-      height: auto;
-      margin: 1.5rem 3rem;
+    form {
+      width: 100%;
+    }
 
-      @media (max-width: 650px) {
-        margin: 1.5rem 2rem;
+    .google-autocomplete {
+      width: 100%;
+      height: 32px;
+      display: inline-block;
+      padding: 4px 11px;
+      font-size: 14px;
+      line-height: 1.5;
+      background-color: #fff;
+      border-radius: 4px;
+      border: 1px solid rgb(217, 217, 217);
+      font-family: ${({ theme }) => theme.bodytext};
+
+      &::placeholder {
+        color: rgba(0, 0, 0, 0.35);
+        font-size: 14px;
+        font-family: ${({ theme }) => theme.bodytext};
       }
     }
-
-    label {
-      color: ${props => props.theme.primary8};
-    }
-
-    .inputGroup {
+    .row-half,
+    .row-full {
       width: 100%;
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin: 2rem 0 1rem 0;
-    }
-    .ant-input-number.sc-fjdhpX.nsimD {
-        width: 100%;
-    }
-    .row {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      padding-left: 3.5rem;
+      justify-content: space-between;
+      padding: 0 3.5rem;
 
       @media ${device.tablet} {
         width: 90%;
@@ -183,17 +227,40 @@ const StyledDiv = styled.div`
       }
     }
 
-    .ant-form-item {
-      width: 50%;
-
-      @media ${device.tablet} {
-        margin-right: 0.8rem;
-        margin-left: 0.8rem;
+    .row-full {
+      .ant-form-item {
+        width: 100%;
       }
+    }
+
+    .row-center {
+      width: 50%;
+      margin: 0 auto;
+      .ant-calendar-picker {
+        width: 100%;
+      }
+    }
+    .row-half {
+      .ant-form-item {
+        width: 45%;
+
+        @media ${device.tablet} {
+          margin-right: 0.8rem;
+          margin-left: 0.8rem;
+        }
+      }
+    }
+
+    .buttonStyles {
+      display: flex;
+      margin: 50px auto 0;
+      padding-top: 40px;
+      padding-right: 70px;
+      padding-left: 70px;
+      justify-content: space-around;
     }
   }
 `;
-
 
 const formItemLayoutShort = {
   labelCol: {

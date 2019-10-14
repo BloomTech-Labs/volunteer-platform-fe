@@ -133,10 +133,16 @@ export const CreateOrg = props => {
       [5]: { ...localState[5], ...values },
     });
     setPartCount(partCount => partCount + 1);
+    document
+      .getElementById('scroll-org-header')
+      .scrollIntoView({ behavior: 'smooth' });
   };
 
   const clickPrevious = () => {
     setPartCount(partCount => partCount - 1);
+    document
+      .getElementById('scroll-org-header')
+      .scrollIntoView({ behavior: 'smooth' });
   };
 
   const setBackToReview = values => {
@@ -179,12 +185,14 @@ export const CreateOrg = props => {
 
   return (
     <StyledDiv>
-      <h1 className="create-org-header">{possibleHeaders[partCount]}</h1>
+      <h1 className="create-org-header align-center" id={'scroll-org-header'}>
+        {possibleHeaders[partCount]}
+      </h1>
       <TopContent>
         <StyledImg src={createOrgImg} alt="undraw unexpected friends" />
         <Steps current={partCount - 1} progressDot size="small">
           {steps.map(step => (
-            <Step key={step} title={step.title} description={step.content} />
+            <Step key={step} title={step.title} />
           ))}
         </Steps>
       </TopContent>
@@ -206,7 +214,9 @@ export const CreateOrg = props => {
 
 const StyledDiv = styled.div`
   background: ${({ theme }) => theme.gray2};
-  text-align: center;
+  .align-center {
+    text-align: center;
+  }
   .create-org-header {
     color: ${props => props.theme.gray9};
   }
@@ -215,13 +225,16 @@ const StyledDiv = styled.div`
 export const TopContent = styled(StyledCard)`
   display: flex;
   flex-direction: column;
-
+  text-align: center;
   .ant-steps {
     text-align: left;
     margin-bottom: 40px;
 
     .ant-steps-item-finish > .ant-steps-item-container > .ant-steps-item-tail {
       &::after {
+        background: ${({ theme }) => theme.primary8};
+      }
+      span.ant-steps-icon-dot {
         background: ${({ theme }) => theme.primary8};
       }
     }

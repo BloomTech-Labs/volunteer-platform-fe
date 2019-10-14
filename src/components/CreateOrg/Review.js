@@ -28,6 +28,7 @@ export const Review = ({
       website: storedData.website || '',
       weekdays: storedData.weekdays || [],
       weekends: storedData.weekends || [],
+      address: storedData.address || '',
     };
 
     const confirmSubmit = confirmModal({
@@ -45,15 +46,6 @@ export const Review = ({
         <div className="form-icons">
           <div className="col">
             <Icon
-              type="save"
-              theme="twoTone"
-              twoToneColor="#005a87"
-              onClick={onSubmit}
-            />
-            <span>Save</span>
-          </div>
-          <div className="col">
-            <Icon
               type="edit"
               theme="twoTone"
               twoToneColor="#005a87"
@@ -66,10 +58,16 @@ export const Review = ({
           <h4>Name</h4>
           <p>{storedData.organizationName}</p>
           <h4>Location</h4>
-          <p className="no-margin">{storedData.streetAddress}</p>
-          <p>
-            {storedData.city}, {storedData.state}
-          </p>
+          {storedData.address ? (
+            <p>{storedData.address}</p>
+          ) : (
+            <>
+              <p className="no-margin">{storedData.streetAddress}</p>
+              <p>
+                {storedData.city}, {storedData.state}
+              </p>
+            </>
+          )}
           <h4>Cause(s)</h4>
           <div className="cause-tags">
             {storedData.causeAreas.map(cause => (
@@ -88,19 +86,9 @@ export const Review = ({
                         <p className="no-margin no-padding">{poc.fullName}</p>
                       </div>
                       <div className="poc-item">
-                        <Icon
-                          type="mail"
-                          theme="twoTone"
-                          twoToneColor="#005a87"
-                        />
                         <p className="no-margin">{poc.email}</p>
                       </div>
                       <div className="poc-item">
-                        <Icon
-                          type="phone"
-                          theme="twoTone"
-                          twoToneColor="#005a87"
-                        />
                         <p>{poc.phone}</p>
                       </div>
                     </div>
@@ -116,7 +104,7 @@ export const Review = ({
               <h4>Hours of Operation</h4>
               <div className="hours-operation">
                 {storedData.daysOfTheWeek && (
-                  <p>{setDaysOpen(storedData.daysOfTheWeek)}</p>
+                  <p className='first-child'>{setDaysOpen(storedData.daysOfTheWeek)}</p>
                 )}
                 {storedData.startTime && (
                   <p>{`${storedData.startTime.format(
@@ -161,7 +149,6 @@ const ReviewDiv = styled.div`
   .form-icons {
     align-self: flex-end;
     padding-right: 20%;
-    width: 35%;
     display: flex;
     justify-content: space-between;
 
@@ -187,12 +174,12 @@ const InfoDiv = styled.div`
   h4 {
     margin: 0;
     font-size: 17px;
+    margin-bottom: 5px;
   }
 
   p {
     margin: 0;
-    margin-bottom: 20px;
-    padding-left: 14px;
+    margin-bottom: 40px;
     font-weight: 200;
   }
 
@@ -206,9 +193,9 @@ const InfoDiv = styled.div`
   .cause-tags {
     display: flex;
     flex-wrap: wrap;
-    width: 80%;
+    margin-bottom: 40px;
 
-    justify-content: space-around;
+    justify-content: flex-start;
     margin-bottom: 10px;
     align-content: space-around;
 
@@ -237,7 +224,11 @@ const InfoDiv = styled.div`
 
   .hours-operation {
     display: flex;
-    justify-content: space-around;
+    justify-content: flex-start;
+
+    .first-child{
+        padding-right: 10px;
+    }
   }
 `;
 export default Review;

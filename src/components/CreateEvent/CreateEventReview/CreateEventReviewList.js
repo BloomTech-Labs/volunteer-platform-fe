@@ -1,15 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyledButton, StyledCancelButton } from '../../../styled';
 import { Icon, Tag } from 'antd';
 import styled from 'styled-components';
-import createEventImg from '../../../assets/undraw_blooming_jtv6.svg';
+import { confirmModal } from '../../../styled';
 import RecurringInfoReview from './RecurringInfoReview';
 
 export const CreateEventReviewList = props => {
-  const { localState, handleReviewSubmit, handlePageBack, setEdit } = props;
+  const { localState, handleReviewSubmit, cancelForm, setEdit } = props;
 
   const editForm = () => {
     setEdit(true);
+  };
+
+  const confirmForm = () => {
+    const confirmFormModal = confirmModal({
+      title: 'Creating an Event',
+      content: 'Please ensure all the information is correct.',
+      onOk: () => handleReviewSubmit(),
+    });
+    confirmFormModal();
   };
 
   return (
@@ -22,21 +31,15 @@ export const CreateEventReviewList = props => {
         </StyledButtons>
       </div>
 
-      <div className={'review-wrapper'}>
-        <div>
+      <StyledDiv className={'styledDiv'}>
+        <div className={'text'}>
           <p className={'title'}>Event Name</p>
           <p>{localState.nameOfEvent}</p>
         </div>
         <div>
-          <p className={'title'}>Location</p>
-          <p>{localState.streetAddress}</p>
+          <p className={'title'}>Address</p>
+          <p>{localState.address}</p>
         </div>
-
-        <div className={'city-states-input'}>
-          <p>{localState.city}</p>
-          <p>{localState.state}</p>
-        </div>
-
         <div>
           <p className={'title'}>Tyeps of Causes</p>
           <p>
@@ -81,14 +84,10 @@ export const CreateEventReviewList = props => {
           </p>
         </div>
         <div>
-          <p className={'title'}>Phone Number</p>
-          <p>{localState.phoneNumber}</p>
-        </div>
-        <div>
           <p className={'title'}>Point of Contact</p>
           <p>{localState.firstName}</p>
           <p>{localState.lastName}</p>
-          <p>{localState.email}</p>
+          <p>{localState.phoneNumber}</p>
         </div>
         <div>
           <p className={'title'}>When is the event?</p>
@@ -116,26 +115,21 @@ export const CreateEventReviewList = props => {
           <p>{localState.website}</p>
         </div>
         <div>
-          <p className={'title'}>Other Notes</p>
+          <p className={''}>Other Notes</p>
           <p>{localState.otherNotes}</p>
         </div>
-      </div>
+      </StyledDiv>
       <div className="buttonStyles">
-        <StyledCancelButton
-          key="cancel"
-          type="second"
-          onClick={() => handlePageBack()}
-        >
-          Back
-        </StyledCancelButton>
-
-        <StyledButton
-          key="submit"
-          type="primary"
-          onClick={() => handleReviewSubmit()}
-        >
-          Confirm
-        </StyledButton>
+        <div>
+          <StyledCancelButton key="cancel" type="second" onClick={cancelForm}>
+            Cancel
+          </StyledCancelButton>
+        </div>
+        <div>
+          <StyledButton key="submit" type="primary" onClick={confirmForm}>
+            Confirm
+          </StyledButton>
+        </div>
       </div>
     </StyledDiv>
   );
@@ -147,11 +141,8 @@ const StyledButtons = styled.div`
   width: 100%;
   display: flex;
   justify-content: flex-end;
-
   .icon {
     display: flex;
-    justify-content: center;
-    align-items: center;
     font-size: 2rem;
     border-radius: 50%;
     width: 50px;
@@ -161,7 +152,6 @@ const StyledButtons = styled.div`
 
   .review-wrapper {
     display: flex;
-    justify-content: flex-start;
 
     .to {
       margin: 0px 5px;

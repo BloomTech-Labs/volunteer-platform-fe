@@ -28,7 +28,7 @@ export const SecondPart = ({ clickNext, storedData, clickPrevious }) => {
   return (
     <>
       <StyledForm layout={'vertical'} onSubmit={() => clickNext(localState)}>
-        <h4>Who is the point of contact?</h4>
+        <h4 className = 'align-center'>Who is the point of contact?</h4>
         {allPOCs.map(poc => (
           <POC
             key={poc}
