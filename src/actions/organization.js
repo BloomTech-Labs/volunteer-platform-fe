@@ -84,8 +84,14 @@ export const getOrganizationByOrgId = (orgId, dispatch) => {
       if (res.exists) {
         const org = res.data();
         org.orgId = res.id;
+        getLatLong(
+          org.address || org.streetAddress + ' ' + org.city + ', ' + org.state
+        ).then(({ lat, lng }) => {
+          org.lat = lat;
+          org.lng = lng;
+        });
         dispatch(action(GET_ORG_BY_ID, org));
-      } else {
+      }else {
         dispatch(action(GET_ORG_BY_ID_FAILED));
       }
     })
