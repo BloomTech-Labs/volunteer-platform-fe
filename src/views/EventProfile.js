@@ -171,6 +171,7 @@ export const EventProfile = props => {
           auth={auth}
           register={register}
           unRegister={unRegister}
+          numOfVol={numOfVol}
         />
       )}
       <CommentList
