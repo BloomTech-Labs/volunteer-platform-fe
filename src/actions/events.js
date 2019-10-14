@@ -435,7 +435,15 @@ export const signUpForEvent = (event, user, dispatch) => {
   let events = user.registeredEvents || [];
   let updatedEvent = {
     ...event,
-    registeredVolunteers: [...volunteers, {userId: user.uid, name: user.firstName + " " + user.lastName, hours: 0, isVerified: false}],
+    registeredVolunteers: [
+      ...volunteers,
+      {
+        userId: user.uid,
+        name: user.firstName + ' ' + user.lastName,
+        hours: 0,
+        isVerified: false,
+      },
+    ],
   };
   let updatedUser = {
     ...user,
@@ -451,7 +459,7 @@ export const signUpForEvent = (event, user, dispatch) => {
         eventId: event.eventId,
         orgId: event.orgId,
         hours: 0,
-        isVerified: false
+        isVerified: false,
       },
     ],
   };
@@ -552,7 +560,12 @@ export const signUpForRecurringEvent = (event, user, date, dispatch) => {
   let targetDate = date;
   let events = user.registeredEvents || [];
   
-  const personSigningUp =  {userId: user.uid, name: user.firstName + " " + user.lastName, hours: 0, isVerified: false};
+  const personSigningUp = {
+    userId: user.uid,
+    name: user.firstName + ' ' + user.lastName,
+    hours: 0,
+    isVerified: false,
+  };
   
   if (!volunteers[ targetDate ]){
     volunteers[ targetDate ] = [personSigningUp];
@@ -579,7 +592,7 @@ export const signUpForRecurringEvent = (event, user, date, dispatch) => {
         eventId: event.eventId,
         orgId: event.orgId,
         hours: 0,
-        isVerified: false
+        isVerified: false,
       },
     ],
   };
@@ -690,36 +703,60 @@ export const updateRecurringEvents = () => {
  * @param {Number} hours
  * @param {String} eventType
  */
-export const verifyHours = (event, user, hours, eventType = "events") => {
+export const verifyHours = (event, user, hours, eventType = 'events') => {
   const updatedEventVolunteers = event.registeredVolunteers.map(volunteer => {
-    if(volunteer.userId === user.uid){
+    if (volunteer.userId === user.uid){
       volunteer.hours = hours;
       volunteer.isVerified = true;
     }
   });
   
   const updatedUserEvents = user.registeredEvents.map(usersEvent => {
-    if(usersEvent.eventId === event.eventId){
+    if (usersEvent.eventId === event.eventId){
       usersEvent.hours = hours;
       usersEvent.isVerified = true;
     }
   });
   
   store.collection(eventType).doc(event.eventId).get().then(res => {
-    if(!res.exists){
-      verifyHours(event, user, hours, "recurring events");
+    if (!res.exists){
+      verifyHours(event, user, hours, 'recurring events');
     }
     event.registeredVolunteers = updatedEventVolunteers;
     res.ref.update(event).then(ressult => {
       user.registeredEvents = updatedUserEvents;
       store.collection('users').doc(user.uid).update(user).then(() => {
       
-      })
+      });
     }).catch(err => {
       console.log(err);
-    })
+    });
     
   }).catch(err => {
     console.log(err);
-  })
+  });
+};
+
+export const updateEvents = (eventType = 'events') => {
+  
+  store.collection(eventType).get().then(res => {
+    res.forEach(event => {
+      const data = event.data();
+      if (data.registeredVolunteers){
+        const registeredVolunteers = [];
+        data.registeredVolunteers.forEach(async uid => {
+          const user = await store.collection('users').doc(uid).get();
+          const data = user.data();
+          registeredVolunteers.push({
+            userId: uid,
+            fullName: data.firstName + ' ' + data.lastName,
+            hours: 0,
+            isValidated: false,
+          });
+        });
+        data.registeredVolunteers = registeredVolunteers;
+        event.ref.update(data);
+      }
+    });
+  });
 };
