@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import moment from 'moment';
 import { Collapse, DatePicker, Button } from 'antd';
@@ -32,6 +33,15 @@ export const UserEvents = ({ events, changePanel, calendarValue, selectDate, sel
   }
   selectedEvents.sort((a, b) => a.nextDate - b.nextDate);
   
+  const PanelHeader = (props) => {
+    return (
+        <div className='panel-header'>
+            <span>{props.event.nameOfEvent}</span>
+            <span>{moment.unix(props.event.date).format('MM/DD/YY')}</span>
+        </div>
+    )
+  }
+
   return (
     <CustomStyledCard  >
       {selectedEvents.length > 0 || selectedDate ? (
@@ -47,28 +57,35 @@ export const UserEvents = ({ events, changePanel, calendarValue, selectDate, sel
           <Button type='link' onClick={displayAll} width='200px'>Display All Events</Button>
         </UpperDiv>
       ) : (
-        <div>You have not signed up for any events yet</div>
+        <UpperDiv>You have not signed up for any events yet</UpperDiv>
       )}
       {selectedEvents.length > 0 && (
-        <Collapse accordion bordered={false} style={{background: 'white'}}>
-          {selectedEvents.map(event => {
-            return (
-              <StyledPanel
-                header={event.nameOfEvent}
-                key={event.eventId + '-' + event.date}
-              >
-                <h5>Date: {moment.unix(event.date).format('LL')}</h5>
-                <h5>Time: {`${event.startTime}~${event.endTime}`}</h5>
-                <h5>Location: {event.location}</h5>
-                <h5>Point of Contact</h5>
-                <p>
-                  {event.pointOfContact && event.pointOfContact.firstName + ' ' +  event.pointOfContact.lastName} 
-                </p>
-                <p>{event.pointOfContact && event.pointOfContact.email}</p>
-              </StyledPanel>
-            );
-          })}
-        </Collapse>
+        <ScrollbarDiv>
+          <Collapse accordion bordered={false} style={{ background: 'white' }}>
+            {selectedEvents.map(event => {
+              return (
+                <StyledPanel
+                  header={<PanelHeader event={event}/>}
+                  key={event.eventId + '-' + event.date}
+                >
+                  <div>
+                    <div>
+                      <h5>Date: {moment.unix(event.date).format('LL')}</h5>
+                      <h5>Time: {`${event.startTime}~${event.endTime}`}</h5>
+                      <h5>Location: {event.location}</h5>
+                      <h5>Point of Contact</h5>
+                      <p>
+                        {event.pointOfContact && event.pointOfContact.firstName + ' ' +  event.pointOfContact.lastName} 
+                      </p>
+                      <p>{event.pointOfContact && event.pointOfContact.email}</p>
+                      <Button><Link to={{pathname: `/events/${event.eventId}`}}>View event details</Link></Button>
+                    </div>
+                  </div>
+                </StyledPanel>
+              );
+            })}
+          </Collapse>
+        </ScrollbarDiv>
       )}
     </CustomStyledCard>
   );
@@ -86,27 +103,43 @@ const StyledPanel = styled(Panel)`
       background: ${({theme}) => theme.gray2};
       border-radius: 0px 0px 4px 4px;
     }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+    }
   }
 `;
+
+const ScrollbarDiv = styled.div`
+  height: 340px;
+  overflow-y: scroll;
+  padding: 1rem 1.5rem;
+
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: ${({theme}) => theme.gray3};
+    border-radius: 16px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: white; 
+  }
+`
 
 const UpperDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  margin-bottom: 20px;
+  padding: 1.5rem;
 
   h2{
       margin: 1rem 0;
-  }
-  
-  button {
-    margin: 0 auto;
-    color: rgba(0, 0, 0, 0.6);
-  }
-
-  button:hover {
-    color: ${({theme}) => theme.primary7};
   }
 `;
 
@@ -116,6 +149,19 @@ const CustomStyledCard = styled(StyledCard)`
     background: white;
     border-radius: 0px;
     margin-top: 2rem;
+    
+    .ant-card-body {
+      padding: 0;
+    }
+
+    button {
+      margin: 0 auto;
+      color: rgba(0, 0, 0, 0.6);
+    }
+  
+    button:hover {
+      color: ${({theme}) => theme.primary7};
+    }
   }
 `
 export default UserEvents;
