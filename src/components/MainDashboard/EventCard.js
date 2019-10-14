@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { StyledCard, StyledButton } from '../../styled';
+import { StyledCard, StyledButton, StyledCancelButton } from '../../styled';
 import { useStateValue } from '../../hooks/useStateValue';
 import moment from 'moment';
 import { Tag } from 'antd';
@@ -48,14 +48,14 @@ export const EventCard = ({ event }) => {
             'LT'
           )} (${totalHours} hours)`}</span>
         </div>
-        <StyledButton>
+        <StyledButton className="register">
           <Link to={{ pathname: `/events/${event.eventId}` }}>Register</Link>
         </StyledButton>
-        {isRecurring && (
-          <div className="other-date">
-            <span>Other Dates Available</span>
-          </div>
-        )}
+        <StyledCancelButton className="other-button">
+          <Link to={{ pathname: `/events/${event.eventId}` }}>
+            {isRecurring ? 'Other dates available' : 'Learn more'}
+          </Link>
+        </StyledCancelButton>
       </div>
     </StyledEventCard>
   );
@@ -93,29 +93,25 @@ const StyledEventCard = styled(StyledCard)`
         line-height: 22px;
       }
     }
-    button {
-      background: ${({ theme }) => theme.primary7};
+    .register {
       width: 60%;
-      border: 0;
       margin: 6px auto;
       min-width: 150px;
       border-radius: 4px;
       padding: 3px 12px;
       cursor: pointer;
 
-      :hover{
-          background: ${({theme}) => theme.primary8}
+      :hover {
+        background: ${({ theme }) => theme.primary8};
       }
       a {
         color: white;
       }
     }
 
-    .other-date {
+    .other-button {
       font-size: 12px;
       line-height: 20px;
-      border: 1px solid #ffbb96;
-      border-radius: 4px;
       padding: 2px 5px;
       width: 60%;
       min-width: 150px;

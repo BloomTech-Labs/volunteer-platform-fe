@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { EventCard, OrganizationCard } from '../MainDashboard';
 import { NoResultsFound } from './NoResultsFound';
@@ -19,12 +19,15 @@ export const ResultList = ({ results, type }) => {
     window.scrollTo(0, 0);
   };
 
-  return displayResults.length ? (
+  return displayResults.length>0 ? (
     <>
       <StyledResultList>
         {displayResults.map(result =>
           type === 'Events' ? (
-            <EventCard key={`${result.nextDate}${result.eventId}`} event={result} />
+            <EventCard
+              key={`${result.nextDate}${result.eventId}`}
+              event={result}
+            />
           ) : (
             <OrganizationCard key={result.orgId} org={result} />
           )
@@ -34,7 +37,7 @@ export const ResultList = ({ results, type }) => {
         current={current}
         onChange={changePage}
         total={results.length}
-        style={{width: '80%', margin: '0 auto'}}
+        style={{ width: '80%', margin: '0 auto' }}
       />
     </>
   ) : (
