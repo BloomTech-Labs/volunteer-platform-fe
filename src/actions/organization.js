@@ -1,7 +1,7 @@
-import {action} from './action';
-import {deleteFile} from './files';
-import firebase, {store} from '../firebase/FirebaseConfig';
-import {getLatLong} from '../utility/geoCode';
+import { action } from './action';
+import { deleteFile } from './files';
+import firebase, { store } from '../firebase/FirebaseConfig';
+import { getLatLong } from '../utility/geoCode';
 
 /**
  * Auth Actions
@@ -20,7 +20,7 @@ export const CREATE_ORGANIZATION_FAIL = 'CREATE_ORGANIZATION_FAIL';
  * @param {Dispatch} dispatch
  */
 export const registerOrganization = (org, dispatch) => {
-  dispatch({type: CREATE_ORGANIZATION_INIT});
+  dispatch({ type: CREATE_ORGANIZATION_INIT });
   store
     .collection('organizations')
     .add(org)
@@ -29,13 +29,13 @@ export const registerOrganization = (org, dispatch) => {
     })
     .catch(err => {
       console.log(err);
-      dispatch({type: CREATE_ORGANIZATION_FAIL});
+      dispatch({ type: CREATE_ORGANIZATION_FAIL, payload: err.message });
     });
 };
 
+export const GET_USER_ORGANIZATIONS_INIT = 'GET_USER_ORGANIZATIONS_INIT';
 export const GET_USER_ORGANIZATIONS = 'GET_USER_ORGANIZATIONS';
 export const GET_USER_ORGANIZATIONS_FAILED = 'GET_USER_ORGANIZATIONS_FAILED';
-export const USER_HAS_NO_ORGANIZATIONS = 'USER_HAS_NO_ORGANIZATIONS';
 
 /**
  * Gets all the users organizations
@@ -44,16 +44,15 @@ export const USER_HAS_NO_ORGANIZATIONS = 'USER_HAS_NO_ORGANIZATIONS';
  * @param {Dispatch} dispatch From useStateValue hook
  */
 export const subscribeToUserOrganizations = (uid, dispatch) => {
-  
+  dispatch(action(GET_USER_ORGANIZATIONS_INIT));
   return store
     .collection('organizations')
     .where('organizationOwnerUID', '==', uid)
     .onSnapshot(snapShot => {
-      
       const orgs = [];
-      if (!snapShot.empty){
+      if (!snapShot.empty) {
         localStorage.setItem('createdOrg', 'true');
-      }else{
+      } else {
         localStorage.setItem('createdOrg', 'false');
       }
       snapShot.forEach(doc => {
@@ -63,9 +62,9 @@ export const subscribeToUserOrganizations = (uid, dispatch) => {
       });
       dispatch(action(GET_USER_ORGANIZATIONS, orgs));
     });
-  
 };
 
+export const GET_ORG_BY_ID_INIT = 'GET_ORG_BY_ID_INIT';
 export const GET_ORG_BY_ID = 'GET_ORG_BY_ID';
 export const GET_ORG_BY_ID_FAILED = 'GET_ORG_BY_ID_FAILED';
 
@@ -76,16 +75,28 @@ export const GET_ORG_BY_ID_FAILED = 'GET_ORG_BY_ID_FAILED';
  * @param {Dispatch} dispatch
  */
 export const getOrganizationByOrgId = (orgId, dispatch) => {
+  dispatch(action(GET_ORG_BY_ID_INIT));
   store
     .collection('organizations')
     .doc(orgId)
     .get()
     .then(res => {
-      if (res.exists){
+      if (res.exists) {
         const org = res.data();
         org.orgId = res.id;
-        
+        getLatLong(
+          org.address || org.streetAddress + ' ' + org.city + ', ' + org.state
+        ).then(({ lat, lng }) => {
+          org.lat = lat;
+          org.lng = lng;
+        });
+        dispatch(action(GET_ORG_BY_ID, org));
+      }else {
+        dispatch(action(GET_ORG_BY_ID_FAILED));
       }
+    })
+    .catch(err => {
+      dispatch(action(GET_ORG_BY_ID_FAILED, err));
     });
 };
 
@@ -102,18 +113,20 @@ export const UPDATE_ORGANIZATION_FAIL = 'UPDATE_ORGANIZATION_FAIL';
  */
 
 export const updateOrganization = (orgId, updates, dispatch) => {
-  dispatch({type: UPDATE_ORGANIZATION_INIT});
-  store.collection('organizations')
+  dispatch({ type: UPDATE_ORGANIZATION_INIT });
+  store
+    .collection('organizations')
     .doc(orgId)
     .set(updates)
     .then(res => {
-      dispatch({type: UPDATE_ORGANIZATION_SUCCESS});
+      dispatch({ type: UPDATE_ORGANIZATION_SUCCESS });
     })
     .catch(err => {
-      dispatch({type: UPDATE_ORGANIZATION_FAIL});
+      dispatch({ type: UPDATE_ORGANIZATION_FAIL });
     });
 };
 
+export const DELETE_ORG_INIT = 'DELETE_ORG_INIT';
 export const DELETE_ORG = 'DELETE_ORG';
 export const DELETE_ORG_FAILED = 'DELETE_ORG_FAILED';
 
@@ -124,7 +137,9 @@ export const DELETE_ORG_FAILED = 'DELETE_ORG_FAILED';
  * @param {Dispatch} dispatch
  */
 export const deleteOrganization = (orgId, dispatch) => {
-  store.collection('organizations')
+  dispatch(action(DELETE_ORG_INIT));
+  store
+    .collection('organizations')
     .doc(orgId)
     .delete()
     .then(res => {
@@ -141,21 +156,22 @@ export const deleteOrganization = (orgId, dispatch) => {
  * @function
  * @param {Organization} organization Organization to delete.
  */
-export const deleteOrganizationImage = (organization) => {
-  
+export const deleteOrganizationImage = organization => {
   deleteFile(organization.imagePath);
   delete organization.imagePath;
   delete organization.imageUrl;
-  
-  store.collection('organizations')
+
+  store
+    .collection('organizations')
     .doc(organization.orgId)
-    .set(organization).then(res => {
-    
-  }).catch(err => {
-    console.log(err);
-  });
+    .set(organization)
+    .then(res => {})
+    .catch(err => {
+      console.log(err);
+    });
 };
 
+export const GET_TOP_ORGANIZATIONS_INIT = 'GET_TOP_ORGANIZATIONS_INIT';
 export const GET_TOP_ORGANIZATIONS = 'GET_TOP_ORGANIZATIONS';
 export const THERE_ARE_NO_ORGANIZATIONS = 'THERE_ARE_NO_ORGANIZATIONS';
 export const GET_TOP_ORGANIZATIONS_FAILED = 'GET_TOP_ORGANIZATIONS_FAILED';
@@ -165,42 +181,53 @@ export const GET_TOP_ORGANIZATIONS_FAILED = 'GET_TOP_ORGANIZATIONS_FAILED';
  * @function
  * @param {Dispatch} dispatch
  */
-export const getTopOrganizations = (dispatch) => {
-  store.collection('organizations').limit(20).get().then(res => {
-    if (!res.empty){
-      const topOrgs = [];
-      res.forEach(org => {
-        const data = org.data();
-        data.orgId = org.id;
-        
-        topOrgs.push(data);
-      });
-      return dispatch(action(GET_TOP_ORGANIZATIONS, topOrgs));
-    }
-    return dispatch(action(THERE_ARE_NO_ORGANIZATIONS));
-  }).catch(err => {
-    console.log(err);
-    dispatch(action(GET_TOP_ORGANIZATIONS_FAILED, err.message));
-  });
+export const getTopOrganizations = dispatch => {
+  dispatch(action(GET_TOP_ORGANIZATIONS_INIT));
+  store
+    .collection('organizations')
+    .limit(20)
+    .get()
+    .then(res => {
+      if (!res.empty) {
+        const topOrgs = [];
+        res.forEach(org => {
+          const data = org.data();
+          data.orgId = org.id;
+
+          topOrgs.push(data);
+        });
+        return dispatch(action(GET_TOP_ORGANIZATIONS, topOrgs));
+      }
+      return dispatch(action(THERE_ARE_NO_ORGANIZATIONS));
+    })
+    .catch(err => {
+      console.log(err);
+      dispatch(action(GET_TOP_ORGANIZATIONS_FAILED, err.message));
+    });
 };
 
-export const GET_ORGANIZATIONS_BY_STATE_INIT = 'GET_ORGANIZATIONS_BY_STATE_INIT';
-export const GET_ORGANIZATIONS_BY_STATE_SUCCESS = 'GET_ORGANIZATIONS_BY_STATE_SUCCESS';
-export const GET_ORGANIZATIONS_BY_STATE_EMPTY = 'GET_ORGANIZATIONS_BY_STATE_EMPTY';
+export const GET_ORGANIZATIONS_BY_STATE_INIT =
+  'GET_ORGANIZATIONS_BY_STATE_INIT';
+export const GET_ORGANIZATIONS_BY_STATE_SUCCESS =
+  'GET_ORGANIZATIONS_BY_STATE_SUCCESS';
+export const GET_ORGANIZATIONS_BY_STATE_EMPTY =
+  'GET_ORGANIZATIONS_BY_STATE_EMPTY';
 
-export const GET_ORGANIZATIONS_BY_STATE_FAILED = 'GET_ORGANIZATIONS_BY_STATE_FAILED';
+export const GET_ORGANIZATIONS_BY_STATE_FAILED =
+  'GET_ORGANIZATIONS_BY_STATE_FAILED';
 
 export const getOrganizationsByState = (state, dispatch) => {
   dispatch(action(GET_ORGANIZATIONS_BY_STATE_INIT));
-  store.collection('organizations')
+  store
+    .collection('organizations')
     .where('state', '==', state)
     .get()
     .then(res => {
-      if (res.empty){
+      if (res.empty) {
         dispatch(action(GET_ORGANIZATIONS_BY_STATE_EMPTY));
         return;
       }
-      
+
       const organizations = [];
       res.forEach(org => {
         const data = org.data();
@@ -208,7 +235,6 @@ export const getOrganizationsByState = (state, dispatch) => {
         organizations.push(data);
       });
       dispatch(action(GET_ORGANIZATIONS_BY_STATE_SUCCESS, organizations));
-      
     })
     .catch(err => {
       console.log(err);

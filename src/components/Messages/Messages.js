@@ -37,7 +37,7 @@ const Messages = ({messageId, selectedUid}) => {
   }, [messageId, selectedUid]);
   
   const getAuthor = (from) => {
-    debugger;
+    
     if (messageThread[ 0 ].contactType === 'users'){
       if (from === messageThread[ 0 ].id){
         return <Link

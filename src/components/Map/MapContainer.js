@@ -3,10 +3,10 @@ import {Map, GoogleApiWrapper, Marker, InfoWindow} from 'google-maps-react';
 import PropTypes from 'prop-types';
 
 const MapContainer = (props) => {
-  
+
   const [showingInfoWindow, setShowing] = useState(false);
   const [activeMarker, setActiveMarker] = useState();
-  const [place, setPlace] = useState();
+  const [place, setPlace] = useState({});
   
   const onMarkerClick = (props, marker, e) => {
     
@@ -25,13 +25,12 @@ const MapContainer = (props) => {
     width: '100%',
     height: '100%',
   };
-  
+  console.log(place)
   return (
     <div style={{
       position: 'relative',
       width: props.width || '500px',
       height: props.height || '500px',
-      margin: '0 auto',
     }}>
       <Map google={props.google}
            zoom={props.zoom || 12}
@@ -50,7 +49,7 @@ const MapContainer = (props) => {
         >
           <div>
             <h6>Name: {place && place.name}</h6>
-            <p>Address: {place && place.address}</p>
+            {place.address && <p>Address: {place && place.address}</p>}
           </div>
         </InfoWindow>
       </Map>
@@ -80,5 +79,5 @@ MapContainer.propTypes = {
 };
 
 export default GoogleApiWrapper(
-  porps => ({apiKey: process.env.REACT_APP_apiKey}))(
+  props => ({apiKey: process.env.REACT_APP_apiKey}))(
   MapContainer);

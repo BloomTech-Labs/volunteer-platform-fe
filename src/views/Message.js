@@ -7,16 +7,17 @@ import {StyledCard} from '../styled';
 import GoogleApiWrapper from '../components/Map/MapContainer';
 
 const Message = (props) => {
-  
+  console.log(props)
   return (
     <StyledMessage width={props.width}>
-      <MessageThreads {...props}/>
+      <MessageThreads width={props.width} {...props}/>
     </StyledMessage>
   );
 };
 
 const StyledMessage = styled.div`
-margin-left: ${props => props.width < 900 ? 0 : '15rem'}
+width: 100vw;
+margin-left: ${props => props.width > 900 ? '-200px' : 0};
 `;
 
 Message.propTypes = {
