@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import moment from 'moment';
 import { Collapse, DatePicker, Button } from 'antd';
-import { StyledCard } from '../../styled';
+import { StyledCard, StyledButton } from '../../styled';
 
 const {Panel} = Collapse;
 
-export const UserEvents = ({ events, changePanel, calendarValue, selectDate, selectedDate, displayAll }) => {
+export const UserEvents = ({ events, changePanel, calendarValue, selectDate, selectedDate, displayAll, unRegister }) => {
 
   const filterEvents = (arr, property) => {
     return arr.filter(event => {
@@ -54,7 +54,7 @@ export const UserEvents = ({ events, changePanel, calendarValue, selectDate, sel
             value={calendarValue}
             style={{margin: '1rem 0'}}/>
           {selectedDate && <p>Selected date: {moment.unix(selectedDate).format('LL')}</p>}
-          <Button type='link' onClick={displayAll} width='200px'>Display All Events</Button>
+          <CustomButton type='link' onClick={displayAll} width='200px'>Display All Events</CustomButton>
         </UpperDiv>
       ) : (
         <UpperDiv>You have not signed up for any events yet</UpperDiv>
@@ -68,17 +68,18 @@ export const UserEvents = ({ events, changePanel, calendarValue, selectDate, sel
                   header={<PanelHeader event={event}/>}
                   key={event.eventId + '-' + event.date}
                 >
-                  <div>
+                  <div className='panel-content'>
                     <div>
                       <h5>Date: {moment.unix(event.date).format('LL')}</h5>
                       <h5>Time: {`${event.startTime}~${event.endTime}`}</h5>
                       <h5>Location: {event.location}</h5>
                       <h5>Point of Contact</h5>
-                      <p>
-                        {event.pointOfContact && event.pointOfContact.firstName + ' ' +  event.pointOfContact.lastName} 
-                      </p>
-                      <p>{event.pointOfContact && event.pointOfContact.email}</p>
-                      <Button><Link to={{pathname: `/events/${event.eventId}`}}>View event details</Link></Button>
+                      <p>Name: {event.pointOfContact.fullName}</p>
+                      <p>Phone: {event.pointOfContact.phoneNumber}</p>
+                      <CustomButton><Link to={{pathname: `/events/${event.eventId}`}}>View event details</Link></CustomButton>
+                    </div>
+                    <div>
+                      <StyledButton onClick={(e) => unRegister(e, event.eventId, event.date, event.isRecurring)} style={{ marginTop: '1rem'}}>Cancel</StyledButton>
                     </div>
                   </div>
                 </StyledPanel>
@@ -107,6 +108,11 @@ const StyledPanel = styled(Panel)`
     .panel-header {
       display: flex;
       justify-content: space-between;
+    }
+
+    .panel-content {
+      display: flex;
+      justify-content: space-around;
     }
   }
 `;
@@ -154,14 +160,16 @@ const CustomStyledCard = styled(StyledCard)`
       padding: 0;
     }
 
-    button {
-      margin: 0 auto;
-      color: rgba(0, 0, 0, 0.6);
-    }
-  
-    button:hover {
-      color: ${({theme}) => theme.primary7};
-    }
+    
   }
 `
+const CustomButton = styled(Button)`
+  margin: 0 auto;
+  color: rgba(0, 0, 0, 0.6);
+
+  :hover {
+    color: ${({theme}) => theme.primary7};
+  }
+`
+
 export default UserEvents;
