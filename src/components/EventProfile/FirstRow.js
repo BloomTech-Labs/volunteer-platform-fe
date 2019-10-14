@@ -57,14 +57,15 @@ const NormalDate = ({ localState }) => {
   );
 };
 
-export const FirstRow = ({ localState, auth, register, unRegister, selectedDate, numOfVol }) => {
+export const FirstRow = ({ localState, auth, register, unRegister, selectedDate, numOfVol, recurDate }) => {
   let isRecurring = localState.recurringInfo;
   let first = Object.keys(localState.registeredVolunteers).find(
     date => moment().unix() - date < 0
   );
+
   let signedUp = isRecurring
-    ? (localState.registeredVolunteers[first] || []).length
-    : localState.registeredVolunteers.length;
+  ? (localState.registeredVolunteers[first] || []).length
+  : localState.registeredVolunteers.length;
 
   return (
     <StyledFirstRow>
