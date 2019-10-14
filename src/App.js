@@ -164,7 +164,7 @@ function App() {
               <LoginRoute path={'/login'} component={Login} />
               <LoginRoute path={'/signup'} component={Login} />
 
-              <Route
+              <ProtectedRoute
                 path={'/organization/:id'}
                 component={OrganizationProfile}
               />

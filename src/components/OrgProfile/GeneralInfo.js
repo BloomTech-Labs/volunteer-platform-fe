@@ -14,7 +14,7 @@ export const GeneralInfo = ({ organization }) => {
     },
   ];
   return (
-    <StyledGeneralInfo>
+    <StyledGeneralInfo width={'100%'}>
       <div className="col">
         <div className="section">
           <h4>Hours</h4>
@@ -79,6 +79,7 @@ export const GeneralInfo = ({ organization }) => {
 
 const StyledGeneralInfo = styled(StyledCard)`
   &&& {
+      width: 100%;
     .ant-card-body {
       display: flex;
       justify-content: flex-start;

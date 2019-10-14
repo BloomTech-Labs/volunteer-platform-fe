@@ -158,8 +158,7 @@ export const StyledDashboard = styled.div`
   flex-direction: column;
   flex-wrap: wrap;
   align-items: center;
-  max-width: 1020px;
-  width: 100%;
+  width: 1020px;
   margin: 0 auto;
 
   .org-title {
