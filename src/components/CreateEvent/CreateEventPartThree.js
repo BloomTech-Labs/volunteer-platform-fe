@@ -17,7 +17,7 @@ export const CreateEventPartThree = props => {
   } = props;
 
   const { volunteerRequirements, interest, eventDetails } = localState;
-  
+
   const requirementTags = state.tags.requirements.map(tag => {
     return <Option key={tag}>{tag}</Option>;
   });
@@ -52,12 +52,13 @@ export const CreateEventPartThree = props => {
             required
           >
             <div className={'error-flex'}>
-              <div className={'input'}>
+              <div className={'selectMax'}>
                 <Select
                   name={'volunteerRequirements'}
                   placeholder="Type here and a tag will appear"
                   mode="multiple"
                   value={volunteerRequirements}
+                  style={{ maxWidth: '100%' }}
                   onChange={value =>
                     handleChange('volunteerRequirements', value)
                   }
@@ -85,7 +86,7 @@ export const CreateEventPartThree = props => {
             required
           >
             <div className={'error-flex'}>
-              <div className={'input'}>
+              <div className={'selectMax'}>
                 <Select
                   name={'interest'}
                   placeholder=""
@@ -110,12 +111,10 @@ export const CreateEventPartThree = props => {
         <div>
           <Form.Item label={'Event Details'} required>
             <div className={'errorFlex'}>
-              <div className={'input'}>
+              <div>
                 <TextArea
                   name={'eventDetails'}
-                  placeholder={
-                    'What the volunteer would do at the event would go here.'
-                  }
+                  placeholder={'Here are some details for the event.'}
                   value={eventDetails}
                   onChange={e => handleChange(e.target.name, e.target.value)}
                   style={{ height: '200px' }}

@@ -63,6 +63,7 @@ export const RecurringInfoReview = props => {
 const StyledDiv = styled.div`
   p {
     font-style: italic;
+    margin-left: 15px;
   }
 `;
 

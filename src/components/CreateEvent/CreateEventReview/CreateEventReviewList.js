@@ -22,7 +22,7 @@ export const CreateEventReviewList = props => {
   };
   console.log('local', localState);
   return (
-    <StyledReviewDiv className={'styledReviewDiv'}>
+    <StyledDiv className={'styledReviewDiv'}>
       <div>
         <StyledButtons>
           <div className="icon" onClick={editForm}>
@@ -31,22 +31,22 @@ export const CreateEventReviewList = props => {
         </StyledButtons>
       </div>
 
-      <div className={''}>
+      <div className={'reviewWrapper'}>
         <div className={'text'}>
           <p className={'title'}>Event Name</p>
-          <p>{localState.nameOfEvent}</p>
+          <p className={'value'}>{localState.nameOfEvent}</p>
         </div>
         <div>
-          <p className={'title'}>Address</p>
-          <p>{localState.address}</p>
+          <p className={'title'}>Locations</p>
+          <p className={'value'}>{localState.address}</p>
         </div>
         <div>
-          <p className={'title'}>Tyeps of Causes</p>
-          <p>
+          <p className={'title'}>Causes</p>
+          <p className={'value selectMax'}>
             {localState.typesOfCauses &&
               localState.typesOfCauses.map(cause => {
                 return (
-                  <div className={'causes'} key={cause}>
+                  <div className={'tag'} key={cause}>
                     <Tag>{cause}</Tag>
                   </div>
                 );
@@ -54,29 +54,26 @@ export const CreateEventReviewList = props => {
           </p>
         </div>
         <div>
-          <p className={'title'}>Volunteer Requirments</p>
-          <p>
+          <p className={'title'}>Requirments</p>
+          <p className={'value selectMax'}>
             {localState.volunteerRequirements &&
               localState.volunteerRequirements.map(req => {
                 return (
-                  <div className={'reqs'} key={req}>
+                  <div className={'tag'} key={req}>
                     <Tag>{req}</Tag>
                   </div>
                 );
               })}
           </p>
         </div>
-        <div>
-          <p className={'title'}>Volunteers Needed</p>
-          <p>{localState.numberOfVolunteers}</p>
-        </div>
+
         <div>
           <p className={'title'}>Interests</p>
-          <p>
+          <p className={'value selectMax'}>
             {localState.interest &&
               localState.interest.map(interest => {
                 return (
-                  <div className={'interests'} key={interest}>
+                  <div className={'tag'} key={interest}>
                     <Tag>{interest}</Tag>
                   </div>
                 );
@@ -85,36 +82,44 @@ export const CreateEventReviewList = props => {
         </div>
         <div>
           <p className={'title'}>Point of Contact</p>
-          <p>{localState.fullName}</p>
-          <p>{localState.email}</p>
-          <p>{localState.phoneNumber}</p>
+          <p className={'value'}>{localState.fullName}</p>
+          <p className={'value'}>
+            <Icon type="phone" /> {+' '}
+            {localState.phoneNumber}
+          </p>
+          <p className={'value'}>
+            <Icon type="mail" /> {+' '}
+            {localState.email}
+          </p>
         </div>
         <div>
-          <p className={'title'}>When is the event?</p>
-          <p>{localState.date.format('LL')}</p>
-        </div>
-
-        <p className={'title'}>What time?</p>
-
-        <div className={'to'}>
-          <p>
-            {localState.startTime.format('LT')} to{' '}
+          <p className={'title'}>Time of event</p>
+          <p className={'value'}>{localState.date.format('LL')}</p>
+          <p className={'value'}>
+            {localState.startTime.format('LT')} -{' '}
             {localState.startTime.format('LT')}
           </p>
         </div>
 
         <div>
+          <p className={'title'}>Volunteers Needed</p>
+          <p className={'value'}>{localState.numberOfVolunteers}</p>
+        </div>
+        <div>
           <p className={'title'}>Event Details</p>
-          <p>{localState.eventDetails}</p>
+          <p className={'value'}>{localState.eventDetails}</p>
         </div>
         <div>
           <p className={'title'}>Website</p>
-          <p>{localState.website}</p>
+          <p className={'value'}>{localState.website}</p>
         </div>
-        <div>
-          <p className={''}>Other Notes</p>
-          <p>{localState.otherNotes}</p>
-        </div>
+        {localState.otherNotes && (
+          <div>
+            <p className={'title'}>Other Notes</p>
+            <p className={'value'}>{localState.otherNotes}</p>
+          </div>
+        )}
+
         {localState.recurringInfo.recurringEvent === 'Yes' && (
           <RecurringInfoReview localState={localState} />
         )}
@@ -134,16 +139,24 @@ export const CreateEventReviewList = props => {
           </StyledButton>
         </div>
       </div>
-    </StyledReviewDiv>
+    </StyledDiv>
   );
 };
 
-const StyledReviewDiv = styled.div`
-  .review-wrapper {
-    display: flex;
+const StyledDiv = styled.div`
+  .reviewWrapper {
+    text-align: left;
 
-    .to {
-      margin: 0px 5px;
+    .title {
+      color: ${({ theme }) => theme.primary8};
+    }
+    .value {
+      width: 100%;
+      margin-left: 15px;
+
+      .tag {
+        display: inline;
+      }
     }
   }
   .buttonStyles {
