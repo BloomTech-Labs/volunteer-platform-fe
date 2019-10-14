@@ -18,13 +18,14 @@ export const ResultList = ({ results, type }) => {
     );
     window.scrollTo(0, 0);
   };
-
+//console.log(results)
   return displayResults.length ? (
     <>
       <StyledResultList>
         {displayResults.map(result =>
           type === 'Events' ? (
-            <EventCard key={`${result.nextDate}${result.eventId}`} event={result} />
+            // <EventCard key={`${result.nextDate}${result.eventId}`} event={result} recurDate={result.registeredVolunteers} />
+            <EventCard key={`${result.nextDate}${result.eventId}`} event={result}/>
           ) : (
             <OrganizationCard key={result.orgId} org={result} />
           )
