@@ -233,6 +233,10 @@ const CustomRenderDiv = styled(StyledRenderDiv)`
     }
   }
 
+  .selectMax {
+    max-width: 615px;
+  }
+
   .inline {
     width: 40%;
   }

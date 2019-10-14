@@ -131,7 +131,7 @@ export const CreateEventPartTwo = props => {
         )}
         <div className={'error-flex'}>
           <Form.Item label={'Full Name'} required>
-            <div className={'input'}>
+            <div>
               <Input
                 name={'fullName'}
                 value={fullName}
@@ -150,7 +150,7 @@ export const CreateEventPartTwo = props => {
         </div>
         <div className={'error-flex'}>
           <Form.Item label={'Email'} required>
-            <div className={'input'}>
+            <div>
               <Input
                 name={'email'}
                 value={email}
@@ -169,7 +169,7 @@ export const CreateEventPartTwo = props => {
         </div>
         <div className={'error-flex'}>
           <Form.Item label={'Phone Number'} required>
-            <div className={'input'}>
+            <div>
               <Input
                 name={'phoneNumber'}
                 value={phoneNumber}

@@ -44,7 +44,7 @@ export const CreateEventPartOne = props => {
       <Form layout={'vertical'} onSubmit={() => checkRequired()}>
         <div className={'error-flex'}>
           <Form.Item label={'Name of Event'} required>
-            <div className={'input'}>
+            <div>
               <Input
                 name={'nameOfEvent'}
                 value={nameOfEvent}
@@ -62,7 +62,7 @@ export const CreateEventPartOne = props => {
           </Form.Item>
         </div>
         <div className={'error-flex'}>
-          <Form.Item label="Address" required>
+          <Form.Item label={'Address'} required>
             <Autocomplete
               className="google-autocomplete"
               value={address}
@@ -86,7 +86,7 @@ export const CreateEventPartOne = props => {
             }
             required
           >
-            <div className={'input'}>
+            <div className={'selectMax'}>
               <Select
                 name={'typesOfCauses'}
                 value={typesOfCauses}
