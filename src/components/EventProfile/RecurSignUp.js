@@ -6,7 +6,13 @@ import { StyledButton, StyledCard } from '../../styled';
 
 const { Panel } = Collapse;
 
-export const RecurSignUp = ({ localState, auth, register, unRegister, numOfVol }) => {
+export const RecurSignUp = ({
+  localState,
+  auth,
+  register,
+  unRegister,
+  numberOfVolunteers,
+}) => {
   let current = Object.keys(localState.registeredVolunteers).filter(
     date => moment().unix() - date < 0
   );
@@ -29,16 +35,17 @@ export const RecurSignUp = ({ localState, auth, register, unRegister, numOfVol }
             >
               <h5>
                 Spots Remaining:{' '}
-                {numOfVol - localState.registeredVolunteers[date].length}
+                {numberOfVolunteers -
+                  localState.registeredVolunteers[date].length}
               </h5>
-              {localState.registeredVolunteers[date].some(item => 
-                item.userId === auth.googleAuthUser.uid
+              {localState.registeredVolunteers[date].some(
+                item => item.userId === auth.googleAuthUser.uid
               ) ? (
-                <StyledButton width={'25%'} onClick={(e) => unRegister(e, date)}>
+                <StyledButton width={'25%'} onClick={e => unRegister(e, date)}>
                   Un-Register
                 </StyledButton>
               ) : (
-                <StyledButton width={'25%'} onClick={(e) => register(e, date)}>
+                <StyledButton width={'25%'} onClick={e => register(e, date)}>
                   Register
                 </StyledButton>
               )}

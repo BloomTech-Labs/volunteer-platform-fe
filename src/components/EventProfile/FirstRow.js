@@ -6,7 +6,13 @@ import { StyledButton } from '../../styled';
 
 const RecurRegister = () => {
   return (
-    <a href={'#recurSignUp'}>
+    <a
+      onClick={() =>
+        document
+          .getElementById('recurSignUp')
+          .scrollIntoView({ behavior: 'smooth' })
+      }
+    >
       <StyledButton width={'20rem'}>Register</StyledButton>
     </a>
   );
@@ -16,12 +22,14 @@ const NormalRegister = ({ localState, auth, register, unRegister }) => {
   return (
     <>
       {auth.googleAuthUser &&
-      localState.registeredVolunteers.some(item => item.userId === auth.googleAuthUser.uid) ? (
-        <StyledButton width={'100%'} onClick={(e) => unRegister(e)}>
+      localState.registeredVolunteers.some(
+        item => item.userId === auth.googleAuthUser.uid
+      ) ? (
+        <StyledButton width={'100%'} onClick={e => unRegister(e)}>
           Cancel Registration
         </StyledButton>
       ) : (
-        <StyledButton width={'100%'} onClick={(e) => register(e)}>
+        <StyledButton width={'100%'} onClick={e => register(e)}>
           Register
         </StyledButton>
       )}
@@ -29,12 +37,12 @@ const NormalRegister = ({ localState, auth, register, unRegister }) => {
   );
 };
 
-const RecurDate = ({ localState, first, selectedDate }) => {
+const RecurDate = ({ localState, selectedDate }) => {
   return (
     <>
       <h5>{moment.unix(selectedDate).format('LL')}</h5>
       <h5>
-        {`${moment.unix(first).format('LT')} -
+        {`${moment.unix(selectedDate).format('LT')} -
             ${moment.unix(localState.endTimeStamp).format('LT')}`}
       </h5>
     </>
@@ -57,15 +65,19 @@ const NormalDate = ({ localState }) => {
   );
 };
 
-export const FirstRow = ({ localState, auth, register, unRegister, selectedDate, numOfVol, recurDate }) => {
+export const FirstRow = ({
+  localState,
+  auth,
+  register,
+  unRegister,
+  selectedDate,
+  numberOfVolunteers,
+}) => {
   let isRecurring = localState.recurringInfo;
-  let first = Object.keys(localState.registeredVolunteers).find(
-    date => moment().unix() - date < 0
-  );
 
   let signedUp = isRecurring
-  ? (localState.registeredVolunteers[first] || []).length
-  : localState.registeredVolunteers.length;
+    ? (localState.registeredVolunteers[selectedDate] || []).length
+    : localState.registeredVolunteers.length;
 
   return (
     <StyledFirstRow>
@@ -76,7 +88,7 @@ export const FirstRow = ({ localState, auth, register, unRegister, selectedDate,
           {isRecurring && '*This is a recurring event. The next date is:'}
         </span>
         {isRecurring ? (
-          <RecurDate localState={localState} first={first} selectedDate={selectedDate}/>
+          <RecurDate localState={localState} selectedDate={selectedDate} />
         ) : (
           <NormalDate localState={localState} />
         )}
@@ -95,7 +107,7 @@ export const FirstRow = ({ localState, auth, register, unRegister, selectedDate,
         )}
         <div className="needed-vols">
           <span>Needed:</span>
-          <h2>{numOfVol - signedUp}</h2>
+          <h2>{numberOfVolunteers - signedUp}</h2>
           <span>volunteers</span>
         </div>
       </div>
