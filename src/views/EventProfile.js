@@ -31,6 +31,8 @@ import {
 export const EventProfile = props => {
   const [{ events, auth, comments }, dispatch] = useStateValue();
 
+  const { selectedDate, numOfVol, recurDate } = props.location.state;
+  //console.log(recurDate)
   const { event } = events;
 
   const emptyState = {
@@ -157,6 +159,9 @@ export const EventProfile = props => {
         auth={auth}
         register={register}
         unRegister={unRegister}
+        selectedDate={selectedDate}
+        numOfVol={numOfVol}
+        recurDate={recurDate}
       />
       <SecondRow localState={localState} />
       <ThirdRow localState={localState} />
@@ -167,6 +172,7 @@ export const EventProfile = props => {
           auth={auth}
           register={register}
           unRegister={unRegister}
+          numOfVol={numOfVol}
         />
       )}
       <CommentList
