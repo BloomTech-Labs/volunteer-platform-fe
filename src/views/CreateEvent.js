@@ -40,7 +40,7 @@ export const CreateEvent = props => {
     recurringInfo: {
       repeatTimePeriod: '',
       occurrenceEnds: 'Never',
-      occurrenceEndDate: '',
+      occurrenceEndDate: moment(),
       occurrenceEndsAfter: '',
       days: [],
     },

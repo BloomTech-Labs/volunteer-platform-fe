@@ -60,7 +60,6 @@ export const CreateEventReviewEditForm = props => {
     if (
       nameOfEvent &&
       address &&
-      localState.state &&
       typesOfCauses.length > 0 &&
       volunteerRequirements.length > 0 &&
       interest.length > 0 &&
@@ -381,7 +380,6 @@ const StyledButtons = styled.div`
     height: 50px;
     cursor: pointer;
   }
-  
 `;
 
 const StyledDiv = styled.div`
@@ -401,10 +399,10 @@ const StyledDiv = styled.div`
     border: 1px solid rgb(217, 217, 217);
     font-family: ${({ theme }) => theme.bodytext};
 
-    &::placeholder{
-       color: rgba(0, 0, 0, 0.35);
-       font-size: 14px;
-       font-family: ${({ theme }) => theme.bodytext};
+    &::placeholder {
+      color: rgba(0, 0, 0, 0.35);
+      font-size: 14px;
+      font-family: ${({ theme }) => theme.bodytext};
     }
   }
 `;

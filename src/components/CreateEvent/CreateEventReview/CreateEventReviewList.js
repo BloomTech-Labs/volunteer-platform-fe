@@ -94,9 +94,6 @@ export const CreateEventReviewList = props => {
           <p>{localState.date.format('LL')}</p>
         </div>
 
-        {localState.recurringInfo.recurringEvent === 'Yes' && (
-          <RecurringInfoReview localState={localState} />
-        )}
         <p className={'title'}>What time?</p>
 
         <div className={'to'}>
@@ -118,6 +115,9 @@ export const CreateEventReviewList = props => {
           <p className={''}>Other Notes</p>
           <p>{localState.otherNotes}</p>
         </div>
+        {localState.recurringInfo.recurringEvent === 'Yes' && (
+          <RecurringInfoReview localState={localState} />
+        )}
       </StyledDiv>
       <div className="buttonStyles">
         <div>

@@ -110,7 +110,7 @@ export const RecurringEvent = props => {
   const checkedRequired = () => {
     if (isModalValid()) {
       closeModal();
-      setError('');
+      // setError('');
     } else {
       setError('This field is required.');
     }

@@ -1,33 +1,20 @@
 import React from 'react';
+import styled from 'styled-components';
 
 export const RecurringInfoReview = props => {
   const { localState } = props;
   const { recurringInfo } = localState;
+  console.log('localstate', localState);
 
-  const recurringRender = () => {
-    if (recurringInfo.occurrenceEnds === 'On') {
-      return (
-        <p>
-          {' '}
-          This event occurs {recurringInfo.repeatTimePeriod} until{' '}
-          {recurringInfo.occurrenceEndDate.format('LL')}.
-        </p>
-      );
-    } else if (recurringInfo.occurrenceEnds === 'After') {
-      return (
-        <p>
-          This event occurs {recurringInfo.repeatTimePeriod} and ends after{' '}
-          {recurringInfo.occurrenceEndsAfter} occurrences.
-        </p>
-      );
-    } else {
-      return (
-        <p>
-          {' '}
-          This event occurs {recurringInfo.repeatTimePeriod} and does not end.
-        </p>
-      );
-    }
+  const intro = `* This event occurs ${recurringInfo.repeatTimePeriod}`;
+  const otherIntro = `* This event will occur every ${
+    recurringInfo.repeatEvery
+  } ${recurringInfo.repeatEveryValue.toLowerCase()} on `;
+
+  const dyanmicRender = {
+    On: ` until ${recurringInfo.occurrenceEndDate.format('LL')}.`,
+    After: `  and ends after ${recurringInfo.occurrenceEndsAfter} occurrences.`,
+    Never: ' and does not end.',
   };
 
   const recurringRenderOther = () => {
@@ -35,40 +22,48 @@ export const RecurringInfoReview = props => {
       recurringInfo.repeatEveryValue === 'Day' ||
       recurringInfo.repeatEveryValue === 'Days'
     ) {
-      return (
-        <p>
-          This event will occur every {recurringInfo.repeatEvery}{' '}
-          {recurringInfo.repeatEveryValue}
-        </p>
-      );
+      return <p>{otherIntro + dyanmicRender[recurringInfo.occurrenceEnds]}</p>;
     } else if (
       recurringInfo.repeatEveryValue === 'Week' ||
       recurringInfo.repeatEveryValue === 'Weeks'
     ) {
       return (
         <p>
-          {' '}
-          This event will occur every {recurringInfo.repeatEvery}{' '}
-          {recurringInfo.repeatEveryValue} on {recurringInfo.days}
+          {otherIntro +
+            recurringInfo.days.map(day => ` ${day}`) +
+            dyanmicRender[recurringInfo.occurrenceEnds]}
         </p>
       );
     } else {
+      const editMontlyPeriod = recurringInfo.monthlyPeriod
+        .split(' ')
+        .splice(2, 3)
+        .join(' ');
       return (
         <p>
-          This event will occur every {recurringInfo.repeatEvery}{' '}
-          {recurringInfo.repeatEveryValue} on {recurringInfo.montlyPeriod}
+          {otherIntro +
+            editMontlyPeriod +
+            dyanmicRender[recurringInfo.occurrenceEnds]}
         </p>
       );
     }
   };
 
   return (
-    <div>
-      {recurringInfo.repeatTimePeriod !== 'Other'
-        ? recurringRender()
-        : recurringRenderOther()}
-    </div>
+    <StyledDiv>
+      {recurringInfo.repeatTimePeriod !== 'Other' ? (
+        <p>{intro + dyanmicRender[recurringInfo.occurrenceEnds]}</p>
+      ) : (
+        recurringRenderOther()
+      )}
+    </StyledDiv>
   );
 };
+
+const StyledDiv = styled.div`
+  p {
+    font-style: italic;
+  }
+`;
 
 export default RecurringInfoReview;
