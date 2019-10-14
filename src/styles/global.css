@@ -22,11 +22,11 @@ h5,
 h6 {
   margin-top: 0.81em;
   margin-bottom: 0.5em;
-  color: #262626;
+  color: rgba(0, 0, 0, 0.85);
 }
 
 p {
-  color: #262626;
+  color: rgba(0, 0, 0, 0.85);
 }
 
 h1 {
@@ -97,6 +97,3 @@ h4 {
 .branding {
   font-family: 'Arvo', serif;
 }
-
-
-

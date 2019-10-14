@@ -3,8 +3,8 @@ import { Button } from "antd";
 
 export const StyledButton = styled( Button )`
   && {
-    background: ${({theme, standard}) => !standard && theme.primary8};
-    border: 1px solid ${({theme, standard}) => !standard && theme.primary8};
+    background: ${({theme, standard}) => !standard && theme.primary7};
+    border: 1px solid ${({theme, standard}) => !standard && theme.primary7};
     color: white;
     border-radius: 4px;
     width: ${({width}) => width || '120px'};
@@ -13,8 +13,8 @@ export const StyledButton = styled( Button )`
     height: auto;
 
     :hover {
-      background: ${props => props.theme.primary7};
-      border: 1px solid ${({theme, standard}) => !standard && theme.primary7};
+      background: ${props => props.theme.primary8};
+      border: 1px solid ${({theme, standard}) => !standard && theme.primary8};
     }
   }
 

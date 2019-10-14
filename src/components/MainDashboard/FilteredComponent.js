@@ -24,7 +24,11 @@ export const FilteredComponent = Component => {
       recurringEvents.forEach(event => {
         for (let date in event.registeredVolunteers) {
           if (moment().unix() - date < 0) {
-            newEvent = { ...event, nextDate: date };
+            newEvent = {
+              ...event,
+              nextDate: date,
+              interest: [...event.interest, 'Recurring'],
+            };
             results.push(newEvent);
           }
         }

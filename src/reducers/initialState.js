@@ -16,7 +16,6 @@ export const causeAreas = [
   'Emergency & Safety',
   'Children & Youth',
   'Politics',
-  'Recurring',
   'Homeless & Housing',
   'People with Disabilities',
   'Environment',
@@ -38,6 +37,7 @@ export const requirements = [
 
 export const interests = [
   'Work with Animals',
+  'Recurring',
   'Virtual',
   'Group Friendly',
   'New' + ' Volunteer Friendly',
