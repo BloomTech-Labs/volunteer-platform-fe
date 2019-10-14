@@ -8,7 +8,6 @@ export const FilteredComponent = Component => {
   ) => {
     const { interests, requirements, causeAreas } = tagFilter;
     const { location } = filter;
-    const { state, city } = location;
 
     let filterCount = 0;
     for (let key in interests) interests[key] && filterCount++;
@@ -51,21 +50,6 @@ export const FilteredComponent = Component => {
      *
      * I'm sure a more elegant, modularized solution is possible.
      */
-
-    if (state) {
-      filteredResults.forEach(result => {
-        if (result.state.toLowerCase().includes(state.toLowerCase())) {
-          result.sortRank = result.sortRank + 1;
-        }
-      });
-    }
-    if (city) {
-      filteredResults.forEach(result => {
-        if (result.city.toLowerCase().includes(city.toLowerCase())) {
-          result.sortRank = result.sortRank + 1;
-        }
-      });
-    }
 
     let testForTags = {
       causeAreas: {

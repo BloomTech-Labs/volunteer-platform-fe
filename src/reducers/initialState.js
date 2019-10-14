@@ -16,6 +16,7 @@ export const causeAreas = [
   'Emergency & Safety',
   'Children & Youth',
   'Politics',
+  'Recurring',
   'Homeless & Housing',
   'People with Disabilities',
   'Environment',

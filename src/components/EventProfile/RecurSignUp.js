@@ -10,6 +10,11 @@ export const RecurSignUp = ({ localState, auth, register, unRegister }) => {
   let current = Object.keys(localState.registeredVolunteers).filter(
     date => moment().unix() - date < 0
   );
+
+  const getVolunteers = arr => {
+    return arr.map(user => user.userId);
+  };
+
   return (
     <StyledRecurSignUp id="recurSignUp">
       <Collapse
@@ -32,14 +37,14 @@ export const RecurSignUp = ({ localState, auth, register, unRegister }) => {
                 {localState.numberOfVolunteers -
                   localState.registeredVolunteers[date].length}
               </h5>
-              {localState.registeredVolunteers[date].includes(
+              {getVolunteers(localState.registeredVolunteers[date]).includes(
                 auth.googleAuthUser.uid
               ) ? (
-                <StyledButton width={'25%'} onClick={(e) => unRegister(e, date)}>
+                <StyledButton width={'25%'} onClick={e => unRegister(e, date)}>
                   Un-Register
                 </StyledButton>
               ) : (
-                <StyledButton width={'25%'} onClick={(e) => register(e, date)}>
+                <StyledButton width={'25%'} onClick={e => register(e, date)}>
                   Register
                 </StyledButton>
               )}
