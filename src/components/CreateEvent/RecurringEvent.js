@@ -106,11 +106,18 @@ export const RecurringEvent = props => {
       return true;
     }
   };
-
+  console.log(localState);
   const checkedRequired = () => {
-    if (isModalValid()) {
-      closeModal();
-      setError('');
+    if (
+      recurringInfo.repeatTimePeriod &&
+      recurringInfo.occurrenceEndsAfter > 0
+    ) {
+      if (isModalValid()) {
+        closeModal();
+        setError('');
+      } else {
+        setError('This field is required.');
+      }
     } else {
       setError('This field is required.');
     }
@@ -187,13 +194,7 @@ export const RecurringEvent = props => {
               <Form.Item label={'Event Ends'} required>
                 <Radio.Group
                   name={'Occurrence Ends'}
-                  defaultValue={
-                    recurringInfo.occurrenceEnds === 'On'
-                      ? 'On'
-                      : recurringInfo.occurrenceEnds === 'After'
-                      ? 'After'
-                      : 'Never'
-                  }
+                  defaultValue={recurringInfo.occurrenceEnds}
                   onChange={e => handleChange('occurrenceEnds', e.target.value)}
                   className={'radioWrapper'}
                 >
@@ -201,11 +202,6 @@ export const RecurringEvent = props => {
                   <Radio value={'After'}>After</Radio>
                   <Radio value={'Never'}>Never</Radio>
                 </Radio.Group>
-                {error && !recurringInfo.occurrenceEnds && (
-                  <span className="error-message error-span left-aligned">
-                    {error}
-                  </span>
-                )}
               </Form.Item>
             </div>
             {recurringInfo.occurrenceEnds === 'On' && (
@@ -215,11 +211,17 @@ export const RecurringEvent = props => {
                     name={'occurrenceEndDate'}
                     format={'MM/DD/YYYY'}
                     onChange={value => handleChange('occurrenceEndDate', value)}
+                    defaultValue={localState.date}
                     value={recurringInfo.occurrenceEndDate}
                     disabledDate={current =>
                       current && current < moment().endOf('day')
                     }
                   />
+                  {error && !recurringInfo.occurrenceEndsAfter > 0 && (
+                    <span className="error-message error-span left-aligned">
+                      Must be higher than 0.
+                    </span>
+                  )}
                 </Form.Item>
               </div>
             )}
@@ -228,8 +230,8 @@ export const RecurringEvent = props => {
               <Form.Item label={'Number of Occurrences'} required>
                 <InputNumber
                   name={'occurrenceEndsAfter'}
-                  min={0}
-                  defaultValue={recurringInfo.occurrenceEndsAfter || 1}
+                  min={1}
+                  defaultValue={recurringInfo.occurrenceEndsAfter}
                   onChange={value => handleChange('occurrenceEndsAfter', value)}
                 />{' '}
                 {localState.recurringInfo.occurrenceEndsAfter > 1
@@ -327,6 +329,7 @@ export const RecurringEvent = props => {
                 <Form.Item>
                   <Select
                     name={'Monthly Period'}
+                    placeholder="Choose a montly period."
                     defaultValue={recurringInfo.monthlyPeriod}
                     onChange={value => handleChange('monthlyPeriod', value)}
                   >

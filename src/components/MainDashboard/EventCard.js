@@ -30,6 +30,7 @@ export const EventCard = ({ event }) => {
     return <Tag>{(item = [item])}</Tag>;
   });
 
+  //console.log(event)
   return (
     
       <StyledEventCard margin={'0 0 20px 0'}>
@@ -50,7 +51,7 @@ export const EventCard = ({ event }) => {
           </div>
           {ableToDelete && <StyledButton type="danger">Delete</StyledButton>}
         </div>
-        <button><Link to={{pathname: `/events/${event.eventId}`}}> View More </Link></button>
+        <button><Link to={{pathname: `/events/${event.eventId}`, state: {selectedDate: event.nextDate, numOfVol: event.numberOfVolunteers, recurDate: event.registeredVolunteers }, }}> View More </Link></button>
       </StyledEventCard>
   );
 };
