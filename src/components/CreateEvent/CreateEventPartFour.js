@@ -50,6 +50,7 @@ export const CreateEventPartFour = props => {
               <div className={'inputNumber'}>
                 <InputNumber
                   name={'numberOfVolunteers'}
+                  min={1}
                   value={numberOfVolunteers}
                   onChange={value => handleChange('numberOfVolunteers', value)}
                 />{' '}

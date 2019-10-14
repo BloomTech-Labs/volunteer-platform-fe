@@ -16,7 +16,7 @@ const NormalRegister = ({ localState, auth, register, unRegister }) => {
   return (
     <>
       {auth.googleAuthUser &&
-      localState.registeredVolunteers.includes(auth.googleAuthUser.uid) ? (
+      localState.registeredVolunteers.some(item => item.userId === auth.googleAuthUser.uid) ? (
         <StyledButton width={'100%'} onClick={(e) => unRegister(e)}>
           Cancel Registration
         </StyledButton>

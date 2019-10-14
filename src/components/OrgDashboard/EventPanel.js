@@ -52,15 +52,15 @@ export const EventPanel = ({
   selectedEvents.sort((a, b) => a.nextDate - b.nextDate);
 
   const PanelHeader = event => {
-      return (
-          <div className='panel-header'>
-              <span>{event.event.nameOfEvent}</span>
-              <span>{moment.unix(event.event.nextDate).format('LL')}</span>
-          </div>
-      )
-  }
+    return (
+      <div className="panel-header">
+        <span>{event.event.nameOfEvent}</span>
+        <span>{moment.unix(event.event.nextDate).format('LL')}</span>
+      </div>
+    );
+  };
   return (
-    <StyledCard width={'60%'} margin={'0'} style={{height: '320px', overflowY: 'scroll'}}>
+    <ReStyledCard width={'60%'} margin={'0'}>
       {selectedEvents.length > 0 || selectedDate ? (
         <UpperDiv>
           {selectedDate && (
@@ -76,10 +76,13 @@ export const EventPanel = ({
         <div>No events have been created yet.</div>
       )}
       {selectedEvents.length > 0 && (
-        <Collapse accordion bordered={false} >
+        <Collapse accordion bordered={false}>
           {selectedEvents.map((event, i) => {
             return (
-              <StyledPanel header={<PanelHeader event={event}/>} key={event.eventId + i}>
+              <StyledPanel
+                header={<PanelHeader event={event} />}
+                key={event.eventId + i}
+              >
                 <h5>{moment.unix(event.nextDate).format('LL')}</h5>
                 <p>{event.isRecurring && 'This is a recurring event.'}</p>
                 <h5>Point of Contact</h5>
@@ -92,25 +95,39 @@ export const EventPanel = ({
           })}
         </Collapse>
       )}
-    </StyledCard>
+    </ReStyledCard>
   );
 };
 
+const ReStyledCard = styled(StyledCard)`
+  height: 320px;
+  overflow-y: scroll;
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.12);
+  }
+
+`;
 const StyledPanel = styled(Panel)`
   && {
-    background: ${({theme}) => theme.gray2};
+    background: ${({ theme }) => theme.gray2};
     border-radius: 4px;
     margin-bottom: 24px;
     overflow: hidden;
-    
+
     .ant-collapse-header {
       border: 1px solid ${({ theme }) => theme.gray5};
     }
 
-    .panel-header{
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
+    .panel-header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
     }
   }
 `;

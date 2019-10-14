@@ -20,9 +20,9 @@ export const CreateEventReviewList = props => {
     });
     confirmFormModal();
   };
-
+  console.log('local', localState);
   return (
-    <StyledDiv className={'styledReviewDiv'}>
+    <StyledReviewDiv className={'styledReviewDiv'}>
       <div>
         <StyledButtons>
           <div className="icon" onClick={editForm}>
@@ -31,7 +31,7 @@ export const CreateEventReviewList = props => {
         </StyledButtons>
       </div>
 
-      <StyledDiv className={'styledDiv'}>
+      <div className={''}>
         <div className={'text'}>
           <p className={'title'}>Event Name</p>
           <p>{localState.nameOfEvent}</p>
@@ -85,8 +85,8 @@ export const CreateEventReviewList = props => {
         </div>
         <div>
           <p className={'title'}>Point of Contact</p>
-          <p>{localState.firstName}</p>
-          <p>{localState.lastName}</p>
+          <p>{localState.fullName}</p>
+          <p>{localState.email}</p>
           <p>{localState.phoneNumber}</p>
         </div>
         <div>
@@ -94,9 +94,6 @@ export const CreateEventReviewList = props => {
           <p>{localState.date.format('LL')}</p>
         </div>
 
-        {localState.recurringInfo.recurringEvent === 'Yes' && (
-          <RecurringInfoReview localState={localState} />
-        )}
         <p className={'title'}>What time?</p>
 
         <div className={'to'}>
@@ -118,8 +115,14 @@ export const CreateEventReviewList = props => {
           <p className={''}>Other Notes</p>
           <p>{localState.otherNotes}</p>
         </div>
-      </StyledDiv>
-      <div className="buttonStyles">
+        {localState.recurringInfo.recurringEvent === 'Yes' && (
+          <RecurringInfoReview localState={localState} />
+        )}
+      </div>
+      <div
+        className="buttonStyles"
+        style={{ marginRight: '0px', marginLeft: '0px' }}
+      >
         <div>
           <StyledCancelButton key="cancel" type="second" onClick={cancelForm}>
             Cancel
@@ -131,11 +134,23 @@ export const CreateEventReviewList = props => {
           </StyledButton>
         </div>
       </div>
-    </StyledDiv>
+    </StyledReviewDiv>
   );
 };
 
-const StyledDiv = styled.div``;
+const StyledReviewDiv = styled.div`
+  .review-wrapper {
+    display: flex;
+
+    .to {
+      margin: 0px 5px;
+    }
+  }
+  .buttonStyles {
+    margin-right: 0px;
+    margin-left: 0px;
+  }
+`;
 
 const StyledButtons = styled.div`
   width: 100%;
@@ -148,14 +163,6 @@ const StyledButtons = styled.div`
     width: 50px;
     height: 50px;
     cursor: pointer;
-  }
-
-  .review-wrapper {
-    display: flex;
-
-    .to {
-      margin: 0px 5px;
-    }
   }
 `;
 

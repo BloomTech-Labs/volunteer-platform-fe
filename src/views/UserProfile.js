@@ -7,8 +7,9 @@ import {
 } from '../components/UserProfile/index';
 import {OrgPhoto} from '../components/OrgDashboard/index';
 import {
-  updateRegisteredUser, getFileUrl, deleteUserImage, getUserById,
+  updateRegisteredUser, getFileUrl, deleteUserImage, getUserById, cancelSignedUpEventViaUserProfile,
 } from '../actions';
+import { confirmModal } from '../styled';
 import moment from 'moment';
 
 export const UserProfile = (props) => {
@@ -19,7 +20,6 @@ export const UserProfile = (props) => {
   const [selectedDate, setSelectedDate] = useState();
   const [calendarValue, setCalendarValue] = useState(moment());
   const [isEditable, setIsEditable] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
   
   //I need to use another variable or else if the page is refreshed, state.auth.registeredUser is null so it will throw an error
   
@@ -102,6 +102,21 @@ export const UserProfile = (props) => {
     };
     updateRegisteredUser(updateUser, dispatch);
   };
+
+  const unRegister = (e, eventId, eventDate, isRecurring) => {
+    const confirmUnRegModal = confirmModal({
+      title: 'Are you sure you want to cancel your registration?',
+      content: 'You will no longer be able to attend the event once you clicked OK. You may register again if you change your mind.',
+      okType: 'danger',
+      onOk: () => {
+        cancelSignedUpEventViaUserProfile(eventId, eventDate, user, dispatch, isRecurring)
+      }
+    })
+
+    e.preventDefault();
+    confirmUnRegModal();
+  }
+  
   
   return (
     <StyledDiv>
@@ -142,7 +157,8 @@ export const UserProfile = (props) => {
               changePanel={changePanel}
               selectDate={selectDate}
               selectedDate={selectedDate}
-              displayAll={displayAll}/>
+              displayAll={displayAll}
+              unRegister={unRegister} />
           </div>
         </div>
       </div>
