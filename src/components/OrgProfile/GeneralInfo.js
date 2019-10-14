@@ -29,7 +29,7 @@ export const GeneralInfo = ({ organization }) => {
         </div>
         <div className="section">
           <h4>Location</h4>
-          <span style={{marginBottom: '25px'}}>
+          <span style={{ marginBottom: '25px' }}>
             <Icon type="environment" theme="twoTone" twoToneColor={'#005a87'} />
             {organization.address}
           </span>
@@ -50,7 +50,9 @@ export const GeneralInfo = ({ organization }) => {
           <h4>Cause Area(s)</h4>
           <div className="tags">
             {organization.causeAreas &&
-              organization.causeAreas.map(cause => <Tag>{cause}</Tag>)}
+              organization.causeAreas.map(cause => (
+                <StyledTag>{cause}</StyledTag>
+              ))}
           </div>
         </div>
         <div className="section">
@@ -77,6 +79,11 @@ export const GeneralInfo = ({ organization }) => {
   );
 };
 
+const StyledTag = styled(Tag)`
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+`;
 const StyledGeneralInfo = styled(StyledCard)`
   &&& {
       width: 100%;
