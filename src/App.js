@@ -1,17 +1,16 @@
-import React, {useEffect, useState} from 'react';
-import {Switch, Route} from 'react-router';
+import React, { useEffect, useState } from 'react';
+import { Switch, Route } from 'react-router';
 import styled from 'styled-components';
 import firebase from './firebase/FirebaseConfig';
-import {Layout, Icon, Affix} from 'antd';
-import {useStateValue} from './hooks/useStateValue';
+import { Layout, Icon } from 'antd';
+import { useStateValue } from './hooks/useStateValue';
 import {
   subscribeToUserOrganizations,
   signedIn,
   signedOut,
   subscribeToMessages,
 } from './actions';
-import {HeaderDiv, FooterDiv} from './components';
-import Navigation from './components/SiteParts/Navigation';
+import { HeaderDiv, FooterDiv, AffixSider, MenuButton } from './components';
 import {
   MainDashboard,
   OrganizationDashboard,
@@ -34,11 +33,11 @@ import {
   RegisterRoute,
 } from './routes/index';
 import Message from './views/Message';
-import {device} from './styled/deviceBreakpoints';
+import { device } from './styled/deviceBreakpoints';
 
-const {Sider, Content} = Layout;
+const { Content } = Layout;
 
-function App(){
+function App() {
   const [state, dispatch] = useStateValue();
   const [collapsed, setCollapsed] = useState(false);
   const [dimensions, setDimensions] = useState({
@@ -46,15 +45,15 @@ function App(){
     height: document.body.clientHeight,
   });
   const [subscriptions, setSubscriptions] = useState({});
-  
+
   /**
    * Set up google auth on change event handler.
    */
   useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
-      if (user){
+      if (user) {
         signedIn(user, dispatch);
-      }else{
+      } else {
         signedOut(dispatch);
       }
     });
@@ -63,112 +62,76 @@ function App(){
     window.addEventListener('resize', updateDimensions);
     updateDimensions();
   }, []);
-  
+
   useEffect(() => {
-    if (state.auth.googleAuthUser && state.auth.googleAuthUser.uid){
+    if (state.auth.googleAuthUser && state.auth.googleAuthUser.uid) {
       const orgSub = subscribeToUserOrganizations(
         state.auth.googleAuthUser.uid,
-        dispatch,
+        dispatch
       );
       const messageSub = subscribeToMessages(
-        {type: 'users', uid: state.auth.googleAuthUser.uid},
-        dispatch,
+        { type: 'users', uid: state.auth.googleAuthUser.uid },
+        dispatch
       );
-      setSubscriptions({orgSub, [ state.auth.googleAuthUser.uid ]: messageSub});
+      setSubscriptions({ orgSub, [state.auth.googleAuthUser.uid]: messageSub });
     }
   }, [state.auth.googleAuthUser]);
-  
+
   useEffect(() => {
     state.org.userOrganizations.forEach(org => {
-      if (!subscriptions[ org.orgId ]){
+      if (!subscriptions[org.orgId]) {
         const messageSub = subscribeToMessages(
           {
             type: 'organizations',
             uid: org.orgId,
           },
-          dispatch,
+          dispatch
         );
-        setSubscriptions({...subscriptions, [ org.orgId ]: messageSub});
+        setSubscriptions({ ...subscriptions, [org.orgId]: messageSub });
       }
     });
   }, [state.org.userOrganizations]);
-  
+
   const updateDimensions = () => {
     setDimensions({
       width: window.innerWidth,
       height: document.body.scrollHeight,
     });
-    if (window.innerWidth < 900){
+    if (window.innerWidth < 900) {
       setCollapsed(true);
     }
   };
-
-  const [scrollClass, setScrollClass] = useState('top');
-
-  useEffect(() => {
-    window.addEventListener('scroll', () => {
-      let activeClass = 'scrolled';
-      if (window.scrollY <= 30) {
-        activeClass = 'top';
-      }
-      setScrollClass(activeClass);
-    });
-  }, []);
 
   return (
     <StyledApp className="App">
       <Layout style={{ background: '#fafafa' }}>
         {state.auth.loggedIn && state.auth.signedUp && (
-          <Affix>
-            <StyledSider
-              height={'100%'}
-              breakpoint="md"
-              collapsedWidth="0"
-              theme={'light'}
-              onBreakpoint={broken => {
-                //console.log(broken);
-              }}
-              onCollapse={(collapsed, type) => {
-                //console.log(collapsed, type);
-              }}
-              trigger={null}
-              collapsed={collapsed ? 1 : 0}
-              reverseArrow={true}
-              className={scrollClass}
-            >
-              <Navigation/>
-            </StyledSider>
-          </Affix>
+          <AffixSider collapsed={collapsed} />
         )}
-        <Layout style={{background: '#fafafa'}}>
+        <Layout style={{ background: '#fafafa' }}>
           <HeaderDiv loggedIn={state.auth.loggedIn}>
             {state.auth.loggedIn && state.auth.signedUp && (
-              <StyledMenuButton
-                collapsed={collapsed ? 1 : 0}
-                className={`trigger ${scrollClass}`}
-                type={collapsed ? 'menu-unfold' : 'menu-fold'}
-                onClick={() => setCollapsed(!collapsed)}
-              />
+              <MenuButton collapsed={collapsed} setCollapsed={setCollapsed} />
             )}
           </HeaderDiv>
           <Route
             exact
             path={'/'}
-            render={props => <LandingPage {...props} collapsed={collapsed}/>}
+            render={props => <LandingPage {...props} collapsed={collapsed} />}
           />
           <StyledContent
             width={dimensions.width}
             loggedIn={state.auth.loggedIn}
           >
             <Switch>
-              <LoginRoute path={'/login'} component={Login}/>
-              <LoginRoute path={'/signup'} component={Login}/>
-              
+              <LoginRoute path={'/login'} component={Login} />
+              <LoginRoute path={'/signup'} component={Login} />
+
               <ProtectedRoute
                 path={'/organization/:id'}
                 component={OrganizationProfile}
               />
-              <ProtectedRoute path={'/dashboard'} component={MainDashboard}/>
+              <ProtectedRoute path={'/dashboard'} component={MainDashboard} />
               <RegisteredAndLoggedInRoute
                 path={'/create-org'}
                 component={CreateOrg}
@@ -197,59 +160,12 @@ function App(){
               <Route path="/:anything" component={NotFound} />
             </Switch>
           </StyledContent>
-          <FooterDiv/>
+          <FooterDiv />
         </Layout>
       </Layout>
     </StyledApp>
   );
 }
-
-const StyledMenuButton = styled(Icon)`
-  && {
-    position: fixed;
-    top: 16px;
-    /* left: ${props => (props.collapsed ? '16px' : '216px')}; */
-    left: 16px;
-    font-size: 2rem;
-    line-height: 1;
-    z-index: 9001;
-    transition: top 0.2s;
-    transition: font-size 0.2s;
-
-    &.scrolled {
-      font-size: 1rem;
-      transition: font-size 0.2s;
-      top: 9px;
-      transition: top 0.3s;
-    }
-  }
-`;
-
-const StyledSider = styled(Sider)`
-  &&& {
-    position: fixed;
-    left: 0px;
-    top: 64px;
-    z-index: 100;
-    min-height: 100vh;
-    height: 100vh;
-    overflow-y: scroll;
-    border-right: 1px solid lightgray;
-    .ant-menu-root {
-      margin-bottom: 10rem;
-    }
-    ::-webkit-scrollbar {
-      display: none;
-    }
-
-    transition: all 0.2s;
-
-    &.scrolled {
-      top: 32px;
-      transition: all 0.2s;
-    }
-  }
-`;
 
 const StyledApp = styled.div`
   display: flex;
@@ -262,8 +178,8 @@ const StyledApp = styled.div`
 const StyledContent = styled(Content)`
   && {
     padding-bottom: ${props => props.theme.footerPadding};
-    background: ${({theme}) => theme.gray2};
-    max-width: ${({theme}) => theme.maxWidth};
+    background: ${({ theme }) => theme.gray2};
+    max-width: ${({ theme }) => theme.maxWidth};
     margin: 15px auto 45px;
     display: flex;
     flex-direction: column;
