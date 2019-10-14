@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { Modal, Select, DatePicker, Input, Icon, Button } from 'antd';
+import { Modal, Select, DatePicker, Input, Icon, Button, message } from 'antd';
 import { WrappedAntForm, AntInputNumber, AntSelect } from '../../styled/index';
 import moment from 'moment';
 
@@ -20,6 +20,7 @@ export const UserGoal = (props) => {
       end: ''
     }
   });
+  const inputRef = useRef(null);
 
   const { Option } = Select;
   const { MonthPicker } = DatePicker;
@@ -92,7 +93,13 @@ export const UserGoal = (props) => {
       goals: newGoals
     }
     props.updateUser(updatedUser);
+  }
 
+  const copyLink = (event) => {
+    event.preventDefault();
+    inputRef.current.select();
+    document.execCommand('copy');
+    message.success('Link copied.');
   }
 
   return (
@@ -180,8 +187,9 @@ export const UserGoal = (props) => {
             <Input 
               style={{ width: '350px' }}
               prefix={<Icon type="link" style={{ color: '#8C8C8C' }} />}
-              value={`www.volunteir.com/${props.user.firstName}challenge`}/>
-            <Button icon="copy">Copy</Button>
+              value={`www.volunteir.com/${props.user.firstName}challenge`}
+              ref={inputRef}/>
+            <Button icon="copy" onClick={copyLink}>Copy</Button>
           </div>
         </div>
       </div>
