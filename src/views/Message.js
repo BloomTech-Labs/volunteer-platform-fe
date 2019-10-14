@@ -17,7 +17,7 @@ const Message = (props) => {
 
 const StyledMessage = styled.div`
 width: 100vw;
-margin-left: ${props => props.width > 900 ? '-15rem' : 0};
+margin-left: ${props => props.width > 900 ? '-200px' : 0};
 `;
 
 Message.propTypes = {

@@ -61,7 +61,7 @@ const MessageThreads = (props) => {
       <StyledMenu
         onClick={handleClick}
         style={{width: 256}}
-        selectedKeys={selectedThread && selectedThread.id}
+        selectedKeys={[selectedThread && selectedThread.id]}
         mode="inline"
       >
         {selectedUid &&
@@ -93,8 +93,8 @@ const StyledRow = styled.div`
 display: flex;
 border: 2px solid ${props => props.theme.gray5};
 border-radius: ${props => props.theme.borderRadiusDefault};
-width: ${props => props.width > 900 ? 'calc(100% - 23rem)' : '92%'};
-margin-left: ${props => props.width > 900 ? '23rem' : '0'};
+width: ${props => props.width > 900 ? 'calc(95% - 200px)' : '92%'};
+margin-left: ${props => props.width > 900 ? '200px' : '0'};
 `;
 
 const StyledMenuItem = styled(Menu.Item)`

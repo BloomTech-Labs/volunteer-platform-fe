@@ -435,7 +435,7 @@ export const signUpForEvent = (event, user, dispatch) => {
   let events = user.registeredEvents || [];
   let updatedEvent = {
     ...event,
-    registeredVolunteers: [...volunteers, user.uid],
+    registeredVolunteers: [...volunteers, {userId: user.uid, name: user.firstName + " " + user.lastName, hours: 0, isVerified: false}],
   };
   let updatedUser = {
     ...user,
@@ -450,6 +450,8 @@ export const signUpForEvent = (event, user, dispatch) => {
         location: `${event.city}, ${event.state}`,
         eventId: event.eventId,
         orgId: event.orgId,
+        hours: 0,
+        isVerified: false
       },
     ],
   };
@@ -494,7 +496,7 @@ export const cancelSignedUpEvent = (event, user, dispatch) => {
   let updatedEvent = {
     ...event,
     registeredVolunteers: event.registeredVolunteers.filter(
-      uid => uid !== user.uid,
+      item => item.userId !== user.uid,
     ),
   };
   let updatedUser = {
@@ -550,10 +552,12 @@ export const signUpForRecurringEvent = (event, user, date, dispatch) => {
   let targetDate = date;
   let events = user.registeredEvents || [];
   
+  const personSigningUp =  {userId: user.uid, name: user.firstName + " " + user.lastName, hours: 0, isVerified: false};
+  
   if (!volunteers[ targetDate ]){
-    volunteers[ targetDate ] = [user.uid];
+    volunteers[ targetDate ] = [personSigningUp];
   }else{
-    volunteers[ targetDate ] = [...volunteers[ targetDate ], user.uid];
+    volunteers[ targetDate ] = [...volunteers[ targetDate ], personSigningUp];
   }
   
   let updatedEvent = {
@@ -574,6 +578,8 @@ export const signUpForRecurringEvent = (event, user, date, dispatch) => {
         location: `${event.city}, ${event.state}`,
         eventId: event.eventId,
         orgId: event.orgId,
+        hours: 0,
+        isVerified: false
       },
     ],
   };
@@ -623,7 +629,7 @@ export const cancelSignedUpRecurringEvent = (event, user, date, dispatch) => {
   
   let targetDate = date;
   let updatedVolunteers = event.registeredVolunteers[ targetDate ].filter(
-    uid => uid !== user.uid,
+    item => item.userId !== user.uid,
   );
   
   let updatedEvent = {
@@ -675,4 +681,45 @@ export const updateRecurringEvents = () => {
       event.ref.set(data);
     });
   });
+};
+
+/**
+ * Call this to verify the number of hours for a user in a event.
+ * @param {Event} event
+ * @param {User} user
+ * @param {Number} hours
+ * @param {String} eventType
+ */
+export const verifyHours = (event, user, hours, eventType = "events") => {
+  const updatedEventVolunteers = event.registeredVolunteers.map(volunteer => {
+    if(volunteer.userId === user.uid){
+      volunteer.hours = hours;
+      volunteer.isVerified = true;
+    }
+  });
+  
+  const updatedUserEvents = user.registeredEvents.map(usersEvent => {
+    if(usersEvent.eventId === event.eventId){
+      usersEvent.hours = hours;
+      usersEvent.isVerified = true;
+    }
+  });
+  
+  store.collection(eventType).doc(event.eventId).get().then(res => {
+    if(!res.exists){
+      verifyHours(event, user, hours, "recurring events");
+    }
+    event.registeredVolunteers = updatedEventVolunteers;
+    res.ref.update(event).then(ressult => {
+      user.registeredEvents = updatedUserEvents;
+      store.collection('users').doc(user.uid).update(user).then(() => {
+      
+      })
+    }).catch(err => {
+      console.log(err);
+    })
+    
+  }).catch(err => {
+    console.log(err);
+  })
 };
