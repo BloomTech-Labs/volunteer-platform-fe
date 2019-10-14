@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import styled from 'styled-components'
+import styled from 'styled-components';
 import { message } from 'antd';
 import { useStateValue } from '../hooks/useStateValue';
 import {
@@ -14,7 +14,10 @@ import {
   getAllRecurringEventsByState,
   getOrganizationsByState,
 } from '../actions';
-import { stateConversion } from '../utility/stateConversion';
+import {
+  stateConversion,
+  reverseStateConversion,
+} from '../utility/stateConversion';
 import { StyledLoader } from '../styled';
 
 export const MainDashboard = () => {
@@ -44,7 +47,6 @@ export const MainDashboard = () => {
 
   //fetching user's location by IP
   useEffect(() => {
-    console.log(auth);
     if (auth.userSearch) {
       setInputState({ ...inputState, location: auth.userSearch });
     } else {
@@ -103,17 +105,23 @@ export const MainDashboard = () => {
 
   useEffect(() => {
     if (inputState.location) {
-      let state = inputState.location.split(', ')[1];
-      setLoadingEvents(true);
-      getAllEventsByState(state, dispatch);
-      getAllRecurringEventsByState(state, dispatch);
-      getOrganizationsByState(state, dispatch);
-      setTimeout(() => {
-        setLoadingEvents(false);
-      }, 1000);
-      setTimeout(() => {
-        setFiltersTouched(true);
-      }, 1000);
+      let state = inputState.location.split(', ')[1] || '';
+      if (state === 'USA') {
+        state = reverseStateConversion[inputState.location.split(', ')[0]];
+      }
+      if (state.length >= 2) {
+        state = state.slice(0, 2);
+        setLoadingEvents(true);
+        getAllEventsByState(state, dispatch);
+        getAllRecurringEventsByState(state, dispatch);
+        getOrganizationsByState(state, dispatch);
+        setTimeout(() => {
+          setLoadingEvents(false);
+        }, 1000);
+        setTimeout(() => {
+          setFiltersTouched(true);
+        }, 1000);
+      }
     }
   }, [inputState.location]);
 
@@ -127,8 +135,8 @@ export const MainDashboard = () => {
     setInitialResults([...events.events, ...events.recurringEvents]);
   }, [events]);
 
-  const onLocationChange = place => {
-    setInputState({ ...inputState, location: place.formatted_address });
+  const onLocationChange = value => {
+    setInputState({ ...inputState, location: value });
   };
   const onTagsChange = (e, name, collection) => {
     setFiltersTouched(true);

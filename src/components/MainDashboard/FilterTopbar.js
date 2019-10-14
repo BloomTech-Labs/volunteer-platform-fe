@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useStateValue } from '../../hooks/useStateValue';
-import { Form, Row, Col, Input, Icon, Divider, Select } from 'antd'
+import { Form, Row, Col, Input, Icon, Divider, Select } from 'antd';
 import { StyledCheckableTag as CheckableTag, StyledCard } from '../../styled';
 import Autocomplete from 'react-google-autocomplete';
 
@@ -144,11 +144,12 @@ export const FilterTopbar = ({
                   borderRadius: '4px',
                 }}
                 onPlaceSelected={place => {
-                  onLocationChange(place);
+                  onLocationChange(place.formatted_address);
                 }}
                 types={['(regions)']}
+                onChange={e => onLocationChange(e.target.value)}
                 componentRestrictions={{ country: 'us' }}
-                defaultValue={inputState.location}
+                value={inputState.location}
                 placeholder="Location"
               />
             </Form.Item>
@@ -216,11 +217,12 @@ export const FilterTopbar = ({
                 borderRadius: '4px',
               }}
               onPlaceSelected={place => {
-                onLocationChange(place);
+                onLocationChange(place.formatted_address);
               }}
               types={['(regions)']}
+              onChange={e => onLocationChange(e.target.value)}
               componentRestrictions={{ country: 'us' }}
-              defaultValue={inputState.location}
+              value={inputState.location}
               placeholder="Location"
             />
           </Form.Item>
