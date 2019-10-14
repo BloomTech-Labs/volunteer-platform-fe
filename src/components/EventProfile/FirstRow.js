@@ -1,13 +1,13 @@
 import React from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
-import { Col } from 'antd';
-import { StyledButton, StyledCard } from '../../styled';
+
+import { StyledButton } from '../../styled';
 
 const RecurRegister = () => {
   return (
     <a href={'#recurSignUp'}>
-      <StyledButton width={'100%'}>Register</StyledButton>
+      <StyledButton width={'20rem'}>Register</StyledButton>
     </a>
   );
 };
@@ -16,7 +16,7 @@ const NormalRegister = ({ localState, auth, register, unRegister }) => {
   return (
     <>
       {auth.googleAuthUser &&
-      localState.registeredVolunteers.includes(auth.googleAuthUser.uid) ? (
+      localState.registeredVolunteers.some(item => item.userId === auth.googleAuthUser.uid) ? (
         <StyledButton width={'100%'} onClick={(e) => unRegister(e)}>
           Cancel Registration
         </StyledButton>
@@ -29,10 +29,10 @@ const NormalRegister = ({ localState, auth, register, unRegister }) => {
   );
 };
 
-const RecurDate = ({ localState, first }) => {
+const RecurDate = ({ localState, first, selectedDate }) => {
   return (
     <>
-      <h5>{moment.unix(first).format('LL')}</h5>
+      <h5>{moment.unix(selectedDate).format('LL')}</h5>
       <h5>
         {`${moment.unix(first).format('LT')} -
             ${moment.unix(localState.endTimeStamp).format('LT')}`}
@@ -57,31 +57,32 @@ const NormalDate = ({ localState }) => {
   );
 };
 
-export const FirstRow = ({ localState, auth, register, unRegister }) => {
+export const FirstRow = ({ localState, auth, register, unRegister, selectedDate, numOfVol, recurDate }) => {
   let isRecurring = localState.recurringInfo;
   let first = Object.keys(localState.registeredVolunteers).find(
     date => moment().unix() - date < 0
   );
+
   let signedUp = isRecurring
-    ? (localState.registeredVolunteers[first] || []).length
-    : localState.registeredVolunteers.length;
+  ? (localState.registeredVolunteers[first] || []).length
+  : localState.registeredVolunteers.length;
 
   return (
     <StyledFirstRow>
-      <Col className="left-col" span={18}>
+      <div className="left-col">
         <h2>{localState.nameOfEvent}</h2>
         <h4>{localState.orgName}</h4>
         <span>
           {isRecurring && '*This is a recurring event. The next date is:'}
         </span>
         {isRecurring ? (
-          <RecurDate localState={localState} first={first} />
+          <RecurDate localState={localState} first={first} selectedDate={selectedDate}/>
         ) : (
           <NormalDate localState={localState} />
         )}
-      </Col>
+      </div>
 
-      <Col className="right-col" span={6}>
+      <div className="right-col">
         {isRecurring ? (
           <RecurRegister />
         ) : (
@@ -94,17 +95,21 @@ export const FirstRow = ({ localState, auth, register, unRegister }) => {
         )}
         <div className="needed-vols">
           <span>Needed:</span>
-          <h2>{localState.numberOfVolunteers - signedUp}</h2>
+          <h2>{numOfVol - signedUp}</h2>
           <span>volunteers</span>
         </div>
-      </Col>
+      </div>
     </StyledFirstRow>
   );
 };
 
-const StyledFirstRow = styled(StyledCard)`
+const StyledFirstRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  margin: 0 auto 24px;
   min-height: 150px;
-  width: 100%;
+
   h2,
   h4,
   h5 {
@@ -118,13 +123,13 @@ const StyledFirstRow = styled(StyledCard)`
   }
 
   .needed-vols {
-    border: 2px solid ${({theme}) => theme.gray3}
-    width: 100%;
+    background: white;
+    width: 20rem;
     display: flex;
     flex-direction: column;
+    height: fit-content;
     align-items: center;
     border-radius: 4px;
-    margin-top: 15px;
   }
 `;
 

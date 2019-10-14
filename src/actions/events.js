@@ -536,6 +536,8 @@ export const cancelSignedUpEvent = (event, user, dispatch) => {
     });
 };
 
+
+
 export const SIGN_UP_FOR_RECURRING_EVENT_INIT =
   'SIGN_UP_FOR_RECURRING_EVENT_INIT';
 export const SIGNED_UP_VOLUNTEER_FOR_RECURRING_EVENT =
@@ -591,6 +593,7 @@ export const signUpForRecurringEvent = (event, user, date, dispatch) => {
         orgId: event.orgId,
         hours: 0,
         isVerified: false,
+        isRecurring: true,
       },
     ],
   };
@@ -758,4 +761,49 @@ export const updateEvents = (eventType = 'events') => {
       }
     });
   });
+};
+
+
+/**
+ * Cancel a signed up event for an user from the user profile. Delete the event in the user document. Delete the volunteer in the event document. 
+ * @function
+ * @param {String} eventId //event id
+ * @param {String} eventDate //event date
+ * @param {User} user
+ * @param {Dispatch} dispatch
+ * @param {Boolean} isRecurring //wether event is recurring
+ */
+
+export const cancelSignedUpEventViaUserProfile = async (eventId, eventDate, user, dispatch, isRecurring) => {
+  if (isRecurring) {
+    let event = await store
+      .collection('recurring events')
+      .doc(eventId)
+      .get()
+      .then(res => {
+        if (res.exists) {
+          let foundEvent = res.data();
+          foundEvent.eventId = res.id;
+          return foundEvent;
+        } else {
+          return null;
+        }
+      })
+    return cancelSignedUpRecurringEvent(event, user, eventDate, dispatch) 
+  } else {
+    let event = await store
+      .collection('events')
+      .doc(eventId)
+      .get()
+      .then(res => {
+        if (res.exists) {
+          let foundEvent = res.data();
+          foundEvent.eventId = res.id;
+          return foundEvent;
+        } else {
+          return null;
+        }
+      })
+    return cancelSignedUpEvent(event, user, dispatch);
+  }
 };
