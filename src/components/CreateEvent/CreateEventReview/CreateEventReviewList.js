@@ -22,7 +22,7 @@ export const CreateEventReviewList = props => {
   };
   console.log('local', localState);
   return (
-    <StyledDiv className={'styledReviewDiv'}>
+    <StyledReviewDiv className={'styledReviewDiv'}>
       <div>
         <StyledButtons>
           <div className="icon" onClick={editForm}>
@@ -31,7 +31,7 @@ export const CreateEventReviewList = props => {
         </StyledButtons>
       </div>
 
-      <StyledDiv className={'styledDiv'}>
+      <div className={''}>
         <div className={'text'}>
           <p className={'title'}>Event Name</p>
           <p>{localState.nameOfEvent}</p>
@@ -118,8 +118,11 @@ export const CreateEventReviewList = props => {
         {localState.recurringInfo.recurringEvent === 'Yes' && (
           <RecurringInfoReview localState={localState} />
         )}
-      </StyledDiv>
-      <div className="buttonStyles">
+      </div>
+      <div
+        className="buttonStyles"
+        style={{ marginRight: '0px', marginLeft: '0px' }}
+      >
         <div>
           <StyledCancelButton key="cancel" type="second" onClick={cancelForm}>
             Cancel
@@ -131,11 +134,23 @@ export const CreateEventReviewList = props => {
           </StyledButton>
         </div>
       </div>
-    </StyledDiv>
+    </StyledReviewDiv>
   );
 };
 
-const StyledDiv = styled.div``;
+const StyledReviewDiv = styled.div`
+  .review-wrapper {
+    display: flex;
+
+    .to {
+      margin: 0px 5px;
+    }
+  }
+  .buttonStyles {
+    margin-right: 0px;
+    margin-left: 0px;
+  }
+`;
 
 const StyledButtons = styled.div`
   width: 100%;
@@ -148,14 +163,6 @@ const StyledButtons = styled.div`
     width: 50px;
     height: 50px;
     cursor: pointer;
-  }
-
-  .review-wrapper {
-    display: flex;
-
-    .to {
-      margin: 0px 5px;
-    }
   }
 `;
 
