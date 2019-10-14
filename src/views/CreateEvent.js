@@ -39,9 +39,10 @@ export const CreateEvent = props => {
     },
     recurringInfo: {
       repeatTimePeriod: '',
-      occurrenceEnds: 'Never',
+      occurrenceEnds: 'On',
       occurrenceEndDate: moment(),
-      occurrenceEndsAfter: '',
+      occurrenceEndsAfter: 1,
+      repeatEveryValue: '',
       days: [],
     },
   };
