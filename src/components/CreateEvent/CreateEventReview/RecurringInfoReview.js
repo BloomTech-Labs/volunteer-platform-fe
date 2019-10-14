@@ -2,41 +2,71 @@ import React from 'react';
 
 export const RecurringInfoReview = props => {
   const { localState } = props;
+  const { recurringInfo } = localState;
+
+  const recurringRender = () => {
+    if (recurringInfo.occurrenceEnds === 'On') {
+      return (
+        <p>
+          {' '}
+          This event occurs {recurringInfo.repeatTimePeriod} until{' '}
+          {recurringInfo.occurrenceEndDate.format('LL')}.
+        </p>
+      );
+    } else if (recurringInfo.occurrenceEnds === 'After') {
+      return (
+        <p>
+          This event occurs {recurringInfo.repeatTimePeriod} and ends after{' '}
+          {recurringInfo.occurrenceEndsAfter} occurrences.
+        </p>
+      );
+    } else {
+      return (
+        <p>
+          {' '}
+          This event occurs {recurringInfo.repeatTimePeriod} and does not end.
+        </p>
+      );
+    }
+  };
+
+  const recurringRenderOther = () => {
+    if (
+      recurringInfo.repeatEveryValue === 'Day' ||
+      recurringInfo.repeatEveryValue === 'Days'
+    ) {
+      return (
+        <p>
+          This event will occur every {recurringInfo.repeatEvery}{' '}
+          {recurringInfo.repeatEveryValue}
+        </p>
+      );
+    } else if (
+      recurringInfo.repeatEveryValue === 'Week' ||
+      recurringInfo.repeatEveryValue === 'Weeks'
+    ) {
+      return (
+        <p>
+          {' '}
+          This event will occur every {recurringInfo.repeatEvery}{' '}
+          {recurringInfo.repeatEveryValue} on {recurringInfo.days}
+        </p>
+      );
+    } else {
+      return (
+        <p>
+          This event will occur every {recurringInfo.repeatEvery}{' '}
+          {recurringInfo.repeatEveryValue} on {recurringInfo.montlyPeriod}
+        </p>
+      );
+    }
+  };
 
   return (
     <div>
-      <h4>Repeat Time Period</h4>
-      <p>{localState.recurringInfo.repeatTimePeriod}</p>
-      {localState.recurringInfo.repeatTimePeriod === 'Other' && (
-        <p>{localState.recurringInfo.repeatEvery}</p>
-      )}
-      <h4>Occurence Ends After</h4>
-      <p>{localState.occurrenceEnds}</p>
-      {localState.recurringInfo.occurrenceEnds === 'On' && (
-        <p>
-          {localState.recurringInfo.occurrenceEndDate &&
-            localState.recurringInfo.occurrenceEndDate.format('LL')}
-        </p>
-      )}
-      {localState.recurringInfo.occurrenceEnds === 'After' && (
-        <p>{localState.recurringInfo.occurrenceEndsAfter} occurrences</p>
-      )}
-
-      {localState.recurringInfo.repeatEveryValue === 'Week' && (
-        <h4>Repeat Every</h4>
-      )}
-      {localState.recurringInfo.repeatEveryValue === 'Week' && (
-        <p>{localState.recurringInfo.days}</p>
-      )}
-      {localState.recurringInfo.repeatEveryValue === 'Weeks' && (
-        <p>{localState.recurringInfo.days}</p>
-      )}
-      {localState.recurringInfo.repeatEveryValue === 'Month' && (
-        <p>{localState.recurringInfo.monthlyPeriod}</p>
-      )}
-      {localState.recurringInfo.repeatEveryValue === 'Months' && (
-        <p>{localState.recurringInfo.monthlyPeriod}</p>
-      )}
+      {recurringInfo.repeatTimePeriod !== 'Other'
+        ? recurringRender()
+        : recurringRenderOther()}
     </div>
   );
 };
