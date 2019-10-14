@@ -28,8 +28,8 @@ export const CreateEventReviewEditForm = props => {
     interest,
     numberOfVolunteers,
     phoneNumber,
-    firstName,
-    lastName,
+    fullName,
+    email,
     date,
     startTime,
     endTime,
@@ -60,13 +60,12 @@ export const CreateEventReviewEditForm = props => {
     if (
       nameOfEvent &&
       address &&
-      localState.state &&
       typesOfCauses.length > 0 &&
       volunteerRequirements.length > 0 &&
       interest.length > 0 &&
       numberOfVolunteers > 0 &&
-      firstName &&
-      lastName &&
+      fullName &&
+      email &&
       phoneNumber &&
       eventDetails
     ) {
@@ -204,7 +203,7 @@ export const CreateEventReviewEditForm = props => {
             <div className={'input'}>
               <InputNumber
                 name={'Number of Volunteers'}
-                min={0}
+                min={1}
                 value={numberOfVolunteers}
                 onChange={value => handleValue('numberOfVolunteers', value)}
               />
@@ -214,7 +213,7 @@ export const CreateEventReviewEditForm = props => {
             <div>
               {error && !numberOfVolunteers > 0 && (
                 <span className="error-message error-span left-aligned">
-                  {error}
+                  Must be higher than 0.
                 </span>
               )}
             </div>
@@ -222,28 +221,28 @@ export const CreateEventReviewEditForm = props => {
         </Form.Item>
 
         <p className={'title'}>*Point of Contact</p>
-        <Form.Item label={'First Name'}>
+        <Form.Item label={'Full Name'}>
           <div className={'input'}>
             <Input
-              name={'firstName'}
-              value={firstName}
+              name={'fullName'}
+              value={fullName}
               onChange={e => handleValue(e.target.name, e.target.value)}
             />
-            {error && !firstName && (
+            {error && !fullName && (
               <span className="error-message error-span left-aligned">
                 {error}
               </span>
             )}
           </div>
         </Form.Item>
-        <Form.Item label={'Last Name'}>
+        <Form.Item label={'Email'}>
           <div className={'input'}>
             <Input
-              name={'lastName'}
-              value={lastName}
+              name={'email'}
+              value={email}
               onChange={e => handleValue(e.target.name, e.target.value)}
             />
-            {error && !lastName && (
+            {error && !email && (
               <span className="error-message error-span left-aligned">
                 {error}
               </span>
@@ -381,7 +380,6 @@ const StyledButtons = styled.div`
     height: 50px;
     cursor: pointer;
   }
-  
 `;
 
 const StyledDiv = styled.div`
@@ -401,10 +399,10 @@ const StyledDiv = styled.div`
     border: 1px solid rgb(217, 217, 217);
     font-family: ${({ theme }) => theme.bodytext};
 
-    &::placeholder{
-       color: rgba(0, 0, 0, 0.35);
-       font-size: 14px;
-       font-family: ${({ theme }) => theme.bodytext};
+    &::placeholder {
+      color: rgba(0, 0, 0, 0.35);
+      font-size: 14px;
+      font-family: ${({ theme }) => theme.bodytext};
     }
   }
 `;
