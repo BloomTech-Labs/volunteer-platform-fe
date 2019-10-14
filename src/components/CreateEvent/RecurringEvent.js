@@ -205,7 +205,7 @@ export const RecurringEvent = props => {
               </Form.Item>
             </div>
             {recurringInfo.occurrenceEnds === 'On' && (
-              <div>
+              <div className={'endDate'}>
                 <Form.Item label={'End Date'} required>
                   <DatePicker
                     name={'occurrenceEndDate'}
@@ -354,10 +354,6 @@ export const RecurringEvent = props => {
 };
 
 const StyledDiv = styled.div`
-  .input {
-    width: 80%;
-  }
-
   .errorFlex {
     display: flex;
     flex-direction: column;
