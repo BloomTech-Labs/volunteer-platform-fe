@@ -90,6 +90,9 @@ export const CreateEventReviewEditForm = props => {
   };
 
   const handleForm = () => {
+    document
+      .getElementById('scroll-event-header')
+      .scrollIntoView({ behavior: 'smooth' });
     setEdit(false);
   };
 

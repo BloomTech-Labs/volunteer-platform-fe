@@ -31,7 +31,7 @@ export const CreateEventReviewList = props => {
         </StyledButtons>
       </div>
 
-      <div className={''}>
+      <div cla>
         <div className={'text'}>
           <p className={'title'}>Event Name</p>
           <p>{localState.nameOfEvent}</p>
