@@ -83,27 +83,24 @@ export const RecurringEvent = props => {
 
   const isModalValid = () => {
     if (recurringInfo.repeatEvery > 0) {
-      return true;
-    }
-    if (
-      recurringInfo.repeatEveryValue === 'Day' ||
-      recurringInfo.repeatEveryValue === 'Days'
-    ) {
-      return true;
-    } else if (
-      recurringInfo.repeatEveryValue === 'Week' ||
-      (recurringInfo.repeatEveryValue === 'Weeks'
-        ? recurringInfo.days.length > 0
-        : null)
-    ) {
-      return true;
-    } else if (
-      recurringInfo.repeatEveryValue === 'Month' ||
-      (recurringInfo.repeatEveryValue === 'Months'
-        ? recurringInfo.monthlyPeriod
-        : null)
-    ) {
-      return true;
+      if (
+        recurringInfo.repeatEveryValue === 'Day' ||
+        recurringInfo.repeatEveryValue === 'Days'
+      ) {
+        return true;
+      } else if (
+        recurringInfo.repeatEveryValue === 'Week' ||
+        (recurringInfo.repeatEveryValue === 'Weeks' &&
+          recurringInfo.days.length > 0)
+      ) {
+        return true;
+      } else if (
+        recurringInfo.repeatEveryValue === 'Month' ||
+        (recurringInfo.repeatEveryValue === 'Months' &&
+          recurringInfo.monthlyPeriod)
+      ) {
+        return true;
+      }
     }
   };
   console.log(localState);
@@ -277,11 +274,10 @@ export const RecurringEvent = props => {
               </Form.Item>
             </div>
             <div>
-              <Form.Item>
+              <Form.Item label={'Choose a time period'}>
                 <Select
                   name={'repeatEveryValue'}
                   value={recurringInfo.repeatEveryValue}
-                  placeholder="Choose a time period"
                   onChange={value => handleChange('repeatEveryValue', value)}
                 >
                   {periodOfTimeMap}
@@ -326,10 +322,9 @@ export const RecurringEvent = props => {
             {recurringInfo.repeatEveryValue === 'Month' ||
             recurringInfo.repeatEveryValue === 'Months' ? (
               <div>
-                <Form.Item>
+                <Form.Item label={'Choose a monthly period'}>
                   <Select
                     name={'Monthly Period'}
-                    placeholder="Choose a montly period."
                     defaultValue={recurringInfo.monthlyPeriod}
                     onChange={value => handleChange('monthlyPeriod', value)}
                   >
