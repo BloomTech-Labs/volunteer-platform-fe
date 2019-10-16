@@ -179,6 +179,7 @@ const StyledDiv = styled.div`
 const CustomStyledCard = styled(StyledCard)`
   && {
     background: ${({theme}) => theme.gray2};
+    border-radius: 3px;
   }
 
   .ant-card-body {
