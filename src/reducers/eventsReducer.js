@@ -37,14 +37,21 @@ import {
   CANCEL_SIGNED_UP_RECURRING_EVENT_FAILURE,
   GET_EVENTS_BY_ORG_INIT,
   GET_RECURRING_EVENTS_BY_ORG_INIT,
+  GET_EVENT_BY_ID_INIT,
 } from '../actions/events';
 
 export const eventsReducer = (state, action) => {
   switch (action.type) {
+    case GET_EVENT_BY_ID_INIT:
+      return {
+        ...state,
+        isLoading: true,
+      };
     case GET_EVENT_BY_ID:
       return {
         ...state,
         event: action.payload,
+        isLoading: false,
       };
     case CREATE_EVENT_INIT:
       return {
