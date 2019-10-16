@@ -60,16 +60,19 @@ export const EventPanel = ({
     );
   };
   return (
-    <ReStyledCard width={'60%'} margin={'0'}>
+    <ReStyledCard margin={'0'} style={{ borderRadius: '3px', boxShadow: 'none' }}>
+      <h3>Upcoming Events</h3>
       {selectedEvents.length > 0 || selectedDate ? (
         <UpperDiv>
-          {selectedDate && (
+          {selectedDate ? (
             <>
               <h4>{moment.unix(selectedDate).format('LL')}</h4>
               <StyledButton onClick={displayAll} width={'40%'}>
                 Display All Events
               </StyledButton>
             </>
+          ) : (
+            <h4>{moment().format('LL')}</h4>
           )}
         </UpperDiv>
       ) : (
@@ -102,14 +105,23 @@ export const EventPanel = ({
 const ReStyledCard = styled(StyledCard)`
   height: 320px;
   overflow-y: scroll;
+  width: 100%;
+
+  h3, h5 {
+    text-align: center;
+  }
 
   ::-webkit-scrollbar {
-    width: 10px;
+    width: 6px;
   }
 
   ::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background-color: rgba(0, 0, 0, 0.12);
+    border-radius: 16px;
+    background: ${({theme}) => theme.gray3};
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: white; 
   }
 
 `;
