@@ -9,6 +9,7 @@ import {
   signedIn,
   signedOut,
   subscribeToMessages,
+  updateEvents,
 } from './actions';
 import {HeaderDiv, FooterDiv} from './components';
 import Navigation from './components/SiteParts/Navigation';
@@ -58,6 +59,7 @@ function App(){
         signedOut(dispatch);
       }
     });
+    updateEvents();
   }, []);
   useEffect(() => {
     window.addEventListener('resize', updateDimensions);
@@ -102,22 +104,22 @@ function App(){
       setCollapsed(true);
     }
   };
-
+  
   const [scrollClass, setScrollClass] = useState('top');
-
+  
   useEffect(() => {
     window.addEventListener('scroll', () => {
       let activeClass = 'scrolled';
-      if (window.scrollY <= 30) {
+      if (window.scrollY <= 30){
         activeClass = 'top';
       }
       setScrollClass(activeClass);
     });
   }, []);
-
+  
   return (
     <StyledApp className="App">
-      <Layout style={{ background: '#fafafa' }}>
+      <Layout style={{background: '#fafafa'}}>
         {state.auth.loggedIn && state.auth.signedUp && (
           <Affix>
             <StyledSider
@@ -181,20 +183,20 @@ function App(){
                 path={'/org-dashboard'}
                 component={OrganizationDashboard}
               />
-              <RegisterRoute path={'/register'} component={Signup} />
+              <RegisterRoute path={'/register'} component={Signup}/>
               <RegisteredAndLoggedInRoute
                 path={'/messages'}
                 component={Message}
                 width={dimensions.width}
               />
-
-              <ProtectedRoute path={'/events/:id'} component={EventProfile} />
-
+              
+              <ProtectedRoute path={'/events/:id'} component={EventProfile}/>
+              
               <RegisteredAndLoggedInRoute
                 path={`/profile/:id`}
                 component={UserProfile}
               />
-              <Route path="/:anything" component={NotFound} />
+              <Route path="/:anything" component={NotFound}/>
             </Switch>
           </StyledContent>
           <FooterDiv/>
