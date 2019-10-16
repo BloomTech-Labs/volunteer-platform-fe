@@ -165,17 +165,22 @@ export const UserGoal = props => {
         </WrappedAntForm>
       </StyledModal>
       <div className="left">
-        <Button type="link" icon="plus-circle" onClick={openModal}>
-          Set Goals
-        </Button>
+        <div>
+          {displayGoals.frequency ? (
+            <Button type="link" icon="minus-circle" onClick={removeGoal}>
+              Remove Goal
+            </Button>
+          ) : (
+            <Button type="link" icon="plus-circle" onClick={openModal}>
+              Set Goal
+            </Button>
+          )}
+        </div>
         {displayGoals.frequency ? (
           <>
             <div>
               <div className="row">
-                <h5>Current Goal</h5>
-                <Button type="link" icon="minus-circle" onClick={removeGoal}>
-                  Remove
-                </Button>
+                <h5>Current Goal</h5>  
               </div>
               <p>
                 {displayGoals.hours} hours {displayGoals.frequency}
@@ -206,7 +211,7 @@ export const UserGoal = props => {
             <Input
               style={{ width: '350px' }}
               prefix={<Icon type="link" style={{ color: '#8C8C8C' }} />}
-              value={`www.volunteir.com/${props.user.firstName}challenge`}
+              value={`www.voluntier.com/${props.user.firstName}challenge`}
               ref={inputRef}
             />
             <Button icon="copy" onClick={copyLink}>

@@ -43,7 +43,7 @@ export const UserEvents = ({ events, changePanel, calendarValue, selectDate, sel
   }
 
   return (
-    <CustomStyledCard  >
+    <CustomStyledCard>
       {selectedEvents.length > 0 || selectedDate ? (
         <UpperDiv>
           <h2>Upcoming Events</h2>
@@ -155,12 +155,12 @@ const CustomStyledCard = styled(StyledCard)`
     background: white;
     border-radius: 0px;
     margin-top: 2rem;
+    box-shadow: none;
+    border-radius: 3px;
     
     .ant-card-body {
       padding: 0;
     }
-
-    
   }
 `
 const CustomButton = styled(Button)`
