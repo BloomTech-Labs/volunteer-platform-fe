@@ -123,11 +123,6 @@ const OrgInfoDiv = styled(StyledCard)`
   .causes {
     flex-direction: row;
     justify-content: flex-start;
-
-    .ant-tag {
-      background: ${({ theme }) => theme.primary8};
-      color: white;
-    }
   }
 
   .icon {

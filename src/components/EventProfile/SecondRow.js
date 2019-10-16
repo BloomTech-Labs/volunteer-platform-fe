@@ -60,11 +60,6 @@ const StyledSecondRow = styled(StyledCard)`
     .subtag {
       flex-direction: row;
       justify-content: flex-start;
-
-      .ant-tag {
-        background: ${({ theme }) => theme.primary8};
-        color: white;
-      }
     }
     .last {
       padding-bottom: 0.81em;
