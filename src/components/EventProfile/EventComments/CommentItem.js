@@ -41,7 +41,7 @@ export const CommentItem = ({
 
   const getActions = () => {
     const actions = [];
-    if (allowReply) {
+    if (auth.googleAuthUser && allowReply) {
       actions.push(
         <span onClick={() => setReply(!reply)} key="comment-nested-reply-to">
           Reply to
@@ -49,7 +49,7 @@ export const CommentItem = ({
       );
     }
 
-    if (usersUid === auth.googleAuthUser.uid) {
+    if (auth.googleAuthUser && usersUid === auth.googleAuthUser.uid) {
       actions.push(
         <span onClick={handleDeleteComment}>
           <Icon type="delete" />

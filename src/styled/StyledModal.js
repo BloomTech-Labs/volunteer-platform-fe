@@ -17,6 +17,7 @@ export const confirmModal = content => {
         content.onCancel || console.log('Cancel', content.title || '');
       },
       okType: content.okType || 'primary',
+      okText: content.okText || 'OK',
     });
   };
 };
