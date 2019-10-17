@@ -67,6 +67,7 @@ const StyledDiv = styled.div`
   padding: 2rem;
   border: 1px solid ${({ theme }) => theme.gray3};
   border-radius: 10px;
+  box-shadow: none;
 
   .top-row {
     display: flex;

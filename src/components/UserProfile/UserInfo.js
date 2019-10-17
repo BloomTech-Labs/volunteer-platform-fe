@@ -2,35 +2,38 @@ import React, { useState, useEffect} from 'react';
 import styled from 'styled-components';
 import { AntTextArea } from '../../styled/index';
 import { StyledCard } from '../../styled/StyledCard';
-import { Icon, Input } from 'antd';
+import { Icon, Input, DatePicker } from 'antd';
+import Autocomplete from 'react-google-autocomplete';
+import moment from 'moment';
 
 export const UserInfo = ({ user, isEditable, updateInfo}) => {
   const [bio, setBio] = useState('');
   const [isEditing, setIsEditing] = useState(false);
-  const [location, setLocation] = useState({
-    city: '',
-    state: ''
-  })
+  const [location, setLocation] = useState('')
+  const [DOB, setDOB] = useState(undefined);
+  const [cityAndState, setcityAndState] = useState('')
 
   useEffect(() => {
     if (user.bio) {
       setBio(user.bio);
     }
-    setLocation({
-      city: user.city,
-      state: user.state
-    })
-  }, [user.bio])
+    if (user.address) {
+      setLocation(user.address);
+      let arr = user.address.split(', ');
+      setcityAndState(arr[arr.length - 3] + ', ' + arr[arr.length - 2].slice(0, 2));
+    }
+    if (user.DOB) {
+      setDOB(moment(user.DOB));
+    }
+  }, [user])
 
   const inputBio = event => {
     setBio(event.target.value);
   }
 
-  const inputLocation = event => {
-    setLocation({
-      ...location,
-      [event.target.name]: event.target.value
-    })
+  const inputDOB = date => {
+    console.log(date);
+    setDOB(date);
   }
 
   const openEditor = () => {
@@ -39,92 +42,149 @@ export const UserInfo = ({ user, isEditable, updateInfo}) => {
 
   const saveInfo = event => {
     event.preventDefault();
-    updateInfo(bio, location);
+    updateInfo(bio, location, DOB);
     setIsEditing(false);
   }
 
   return (
-    <CustomStyledCard style={{margin: '0 1rem'}}>
-      <div className='outer-container'>
-        <div className='user-info-btns'>
-          {(isEditable && !isEditing) && (
-            <div className='user-info-btn' onClick={openEditor}>
-              <Icon  type='edit' style={{ fontSize: '28px', cursor: 'pointer'}}/>
-              <p>Edit profile</p>
-            </div>
-            )}
-          {isEditing && (
-            <div className='user-info-btn' onClick={saveInfo} >
-              <Icon type="save" style={{ fontSize: '28px', cursor: 'pointer'}} />
-              <p>Save profile</p>
-            </div>
-          )}
-        </div>
-        <div className='inner-container'>
-          <div className='left'>
-            <h5>General Bio</h5>
-            {isEditing ? (
-              <AntTextArea 
-                name='bio'
-                value={bio}
-                autosize={{ minRows: 4}}
-                onChange={inputBio}
-                placeholder='Add a blurb about yourself here'
-              />
-            ) : (
-              <div className='bio'>
-                <p>{user.bio ? user.bio : 'You have not set your bio yet'}</p>
-              </div>
-            )}
+    <StyledDiv>
+      <div className='user-info-btns'>
+        {(isEditable && !isEditing) && (
+          <div className='user-info-btn' onClick={openEditor}>
+            <Icon  type='edit' style={{ fontSize: '28px', cursor: 'pointer'}}/>
+            <p>Edit profile</p>
           </div>
-          <div className='right'>
-            <div>
-              <p>Age: {user.age}</p>
+          )}
+        {isEditing && (
+          <div className='user-info-btn' onClick={saveInfo} >
+            <Icon type="save" style={{ fontSize: '28px', cursor: 'pointer'}} />
+            <p>Save profile</p>
+          </div>
+        )}
+      </div>
+      <CustomStyledCard style={{ boxShadow: 'none' }}>
+        <div className='outer-container'>
+          <div className='inner-container'>
+            <div className='left'>
+              <h4>General Bio</h4>
               {isEditing ? (
-                <>
-                  <Input 
-                    name={'city'}
-                    addonBefore={'City'}
-                    value={location.city}
-                    placeholder={'Enter city'}
-                    onChange={inputLocation} />
-                  <Input 
-                    name={'state'}
-                    addonBefore={'State'}
-                    value={location.state}
-                    placeholder={'Enter state abbreviation'}
-                    onChange={inputLocation}/>
-                </>
+                <AntTextArea 
+                  name='bio'
+                  value={bio}
+                  autosize={{ minRows: 5}}
+                  onChange={inputBio}
+                  placeholder='Add a blurb about yourself here'
+                />
               ) : (
-                <p><Icon
-                  type="environment"
-                  theme={'twoTone'}
-                  twoToneColor={'#005a87'}
-                />{user && user.city + ', ' + user.state}
-                </p>
+                <div className='bio'>
+                  <p>{user.bio ? user.bio : 'You have not set your bio yet'}</p>
+                </div>
               )}
             </div>
-            <div>
-              <h5>Follow Me</h5>
-              <div className='social-media-btns'>
-                <Icon type='twitter' className='icons'/>
-                <Icon type='instagram' className='icons'/>
-                <Icon type='linkedin' className='icons'/>
+            <div className='right'>
+              <div>
+                
+                {isEditing ? (
+                  <>
+                    <label htmlFor='DOB'>DOB:</label>
+                    <DatePicker 
+                      name={'DOB'}
+                      value={DOB}
+                      placeholder={'Select DOB'}
+                      onChange={inputDOB} />
+                    <label htmlFor='address'>Address:</label>
+                    <Autocomplete
+                      name="address"
+                      className="google-autocomplete"
+                      onPlaceSelected={place => {
+                        setLocation(place.formatted_address)
+                      }}
+                      types={['address']}
+                      componentRestrictions={{ country: 'us' }}
+                      value={location}
+                      onChange={e => setLocation(e.target.value)}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <div className='age-row'>
+                      <h5>Age:</h5> 
+                      {user.DOB && <p>{user.DOB && moment().diff(moment(user.DOB), 'years')}</p>}
+                    </div>
+                    <p>
+                      <Icon
+                        type="environment"
+                        theme={'twoTone'}
+                        twoToneColor={'#005a87'}
+                        style={{ marginRight: '0.5rem' }}/>
+                      {user.address && cityAndState}
+                    </p>
+                  </>
+                )}
+              </div>
+              <div>
+                <h5>Follow Me</h5>
+                <div className='social-media-btns'>
+                  <Icon type='twitter' className='icons'/>
+                  <Icon type='instagram' className='icons'/>
+                  <Icon type='linkedin' className='icons'/>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </CustomStyledCard>
+      </CustomStyledCard>
+    </StyledDiv>
   )
 }
 
 export default UserInfo;
 
+const StyledDiv = styled.div`
+  width: 90%;
+  margin-top: -4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 1rem;
+
+  .user-info-btns {
+    align-self: flex-end;
+    height: 55px;
+
+    .user-info-btn {
+      display: flex;
+      flex-direction: column; 
+      align-items: center;
+      color: rgba(0, 0, 0, 0.6);
+      cursor: pointer;
+
+      p {
+        margin: 0;
+        font-size: 12px
+      }
+    }
+
+    .user-info-btn:hover {
+      color: ${({theme}) => theme.primary7};
+
+      p {
+        color: ${({theme}) => theme.primary7};
+      }
+    }
+  }
+`
+
+
 const CustomStyledCard = styled(StyledCard)`
+  && {
+    background: ${({theme}) => theme.gray2};
+    border-radius: 3px;
+  }
+
   .ant-card-body {
-    padding: 0.6rem 1rem;
-    min-height: 240px;
+    padding: 1rem 2rem;
+    min-height: 190px;
   }
 
   .outer-container {
@@ -132,32 +192,6 @@ const CustomStyledCard = styled(StyledCard)`
     display: flex;
     flex-direction: column;
     align-items: center;
-    
-    .user-info-btns {
-      align-self: flex-end;
-      margin-bottom: 0.8rem;
-
-      .user-info-btn {
-        display: flex;
-        flex-direction: column; 
-        align-items: center;
-        color: rgba(0, 0, 0, 0.6);
-        cursor: pointer;
-
-        p {
-          margin: 0;
-          font-size: 12px
-        }
-      }
-
-      .user-info-btn:hover {
-        color: ${({theme}) => theme.primary7};
-
-        p {
-          color: ${({theme}) => theme.primary7};
-        }
-      }
-    }
   }
 
   .inner-container {
@@ -167,6 +201,14 @@ const CustomStyledCard = styled(StyledCard)`
 
     .left {
       width: 60%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      h4 {
+        border-bottom: 1px solid #C4C4C4;
+        margin: 0 0 1rem 0;
+      }
     }
 
     .right {
@@ -174,6 +216,29 @@ const CustomStyledCard = styled(StyledCard)`
       display: flex;
       flex-direction: column;
       align-items: flex-start;
+
+      .age-row {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin: 1rem 0;
+        
+        h5 {
+          margin: 0;
+        }
+
+        p {
+          margin: 0;
+          margin-left: 0.5rem;
+        }
+      }
+
+      .google-autocomplete {
+        width: 100%;
+        padding: 0.2rem;
+        border-radius: 3px;
+        border: 1px solid #D4D4D4;
+      }
     }
   }
 

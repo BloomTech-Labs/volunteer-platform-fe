@@ -93,12 +93,12 @@ export const UserProfile = (props) => {
     setCalendarValue(moment());
   };
   
-  const updateInfo = (bio, location) => {
+  const updateInfo = (bio, location, DOB) => {
     let updateUser = {
       ...user,
       bio: bio,
-      city: location.city,
-      state: location.state,
+      address: location,
+      DOB: DOB.format('LL')
     };
     updateRegisteredUser(updateUser, dispatch);
   };
@@ -121,7 +121,7 @@ export const UserProfile = (props) => {
   return (
     <StyledDiv>
       <div className='profile-container'>
-        <h3>Welcome {user.firstName},</h3>
+        <h3>Welcome {user.firstName}</h3>
         <div className='profile-top'>
           <OrgPhoto
             imageUrl={user && user.imageUrl ? user.imageUrl : ''}
@@ -179,6 +179,7 @@ const StyledDiv = styled.div`
 
   h3 {
     align-self: flex-start;
+    font-size: 32px;
   }
 
   .profile-top, .profile-middle, .profile-bottom {
@@ -189,11 +190,22 @@ const StyledDiv = styled.div`
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
-    height: 260px;
 
     .ant-card {
-      padding: 0;
       margin: 0;
+    }
+
+    .column {
+      .ant-card {
+        padding: 0;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+
+        .ant-card-body {
+          padding: 0;
+        }
+      }
     }
   }
 

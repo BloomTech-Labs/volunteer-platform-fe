@@ -103,9 +103,6 @@ export const Login = props => {
           </WrappedAntForm>
           {state.auth.signInError && <div>{state.auth.signInError}</div>}
           {state.auth.signUpError && <div>{state.auth.signUpError}</div>}
-          <div className={'line-box'}>
-            <StyledLine big width={'53%'} />
-          </div>
           <StyledCenter>
             <h6>
               {pathName === '/login'
@@ -117,7 +114,7 @@ export const Login = props => {
             </CustomStyledLink>
             {pathName === '/signup' && (
               <div className="testimonial">
-                <Avatar size={128} src={volunteerPic1} />
+                <Avatar size={64} src={volunteerPic1} />
                 <h4>
                   "Both as a volunteer and a non-profit staff member this has
                   been the best tool to connect volunteers, community and
@@ -173,16 +170,28 @@ const StyledLogin = styled.div`
 
   .ant-btn {
     margin-bottom: 2rem;
+    width: 200px;
   }
+
   .testimonial {
+    width: 55%;
     display: flex;
     align-items: center;
-    justify-content: space-around;
-    margin: 15px;
+    margin-top: 2rem;
+    justify-content: center;
+
+    @media ${device.tablet} {
+      width: 90%;
+    }
+
     h4 {
       width: 70%;
+      font-size: 14px;
+      margin: 0 8px;
     }
+  
     .ant-avatar {
+      margin: 0 8px;
       width: 100%;
     }
   }
@@ -193,7 +202,7 @@ const StyledBorder = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 1000px;
-  width: 100%;
+  width: 80vw;
   border: 2px solid lightGray;
 `;
 
@@ -206,12 +215,18 @@ const Inline = styled.div`
   i:not(:first-child) {
     margin-left: 3rem;
   }
+
+  .anticon:hover {
+    color: ${props => props.theme.primary8};
+  }
 `;
 
 const StyledCenter = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+  padding-bottom: 2rem;
+  width: 100%;
 
   .ant-form-item {
     display: flex;
@@ -235,13 +250,19 @@ const StyledCenter = styled.div`
     font-size: 18px;
     line-height: 22px;
   }
+
+  h6 {
+    margin: 0
+  }
 `;
 
 const CustomStyledLink = styled(StyledLink)`
   margin: 0;
   font-size: 1rem;
+  text-decoration: underline;
   :hover {
     color: ${props => props.theme.primary8};
+    text-decoration: underline;
   }
 `;
 
