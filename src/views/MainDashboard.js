@@ -44,7 +44,6 @@ export const MainDashboard = () => {
 
   //fetching user's location by IP
   useEffect(() => {
-    console.log(auth);
     if (auth.userSearch) {
       setInputState({ ...inputState, location: auth.userSearch });
     } else {

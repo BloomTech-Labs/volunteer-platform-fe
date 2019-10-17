@@ -39,7 +39,6 @@ export const CreateEventPartTwo = props => {
 
   const [error, setError] = useState('');
 
-
   const handleDynmaicDate = date => {
     const dynamicDay = date._d.toString().split(' ')[0];
     const dynamicYear = date._d
@@ -103,7 +102,7 @@ export const CreateEventPartTwo = props => {
   };
 
   const handlePOCSelect = value => {
-      let chosen = POC[value]
+    let chosen = POC[value];
     setLocalState({
       ...localState,
       fullName: chosen.fullName,
@@ -112,7 +111,6 @@ export const CreateEventPartTwo = props => {
     });
   };
 
-  console.log(POC);
   return (
     <StyledDiv className={'styledDiv'}>
       <h4>Who is your point of contact?</h4>
@@ -126,16 +124,14 @@ export const CreateEventPartTwo = props => {
               placeholder={'Select a point of contact.'}
             >
               {POC.map((contact, i) => (
-                <Option key={i}>
-                  {contact.fullName}
-                </Option>
+                <Option key={i}>{contact.fullName}</Option>
               ))}
             </Select>
           </div>
         )}
         <div className={'error-flex'}>
           <Form.Item label={'Full Name'} required>
-            <div className={'input'}>
+            <div>
               <Input
                 name={'fullName'}
                 value={fullName}
@@ -154,7 +150,7 @@ export const CreateEventPartTwo = props => {
         </div>
         <div className={'error-flex'}>
           <Form.Item label={'Email'} required>
-            <div className={'input'}>
+            <div>
               <Input
                 name={'email'}
                 value={email}
@@ -173,7 +169,7 @@ export const CreateEventPartTwo = props => {
         </div>
         <div className={'error-flex'}>
           <Form.Item label={'Phone Number'} required>
-            <div className={'input'}>
+            <div>
               <Input
                 name={'phoneNumber'}
                 value={phoneNumber}
@@ -301,10 +297,10 @@ const StyledDiv = styled.div`
     margin: 35px 20px 0px;
   }
 
-  .poc-select{
-      width: 40%;
-      margin: 0 auto 15px;
-      display:block;
+  .poc-select {
+    width: 40%;
+    margin: 0 auto 15px;
+    display: block;
   }
 `;
 

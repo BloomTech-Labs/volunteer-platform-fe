@@ -30,28 +30,38 @@ export const EventCard = ({ event }) => {
     return <Tag>{(item = [item])}</Tag>;
   });
 
+  //console.log(event)
   return (
-    
-      <StyledEventCard margin={'0 0 20px 0'}>
-        <div className="container">
-          <div className="head">
-            <h4>{event.nameOfEvent}</h4>
-            <h5>Host Organization: {event.orgName} </h5>
-            <h5>City: {event.city} </h5>
-            <h5>Causes: {causes}</h5>
-            <h5>Interests: {interest} </h5>
-            <h5>Requirements: {requirements}</h5>
-          </div>
-          <div className="date">
-            <h5>On: {moment.unix(event.nextDate).format('LL')}</h5>
-            <h5>from: {moment.unix(event.startTimeStamp).format('LT')}</h5>
-            <h5>to: {moment.unix(event.endTimeStamp).format('LT')}</h5>
-            <h5>Spot(s) Remaining: {event.numberOfVolunteers}</h5>
-          </div>
-          {ableToDelete && <StyledButton type="danger">Delete</StyledButton>}
+    <StyledEventCard margin={'0 0 20px 0'}>
+      <div className="container">
+        <div className="head">
+          <h4>{event.nameOfEvent}</h4>
+          <h5>Host Organization: {event.orgName} </h5>
+          <h5>City: {event.city} </h5>
+          <h5>Causes: {causes}</h5>
+          <h5>Interests: {interest} </h5>
+          <h5>Requirements: {requirements}</h5>
         </div>
-        <button><Link to={{pathname: `/events/${event.eventId}`}}> View More </Link></button>
-      </StyledEventCard>
+        <div className="date">
+          <h5>On: {moment.unix(event.nextDate).format('LL')}</h5>
+          <h5>from: {moment.unix(event.startTimeStamp).format('LT')}</h5>
+          <h5>to: {moment.unix(event.endTimeStamp).format('LT')}</h5>
+          <h5>Spot(s) Remaining: {event.numberOfVolunteers}</h5>
+        </div>
+        {ableToDelete && <StyledButton type="danger">Delete</StyledButton>}
+      </div>
+      <button>
+        <Link
+          to={{
+            pathname: `/events/${event.eventId}`,
+            state: { selectedDate: event.nextDate },
+          }}
+        >
+          {' '}
+          View More{' '}
+        </Link>
+      </button>
+    </StyledEventCard>
   );
 };
 

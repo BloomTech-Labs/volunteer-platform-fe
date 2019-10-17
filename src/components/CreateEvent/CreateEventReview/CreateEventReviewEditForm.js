@@ -28,8 +28,8 @@ export const CreateEventReviewEditForm = props => {
     interest,
     numberOfVolunteers,
     phoneNumber,
-    firstName,
-    lastName,
+    fullName,
+    email,
     date,
     startTime,
     endTime,
@@ -60,13 +60,12 @@ export const CreateEventReviewEditForm = props => {
     if (
       nameOfEvent &&
       address &&
-      localState.state &&
       typesOfCauses.length > 0 &&
       volunteerRequirements.length > 0 &&
       interest.length > 0 &&
       numberOfVolunteers > 0 &&
-      firstName &&
-      lastName &&
+      fullName &&
+      email &&
       phoneNumber &&
       eventDetails
     ) {
@@ -91,6 +90,9 @@ export const CreateEventReviewEditForm = props => {
   };
 
   const handleForm = () => {
+    document
+      .getElementById('scroll-event-header')
+      .scrollIntoView({ behavior: 'smooth' });
     setEdit(false);
   };
 
@@ -107,7 +109,7 @@ export const CreateEventReviewEditForm = props => {
         </StyledButtons>
       </div>
       <Form layout={'vertical'} onSubmit={() => checkRequired()}>
-        <Form.Item label={'Name of Event'} required>
+        <Form.Item label={'Event Name'} required>
           <div className={'input'}>
             <Input
               name={'nameOfEvent'}
@@ -121,7 +123,7 @@ export const CreateEventReviewEditForm = props => {
             )}
           </div>
         </Form.Item>
-        <Form.Item label="Address">
+        <Form.Item label={'Location'}>
           <Autocomplete
             className="google-autocomplete"
             value={address}
@@ -134,9 +136,9 @@ export const CreateEventReviewEditForm = props => {
             componentRestrictions={{ country: 'us' }}
           />
         </Form.Item>
-        <Form.Item label={'Types of Causes'} required>
+        <Form.Item label={'Causes'} required>
           <div className={'errorFlex'}>
-            <div className={'input'}>
+            <div className={'selectMax'}>
               <Select
                 name={'Types of Causes'}
                 mode="multiple"
@@ -156,9 +158,9 @@ export const CreateEventReviewEditForm = props => {
           </div>
         </Form.Item>
 
-        <Form.Item label={'Volunteer Requirements'} required>
+        <Form.Item label={'Requirements'} required>
           <div className={'errorFlex'}>
-            <div className={'input'}>
+            <div className={'selectMax'}>
               <Select
                 name={'Volunteer Requirements'}
                 mode="multiple"
@@ -177,9 +179,9 @@ export const CreateEventReviewEditForm = props => {
             </div>
           </div>
         </Form.Item>
-        <Form.Item label={'Interest'} required>
+        <Form.Item label={'Interests'} required>
           <div className={'errorFlex'}>
-            <div className={'input'}>
+            <div className={'selectMax'}>
               <Select
                 name={'Interest'}
                 mode="multiple"
@@ -198,60 +200,25 @@ export const CreateEventReviewEditForm = props => {
             </div>
           </div>
         </Form.Item>
-        <p className={'title'}>*How many volunteers do you need?</p>
-        <Form.Item required>
-          <div className={'errorFlex'}>
-            <div className={'input'}>
-              <InputNumber
-                name={'Number of Volunteers'}
-                min={0}
-                value={numberOfVolunteers}
-                onChange={value => handleValue('numberOfVolunteers', value)}
-              />
-              {'  '}
-              {localState.numberOfVolunteers > 1 ? 'Volunteers' : 'Volunteer'}
-            </div>
-            <div>
-              {error && !numberOfVolunteers > 0 && (
-                <span className="error-message error-span left-aligned">
-                  {error}
-                </span>
-              )}
-            </div>
+
+        <p className={'title'}>*Point of Contact</p>
+        <Form.Item label={'Name'}>
+          <div className={'selectMax'}>
+            <Input
+              name={'fullName'}
+              value={fullName}
+              onChange={e => handleValue(e.target.name, e.target.value)}
+            />
+            {error && !fullName && (
+              <span className="error-message error-span left-aligned">
+                {error}
+              </span>
+            )}
           </div>
         </Form.Item>
 
-        <p className={'title'}>*Point of Contact</p>
-        <Form.Item label={'First Name'}>
-          <div className={'input'}>
-            <Input
-              name={'firstName'}
-              value={firstName}
-              onChange={e => handleValue(e.target.name, e.target.value)}
-            />
-            {error && !firstName && (
-              <span className="error-message error-span left-aligned">
-                {error}
-              </span>
-            )}
-          </div>
-        </Form.Item>
-        <Form.Item label={'Last Name'}>
-          <div className={'input'}>
-            <Input
-              name={'lastName'}
-              value={lastName}
-              onChange={e => handleValue(e.target.name, e.target.value)}
-            />
-            {error && !lastName && (
-              <span className="error-message error-span left-aligned">
-                {error}
-              </span>
-            )}
-          </div>
-        </Form.Item>
         <Form.Item label={'Phone Number'} required>
-          <div className={'input'}>
+          <div>
             <Input
               name={'phoneNumber'}
               value={phoneNumber}
@@ -264,9 +231,23 @@ export const CreateEventReviewEditForm = props => {
             )}
           </div>
         </Form.Item>
+        <Form.Item label={'Email'}>
+          <div>
+            <Input
+              name={'email'}
+              value={email}
+              onChange={e => handleValue(e.target.name, e.target.value)}
+            />
+            {error && !email && (
+              <span className="error-message error-span left-aligned">
+                {error}
+              </span>
+            )}
+          </div>
+        </Form.Item>
         <p className={'title'}>*When is the event?</p>
         <Form.Item required>
-          <div className={'input'}>
+          <div>
             <DatePicker
               name={'Date'}
               format={'MM/DD/YYYY'}
@@ -283,7 +264,7 @@ export const CreateEventReviewEditForm = props => {
         <p className={'title'}>*What time?</p>
         <div className={'time-wrapper'}>
           <Form.Item required>
-            <div className={'input'}>
+            <div>
               <TimePicker
                 name={'Start Time'}
                 use12Hours
@@ -297,7 +278,7 @@ export const CreateEventReviewEditForm = props => {
             <p>to</p>
           </div>
           <Form.Item required>
-            <div className={'input'}>
+            <div>
               <TimePicker
                 name={'End Time'}
                 use12Hours
@@ -308,8 +289,30 @@ export const CreateEventReviewEditForm = props => {
             </div>
           </Form.Item>
         </div>
+        <p className={'title'}>*How many volunteers do you need?</p>
+        <Form.Item required>
+          <div className={'errorFlex'}>
+            <div>
+              <InputNumber
+                name={'Number of Volunteers'}
+                min={1}
+                value={numberOfVolunteers}
+                onChange={value => handleValue('numberOfVolunteers', value)}
+              />
+              {'  '}
+              {localState.numberOfVolunteers > 1 ? 'Volunteers' : 'Volunteer'}
+            </div>
+            <div>
+              {error && !numberOfVolunteers > 0 && (
+                <span className="error-message error-span left-aligned">
+                  Must be higher than 0.
+                </span>
+              )}
+            </div>
+          </div>
+        </Form.Item>
         <Form.Item label={'Event Details'} required>
-          <div className={'input'}>
+          <div>
             <TextArea
               name={'eventDetails'}
               placeholder={
@@ -327,7 +330,7 @@ export const CreateEventReviewEditForm = props => {
           </div>
         </Form.Item>
         <Form.Item label={'Website'}>
-          <div className={'input'}>
+          <div>
             <Input
               name={'website'}
               value={website}
@@ -336,7 +339,7 @@ export const CreateEventReviewEditForm = props => {
           </div>
         </Form.Item>
         <Form.Item label={'Other Notes'}>
-          <div className={'input'}>
+          <div>
             <TextArea
               name={'otherNotes'}
               placeholder={'Any additional helpful tips for the event go here.'}
@@ -381,7 +384,6 @@ const StyledButtons = styled.div`
     height: 50px;
     cursor: pointer;
   }
-  
 `;
 
 const StyledDiv = styled.div`
@@ -401,10 +403,10 @@ const StyledDiv = styled.div`
     border: 1px solid rgb(217, 217, 217);
     font-family: ${({ theme }) => theme.bodytext};
 
-    &::placeholder{
-       color: rgba(0, 0, 0, 0.35);
-       font-size: 14px;
-       font-family: ${({ theme }) => theme.bodytext};
+    &::placeholder {
+      color: rgba(0, 0, 0, 0.35);
+      font-size: 14px;
+      font-family: ${({ theme }) => theme.bodytext};
     }
   }
 `;

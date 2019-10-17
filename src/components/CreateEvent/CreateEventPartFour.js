@@ -32,7 +32,7 @@ export const CreateEventPartFour = props => {
         <h4>Do you have a website?</h4>
         <div className={'error-flex'}>
           <Form.Item label={'Website'}>
-            <div className={'input'}>
+            <div>
               <Input
                 name={'website'}
                 value={website}
@@ -50,6 +50,7 @@ export const CreateEventPartFour = props => {
               <div className={'inputNumber'}>
                 <InputNumber
                   name={'numberOfVolunteers'}
+                  min={1}
                   value={numberOfVolunteers}
                   onChange={value => handleChange('numberOfVolunteers', value)}
                 />{' '}
@@ -70,7 +71,7 @@ export const CreateEventPartFour = props => {
         <Form.Item>
           <Form.Item label={'Other Notes'}>
             <div className={'error-flex'}>
-              <div className={'input'}>
+              <div>
                 <TextArea
                   name={'otherNotes'}
                   placeholder={

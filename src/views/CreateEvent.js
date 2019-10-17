@@ -39,9 +39,10 @@ export const CreateEvent = props => {
     },
     recurringInfo: {
       repeatTimePeriod: '',
-      occurrenceEnds: 'Never',
-      occurrenceEndDate: '',
-      occurrenceEndsAfter: '',
+      occurrenceEnds: 'On',
+      occurrenceEndDate: moment(),
+      occurrenceEndsAfter: 1,
+      repeatEveryValue: '',
       days: [],
     },
   };
@@ -230,6 +231,10 @@ const CustomRenderDiv = styled(StyledRenderDiv)`
     &::before {
       color: ${({ theme }) => theme.primary8};
     }
+  }
+
+  .selectMax {
+    max-width: 615px;
   }
 
   .inline {

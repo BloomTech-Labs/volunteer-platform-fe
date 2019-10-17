@@ -4,7 +4,7 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import { Icon, message } from 'antd';
 import uuid4 from 'uuid4';
-import { confirmModal } from '../styled';
+import { confirmModal, StyledLoader } from '../styled';
 
 import { useStateValue } from '../hooks/useStateValue';
 import {
@@ -31,6 +31,7 @@ import {
 export const EventProfile = props => {
   const [{ events, auth, comments }, dispatch] = useStateValue();
 
+  const { selectedDate } = props.location.state;
   const { event } = events;
 
   const emptyState = {
@@ -43,7 +44,7 @@ export const EventProfile = props => {
     nameOfEvent: '',
     startTimeStamp: '',
     endTimeStamp: '',
-    numberOfVolunteers: null,
+    numberOfVolunteers: 0,
     eventDetails: '',
     otherNotes: '',
     recurringInfo: '',
@@ -106,7 +107,6 @@ export const EventProfile = props => {
     props.history.goBack();
   };
 
-  
   const register = (e, date) => {
     const confirmRegModal = confirmModal({
       title: 'Are you sure you want to sign up?',
@@ -117,8 +117,8 @@ export const EventProfile = props => {
           return;
         }
         signUpForEvent(event, auth.registeredUser, dispatch);
-      }
-    })
+      },
+    });
 
     e.preventDefault();
     confirmRegModal();
@@ -127,16 +127,22 @@ export const EventProfile = props => {
   const unRegister = (e, date) => {
     const confirmUnRegModal = confirmModal({
       title: 'Are you sure you want to cancel your registration?',
-      content: 'You will no longer be able to attend the event once you clicked OK. You may register again if you change your mind.',
+      content:
+        'You will no longer be able to attend the event once you clicked OK. You may register again if you change your mind.',
       okType: 'danger',
       onOk: () => {
         if (date) {
-          cancelSignedUpRecurringEvent(event, auth.registeredUser, date, dispatch);
+          cancelSignedUpRecurringEvent(
+            event,
+            auth.registeredUser,
+            date,
+            dispatch
+          );
           return;
         }
         cancelSignedUpEvent(event, auth.registeredUser, dispatch);
-      }
-    })
+      },
+    });
 
     e.preventDefault();
     confirmUnRegModal();
@@ -144,38 +150,45 @@ export const EventProfile = props => {
 
   return (
     <StyledEventProfile>
-      <div className="previous-page" onClick={backButton}>
-        <Icon
-          type="left-circle"
-          theme="filled"
-          style={{ fontSize: '25px', marginRight: '15px' }}
-        />
-        <h6>Previous Page </h6>
-      </div>
-      <FirstRow
-        localState={localState}
-        auth={auth}
-        register={register}
-        unRegister={unRegister}
-      />
-      <SecondRow localState={localState} />
-      <ThirdRow localState={localState} />
-      <FourthRow />
-      {event.recurringInfo && (
-        <RecurSignUp
-          localState={localState}
-          auth={auth}
-          register={register}
-          unRegister={unRegister}
-        />
+      {events.isLoading ? <StyledLoader /> : (
+        <>
+          <div className="previous-page" onClick={backButton}>
+            <Icon
+              type="left-circle"
+              theme="filled"
+              style={{ fontSize: '25px', marginRight: '15px' }}
+            />
+            <h6>Previous Page </h6>
+          </div>
+          <FirstRow
+            localState={localState}
+            auth={auth}
+            register={register}
+            unRegister={unRegister}
+            selectedDate={selectedDate}
+            numberOfVolunteers={event.numberOfVolunteers}
+          />
+          <SecondRow localState={localState} />
+          <ThirdRow localState={localState} />
+          <FourthRow />
+          {event.recurringInfo && (
+            <RecurSignUp
+              localState={localState}
+              auth={auth}
+              register={register}
+              unRegister={unRegister}
+              numberOfVolunteers={event.numberOfVolunteers}
+            />
+          )}
+          <CommentList
+            comments={event.comments}
+            addCommentToComment={handleAddCommentToComment}
+            isLoading={comments.isLoadingReplyToComment}
+            event={event}
+          />
+          <Editor onSubmit={submitComment} submitting={comments.isLoading} />
+        </>
       )}
-      <CommentList
-        comments={event.comments}
-        addCommentToComment={handleAddCommentToComment}
-        isLoading={comments.isLoadingReplyToComment}
-        event={event}
-      />
-      <Editor onSubmit={submitComment} submitting={comments.isLoading} />
     </StyledEventProfile>
   );
 };

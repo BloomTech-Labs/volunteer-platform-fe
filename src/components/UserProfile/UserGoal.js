@@ -1,81 +1,87 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { Modal, Select, DatePicker, Input, Icon, Button } from 'antd';
+import { Modal, Select, DatePicker, Input, Icon, Button, message } from 'antd';
 import { WrappedAntForm, AntInputNumber, AntSelect } from '../../styled/index';
 import moment from 'moment';
 
-export const UserGoal = (props) => {
+export const UserGoal = props => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [goalsToEdit, setGoalsToEdit] = useState({
     Hours: '',
-    Frequency: undefined,   //need to be undefined or else placeholder will not show
+    Frequency: undefined, //need to be undefined or else placeholder will not show
     start: null,
-    end: null
+    end: null,
   });
   const [displayGoals, setDisplayGoals] = useState({
     hours: '',
     frequency: '',
     duration: {
       start: '',
-      end: ''
-    }
+      end: '',
+    },
   });
+  const inputRef = useRef(null);
 
   const { Option } = Select;
   const { MonthPicker } = DatePicker;
 
   const openModal = () => {
     setIsModalOpen(true);
-  }
+  };
 
   useEffect(() => {
     if (props.user.goals) {
       setDisplayGoals(props.user.goals);
       setGoalsToEdit({
         Hours: props.user.goals.hours,
-        Frequency: props.user.goals.frequency ? props.user.goals.frequency : undefined,   
-        start: props.user.goals.duration.start ? moment(props.user.goals.duration.start) : null,
-        end: props.user.goals.duration.end ? moment(props.user.goals.duration.end) : null
-      })
+        Frequency: props.user.goals.frequency
+          ? props.user.goals.frequency
+          : undefined,
+        start: props.user.goals.duration.start
+          ? moment(props.user.goals.duration.start)
+          : null,
+        end: props.user.goals.duration.end
+          ? moment(props.user.goals.duration.end)
+          : null,
+      });
     }
-  }, [props.user])  
+  }, [props.user]);
 
-
-  const handleSubmit = (values) => {
+  const handleSubmit = values => {
     console.log(values);
     let goals = {
       hours: values.Hours,
       frequency: values.Frequency,
       duration: {
         start: moment(values.start).format('MMM-YYYY'),
-        end: moment(values.end).format('MMM-YYYY')
-      }
-    }
+        end: moment(values.end).format('MMM-YYYY'),
+      },
+    };
 
     let updatedUser = {
       ...props.user,
-      goals: goals
-    }
+      goals: goals,
+    };
 
     props.updateUser(updatedUser);
     setGoalsToEdit({
       Hours: '',
       Frequency: '',
       start: null,
-      end: null
+      end: null,
     });
     setIsModalOpen(false);
-  }
+  };
 
   const cancelSetGoal = () => {
     setGoalsToEdit({
       Hours: '',
       Frequency: undefined,
       start: null,
-      end: null
+      end: null,
     });
     setIsModalOpen(false);
-  }
+  };
 
   const removeGoal = () => {
     let newGoals = {
@@ -83,22 +89,29 @@ export const UserGoal = (props) => {
       frequency: '',
       duration: {
         start: null,
-        end: null
-      }
-    }
+        end: null,
+      },
+    };
 
     let updatedUser = {
       ...props.user,
-      goals: newGoals
-    }
+      goals: newGoals,
+    };
     props.updateUser(updatedUser);
+  };
 
-  }
+  const copyLink = event => {
+    event.preventDefault();
+    inputRef.current.select();
+    document.execCommand('copy');
+    message.config({top: 100})
+    message.success('Link copied.');
+  };
 
   return (
     <StyledDiv>
-      <StyledModal 
-        title='Set Your Goal'
+      <StyledModal
+        title="Set Your Goal"
         visible={isModalOpen}
         closable={false}
         footer={null}
@@ -114,52 +127,65 @@ export const UserGoal = (props) => {
           cancelButtonText={'Cancel'}
           handleCancel={cancelSetGoal}
         >
-          <div className='form-row'>
-            <AntInputNumber 
+          <div className="form-row">
+            <AntInputNumber
               name={' Hours '}
-              placeholder='Number of hours'
-              min={0} 
-              style={{width: '200px'}}/>
-            <AntSelect 
+              placeholder="Number of hours"
+              min={0}
+              style={{ width: '200px' }}
+            />
+            <AntSelect
               name={' Frequency'}
-              placeholder='Select frequency'
-              style={{width: '200px'}}
+              placeholder="Select frequency"
+              style={{ width: '200px' }}
             >
-              <Option key='per week' value='per week'>hours per week</Option>
-              <Option key='per month' value='per month'>hours per month</Option>
+              <Option key="per week" value="per week">
+                hours per week
+              </Option>
+              <Option key="per month" value="per month">
+                hours per month
+              </Option>
             </AntSelect>
           </div>
           <h5>Duration</h5>
-          <div className='form-row'>
-            <MonthPicker 
+          <div className="form-row">
+            <MonthPicker
               name={'Start'}
               placeholder={'Start month'}
               format={'MMM-YYYY'}
-              style={{width: '200px'}}
+              style={{ width: '200px' }}
             />
-            <MonthPicker 
+            <MonthPicker
               name={'End'}
               placeholder={'End month'}
               format={'MMM-YYYY'}
-              style={{width: '200px'}}
+              style={{ width: '200px' }}
             />
           </div>
         </WrappedAntForm>
       </StyledModal>
-        <div className='left'>
-        <Button type='link' icon='plus-circle' onClick={openModal}>Set Goals</Button>
+      <div className="left">
+        <Button type="link" icon="plus-circle" onClick={openModal}>
+          Set Goals
+        </Button>
         {displayGoals.frequency ? (
           <>
             <div>
-              <div className='row'>
+              <div className="row">
                 <h5>Current Goal</h5>
-                <Button type='link' icon='minus-circle' onClick={removeGoal}>Remove</Button>
+                <Button type="link" icon="minus-circle" onClick={removeGoal}>
+                  Remove
+                </Button>
               </div>
-              <p>{displayGoals.hours} hours {displayGoals.frequency}</p>
+              <p>
+                {displayGoals.hours} hours {displayGoals.frequency}
+              </p>
             </div>
             <div>
               <h5>Duration</h5>
-              <p>{displayGoals.duration.start} to {displayGoals.duration.end}</p>
+              <p>
+                {displayGoals.duration.start} to {displayGoals.duration.end}
+              </p>
             </div>
           </>
         ) : (
@@ -169,25 +195,29 @@ export const UserGoal = (props) => {
           </>
         )}
       </div>
-      <div className='right'>
+      <div className="right">
         <div>
           <h5>Community</h5>
           <p>2/5 friends accepted your challenge for October</p>
         </div>
         <div>
           <h5>Challenge a friend to be your goals</h5>
-          <div className='link-row'>
-            <Input 
+          <div className="link-row">
+            <Input
               style={{ width: '350px' }}
               prefix={<Icon type="link" style={{ color: '#8C8C8C' }} />}
-              value={`www.volunteir.com/${props.user.firstName}challenge`}/>
-            <Button icon="copy">Copy</Button>
+              value={`www.volunteir.com/${props.user.firstName}challenge`}
+              ref={inputRef}
+            />
+            <Button icon="copy" onClick={copyLink}>
+              Copy
+            </Button>
           </div>
         </div>
       </div>
     </StyledDiv>
-  )
-}
+  );
+};
 
 export default UserGoal;
 
@@ -196,7 +226,7 @@ const StyledDiv = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-around;
-  border: 1px solid ${({theme}) => theme.gray4};
+  border: 1px solid ${({ theme }) => theme.gray4};
   background: white;
   border-radius: 3px;
   padding: 1rem 0;
@@ -223,7 +253,7 @@ const StyledDiv = styled.div`
     }
 
     button:hover {
-      color: ${({theme}) => theme.primary7};
+      color: ${({ theme }) => theme.primary7};
     }
   }
 
@@ -237,7 +267,7 @@ const StyledDiv = styled.div`
       display: flex;
     }
   }
-`
+`;
 
 const StyledModal = styled(Modal)`
   form {
@@ -262,4 +292,4 @@ const StyledModal = styled(Modal)`
       margin: 1rem 1.5rem;
     }
   }
-` 
+`;
