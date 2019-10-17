@@ -76,7 +76,15 @@ export const UserEvents = ({ events, changePanel, calendarValue, selectDate, sel
                       <h5>Point of Contact</h5>
                       <p>Name: {event.pointOfContact.fullName}</p>
                       <p>Phone: {event.pointOfContact.phoneNumber}</p>
-                      <CustomButton><Link to={{pathname: `/events/${event.eventId}`}}>View event details</Link></CustomButton>
+                      <CustomButton>
+                        <Link 
+                          to={{
+                            pathname: `/events/${event.eventId}`,
+                            state: { selectedDate: event.date}
+                        }}>
+                          View event details
+                        </Link>
+                      </CustomButton>
                     </div>
                     <div>
                       <StyledButton onClick={(e) => unRegister(e, event.eventId, event.date, event.isRecurring)} style={{ marginTop: '1rem'}}>Cancel</StyledButton>
