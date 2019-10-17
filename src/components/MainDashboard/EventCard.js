@@ -30,14 +30,20 @@ export const EventCard = ({ event }) => {
     return <Tag>{(item = [item])}</Tag>;
   });
 
-  //console.log(event)
   return (
     <StyledEventCard margin={'0 0 20px 0'}>
       <div className="container">
         <div className="head">
           <h4>{event.nameOfEvent}</h4>
-          <h5>Host Organization: {event.orgName} </h5>
-          <h5>City: {event.city} </h5>
+          <h5>
+            {event.orgName && event.orgId && (
+              <span>
+                <a href={`/organization/${event.orgId}`}>{event.orgName}</a>
+                <Spacer>•</Spacer>
+              </span>
+            )}
+            {event.city}
+          </h5>
           <h5>Causes: {causes}</h5>
           <h5>Interests: {interest} </h5>
           <h5>Requirements: {requirements}</h5>
@@ -79,4 +85,10 @@ const StyledEventCard = styled(StyledCard)`
     text-align: justify;
   }
 `;
+
+const Spacer = styled.span`
+  color: ${props => props.theme.gray4};
+  margin: 0 8px;
+`;
+
 export default EventCard;
