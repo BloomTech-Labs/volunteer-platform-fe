@@ -24,6 +24,12 @@ export const FooterDiv = () => {
               </div>
               <Link to="/">View Volunteers</Link>
             </div>
+            <div className="links-right">
+              <div className="top-right">
+                <Link to="/login">Login</Link>
+              </div>
+              <Link to="/signup">Sign Up</Link>
+            </div>
           </div>
         </div>
         <div className="Logo">

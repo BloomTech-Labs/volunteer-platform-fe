@@ -1,40 +1,53 @@
 import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
-import { Icon } from 'antd';
+import { Icon, Tag } from 'antd';
 import { StyledCard } from '../../styled';
 import { setDaysOpen } from '../../utility/setDaysOpen';
+import MapContainer from '../Map/MapContainer';
 
 export const OrgInfo = ({ displayOrg }) => {
+  const causes = displayOrg && displayOrg.causeAreas.map(item => <Tag>{(item = [item])}</Tag>)
+
   return (
     <OrgInfoDiv
-      backgroundcolor={'#E8E8E8'}
-      borderRadius={'0px'}
-      margin={'0 0 40px 0'}
+      style={{
+        background: 'white',
+        borderRadius: '3px',
+        margin: '0 0 40px 0',
+        width: '100%',
+        boxShadow: 'none'
+      }} 
     >
-      <h5 style={{ marginBottom: '5px' }}>Org Info</h5>
-      <div className="upper-info">
-        <div className="hours-of-op">
+      <h3 style={{ marginBottom: '5px' }}>General Info</h3>
+      <h5>Website</h5>
+      <p>{displayOrg.website}</p>
+      <div className="hours-of-op">
+        <h5>Hours</h5>
+        <div className='hours-row'>
           <span>{setDaysOpen(displayOrg.daysOfTheWeek)} </span>
+          <Icon type="clock-circle"/>
           <span>
             {`${moment.unix(displayOrg.startTime).format('LT')} - 
               ${moment.unix(displayOrg.endTime).format('LT')}`}
           </span>
         </div>
-        <div className="location">
-          <Icon
-            type="environment"
-            theme={'twoTone'}
-            twoToneColor={'#005a87'}
-            className={'icon'}
-          />
-          <span>{`${displayOrg.city} ${displayOrg.state}`}</span>
-        </div>
       </div>
-      <h5 style={{ margin: '20px 0 5px' }}>
-        Contact{displayOrg.POC && displayOrg.POC.length > 1 ? 's' : ''}
-      </h5>
+      <div className="location">
+        <Icon
+          type="environment"
+          theme={'twoTone'}
+          twoToneColor={'#005a87'}
+          className={'icon'}
+        />
+        <span>{displayOrg.address}</span>
+      </div>
+      <div className='causes'>
+        <h5>Cause{causes && causes.length > 1 ? 's' : ''}</h5>
+        {causes}
+      </div>
       <div className="lower-info">
+        <h5>Contact{displayOrg.POC && displayOrg.POC.length > 1 ? 's' : ''}</h5>
         {displayOrg.POC &&
           displayOrg.POC.map(contact => {
             return (
@@ -80,44 +93,63 @@ const OrgInfoDiv = styled(StyledCard)`
     align-items: center;
   }
 
+  h3 {
+    text-align: center;
+  }
+
   .hours-of-op {
     display: flex;
     flex-direction: column;
-    min-width: 50%;
+    width: 100%;
+
+    .hours-row {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+
+      > * {
+        margin-right: 1rem;
+      }
+    }
   }
 
   .location {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    width: 45%;
+    width: 100%;
+  }
+
+  .causes {
+    flex-direction: row;
+    justify-content: flex-start;
   }
 
   .icon {
-    font-size: 30px;
+    font-size: 24px;
     padding-right: 10px;
+  }
+
+  .poc {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .poc-name {
+      min-width: 30%;
+      margin-bottom: 5px;
+    }
+
+    .poc-info {
+      display: flex;
+      align-items: center;
+      min-width: 30%;
+    }
   }
 
   .lower-info {
     display: flex;
-    flex-direction: column;
-
-    .poc {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      .poc-name {
-        min-width: 30%;
-        margin-bottom: 5px;
-      }
-
-      .poc-info {
-        display: flex;
-        align-items: center;
-        min-width: 30%;
-      }
-    }
+    flex-direction: column;    
   }
 `;
 export default OrgInfo;

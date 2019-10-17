@@ -129,7 +129,6 @@ const ScrollbarDiv = styled.div`
   ::-webkit-scrollbar-thumb {
     background: ${({theme}) => theme.gray3};
     border-radius: 16px;
-    height: 10px;
   }
 
   ::-webkit-scrollbar-track {
