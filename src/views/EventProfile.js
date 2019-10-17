@@ -109,7 +109,7 @@ export const EventProfile = props => {
 
   const register = (e, date) => {
     const confirmRegModal = confirmModal({
-      title: 'Are you sure you want to sign up?',
+      title: 'Are you sure you want to sign up for the event?',
       content: 'Please click OK to confirm your registration',
       onOk: () => {
         if (date) {
@@ -120,8 +120,24 @@ export const EventProfile = props => {
       },
     });
 
+    const promptRegModal = confirmModal({
+      title: 'Login or register required',
+      content: 'In order to sign up for this event you must have an account with us.',
+      okText: 'Sign up',
+      onOk: () => {
+        props.history.push({
+          pathname: '/signup',
+          state: { eventId: event.eventId }
+        })
+      }
+    })
+
     e.preventDefault();
-    confirmRegModal();
+    if (auth.registeredUser) {
+      confirmRegModal();
+    } else {
+      promptRegModal();
+    }
   };
 
   const unRegister = (e, date) => {
@@ -186,7 +202,7 @@ export const EventProfile = props => {
             isLoading={comments.isLoadingReplyToComment}
             event={event}
           />
-          <Editor onSubmit={submitComment} submitting={comments.isLoading} />
+          {auth.registeredUser && <Editor onSubmit={submitComment} submitting={comments.isLoading} />}
         </>
       )}
     </StyledEventProfile>

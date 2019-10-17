@@ -38,7 +38,7 @@ export const RecurSignUp = ({
                 {numberOfVolunteers -
                   localState.registeredVolunteers[date].length}
               </h5>
-              {localState.registeredVolunteers[date].some(
+              {auth.googleAuthUser && localState.registeredVolunteers[date].some(
                 item => item.userId === auth.googleAuthUser.uid
               ) ? (
                 <StyledButton width={'25%'} onClick={e => unRegister(e, date)}>

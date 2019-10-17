@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import MapContainer from '../Map/MapContainer';
 import { StyledCard } from '../../styled';
-import { Col } from 'antd';
+import { Row, Col } from 'antd';
 
 export const ThirdRow = ({ localState }) => {
   const markers = [
@@ -47,6 +47,20 @@ const StyledThirdRow = styled(StyledCard)`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    align-items: stretch;
+  }
+
+  .details-info {
+    width: 692px;
+
+    @media (max-width: 1088px) {
+      width: 650px;
+    }
+
+    @media (max-width: 800px) {
+      width: 500px;
+    }
+
   }
 `;
 

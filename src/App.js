@@ -58,6 +58,7 @@ function App() {
       }
     });
   }, []);
+
   useEffect(() => {
     window.addEventListener('resize', updateDimensions);
     updateDimensions();
