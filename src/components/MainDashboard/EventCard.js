@@ -6,7 +6,7 @@ import { useStateValue } from '../../hooks/useStateValue';
 import moment from 'moment';
 import { Tag } from 'antd';
 
-export const EventCard = ({ event }) => {
+export const EventCard = ({ event, tags }) => {
   //logic
   const [{ org, events, auth }, dispatch] = useStateValue();
 
@@ -18,16 +18,24 @@ export const EventCard = ({ event }) => {
     }
   });
 
-  const causes = event.typesOfCauses.map(item => {
-    return <Tag>{(item = [item])}</Tag>;
-  });
+  let selectedTags = [];
+  let otherTags = [];
 
-  const interest = event.interest.map(item => {
-    return <Tag>{(item = [item])}</Tag>;
-  });
+  const eventTags = [
+    ...event.typesOfCauses,
+    ...event.interest,
+    ...event.volunteerRequirements,
+  ];
+  const filteredTags = {
+    ...tags.causeAreas,
+    ...tags.interests,
+    ...tags.requirements,
+  };
 
-  const requirements = event.volunteerRequirements.map(item => {
-    return <Tag>{(item = [item])}</Tag>;
+  eventTags.forEach(tag => {
+    tag in filteredTags && filteredTags[tag] === true
+      ? selectedTags.push(<Tag color="blue">{tag}</Tag>)
+      : otherTags.push(<Tag>{tag}</Tag>);
   });
 
   return (
@@ -44,9 +52,10 @@ export const EventCard = ({ event }) => {
             )}
             {event.city}
           </h5>
-          <h5>Causes: {causes}</h5>
-          <h5>Interests: {interest} </h5>
-          <h5>Requirements: {requirements}</h5>
+          <h6>
+            {selectedTags}
+            {otherTags}
+          </h6>
         </div>
         <div className="date">
           <h5>On: {moment.unix(event.nextDate).format('LL')}</h5>
