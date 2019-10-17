@@ -34,8 +34,8 @@ export const EventCard = ({ event, tags }) => {
 
   eventTags.forEach(tag => {
     tag in filteredTags && filteredTags[tag] === true
-      ? selectedTags.push(<Tag color="blue">{tag}</Tag>)
-      : otherTags.push(<Tag>{tag}</Tag>);
+      ? selectedTags.push(<EventCardTag color="blue">{tag}</EventCardTag>)
+      : otherTags.push(<EventCardTag>{tag}</EventCardTag>);
   });
 
   return (
@@ -98,6 +98,11 @@ const StyledEventCard = styled(StyledCard)`
 const Spacer = styled.span`
   color: ${props => props.theme.gray4};
   margin: 0 8px;
+`;
+
+const EventCardTag = styled(Tag)`
+  font-size: 75%;
+  margin: 4px 4px 0 0;
 `;
 
 export default EventCard;
