@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { StyledCard, StyledButton } from '../../styled';
 import { useStateValue } from '../../hooks/useStateValue';
 import moment from 'moment';
-import { Tag } from 'antd';
+import { Tag, Button, Icon } from 'antd';
 
 export const EventCard = ({ event, tags }) => {
   //logic
@@ -40,9 +40,11 @@ export const EventCard = ({ event, tags }) => {
 
   return (
     <StyledEventCard margin={'0 0 20px 0'}>
-      <div className="container">
-        <div className="head">
+      <div className="event-info">
+        <div className="title-container">
           <h4>{event.nameOfEvent}</h4>
+        </div>
+        <div className="details-container">
           <h5>
             {event.orgName && event.orgId && (
               <span>
@@ -52,30 +54,29 @@ export const EventCard = ({ event, tags }) => {
             )}
             {event.city}
           </h5>
-          <h6>
-            {selectedTags}
-            {otherTags}
-          </h6>
         </div>
-        <div className="date">
-          <h5>On: {moment.unix(event.nextDate).format('LL')}</h5>
-          <h5>from: {moment.unix(event.startTimeStamp).format('LT')}</h5>
-          <h5>to: {moment.unix(event.endTimeStamp).format('LT')}</h5>
-          <h5>Spot(s) Remaining: {event.numberOfVolunteers}</h5>
+        <div className="tags-container">
+          {selectedTags}
+          {otherTags}
         </div>
-        {ableToDelete && <StyledButton type="danger">Delete</StyledButton>}
       </div>
-      <button>
-        <Link
-          to={{
-            pathname: `/events/${event.eventId}`,
-            state: { selectedDate: event.nextDate },
-          }}
-        >
-          {' '}
-          View More{' '}
-        </Link>
-      </button>
+      <div className="description-container">{event.eventDetails}</div>
+      <div className="date">
+        <Icon type="calendar" theme="twoTone" />
+        {moment.unix(event.nextDate).format('LL')}
+        <Spacer>•</Spacer>
+        {moment.unix(event.startTimeStamp).format('LT')}
+      </div>
+      {ableToDelete && <StyledButton type="danger">Delete</StyledButton>}
+      <Link
+        to={{
+          pathname: `/events/${event.eventId}`,
+          state: { selectedDate: event.nextDate },
+        }}
+      >
+        {' '}
+        View More{' '}
+      </Link>
     </StyledEventCard>
   );
 };
@@ -85,13 +86,43 @@ const StyledEventCard = styled(StyledCard)`
   .ant-card-body {
     width: 100%;
   }
-  .head {
-    padding-bottom: 10px;
+  .event-info {
   }
   .date {
+    font-size: 0.85rem;
+    margin: 16px 0;
+    & > :first-child {
+      margin-right: 8px;
+    }
+  }
+  .title-container {
     display: flex;
-    justify-content: space-evenly;
-    text-align: justify;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 48px;
+    width: 100%;
+    margin: 0 0 8px 0;
+    h4 {
+      line-height: 28px;
+      padding: 0;
+      margin: 0;
+    }
+  }
+  .details-container {
+    h5 {
+      margin: 0;
+    }
+  }
+  .tags-container {
+    margin: 8px 0;
+  }
+  .description-container {
+    max-height: 48px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 `;
 
@@ -101,7 +132,7 @@ const Spacer = styled.span`
 `;
 
 const EventCardTag = styled(Tag)`
-  font-size: 75%;
+  font-size: 0.75rem;
   margin: 4px 4px 0 0;
 `;
 
