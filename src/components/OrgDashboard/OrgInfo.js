@@ -101,6 +101,7 @@ const OrgInfoDiv = styled(StyledCard)`
   .lower-info {
     display: flex;
     flex-direction: column;
+    min-width: 30%;
 
     .poc {
       display: flex;

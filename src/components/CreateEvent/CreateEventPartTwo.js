@@ -173,7 +173,7 @@ export const CreateEventPartTwo = props => {
               <Input
                 name={'phoneNumber'}
                 value={phoneNumber}
-                placeholder="Phone Number"
+                placeholder="(123) 456-7890"
                 onChange={e => handleChange(e.target.name, e.target.value)}
               />
             </div>
