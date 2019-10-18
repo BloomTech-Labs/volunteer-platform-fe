@@ -83,13 +83,17 @@ export class AntForm extends React.Component{
           </Tooltip>
         );
       }
+      const validateTrigger = child.props.trigger || 'onChange';
       return (
         <Form.Item
           label={child.props.noLabel || label}
           key={camelCase}
           {...child.props.layout}
         >
-          {this.props.form.getFieldDecorator(camelCase, {rules})(child)}
+          {this.props.form.getFieldDecorator(
+            camelCase,
+            {rules, validateTrigger}
+          )(child)}
         </Form.Item>
       );
     }

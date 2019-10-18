@@ -162,7 +162,16 @@ export const CreateOrg = props => {
     const cancelOrgFormModal = deleteModal({
       title: 'Are you sure you want to cancel? All data will be lost.',
       content: 'This cannot be undone',
-      onOk: () => props.history.push('/dashboard'),
+      onOk: () => {
+        if (props.location.state && props.location.state.org) {
+          props.history.push({
+            pathname: '/org-dashboard',
+            state: { org: props.location.state.org }
+          })
+        } else {
+          props.history.push('/dashboard');
+        }
+      }
     });
     
     e.preventDefault();
@@ -181,10 +190,18 @@ export const CreateOrg = props => {
     }
     if (isEditing){
       updateOrganization(orgToEdit.orgId, org, dispatch);
+      props.history.push({
+        pathname: '/org-dashboard',
+        state: { org: { ...org, orgId: orgToEdit.orgId }}
+      });
     }else{
-      registerOrganization(org, dispatch);
+      registerOrganization(org, dispatch)
+        .then(() => {
+          props.history.push({
+            pathname: '/org-dashboard',
+          });
+        })
     }
-    props.history.push('/org-dashboard');
   };
   
   return (
