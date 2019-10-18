@@ -30,7 +30,6 @@ export const EventCard = ({ event }) => {
     return <Tag>{(item = [item])}</Tag>;
   });
 
-  //console.log(event)
   return (
     <StyledEventCard margin={'0 0 20px 0'}>
       <div className="container">

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { WrappedAntForm, AntTextArea } from '../../../styled';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
@@ -14,7 +14,7 @@ export const Editor = ({ onSubmit, submitting }) => {
         buttonLoading={submitting}
         autofill={submitting && { comment: '' }}
       >
-        <AntTextArea name={'Comment'} />
+        <AntTextArea name={'Comment'} trigger={'onBlur'}/>
       </WrappedAntForm>
     </StyledEditor>
   );

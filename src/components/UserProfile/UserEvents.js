@@ -43,7 +43,7 @@ export const UserEvents = ({ events, changePanel, calendarValue, selectDate, sel
   }
 
   return (
-    <CustomStyledCard  >
+    <CustomStyledCard>
       {selectedEvents.length > 0 || selectedDate ? (
         <UpperDiv>
           <h2>Upcoming Events</h2>
@@ -76,7 +76,15 @@ export const UserEvents = ({ events, changePanel, calendarValue, selectDate, sel
                       <h5>Point of Contact</h5>
                       <p>Name: {event.pointOfContact.fullName}</p>
                       <p>Phone: {event.pointOfContact.phoneNumber}</p>
-                      <CustomButton><Link to={{pathname: `/events/${event.eventId}`}}>View event details</Link></CustomButton>
+                      <CustomButton>
+                        <Link 
+                          to={{
+                            pathname: `/events/${event.eventId}`,
+                            state: { selectedDate: event.date}
+                        }}>
+                          View event details
+                        </Link>
+                      </CustomButton>
                     </div>
                     <div>
                       <StyledButton onClick={(e) => unRegister(e, event.eventId, event.date, event.isRecurring)} style={{ marginTop: '1rem'}}>Cancel</StyledButton>
@@ -129,7 +137,6 @@ const ScrollbarDiv = styled.div`
   ::-webkit-scrollbar-thumb {
     background: ${({theme}) => theme.gray3};
     border-radius: 16px;
-    height: 10px;
   }
 
   ::-webkit-scrollbar-track {
@@ -155,12 +162,12 @@ const CustomStyledCard = styled(StyledCard)`
     background: white;
     border-radius: 0px;
     margin-top: 2rem;
+    box-shadow: none;
+    border-radius: 3px;
     
     .ant-card-body {
       padding: 0;
     }
-
-    
   }
 `
 const CustomButton = styled(Button)`

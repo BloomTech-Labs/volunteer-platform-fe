@@ -100,19 +100,11 @@ export const OrganizationDashboard = props => {
 
   return (
     <StyledDashboard>
+      <h4>Dashboard of</h4>
       <h2 className={'org-name'}>{displayOrg.organizationName}</h2>
-
       <OrgButtons displayOrg={displayOrg} deleteOrg={deleteOrg} />
-
       <StyledContent>
-        <div className={'left-col'}>
-          <OrgPhoto
-            imageUrl={imageUrl}
-            imageOwner={displayOrg}
-            deleteImage={deleteImage}
-            onFileUpload={onFileUpload}
-            imageName={displayOrg.orgId}
-          />
+        <div className={'org-dash-top'}>
           <div className="calendar">
             <Calendar
               fullscreen={false}
@@ -122,32 +114,43 @@ export const OrganizationDashboard = props => {
               onSelect={onSelect}
               onPanelChange={onPanelChange}
               value={calendarValue}
-              style={{
-                width: 300,
-                border: '1px solid #d9d9d9',
-                borderRadius: 4,
-              }}
             />
           </div>
-          <StyledAboutUs backgroundcolor={'#E8E8E8'} borderRadius="0px">
-            <h5>About Us</h5>
-            <StyledLine width={'40%'} />
-            <p>{displayOrg.aboutUs}</p>
-          </StyledAboutUs>
+          <div className='org-events'>
+            {events.isLoading ? (
+              <StyledLoader />
+            ) : (
+              <EventPanel
+                recurringEvents={events.recurringEvents}
+                events={events.events}
+                selectedDate={selectedDate}
+                displayAll={displayAll}
+              />
+            )}
+          </div>
         </div>
-        <div className={'right-col'}>
-          <OrgInfo displayOrg={displayOrg} />
-          {events.isLoading ? (
-            <StyledLoader />
-          ) : (
-            <EventPanel
-              recurringEvents={events.recurringEvents}
-              events={events.events}
-              selectedDate={selectedDate}
-              displayAll={displayAll}
+        <div className={'line-box'}>
+          <StyledLine big width={'53%'}/>
+        </div>
+        <div className={'org-dash-bottom'}>
+          <div className={'left-col'}>
+            <OrgPhoto
+              imageUrl={imageUrl}
+              imageOwner={displayOrg}
+              deleteImage={deleteImage}
+              onFileUpload={onFileUpload}
+              imageName={displayOrg.orgId}
             />
-          )}
-        </div>
+            <StyledAboutUs backgroundcolor={'white'} borderRadius="3px">
+              <h5>About Us</h5>
+              <StyledLine width={'40%'} />
+              <p>{displayOrg.aboutUs}</p>
+            </StyledAboutUs>
+          </div>
+          <div className={'right-col'}>
+            <OrgInfo displayOrg={displayOrg} />
+          </div>
+      </div>
       </StyledContent>
     </StyledDashboard>
   );
@@ -173,26 +176,59 @@ export const StyledDashboard = styled.div`
 `;
 
 const StyledContent = styled.div`
+  width: 85%;
   display: flex;
-  width: 80%;
-  justify-content: space-around;
+  flex-direction: column;
   align-items: baseline;
 
-  .left-col {
+  .org-dash-top {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    justify-content: space-between;
+    width: 100%;
 
     .calendar {
-      margin-bottom: 70px;
+      margin-right: 1rem;
+      background: white;
+      width: 50%;
+      border-radius: 3px;
+      border: 1px solid ${({theme}) => theme.gray4};
+    }
+
+    .org-events {
+      width: 80%;
     }
   }
 
-  .right-col {
+  .line-box {
+    width: 100%;
+    margin: 2rem;
+  }
+
+  .org-dash-bottom {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 55%;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+
+    .left-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-right: 1rem;
+
+      .ant-card {
+        padding: 0 33px;
+        margin-bottom: 2rem;
+        box-shadow: none;
+      }
+    }
+  
+    .right-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
   }
 `;
 
