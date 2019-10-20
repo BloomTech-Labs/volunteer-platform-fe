@@ -20,7 +20,7 @@ export const CreateEventReviewList = props => {
     });
     confirmFormModal();
   };
-  console.log('local', localState);
+
   return (
     <StyledDiv className={'styledReviewDiv'}>
       <div>
@@ -84,11 +84,11 @@ export const CreateEventReviewList = props => {
           <p className={'title'}>Point of Contact</p>
           <p className={'value'}>{localState.fullName}</p>
           <p className={'value'}>
-            <Icon type="phone" /> {+' '}
+            <Icon type="phone" /> {' '}
             {localState.phoneNumber}
           </p>
           <p className={'value'}>
-            <Icon type="mail" /> {+' '}
+            <Icon type="mail" /> {' '}
             {localState.email}
           </p>
         </div>
