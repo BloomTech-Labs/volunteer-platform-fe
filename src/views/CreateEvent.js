@@ -139,10 +139,10 @@ export const CreateEvent = props => {
       if (event.recurringInfo.occurrenceEnds === 'After') {
         event.recurringInfo.occurrenceEndDate = '';
       }
-      // console.log('rec', event);
+      console.log('rec', event);
       createRecurringEvent(event, dispatch);
     } else {
-      // console.log('reg', event);
+      console.log('reg', event);
       createEvent(event, dispatch);
     }
     setPageNumber(1);
