@@ -45,6 +45,7 @@ export const CreateEvent = props => {
       repeatEveryValue: '',
       days: [],
     },
+    otherNotes: '',
   };
 
   const [localState, setLocalState] = useState(initialEvent);

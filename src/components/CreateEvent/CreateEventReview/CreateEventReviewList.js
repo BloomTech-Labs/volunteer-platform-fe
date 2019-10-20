@@ -84,12 +84,10 @@ export const CreateEventReviewList = props => {
           <p className={'title'}>Point of Contact</p>
           <p className={'value'}>{localState.fullName}</p>
           <p className={'value'}>
-            <Icon type="phone" /> {' '}
-            {localState.phoneNumber}
+            <Icon type="phone" /> {localState.phoneNumber}
           </p>
           <p className={'value'}>
-            <Icon type="mail" /> {' '}
-            {localState.email}
+            <Icon type="mail" /> {localState.email}
           </p>
         </div>
         <div>
@@ -113,12 +111,11 @@ export const CreateEventReviewList = props => {
           <p className={'title'}>Website</p>
           <p className={'value'}>{localState.website}</p>
         </div>
-        {localState.otherNotes && (
-          <div>
-            <p className={'title'}>Other Notes</p>
-            <p className={'value'}>{localState.otherNotes}</p>
-          </div>
-        )}
+
+        <div>
+          <p className={'title'}>Other Notes</p>
+          <p className={'value'}>{localState.otherNotes}</p>
+        </div>
 
         {localState.recurringInfo.recurringEvent === 'Yes' && (
           <RecurringInfoReview localState={localState} />
