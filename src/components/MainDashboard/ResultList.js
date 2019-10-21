@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { EventCard, OrganizationCard } from '../MainDashboard';
 import { NoResultsFound } from './NoResultsFound';
 import { Pagination } from 'antd';
+import { device } from '../../styled/deviceBreakpoints';
 
 export const ResultList = ({ results, type, tags }) => {
   const itemPerPage = 10;
@@ -54,6 +55,10 @@ const StyledResultList = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-evenly;
+
+  @media ${device.tablet} {
+    width: 100%;
+  }
 `;
 
 export default ResultList;
