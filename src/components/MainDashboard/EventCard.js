@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { StyledCard, StyledButton } from '../../styled';
 import { useStateValue } from '../../hooks/useStateValue';
 import moment from 'moment';
-import { Tag, Button, Icon } from 'antd';
+import { Tag, Icon } from 'antd';
 
 export const EventCard = ({ event, tags }) => {
-  //logic
   const [{ org, events, auth }, dispatch] = useStateValue();
 
   let ableToDelete = false;
@@ -40,7 +39,7 @@ export const EventCard = ({ event, tags }) => {
 
   return (
     <StyledEventCard margin={'0 0 20px 0'}>
-      <div className="event-info">
+      <div>
         <div className="title-container">
           <h4>{event.nameOfEvent}</h4>
         </div>
@@ -93,9 +92,11 @@ export const EventCard = ({ event, tags }) => {
 
 const StyledEventCard = styled(StyledCard)`
   margin-bottom: 20px;
+
   .ant-card-body {
     width: 100%;
   }
+
   .title-container {
     display: flex;
     flex-direction: column;
@@ -110,16 +111,20 @@ const StyledEventCard = styled(StyledCard)`
       margin: 0;
     }
   }
+
   .details-container {
     h5 {
       margin: 0;
     }
   }
+
   .tags-container {
     margin: 8px 0;
   }
+
   .description-container {
     margin-right: 1em;
+
     .text-overflow-block {
       overflow: hidden;
       position: relative;
@@ -145,6 +150,7 @@ const StyledEventCard = styled(StyledCard)`
       background: white;
     }
   }
+
   .date {
     font-size: 0.85rem;
     margin: 16px 0;
