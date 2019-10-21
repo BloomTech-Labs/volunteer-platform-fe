@@ -68,6 +68,14 @@ export const EventCard = ({ event, tags }) => {
         {moment.unix(event.nextDate).format('LL')}
         <Spacer>•</Spacer>
         {moment.unix(event.startTimeStamp).format('LT')}
+        {event.recurringInfo && (
+          <span>
+            <Spacer>•</Spacer>
+            <Tag color="orange" className="recurring-tag">
+              This is a recurring event
+            </Tag>
+          </span>
+        )}
       </div>
       {ableToDelete && <StyledButton type="danger">Delete</StyledButton>}
       <Link
@@ -87,15 +95,6 @@ const StyledEventCard = styled(StyledCard)`
   margin-bottom: 20px;
   .ant-card-body {
     width: 100%;
-  }
-  .event-info {
-  }
-  .date {
-    font-size: 0.85rem;
-    margin: 16px 0;
-    & > :first-child {
-      margin-right: 8px;
-    }
   }
   .title-container {
     display: flex;
@@ -121,31 +120,41 @@ const StyledEventCard = styled(StyledCard)`
   }
   .description-container {
     margin-right: 1em;
+    .text-overflow-block {
+      overflow: hidden;
+      position: relative;
+      line-height: 1.2em;
+      max-height: 3.5em;
+      text-align: justify;
+      margin-right: -1em;
+      padding-right: 1em;
+    }
+    .text-overflow-block:before {
+      content: '...';
+      position: absolute;
+      right: 0;
+      bottom: 0;
+    }
+    .text-overflow-block:after {
+      content: '';
+      position: absolute;
+      right: 0;
+      width: 1em;
+      height: 1em;
+      margin-top: 0.2em;
+      background: white;
+    }
   }
-
-  .text-overflow-block {
-    overflow: hidden;
-    position: relative;
-    line-height: 1.2em;
-    max-height: 3.5em;
-    text-align: justify;
-    margin-right: -1em;
-    padding-right: 1em;
-  }
-  .text-overflow-block:before {
-    content: '...';
-    position: absolute;
-    right: 0;
-    bottom: 0;
-  }
-  .text-overflow-block:after {
-    content: '';
-    position: absolute;
-    right: 0;
-    width: 1em;
-    height: 1em;
-    margin-top: 0.2em;
-    background: white;
+  .date {
+    font-size: 0.85rem;
+    margin: 16px 0;
+    & > :first-child {
+      margin-right: 8px;
+    }
+    .recurring-tag {
+      color: ${props => props.theme.gray9};
+      opacity: 0.8;
+    }
   }
 `;
 
