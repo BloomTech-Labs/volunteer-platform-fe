@@ -58,7 +58,13 @@ export const RecurSignUp = ({
 };
 
 const StyledRecurSignUp = styled(StyledCard)`
-  width: 100%;
+  && {
+    width: 100%;
+    box-shadow: none;
+    border-radius: 3px;
+  }
+
+  
   .panel {
     width: 100%;
     background: ${({ theme }) => theme.gray3};

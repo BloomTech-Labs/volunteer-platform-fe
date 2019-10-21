@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
-
+import { Row, Col } from 'antd';
 import { StyledButton } from '../../styled';
 
 const RecurRegister = () => {
@@ -13,7 +13,7 @@ const RecurRegister = () => {
           .scrollIntoView({ behavior: 'smooth' })
       }
     >
-      <StyledButton width={'20rem'}>Register</StyledButton>
+      <StyledButton width={'12rem'}>Register</StyledButton>
     </a>
   );
 };
@@ -80,8 +80,8 @@ export const FirstRow = ({
     : localState.registeredVolunteers.length;
 
   return (
-    <StyledFirstRow>
-      <div className="left-col">
+    <StyledFirstRow type='flex' justify='space-between' align='stretch'>
+      <div className="left-col" >
         <h2>{localState.nameOfEvent}</h2>
         <h4>{localState.orgName}</h4>
         <span>
@@ -115,33 +115,44 @@ export const FirstRow = ({
   );
 };
 
-const StyledFirstRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 80%;
-  margin: 0 auto 24px;
-  min-height: 150px;
+const StyledFirstRow = styled(Row)`
+  && {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    width: 100%;
+    min-height: 150px;
+    margin: 2rem 0;
+    flex-wrap: nowrap;
+  }
 
   h2,
   h4,
   h5 {
     margin: 0;
   }
+
   .left-col,
   .right-col {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
     justify-content: space-between;
+  }
+
+  .right-col {
+    align-items: center;
   }
 
   .needed-vols {
     background: white;
-    width: 20rem;
+    width: 16rem;
     display: flex;
     flex-direction: column;
     height: fit-content;
     align-items: center;
     border-radius: 4px;
+    padding: 0.2rem 0;
   }
 `;
 

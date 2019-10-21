@@ -211,7 +211,6 @@ export const EventProfile = props => {
 
 const StyledEventProfile = styled.div`
   .previous-page {
-    margin-left: 10%;
     padding-top: 20px;
     display: flex;
     justify-content: flex-start;
@@ -220,7 +219,7 @@ const StyledEventProfile = styled.div`
     align-items: center;
     cursor: pointer;
   }
-  width: 100%;
+  width: 80vw;
 `;
 
 EventProfile.propTypes = {
