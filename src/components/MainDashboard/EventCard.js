@@ -60,7 +60,9 @@ export const EventCard = ({ event, tags }) => {
           {otherTags}
         </div>
       </div>
-      <div className="description-container">{event.eventDetails}</div>
+      <div className="description-container">
+        <div className="text-overflow-block">{event.eventDetails}</div>
+      </div>
       <div className="date">
         <Icon type="calendar" theme="twoTone" />
         {moment.unix(event.nextDate).format('LL')}
@@ -118,11 +120,32 @@ const StyledEventCard = styled(StyledCard)`
     margin: 8px 0;
   }
   .description-container {
-    max-height: 48px;
-    font-size: 0.85rem;
-    white-space: nowrap;
+    margin-right: 1em;
+  }
+
+  .text-overflow-block {
     overflow: hidden;
-    text-overflow: ellipsis;
+    position: relative;
+    line-height: 1.2em;
+    max-height: 3.5em;
+    text-align: justify;
+    margin-right: -1em;
+    padding-right: 1em;
+  }
+  .text-overflow-block:before {
+    content: '...';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
+  .text-overflow-block:after {
+    content: '';
+    position: absolute;
+    right: 0;
+    width: 1em;
+    height: 1em;
+    margin-top: 0.2em;
+    background: white;
   }
 `;
 
