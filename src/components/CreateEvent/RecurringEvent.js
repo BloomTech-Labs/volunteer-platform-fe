@@ -103,7 +103,7 @@ export const RecurringEvent = props => {
       }
     }
   };
-  console.log(localState);
+
   const checkedRequired = () => {
     if (
       recurringInfo.repeatTimePeriod &&

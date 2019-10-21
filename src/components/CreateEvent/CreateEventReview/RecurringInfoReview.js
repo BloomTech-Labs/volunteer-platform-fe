@@ -4,7 +4,6 @@ import styled from 'styled-components';
 export const RecurringInfoReview = props => {
   const { localState } = props;
   const { recurringInfo } = localState;
-  console.log('localstate', localState);
 
   const intro = `* This event occurs ${recurringInfo.repeatTimePeriod}`;
   const otherIntro = `* This event will occur every ${
