@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import MapContainer from '../Map/MapContainer';
-import { StyledCard } from '../../styled';
 import { Row, Col } from 'antd';
 
 export const ThirdRow = ({ localState }) => {
@@ -15,53 +14,73 @@ export const ThirdRow = ({ localState }) => {
   ];
 
   return (
-    <StyledThirdRow>
-      <Col className="details" span={16}>
+    <StyledThirdRow type='flex' justify='space-between' align='top'>
+      <Col className="details" span={15}>
         <h4>Details</h4>
         <p className="details-info">{localState.eventDetails}</p>
       </Col>
-      <Col className="map" span={6} offset={2}>
+      <Col className="map-container" span={8}>
         <h4>Find us at</h4>
-        {localState.lat && (
-          <MapContainer
-            marginLeft={'0'}
-            height={'250px'}
-            width={'250px'}
-            lat={localState.lat}
-            lng={localState.lng}
-            markers={markers}
-          />
-        )}
+        <div className='map'>
+          {localState.lat && (
+            <MapContainer
+              marginLeft={'0'}
+              height={'250px'}
+              width={'250px'}
+              lat={localState.lat}
+              lng={localState.lng}
+              markers={markers}
+            />
+          )}
+        </div>
       </Col>
     </StyledThirdRow>
   );
 };
 
-const StyledThirdRow = styled(StyledCard)`
-  min-height: 150px;
+const StyledThirdRow = styled(Row)`
+  && {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    width: 100%;
+    min-height: 150px;
+    margin: 2rem 0;
+    flex-wrap: nowrap;
+  }
+
   h4 {
     margin-top: 0;
   }
-  .details,
-  .map {
+
+  .details {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    align-items: stretch;
+    align-self: stretch;
+    margin-right: 3rem;
+
+    &-info {
+      width: 100%;
+      background: white;
+      padding: 1rem;
+      height: 100%;
+      margin: 0;
+    }
   }
 
-  .details-info {
-    width: 692px;
+  .map-container {
+    display: flex;
+    flex-direction: column;
 
-    @media (max-width: 1088px) {
-      width: 650px;
+    .map {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: white;
+      padding: 1rem 0;
     }
-
-    @media (max-width: 800px) {
-      width: 500px;
-    }
-
   }
+
 `;
 
 export default ThirdRow;
