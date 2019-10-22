@@ -39,7 +39,14 @@ export const FilteredComponent = Component => {
     }
 
     if (!results.length || !filterCount) {
-      return <Component results={results} type={activeTab} {...props} />;
+      return (
+        <Component
+          results={results}
+          type={activeTab}
+          tags={tagFilter}
+          {...props}
+        />
+      );
     }
 
     let filteredResults = results;
@@ -103,6 +110,13 @@ export const FilteredComponent = Component => {
     });
     filteredResults = filteredResults.filter(result => result.sortRank > 0);
 
-    return <Component results={filteredResults} type={activeTab} {...props} />;
+    return (
+      <Component
+        results={filteredResults}
+        type={activeTab}
+        tags={tagFilter}
+        {...props}
+      />
+    );
   };
 };

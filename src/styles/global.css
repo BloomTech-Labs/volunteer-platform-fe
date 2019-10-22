@@ -98,5 +98,7 @@ h4 {
   font-family: 'Arvo', serif;
 }
 
-
-
+.ant-tooltip-inner {
+  font-size: 0.72rem;
+  text-align: justify;
+}

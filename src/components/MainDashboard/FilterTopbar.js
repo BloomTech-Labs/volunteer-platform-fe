@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useStateValue } from '../../hooks/useStateValue';
-import { Form, Row, Col, Input, Icon, Divider, Select } from 'antd'
+import { Form, Row, Col, Input, Icon, Divider, Select } from 'antd';
 import { StyledCheckableTag as CheckableTag, StyledCard } from '../../styled';
+import { device } from '../../styled/deviceBreakpoints';
 import Autocomplete from 'react-google-autocomplete';
 
 const tabList = [
@@ -112,12 +113,16 @@ export const FilterTopbar = ({
         showArrow
         mode={'multiple'}
         placeholder="Choose..."
-        style={{ width: 350 }}
+        style={{ width: '100%' }}
       >
         {children}
       </Select>
     );
   };
+
+  const verticalFormComponents = window.matchMedia(device.laptop).matches
+    ? 20
+    : 12;
 
   const contentList = {
     Events: (
@@ -165,11 +170,11 @@ export const FilterTopbar = ({
           </Row>
         </Form>
         <Form
-          layout="inline"
+          layout="horizontal"
           style={{ display: filterExpand ? 'block' : 'none' }}
         >
-          <Row>
-            <Col span={12}>
+          <Row gutter={16}>
+            <Col span={verticalFormComponents}>
               <Form.Item label="Interests">
                 <SelectableTags
                   tags={state.tags.interests}
@@ -179,7 +184,7 @@ export const FilterTopbar = ({
                 />
               </Form.Item>
             </Col>
-            <Col span={12}>
+            <Col span={verticalFormComponents}>
               <Form.Item label="Requirements">
                 <SelectableTags
                   tags={state.tags.requirements}
