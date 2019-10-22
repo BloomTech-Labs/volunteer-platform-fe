@@ -39,25 +39,23 @@ export const EventCard = ({ event, tags }) => {
 
   return (
     <StyledEventCard margin={'0 0 20px 0'}>
-      <div>
-        <div className="title-container">
-          <h4>{event.nameOfEvent}</h4>
-        </div>
-        <div className="details-container">
-          <h5>
-            {event.orgName && event.orgId && (
-              <span>
-                <a href={`/organization/${event.orgId}`}>{event.orgName}</a>
-                <Spacer>•</Spacer>
-              </span>
-            )}
-            {event.city}
-          </h5>
-        </div>
-        <div className="tags-container">
-          {selectedTags}
-          {otherTags}
-        </div>
+      <div className="title-container">
+        <h4>{event.nameOfEvent}</h4>
+      </div>
+      <div className="details-container">
+        <h5>
+          {event.orgName && event.orgId && (
+            <span>
+              <a href={`/organization/${event.orgId}`}>{event.orgName}</a>
+              <Spacer>•</Spacer>
+            </span>
+          )}
+          {event.city}
+        </h5>
+      </div>
+      <div className="tags-container">
+        {selectedTags}
+        {otherTags}
       </div>
       <div className="description-container">
         <div className="text-overflow-block">{event.eventDetails}</div>
@@ -124,6 +122,7 @@ const StyledEventCard = styled(StyledCard)`
 
   .description-container {
     margin-right: 1em;
+    margin-top: 16px;
 
     .text-overflow-block {
       overflow: hidden;
