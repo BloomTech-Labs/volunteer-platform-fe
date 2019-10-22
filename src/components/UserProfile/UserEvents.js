@@ -74,8 +74,8 @@ export const UserEvents = ({ events, changePanel, calendarValue, selectDate, sel
                       <h5>Time: {`${event.startTime}~${event.endTime}`}</h5>
                       <h5>Location: {event.location}</h5>
                       <h5>Point of Contact</h5>
-                      <p>Name: {event.pointOfContact.fullName}</p>
-                      <p>Phone: {event.pointOfContact.phoneNumber}</p>
+                      <p>Name: {event.pointOfContact && event.pointOfContact.fullName}</p>
+                      <p>Phone: {event.pointOfContact && event.pointOfContact.phoneNumber}</p>
                       <CustomButton>
                         <Link 
                           to={{

@@ -5,11 +5,10 @@ import styled from 'styled-components';
 
 export const UserGraph = (props) => {
   const [data, setData] = useState([]);
-  const [domain, setDomain] = useState([]);
 
   useEffect(() => {
-    if (props.user.validatedHours && props.user.goals) {
-      let results = groupHoursByMonths(props.user.validatedHours);
+    if (props.user.registeredEvents && props.user.goals) {
+      let results = groupHoursByMonths(props.user.registeredEvents);
       setData(results);
     } else {
       let results = groupHoursByMonths([]);
@@ -26,7 +25,7 @@ export const UserGraph = (props) => {
         data={data}
         margin={{ top: 5, right: 10, left: -15, bottom: 0 }}
       >
-        <XAxis dataKey="month" domain={domain}/>
+        <XAxis dataKey="month"/>
         <YAxis type="number"/>
         <Tooltip />
         <Line type="linear" dataKey="hours" stroke="#FA8C16" dot={{ stroke: '#38B9E0', strokeWidth: 2 }} activeDot={{ r: 8 }} />

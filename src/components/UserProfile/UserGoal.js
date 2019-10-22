@@ -48,7 +48,6 @@ export const UserGoal = props => {
   }, [props.user]);
 
   const handleSubmit = values => {
-    console.log(values);
     let goals = {
       hours: values.Hours,
       frequency: values.Frequency,

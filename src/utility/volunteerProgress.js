@@ -1,19 +1,19 @@
 import moment from 'moment';
 
-export const getAccHoursForDuration = (duration, hours) => {
+export const getAccHoursForDuration = (duration, events) => {
   let start = moment(duration.start).unix();
   let end = moment(duration.end).endOf('month').unix();
   let numHours = 0;
-  hours.forEach(item => {
-    if (item.date >= start && item.date <= end) {
+  events.forEach(item => {
+    if (item.isVerified && (item.date >= start && item.date <= end)) {
       numHours += item.hours;
     }
   })
   return numHours;
 }
 
-export const volunteerProgress = (goals, accHours) => {
-  let hours = getAccHoursForDuration(goals.duration, accHours);
+export const volunteerProgress = (goals, events) => {
+  let hours = getAccHoursForDuration(goals.duration, events);
   let total;
 
   if (goals.frequency === 'per week') {
@@ -28,13 +28,15 @@ export const volunteerProgress = (goals, accHours) => {
 
 
 /*
-expected data format:
+expected data format (user document):
 
-validatedHours = [
+registeredEvents: [
   {
-    date: //unix timestamp,
-    hours: int
-  }, 
+    ...
+    date: //unix timestamp
+    hours: int,
+    isVerified: Boolean;
+  },
   ...
 ]
 
