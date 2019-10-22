@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { StyledCard, StyledButton } from '../../styled';
 import { useStateValue } from '../../hooks/useStateValue';
 import moment from 'moment';
-import { Tag, Icon } from 'antd';
+import { Tag, Icon, Tooltip } from 'antd';
 
 export const EventCard = ({ event, tags }) => {
   const [{ org, events, auth }, dispatch] = useStateValue();
@@ -71,6 +71,12 @@ export const EventCard = ({ event, tags }) => {
             <Tag color="orange" className="recurring-tag">
               This is a recurring event
             </Tag>
+            <Tooltip
+              placement="right"
+              title="Recurring events may have multiple dates available. View details to see the calender and sign up for the event that works for you."
+            >
+              <Icon type="question-circle" theme="outlined" />
+            </Tooltip>
           </span>
         )}
       </div>
