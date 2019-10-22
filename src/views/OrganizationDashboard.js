@@ -20,7 +20,7 @@ import {
 import { deleteModal, StyledCard, StyledLine, StyledLoader } from '../styled';
 
 export const OrganizationDashboard = props => {
-  const [{ events }, dispatch] = useStateValue();
+  const [{ events, org }, dispatch] = useStateValue();
   const [displayOrg, setDisplayOrg] = useState('');
   const [imageUrl, setImageUrl] = useState(null);
   const [selectedDate, setSelectedDate] = useState();
@@ -29,9 +29,13 @@ export const OrganizationDashboard = props => {
   useEffect(() => {
     if (props.location.state) {
       setDisplayOrg(props.location.state.org);
-      getAllEventsByOrg(props.location.state.org.orgId, dispatch);
-      getAllRecurringEventsByOrg(props.location.state.org.orgId, dispatch);
-
+      if ('orgId' in props.location.state.org) {
+        getAllEventsByOrg(props.location.state.org.orgId, dispatch);
+        getAllRecurringEventsByOrg(props.location.state.org.orgId, dispatch);
+      } else {
+        getAllEventsByOrg(org.newOrgId, dispatch);
+        getAllRecurringEventsByOrg(org.newOrgId, dispatch);
+      }
       if (props.location.state.org.imageUrl) {
         setImageUrl(props.location.state.org.imageUrl);
       } else {
@@ -116,7 +120,7 @@ export const OrganizationDashboard = props => {
               value={calendarValue}
             />
           </div>
-          <div className='org-events'>
+          <div className="org-events">
             {events.isLoading ? (
               <StyledLoader />
             ) : (
@@ -130,7 +134,7 @@ export const OrganizationDashboard = props => {
           </div>
         </div>
         <div className={'line-box'}>
-          <StyledLine big width={'53%'}/>
+          <StyledLine big width={'53%'} />
         </div>
         <div className={'org-dash-bottom'}>
           <div className={'left-col'}>
@@ -150,7 +154,7 @@ export const OrganizationDashboard = props => {
           <div className={'right-col'}>
             <OrgInfo displayOrg={displayOrg} />
           </div>
-      </div>
+        </div>
       </StyledContent>
     </StyledDashboard>
   );
@@ -191,7 +195,7 @@ const StyledContent = styled.div`
       background: white;
       width: 50%;
       border-radius: 3px;
-      border: 1px solid ${({theme}) => theme.gray4};
+      border: 1px solid ${({ theme }) => theme.gray4};
     }
 
     .org-events {
@@ -222,7 +226,7 @@ const StyledContent = styled.div`
         box-shadow: none;
       }
     }
-  
+
     .right-col {
       display: flex;
       flex-direction: column;
