@@ -1,115 +1,108 @@
 import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
-import { Icon } from 'antd';
+import { Icon, Tag } from 'antd';
 import { StyledCard } from '../../styled';
+import { setDaysOpen } from '../../utility/setDaysOpen';
+import MapContainer from '../Map/MapContainer';
 
 export const OrgInfo = ({ displayOrg }) => {
-  const setDaysOpen = arr => {
-    if (!arr) {
-      return '';
-    }
-    const dayConversion = {
-      Sunday: 0,
-      Monday: 1,
-      Tuesday: 2,
-      Wednesday: 3,
-      Thursday: 4,
-      Friday: 5,
-      Saturday: 6,
-    };
-    const rC = {
-      0: 'Sunday',
-      1: 'Monday',
-      2: 'Tuesday',
-      3: 'Wednesday',
-      4: 'Thursday',
-      5: 'Friday',
-      6: 'Saturday',
-    };
-    let daysAsNum = arr.map(day => dayConversion[day]);
+  const causes =
+    displayOrg &&
+    displayOrg.causeAreas.map(item => <Tag>{(item = [item])}</Tag>);
 
-    let daySegments = [];
-    let segment = [];
-    for (let i = 0; i < daysAsNum.length; i++) {
-      segment.push(daysAsNum[i]);
-      if (i < daysAsNum.length - 1 && daysAsNum[i] + 1 === daysAsNum[i + 1]) {
-        continue;
-      } else {
-        daySegments.push(segment);
-        segment = [];
-      }
-    }
-    let result = [];
-    for (let i = 0; i < daySegments.length; i++) {
-      switch (daySegments[i].length) {
-        case 1:
-          result.push(`${rC[daySegments[i][0]]}`);
-          break;
-        case 2:
-          result.push(`${rC[daySegments[i][0]]}`);
-          result.push(`${rC[daySegments[i][1]]}`);
-          break;
-        case 3:
-        case 4:
-        case 5:
-        case 6:
-        case 7:
-          result.push(
-            `${rC[daySegments[i][0]]} - ${
-              rC[daySegments[i][daySegments[i].length - 1]]
-            }`
-          );
-          break;
-      }
-    }
-    return result.join(', ');
-  };
-  console.log(displayOrg);
+  const markers = displayOrg && [
+    {
+      name: displayOrg.organizationName,
+      position: { lat: displayOrg.lat, lng: displayOrg.lng },
+    },
+  ];
+
   return (
     <OrgInfoDiv
-      backgroundcolor={'#E8E8E8'}
-      borderRadius={'0px'}
-      margin={'0 0 40px 0'}
+      style={{
+        background: 'white',
+        borderRadius: '3px',
+        margin: '0 0 40px 0',
+        width: '100%',
+        boxShadow: 'none',
+      }}
     >
-      <h5 style={{ marginBottom: '5px' }}>Org Info</h5>
-      <div className="upper-info">
-        <div className="hours-of-op">
+      <h3 style={{ marginBottom: '5px' }}>General Info</h3>
+      <h5>Website</h5>
+      <span>{displayOrg.website}</span>
+      <div className="hours-of-op">
+        <h5>Hours</h5>
+        <div className="hours-row">
           <span>{setDaysOpen(displayOrg.daysOfTheWeek)} </span>
+          <Icon type="clock-circle" />
           <span>
             {`${moment.unix(displayOrg.startTime).format('LT')} - 
               ${moment.unix(displayOrg.endTime).format('LT')}`}
           </span>
         </div>
-        <div className="location">
+      </div>
+      <div className="location">
+        <div className="address">
           <Icon
             type="environment"
             theme={'twoTone'}
             twoToneColor={'#005a87'}
             className={'icon'}
           />
-          <span>{`${displayOrg.city} ${displayOrg.state}`}</span>
+          <span>{displayOrg.address}</span>
+        </div>
+        <div>
+          {displayOrg.lat && (
+            <MapContainer
+              lat={displayOrg.lat}
+              lng={displayOrg.lng}
+              width={'450px'}
+              height={'150px'}
+              markers={markers}
+              zoom={16}
+            />
+          )}
         </div>
       </div>
-      <h5 style={{ margin: '20px 0 5px' }}>
-        Contact{displayOrg.POC && displayOrg.POC.length > 1 ? 's' : ''}
-      </h5>
+      <div className="causes">
+        <h5>Cause{causes && causes.length > 1 ? 's' : ''}</h5>
+        {causes}
+      </div>
       <div className="lower-info">
+        <h5>Contact{displayOrg.POC && displayOrg.POC.length > 1 ? 's' : ''}</h5>
         {displayOrg.POC &&
           displayOrg.POC.map(contact => {
             return (
               <div className="poc">
                 <div className="poc-name">
-                  {contact.firstName} {contact.lastName}
+                  {contact.fullName
+                    ? `${contact.fullName}`
+                    : `${contact.firstName} ${contact.lastName}`}
                 </div>
-                <div className="poc-info">
-                  <Icon
-                    type="mail"
-                    theme="twoTone"
-                    twoToneColor={'#005a87'}
-                    className="icon"
-                  />
-                  {contact.email}
+                <div className="poc-row2">
+                  <div className="poc-info">
+                    <Icon
+                      type="mail"
+                      theme="twoTone"
+                      twoToneColor={'#005a87'}
+                      className="icon"
+                    />
+                    {contact.email}
+                  </div>
+                  {contact.phone && (
+                    <>
+                      <div className="poc-info">
+                        <Icon
+                          type="phone"
+                          theme="twoTone"
+                          twoToneColor={'#005a87'}
+                          className="icon"
+                        />
+                        {contact.phone}
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             );
@@ -125,42 +118,75 @@ const OrgInfoDiv = styled(StyledCard)`
     align-items: center;
   }
 
+  h3 {
+    text-align: center;
+  }
+
   .hours-of-op {
     display: flex;
     flex-direction: column;
-    min-width: 50%;
+    width: 100%;
+
+    .hours-row {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+
+      > * {
+        margin-right: 1rem;
+      }
+    }
   }
 
   .location {
     display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 1rem;
+    width: 100%;
+
+    .address {
+      display: flex;
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  .causes {
+    flex-direction: row;
     justify-content: flex-start;
-    align-items: center;
-    width: 45%;
   }
 
   .icon {
-    font-size: 30px;
+    font-size: 24px;
     padding-right: 10px;
+  }
+
+  .poc {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    .poc-name {
+      min-width: 30%;
+      margin-bottom: 5px;
+    }
+
+    .poc-row2 {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+
+      .poc-info {
+        display: flex;
+        align-items: center;
+        min-width: 30%;
+      }
+    }
   }
 
   .lower-info {
     display: flex;
     flex-direction: column;
-
-    .poc {
-      display: flex;
-      align-items: center;
-      .poc-name {
-        min-width: 50%;
-        padding-right: 20%;
-        margin-bottom: 5px;
-      }
-
-      .poc-info {
-        display: flex;
-        align-items: center;
-      }
-    }
   }
 `;
 export default OrgInfo;

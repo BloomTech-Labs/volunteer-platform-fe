@@ -10,22 +10,28 @@ import uuid4 from 'uuid4';
 /**
  * Upload file to storage
  * @function
- * @param file
- * @param onError
- * @param onSuccess
+ * @param {File} file
+ * @param {Function} onError
+ * @param {Function} onSuccess
+ * @param {String} imageName
  * @returns {Promise<*>}
  */
-export async function uploadImage(file, onError, onSuccess){
+export async function uploadImage(
+  file,
+  onError,
+  onSuccess,
+  imageName = uuid4()
+) {
   const storage = firebase.storage();
-  
+  const nameSplit = file.name.split('.');
+  const imageType = nameSplit[nameSplit.length - 1];
   const storageRef = await storage.ref();
-  const imageName = uuid4(); //a unique name for the image
-  const imgFile = storageRef.child(`images/${imageName}.png`);
-  try{
+  const imgFile = storageRef.child(`images/${imageName}`);
+  try {
     const image = await imgFile.put(file);
     onSuccess(null, image);
     return image;
-  }catch (e){
+  } catch (e) {
     onError(e);
     return e;
   }
@@ -37,16 +43,18 @@ export async function uploadImage(file, onError, onSuccess){
  * @function
  * @returns {Promise<any>} promise will return the url for the file path
  */
-export const getFileUrl = async(path) => {
-  
+export const getFileUrl = async path => {
   const storageRef = firebase.storage().ref();
-  return await storageRef.child(path).getDownloadURL().then(res => {
-    
-    return res;
-  }).catch(err => {
-    console.log(err);
-    return err;
-  });
+  return await storageRef
+    .child(path)
+    .getDownloadURL()
+    .then(res => {
+      return res;
+    })
+    .catch(err => {
+      console.log(err);
+      return err;
+    });
 };
 
 /**
@@ -54,10 +62,12 @@ export const getFileUrl = async(path) => {
  * @function
  * @param path
  */
-export const deleteFile = (path) => {
-  firebase.storage().ref().child(path).delete().then(res => {
-  
-  }).catch(err => {
-    console.log(err);
-  });
+export const deleteFile = path => {
+  firebase
+    .storage()
+    .ref()
+    .child(path)
+    .delete()
+    .then(res => {})
+    .catch(err => {});
 };

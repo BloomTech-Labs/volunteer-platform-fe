@@ -1,14 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
-import { StyledCard, StyledAvatar, StyledUploadImage } from '../../styled';
-import { Tooltip, Icon, Popconfirm, message } from 'antd';
+import {StyledCard, StyledAvatar, StyledUploadImage} from '../../styled';
+import {Tooltip, Icon, Popconfirm, message} from 'antd';
 
 export const OrgPhoto = ({
   imageUrl,
-  displayOrg,
-  deleteOrganizationImage,
+  imageOwner,
+  deleteImage,
   onFileUpload,
+  imageName,
 }) => {
+  
   return (
     <div className={'column'}>
       <StyledOrgPhoto
@@ -18,19 +20,19 @@ export const OrgPhoto = ({
       >
         {imageUrl ? (
           <StyledAvatarImage className={'column'}>
-            <StyledAvatar shape="square" size={187} src={imageUrl} />
+            <StyledAvatar shape="square" size={187} src={imageUrl}/>
             <Tooltip title={'Delete Avatar'}>
               <Popconfirm
                 onConfirm={() => {
                   message.success('Photo deleted.');
-                  deleteOrganizationImage(displayOrg);
+                  deleteImage(imageOwner);
                 }}
                 title={'Delete this photo?'}
                 okText={'Yes'}
                 cancelText={'No'}
                 placement={'rightTop'}
               >
-                <StyledDelete type="close" />
+                <StyledDelete type="close"/>
               </Popconfirm>
             </Tooltip>
           </StyledAvatarImage>
@@ -39,6 +41,7 @@ export const OrgPhoto = ({
             fileUploadComplete={onFileUpload}
             width={'187px'}
             height={'187px'}
+            imageName={imageName}
           />
         )}
       </StyledOrgPhoto>

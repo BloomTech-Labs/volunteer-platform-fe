@@ -10,7 +10,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import * as global from './styles/global.css';
 import { initialState } from './reducers/initialState';
 import { mainReducer } from './reducers/mainReducer';
-import ScrollToTop from './components/ScrollToTop';
+import ScrollToTop from './components/UtilComponents/ScrollToTop';
 
 //enable Sentry only for production builds
 if (process.env.NODE_ENV === 'production') {
@@ -68,6 +68,11 @@ const theme = {
   borderRadiusDefault: '10px',
   footerHeight: '130px',
   footerPadding: '160px', // footer height plus extra
+  headerHeight: '64px', // set by antd
+  
+  maxWidth: '1088px',
+  maxBleed: '1136px',
+  sideGutters: '16px',
 };
 
 ReactDOM.render(

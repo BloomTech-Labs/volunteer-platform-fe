@@ -21,7 +21,7 @@ export const causeAreas = [
   'Environment',
   'Veterans & Military Families',
   'Advocacy & Human Rights',
-];
+].sort((a, b) => (a > b ? 1 : -1));
 
 export const requirements = [
   'Background Check',
@@ -33,7 +33,7 @@ export const requirements = [
   'Waiver for Youth',
   'Application Required',
   'Basic Computer Skills',
-];
+].sort((a, b) => (a > b ? 1 : -1));
 
 export const interests = [
   'Work with Animals',
@@ -50,7 +50,7 @@ export const interests = [
   'Youth Friendly',
   'Wheelchair Accessible',
   'Outdoor Work',
-];
+].sort((a, b) => (a > b ? 1 : -1));
 
 const checkLoggedIn = localStorage.getItem('loggedIn') === 'true';
 const checkRegistered = localStorage.getItem('userRegistered') === 'true';
@@ -66,11 +66,15 @@ export const initialState = {
     signUpError: null,
     topVolunteersError: null,
     isLoading: false,
+    signUpEventError: null,
+    cancelSignedUpEventError: null,
+    userSearch: null,
   },
   org: {
     createdOrg: false,
     userOrganizations: [],
     topOrganizations: [],
+    organizations: [],
     getOrganizationFailedError: '',
     organization: {},
     deleteOrgFailedError: '',
@@ -79,12 +83,17 @@ export const initialState = {
   },
   events: {
     events: [],
+    event: {},
     recurringEvents: [],
     createEventFailedError: '',
+    createRecurringEventFailedError: '',
     deleteEventFailedError: '',
     editEventFailedError: '',
     getEventsFailedError: '',
+    signUpVolunteerError: '',
+    cancelSignedUpVolunteerError: '',
     isLoading: false,
+    isSaving: false,
   },
   tags: {
     interests: interests,
@@ -93,12 +102,32 @@ export const initialState = {
     isGetting: false,
     errorMessage: '',
   },
+  messages: {
+    messages: {},
+    orgMessages: {},
+    isLoading: false,
+    error: '',
+  },
+  comments: {
+    isLoading: false,
+    error: '',
+    isLoadingReplyToComment: false,
+    deletedComment: false,
+  },
 };
 
 /**
  * State
  * @module State
  *
+ */
+
+/**
+ * @typedef comments
+ * @type {Object}
+ * @property {Boolean} isLoading If submitting message has started.
+ * @property {String} error Error message if failed.
+ * @property {String} isLoadingReplyToComment Error message if failed.
  */
 
 /**
@@ -129,6 +158,7 @@ export const initialState = {
  * @property {String} getOrganizationFailedError Error message
  * @property {Organization} organization Organization from get org by id action.
  * @property {String} deleteOrgFailedError Error message
+ * @property {Organization[]} organizations Organizations by state
  */
 
 /**
@@ -136,8 +166,18 @@ export const initialState = {
  * @type {Object}
  * @property {Event[]} events Array of events collected from db.
  * @property {RecurringEvent[]}
+ * @property {Event} event Event for event page.
  * @property {String} createEventFailedError Create Event Error Message
  * @property {String} createEventFailedError Create Event Error Message
  * @property {String} editEventFailedError Edit Event Error Message
  * @property {String} getEventsFailedError Get Events Error Message
+ */
+
+/**
+ * @typedef messages
+ * @type {Object}
+ * @property {MessagesObject} messages Object of messages
+ * @property {MessagesObject} orgMessages Object of messages
+ * @property {Boolean} isLoading Boolean indicating if we are collecting the user messages.
+ * @property {String} error Error message if there is one.
  */

@@ -1,28 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link, Redirect } from 'react-router-dom';
 import styled from 'styled-components';
-import heroImage from '../assets/hero_image4.png';
-import { device } from '../styled/deviceBreakpoints';
+import Autocomplete from 'react-google-autocomplete';
+import { message, Icon } from 'antd';
+
 import {
   HowItWorks,
   TopVolunteers,
   TopNonProfits,
 } from '../components/LandingPage';
+import { device } from '../styled/deviceBreakpoints';
 import { useStateValue } from '../hooks/useStateValue';
-import { Input, message, Icon } from 'antd';
 import { stateConversion } from '../utility/stateConversion';
+import heroImage from '../assets/hero_image4.png';
+import { setUserSearch } from '../actions';
 
-const { Search } = Input;
+export const LandingPage = props => {
+  const [{ auth }, dispatch] = useStateValue();
 
-export const LandingPage = () => {
-  const [{ auth }] = useStateValue();
   const [location, setLocation] = useState('');
 
-  const handleSearch = e => {};
+  // just under the top header
+  message.config({ top: 72 });
 
-  const handleChange = e => {
-    setLocation(e.target.value);
+  const handleClick = e => {
+    setUserSearch(location, dispatch);
+    props.history.push('/dashboard');
   };
 
   useEffect(() => {
@@ -51,32 +54,29 @@ export const LandingPage = () => {
 
   return (
     <>
-      <StyledHeroDiv image={heroImage} loggedIn={auth.loggedIn}>
-        <HeroContent loggedIn={auth.loggedIn}>
+      <StyledHeroDiv image={heroImage} collapsed={props.collapsed}>
+        <HeroContent collapsed={props.collapsed}>
           <p>
             Compete with friends, meet new ones, give back to the community.
           </p>
           <p style={{ marginBottom: '80px', marginTop: '20px' }}>Win-win.</p>
-          <Search
-            placeholder="Enter your city, state"
-            onSearch={handleSearch}
-            enterButton={
-              <Link
-                to={{
-                  pathname: '/dashboard',
-                  state: { userLocation: location },
-                }}
-              >
-                Find Events
-              </Link>
-            }
-            size="large"
-            onChange={handleChange}
-            value={location}
-          />
+          <div className="google-autocomplete">
+            <Autocomplete
+              className="search"
+              onPlaceSelected={place => {
+                setLocation(place.formatted_address);
+              }}
+              types={['(regions)']}
+              componentRestrictions={{ country: 'us' }}
+              defaultValue={location}
+            />
+            <div className="get-started-btn" onClick={e => handleClick(e)}>
+              <Icon type="search" />
+            </div>
+          </div>
         </HeroContent>
       </StyledHeroDiv>
-      <ContentDiv>
+      <ContentDiv collapsed={props.collapsed}>
         <HowItWorks />
         <TopVolunteers />
         <TopNonProfits />
@@ -94,7 +94,7 @@ const StyledHeroDiv = styled.div`
   position: relative;
   justify-content: center;
   align-items: center;
-
+  padding-left: 0;
   &::before {
     content: '';
     position: absolute;
@@ -118,7 +118,7 @@ const HeroContent = styled.div`
   text-align: center;
   color: white;
   z-index: 10;
-  padding-right: ${({ loggedIn }) => loggedIn && '15rem'};
+  padding-left: ${({ loggedIn }) => loggedIn && '15rem'};
 
   @media ${device.laptop} {
   }
@@ -133,29 +133,58 @@ const HeroContent = styled.div`
     font-size: 24px;
     padding: 0 20px;
   }
-  
-  .ant-input-search {
-    width: 350px;
-  }
 
-  button {
-    background: ${({ theme }) => theme.accent};
-    border-radius: inherit;
-    border: 0;
-    cursor: pointer;
+  .google-autocomplete {
+    display: flex;
+    justify-content: space-between;
+    width: 450px;
+    max-width: 90%;
+    margin: 0 auto;
+    height: 55px;
 
-    .anticon {
-      font-size: 25px;
-      padding-top: 5px;
+    .search {
+      color: black;
+      border: 0;
+      font-family: ${({ theme }) => theme.bodytext};
+      border-radius: 4px 0 0 4px;
+      padding-left: 15px;
+      font-size: 20px;
+      width: 80%;
     }
-    &:hover {
-      background: ${({ theme }) => theme.accent7};
-    }
 
+    .get-started-btn {
+      width: 20%;
+      border-radius: 0 4px 4px 0;
+      background: ${({ theme }) => theme.accent};
+      cursor: pointer;
+      display: flex;
+      justify-content: space-around;
+      font-size: 20px;
+      align-items: center;
+
+      &:hover {
+        background: ${({ theme }) => theme.accent7};
+      }
+
+      .anticon {
+        font-size: 35px;
+      }
+    }
   }
 `;
 
 const ContentDiv = styled.div`
-  max-width: 1305px;
-  margin: 0 auto;
+  && {
+    padding-bottom: ${props => props.theme.footerPadding};
+    background: ${({ theme }) => theme.gray2};
+    max-width: ${({ theme }) => theme.maxWidth};
+    margin: 15px auto 45px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    @media ${device.laptop} {
+      max-width: 90%;
+    }
+  }
 `;

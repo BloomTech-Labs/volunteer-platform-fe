@@ -17,38 +17,28 @@ import {
   OrgInfo,
   EventPanel,
 } from '../components/OrgDashboard';
-import { deleteModal, StyledCard, StyledLine } from '../styled';
+import { deleteModal, StyledCard, StyledLine, StyledLoader } from '../styled';
 
-export const OrganizationDashboard = () => {
-  const [{ org, events }, dispatch] = useStateValue();
+export const OrganizationDashboard = props => {
+  const [{ events }, dispatch] = useStateValue();
   const [displayOrg, setDisplayOrg] = useState('');
   const [imageUrl, setImageUrl] = useState(null);
   const [selectedDate, setSelectedDate] = useState();
   const [calendarValue, setCalendarValue] = useState(moment());
 
   useEffect(() => {
-    if (org.userOrganizations.length > 0) {
-      setDisplayOrg(org.userOrganizations[0]);
-    }
-  }, [org.userOrganizations]);
+    if (props.location.state) {
+      setDisplayOrg(props.location.state.org);
+      getAllEventsByOrg(props.location.state.org.orgId, dispatch);
+      getAllRecurringEventsByOrg(props.location.state.org.orgId, dispatch);
 
-  useEffect(() => {
-    if (displayOrg) {
-      getAllEventsByOrg(displayOrg.orgId, dispatch);
-      getAllRecurringEventsByOrg(displayOrg.orgId, dispatch);
+      if (props.location.state.org.imageUrl) {
+        setImageUrl(props.location.state.org.imageUrl);
+      } else {
+        setImageUrl(null);
+      }
     }
-    if (displayOrg.imagePath) {
-      getFileUrl(displayOrg.imagePath).then(res => {
-        setImageUrl(res);
-      });
-    } else {
-      setImageUrl(null);
-    }
-  }, [displayOrg, dispatch]);
-
-  const changeHandler = value => {
-    setDisplayOrg(org.userOrganizations.find(item => item.orgId === value));
-  };
+  }, [props.location]);
 
   const deleteOrg = e => {
     const deleteOrgModal = deleteModal({
@@ -75,7 +65,7 @@ export const OrganizationDashboard = () => {
       .catch(err => console.log(err));
   };
 
-  const onSelect = (value, mode) => {
+  const onSelect = value => {
     const beginning = value.startOf('date');
     const newValue = moment.unix(beginning.unix());
     if (selectedDate) {
@@ -102,32 +92,19 @@ export const OrganizationDashboard = () => {
     setSelectedDate(null);
     setCalendarValue(moment());
   };
+
+  const deleteImage = org => {
+    deleteOrganizationImage(org);
+    setImageUrl(null);
+  };
+
   return (
     <StyledDashboard>
-      <h4 className={'org-title'}>Dashboard of</h4>
+      <h4>Dashboard of</h4>
       <h2 className={'org-name'}>{displayOrg.organizationName}</h2>
-
       <OrgButtons displayOrg={displayOrg} deleteOrg={deleteOrg} />
-      <Select
-        defaultValue="select"
-        onChange={changeHandler}
-        value={displayOrg ? displayOrg.orgId : ''}
-        style = {{width: '300px', marginBottom: '40px'}}
-      >
-        {org.userOrganizations.map(item => (
-          <Select.Option key={item.orgId} value={item.orgId}>
-            {item.organizationName}
-          </Select.Option>
-        ))}
-      </Select>
       <StyledContent>
-        <div className={'left-col'}>
-          <OrgPhoto
-            imageUrl={imageUrl}
-            displayOrg={displayOrg}
-            deleteOrganizationImage={deleteOrganizationImage}
-            onFileUpload={onFileUpload}
-          />
+        <div className={'org-dash-top'}>
           <div className="calendar">
             <Calendar
               fullscreen={false}
@@ -137,78 +114,125 @@ export const OrganizationDashboard = () => {
               onSelect={onSelect}
               onPanelChange={onPanelChange}
               value={calendarValue}
-              style={{
-                width: 300,
-                border: '1px solid #d9d9d9',
-                borderRadius: 4,
-              }}
             />
           </div>
-          <StyledAboutUs backgroundcolor={'#E8E8E8'} borderRadius="0px">
-            <h5>About Us</h5>
-            <StyledLine width={'40%'} />
-            <p>{displayOrg.aboutUs}</p>
-          </StyledAboutUs>
+          <div className='org-events'>
+            {events.isLoading ? (
+              <StyledLoader />
+            ) : (
+              <EventPanel
+                recurringEvents={events.recurringEvents}
+                events={events.events}
+                selectedDate={selectedDate}
+                displayAll={displayAll}
+              />
+            )}
+          </div>
         </div>
-        <div className={'right-col'}>
-          <OrgInfo displayOrg={displayOrg} changeHandler={changeHandler} />
-
-          <EventPanel
-            recurringEvents={events.recurringEvents}
-            events={events.events}
-            selectedDate={selectedDate}
-            displayAll={displayAll}
-          />
+        <div className={'line-box'}>
+          <StyledLine big width={'53%'}/>
         </div>
+        <div className={'org-dash-bottom'}>
+          <div className={'left-col'}>
+            <OrgPhoto
+              imageUrl={imageUrl}
+              imageOwner={displayOrg}
+              deleteImage={deleteImage}
+              onFileUpload={onFileUpload}
+              imageName={displayOrg.orgId}
+            />
+            <StyledAboutUs backgroundcolor={'white'} borderRadius="3px">
+              <h5>About Us</h5>
+              <StyledLine width={'40%'} />
+              <p>{displayOrg.aboutUs}</p>
+            </StyledAboutUs>
+          </div>
+          <div className={'right-col'}>
+            <OrgInfo displayOrg={displayOrg} />
+          </div>
+      </div>
       </StyledContent>
     </StyledDashboard>
   );
 };
 
-const StyledDashboard = styled.div`
+export const StyledDashboard = styled.div`
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   align-items: center;
-  max-height: 100%;
-  margin-top: 4rem;
-  margin-bottom: 10rem;
+  width: 1020px;
+  margin: 0 auto;
 
   .org-title {
-    margin-bottom: 0;
+    margin-bottom: 0.7rem;
   }
 
   .org-name {
     margin-bottom: 2.5rem;
     margin-top: 0;
+    font-size: 40px;
   }
 `;
 
 const StyledContent = styled.div`
+  width: 85%;
   display: flex;
-  width: 80%;
-  justify-content: space-around;
+  flex-direction: column;
   align-items: baseline;
 
-  .left-col {
+  .org-dash-top {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    justify-content: space-between;
+    width: 100%;
 
     .calendar {
-      margin-bottom: 70px;
+      margin-right: 1rem;
+      background: white;
+      width: 50%;
+      border-radius: 3px;
+      border: 1px solid ${({theme}) => theme.gray4};
+    }
+
+    .org-events {
+      width: 80%;
     }
   }
 
-  .right-col {
+  .line-box {
+    width: 100%;
+    margin: 2rem;
+  }
+
+  .org-dash-bottom {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 55%;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+
+    .left-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-right: 1rem;
+
+      .ant-card {
+        padding: 0 33px;
+        margin-bottom: 2rem;
+        box-shadow: none;
+      }
+    }
+  
+    .right-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
   }
 `;
 
-const StyledAboutUs = styled(StyledCard)`
+export const StyledAboutUs = styled(StyledCard)`
   .ant-card-body {
     padding: 6px;
   }

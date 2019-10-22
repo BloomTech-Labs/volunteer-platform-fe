@@ -2,11 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { Switch, Route } from 'react-router';
 import styled from 'styled-components';
 import firebase from './firebase/FirebaseConfig';
-import { Layout, Icon, Affix } from 'antd';
+import { Layout, Icon } from 'antd';
 import { useStateValue } from './hooks/useStateValue';
-import { subscribeToUserOrganizations, signedIn, signedOut } from './actions';
-import { StyledUploadImage, HeaderDiv, FooterDiv } from './components';
-import Navigation from './components/Navigation';
+import {
+  subscribeToUserOrganizations,
+  signedIn,
+  signedOut,
+  subscribeToMessages,
+} from './actions';
+import { HeaderDiv, FooterDiv, AffixSider, MenuButton } from './components';
 import {
   MainDashboard,
   OrganizationDashboard,
@@ -16,26 +20,31 @@ import {
   Login,
   LandingPage,
   NotFound,
+  UserProfile,
+  OrganizationProfile,
+  EventProfile,
 } from './views';
 
 import {
   RegisteredAndLoggedInRoute,
   LoginRoute,
-  SignupRoute,
   OrganizationRoute,
   ProtectedRoute,
   RegisterRoute,
 } from './routes/index';
+import Message from './views/Message';
+import { device } from './styled/deviceBreakpoints';
 
-const { Sider, Content } = Layout;
+const { Content } = Layout;
 
 function App() {
   const [state, dispatch] = useStateValue();
   const [collapsed, setCollapsed] = useState(false);
   const [dimensions, setDimensions] = useState({
     width: window.innerWidth,
-    height: document.body.scrollHeight,
+    height: document.body.clientHeight,
   });
+  const [subscriptions, setSubscriptions] = useState({});
 
   /**
    * Set up google auth on change event handler.
@@ -49,6 +58,7 @@ function App() {
       }
     });
   }, []);
+
   useEffect(() => {
     window.addEventListener('resize', updateDimensions);
     updateDimensions();
@@ -56,9 +66,32 @@ function App() {
 
   useEffect(() => {
     if (state.auth.googleAuthUser && state.auth.googleAuthUser.uid) {
-      subscribeToUserOrganizations(state.auth.googleAuthUser.uid, dispatch);
+      const orgSub = subscribeToUserOrganizations(
+        state.auth.googleAuthUser.uid,
+        dispatch
+      );
+      const messageSub = subscribeToMessages(
+        { type: 'users', uid: state.auth.googleAuthUser.uid },
+        dispatch
+      );
+      setSubscriptions({ orgSub, [state.auth.googleAuthUser.uid]: messageSub });
     }
   }, [state.auth.googleAuthUser]);
+
+  useEffect(() => {
+    state.org.userOrganizations.forEach(org => {
+      if (!subscriptions[org.orgId]) {
+        const messageSub = subscribeToMessages(
+          {
+            type: 'organizations',
+            uid: org.orgId,
+          },
+          dispatch
+        );
+        setSubscriptions({ ...subscriptions, [org.orgId]: messageSub });
+      }
+    });
+  }, [state.org.userOrganizations]);
 
   const updateDimensions = () => {
     setDimensions({
@@ -72,39 +105,21 @@ function App() {
 
   return (
     <StyledApp className="App">
-      <Layout style={{ background: 'white' }}>
-        {state.auth.loggedIn && (
-          <StyledSider
-            height={'100%'}
-            breakpoint="md"
-            collapsedWidth="0"
-            theme={'light'}
-            onBreakpoint={broken => {
-              //console.log(broken);
-            }}
-            onCollapse={(collapsed, type) => {
-              //console.log(collapsed, type);
-            }}
-            trigger={null}
-            collapsed={collapsed ? 1 : 0}
-            reverseArrow={true}
-          >
-            <Affix>
-              <Navigation />
-            </Affix>
-          </StyledSider>
+      <Layout style={{ background: '#fafafa' }}>
+        {state.auth.loggedIn && state.auth.signedUp && (
+          <AffixSider collapsed={collapsed} />
         )}
-        <Layout style={{ background: 'white' }}>
+        <Layout style={{ background: '#fafafa' }}>
           <HeaderDiv loggedIn={state.auth.loggedIn}>
-            {state.auth.loggedIn && (
-              <StyledMenuButton
-                collapsed={collapsed ? 1 : 0}
-                className="trigger"
-                type={collapsed ? 'menu-fold' : 'menu-unfold'}
-                onClick={() => setCollapsed(!collapsed)}
-              />
+            {state.auth.loggedIn && state.auth.signedUp && (
+              <MenuButton collapsed={collapsed} setCollapsed={setCollapsed} />
             )}
           </HeaderDiv>
+          <Route
+            exact
+            path={'/'}
+            render={props => <LandingPage {...props} collapsed={collapsed} />}
+          />
           <StyledContent
             width={dimensions.width}
             loggedIn={state.auth.loggedIn}
@@ -112,7 +127,11 @@ function App() {
             <Switch>
               <LoginRoute path={'/login'} component={Login} />
               <LoginRoute path={'/signup'} component={Login} />
-              <Route exact path={'/'} component={LandingPage} />
+
+              <ProtectedRoute
+                path={'/organization/:id'}
+                component={OrganizationProfile}
+              />
               <ProtectedRoute path={'/dashboard'} component={MainDashboard} />
               <RegisteredAndLoggedInRoute
                 path={'/create-org'}
@@ -127,7 +146,19 @@ function App() {
                 component={OrganizationDashboard}
               />
               <RegisterRoute path={'/register'} component={Signup} />
-              <Route component={NotFound} />
+              <RegisteredAndLoggedInRoute
+                path={'/messages'}
+                component={Message}
+                width={dimensions.width}
+              />
+
+              <ProtectedRoute path={'/events/:id'} component={EventProfile} />
+
+              <RegisteredAndLoggedInRoute
+                path={`/profile/:id`}
+                component={UserProfile}
+              />
+              <Route path="/:anything" component={NotFound} />
             </Switch>
           </StyledContent>
           <FooterDiv />
@@ -137,37 +168,29 @@ function App() {
   );
 }
 
-const StyledMenuButton = styled(Icon)`
-  && {
-    margin-right: ${props => (props.collapsed ? '30px' : '230px')};
-    font-size: 2rem;
-    margin-top: 20px;
-    transition: all 0.2s;
-  }
-`;
-
-const StyledSider = styled(Sider)`
-  &&& {
-    position: absolute;
-    right: 0;
-    z-index: 100;
-    min-height: 100vh;
-    height: ${props => (props.height ? `${props.height}px` : '100%')};
-  }
-`;
-
 const StyledApp = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   position: relative;
+  margin-top: 64px;
 `;
 
 const StyledContent = styled(Content)`
   && {
-    padding-right: ${props =>
-      props.width > 900 && props.loggedIn ? '15rem' : 0};
     padding-bottom: ${props => props.theme.footerPadding};
+    background: ${({ theme }) => theme.gray2};
+    max-width: ${({ theme }) => theme.maxWidth};
+    margin: 15px auto 45px;
+    display: flex;
+    flex-direction: column;
+
+    @media (min-width: 1088px) {
+      min-width: 750px;
+    }
+    @media ${device.laptop} {
+      max-width: 90%;
+    }
   }
 `;
 

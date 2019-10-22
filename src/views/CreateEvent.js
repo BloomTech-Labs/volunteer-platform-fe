@@ -1,95 +1,136 @@
 import React, { useState, useEffect } from 'react';
-import { Select, Row, Col } from 'antd';
+import moment from 'moment';
 import styled from 'styled-components';
+import { deleteModal } from '../styled';
+import createEventImg from '../assets/undraw_blooming_jtv6.svg';
 import {
-  AntInput,
-  AntSelect,
-  AntTextArea,
-  AntTimePicker,
-  AntInputNumber,
-  AntDatePicker,
-  WrappedAntForm,
-  StyledCard,
-} from '../styled';
+  CreateEventPartOne,
+  CreateEventPartTwo,
+  CreateEventPartThree,
+  CreateEventPartFour,
+} from '../components/CreateEvent';
+import { Steps } from 'antd';
+import CreateEventReview from '../components/CreateEvent/CreateEventReview/CreateEventReview';
 import { useStateValue } from '../hooks/useStateValue';
 import { createEvent, createRecurringEvent } from '../actions';
-import RecurringEvent from '../components/RecurringEvent';
-import moment from 'moment';
-import createEventImg from '../assets/undraw_blooming_jtv6.svg';
-import { formLayouts } from '../utility/formLayouts';
+import { TopContent, StyledRenderDiv } from './CreateOrg';
 
-const { Option } = Select;
+let { Step } = Steps;
 
 export const CreateEvent = props => {
   const initialEvent = {
     nameOfEvent: '',
-    typeOfCause: [],
+    address: '',
+    typesOfCauses: [],
     date: '',
-    dynmaicDay: '',
-    dynamicYear: '',
+    startTime: moment('00:00:00', 'HH:mm'),
+    endTime: moment('00:00:00', 'HH:mm'),
     numberOfVolunteers: '',
     phoneNumber: '',
-    pointOfcontact: '',
-    description: '',
+    pointOfContact: '',
     volunteerRequirements: [],
+    interest: [],
     website: '',
-    recurringInfo: {},
+    dynamicDates: {
+      dynamicDay: '',
+      dynamicYear: '',
+      dynamicNumber: '',
+      dynamicNth: '',
+    },
+    recurringInfo: {
+      repeatTimePeriod: '',
+      occurrenceEnds: 'On',
+      occurrenceEndDate: moment(),
+      occurrenceEndsAfter: 1,
+      repeatEveryValue: '',
+      days: [],
+    },
+    otherNotes: '',
   };
-  const [localState, setState] = useState(initialEvent);
+
+  const [localState, setLocalState] = useState(initialEvent);
+
+  const formTitles = {
+    1: 'Create An Event',
+    2: 'Create An Event',
+    3: 'Almost Finished Creating Your Event!!',
+    4: 'Almost Finished Creating Your Event!!',
+    5: "Here's What We Got",
+  };
+
+  const formParts = {
+    1: CreateEventPartOne,
+    2: CreateEventPartTwo,
+    3: CreateEventPartThree,
+    4: CreateEventPartFour,
+    5: CreateEventReview,
+  };
+
+  const steps = [
+    {
+      title: 'Start',
+    },
+    {},
+    {},
+    {},
+    {
+      title: 'Finished',
+    },
+  ];
+  let [pageNumber, setPageNumber] = useState(1);
 
   const [state, dispatch] = useStateValue();
 
   //Destructuring
-  const { recurringInfo, recurringEvent, volunteerRequirements } = localState;
+  const { recurringInfo } = localState;
+
+  const RenderedFormParts = formParts[pageNumber];
 
   useEffect(() => {
     if (props.location.state.org) {
-      setState({
+      setLocalState({
         ...localState,
         orgId: props.location.state.org.orgId,
+        address: props.location.state.org.address,
+        typesOfCauses: props.location.state.org.causeAreas,
+        website: props.location.state.org.website,
+        POC: props.location.state.org.POC,
       });
     }
   }, [props.location.state.org]);
 
-  //Date Format
-  const dateFormat = 'MM/DD/YYYY';
-
-  const removeUndefinied = event => {
-    Object.keys(event).forEach(key => {
-      if (event[key] === undefined) {
-        delete event[key];
-      }
-      return event;
-    });
-  };
-
   //Handle Submit for Form
-  const handleSubmit = values => {
-    console.log('values', values);
+  const handleReviewSubmit = () => {
     const event = {
-      ...values,
       orgId: localState.orgId,
       orgName: props.location.state.org.organizationName,
-      orgImagePath: props.location.state.org.imagePath,
-      orgPage: '',
-      date: values.date.unix(),
-      startTime: values.startTime.format('LT'),
-      endTime: values.endTime.format('LT'),
+      orgImagePath: props.location.state.org.imagePath || '',
+      nameOfEvent: localState.nameOfEvent,
+      address: localState.address,
+      date: localState.date.unix(),
+      startTime: localState.startTime.format('LT'),
+      endTime: localState.endTime.format('LT'),
       startTimeStamp: moment(
-        values.date.format('LL') + ' ' + values.startTime.format('LT')
+        localState.date.format('LL') + ' ' + localState.startTime.format('LT')
       ).unix(),
-      endTimeSTamp: moment(
-        values.date.format('LL') + ' ' + values.endTime.format('LT')
+      endTimeStamp: moment(
+        localState.date.format('LL') + ' ' + localState.endTime.format('LT')
       ).unix(),
-      volunteerRequirements: volunteerRequirements,
-      pointOfcontact: {
-        firstName: values.firstName,
-        lastName: values.lastName,
-        email: values.email,
+      numberOfVolunteers: localState.numberOfVolunteers,
+      typesOfCauses: localState.typesOfCauses,
+      interest: localState.interest,
+      volunteerRequirements: localState.volunteerRequirements,
+      pointOfContact: {
+        fullName: localState.fullName,
+        email: localState.email,
+        phoneNumber: localState.phoneNumber,
       },
+      eventDetails: localState.eventDetails,
+      website: localState.website,
+      otherNotes: localState.otherNotes,
     };
 
-    if (recurringEvent === 'Yes') {
+    if (recurringInfo.recurringEvent === 'Yes') {
       event.recurringInfo = recurringInfo;
       if (event.recurringInfo.occurrenceEnds === 'On') {
         event.recurringInfo.occurrenceEndDate = event.recurringInfo.occurrenceEndDate.unix();
@@ -98,425 +139,145 @@ export const CreateEvent = props => {
       if (event.recurringInfo.occurrenceEnds === 'After') {
         event.recurringInfo.occurrenceEndDate = '';
       }
-      removeUndefinied(event);
+
       createRecurringEvent(event, dispatch);
     } else {
-      removeUndefinied(event);
       createEvent(event, dispatch);
     }
+    setPageNumber(1);
 
-    props.history.push('/org-dashboard');
+    props.history.push('/org-dashboard', { org: props.location.state.org });
   };
 
-  const handleDynmaicDate = date => {
-    const dynamicDay = date._d.toString().split(' ')[0];
-    const dynamicYear = date._d
-      .toString()
-      .split(' ')
-      .slice(1, 3)
-      .join(' ');
-    const dynamicNumber = date._d
-      .toString()
-      .split(' ')
-      .slice(2, 3)
-      .join(' ');
-    let dayAsNum = date._d.toString().split(' ')[2];
-
-    let count = 1;
-    while (dayAsNum > 7) {
-      dayAsNum -= 7;
-      count++;
-    }
-    let nth = { 1: 'First', 2: 'Second', 3: 'Third', 4: 'Fourth', 5: 'Fifth' };
-
-    setState({
+  const handleChange = (name, value) => {
+    setLocalState({
       ...localState,
-      dynamicDay: dynamicDay,
-      dynamicYear: dynamicYear,
-      dynamicNumber: dynamicNumber,
-      dynamicNth: nth[count],
+      [name]: value,
     });
   };
-
-  //Options for tags
-  const causeAreaTags = state.tags.causeAreas.map(tag => {
-    return (
-      <Option key={tag} value={tag}>
-        {tag}
-      </Option>
-    );
-  });
-
-  let requirementTags = [];
-
-  if (state.tags.requirements) {
-    requirementTags = state.tags.requirements.map(tag => {
-      return <Option key={tag}>{tag}</Option>;
-    });
-  }
-
-  const interestTags = state.tags.interests.map(tag => {
-    return <Option key={tag}>{tag}</Option>;
-  });
-
   ///Cancel Form
-
   const cancelForm = () => {
-    props.history.push('/org-dashboard');
+    const cancelFormModal = deleteModal({
+      title: 'Are you sure you want to cancel ?',
+      content: 'All information will be delete.',
+      onOk: () =>
+        props.history.push('/org-dashboard', { org: props.location.state.org }),
+    });
+    cancelFormModal();
+  };
+
+  //Handle Form Part Submit
+  const handlePageForward = () => {
+    setPageNumber(pageNumber + 1);
+    document
+      .getElementById('scroll-event-header')
+      .scrollIntoView({ behavior: 'smooth' });
+  };
+
+  //Go Back a Page Number
+  const handlePageBack = () => {
+    setPageNumber(pageNumber - 1);
+    document
+      .getElementById('scroll-event-header')
+      .scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <StyledDiv className={'flex center'}>
-      <CustomStyledCard
-        className={'flex center'}
-        style={{ maxWidth: '900px', margin: '2rem 0 5rem 0' }}
-      >
-        <h1>Let's Create An Event</h1>
+    <StyledDiv>
+      <h1 id={'scroll-event-header'}>{formTitles[pageNumber]}</h1>
+      <TopContent>
         <StyledImg src={createEventImg} alt="undraw unexpected friends" />
-        <StyledCreateEvent>
-          <WrappedAntForm
-            cancelButton={true}
-            cancelButtonText={'Cancel'}
-            handleCancel={cancelForm}
-            onSubmit={handleSubmit}
-            layout={'vertical'}
-            buttonType={'primary'}
-            buttonText={'Submit'}
-          >
-            <div className={'nameCauseWrapper'}>
-              <div className={''}>
-                <AntInput
-                  name={'Name of Event'}
-                  type="text"
-                  layout={formLayouts.empty}
-                  style={{ width: 240 }}
-                />
-              </div>
-              <div className={''}>
-                <AntSelect
-                  name={'Types of Causes'}
-                  placeholder="Types of Causes"
-                  mode="multiple"
-                  layout={formLayouts.empty}
-                  style={{ width: 240 }}
-                >
-                  {causeAreaTags}
-                </AntSelect>
-              </div>
-            </div>
-            <div className={'addressWrapper'}>
-              <AntInput name={'Street Address'} layout={formLayouts.empty} />
-            </div>
-
-            <div className={'locationWrapper'}>
-              <div className={'inlineTriple'}>
-                <AntInput
-                  name={'City'}
-                  layout={formLayouts.empty}
-                  placeholder="City"
-                ></AntInput>
-              </div>
-              <div className={'inlineTriple'}>
-                <AntInput
-                  name={'State'}
-                  layout={formLayouts.empty}
-                  placeholder="State"
-                ></AntInput>
-              </div>
-              <div className={'inlineTriple'}>
-                <AntInput
-                  name={'Phone Number'}
-                  pattern={'[0-9]{3}-[0-9]{3}-[0-9]{4}'}
-                  placeholder={'000-000-0000'}
-                  layout={formLayouts.empty}
-                />
-              </div>
-            </div>
-
-            <label>When is the event?</label>
-            <div className={'styledGroup'}>
-              <label>Date*</label>
-              <div className={'dateWrapper hidden'}>
-                <AntDatePicker
-                  name={'Date'}
-                  format={dateFormat}
-                  onChange={handleDynmaicDate}
-                  disabledDate={current =>
-                    current && current < moment().endOf('day')
-                  }
-                  layout={formLayouts.empty}
-                />
-              </div>
-              <div className={'recurringWrapper'}>
-                <RecurringEvent
-                  name={'Is This a Recurring Event ?'}
-                  localState={localState}
-                  setState={setState}
-                  layout={formLayouts.empty}
-                  notRequired
-                />
-              </div>
-
-              <label>What time ?</label>
-              <div className={'timeWrapper'}>
-                <div className={'hidden'}>
-                  <AntTimePicker
-                    name={'Start Time'}
-                    use12Hours
-                    format={'h:mm a'}
-                    defaultOpenValue={moment('00:00:00', 'HH:mm')}
-                    layout={formLayouts.empty}
-                  />
-                </div>
-                <p className="to">to</p>
-                <div className={'hidden'}>
-                  <AntTimePicker
-                    name={'End Time'}
-                    use12Hours
-                    format={'h:mm a'}
-                    defaultOpenValue={moment('00:00:00', 'HH:mm')}
-                    layout={formLayouts.empty}
-                  />
-                </div>
-              </div>
-            </div>
-
-            <label>Who is the point of Contact?</label>
-
-            <div className={'pocWrapper'}>
-              <div className={'inline'}>
-                <AntInput
-                  name={'First Name'}
-                  type="text"
-                  layout={formLayouts.empty}
-                  style={{ width: 240 }}
-                />
-              </div>
-              <div className={'inline'}>
-                <AntInput
-                  name={'Last Name'}
-                  type="text"
-                  layout={formLayouts.empty}
-                  style={{ width: 240 }}
-                />
-              </div>
-              <div className={'inline'}>
-                <AntInput
-                  name={'Email'}
-                  type="email"
-                  layout={formLayouts.empty}
-                  style={{ width: 240 }}
-                />
-              </div>
-            </div>
-            <label>What are the requirements?</label>
-            <div className={'styledGroup'}>
-              <label>List Requirements here</label>
-              <div className={'requirementsInterestWrapper'}>
-                <div className={'hidden requirementsWrapper'}>
-                  <AntSelect
-                    name={'Volunteer Requirements'}
-                    placeholder="Type here and a tag will appear"
-                    mode="multiple"
-                    layout={formLayouts.empty}
-                    style={{ width: 240 }}
-                  >
-                    {requirementTags}
-                  </AntSelect>
-                </div>
-                <div className={''}>
-                  <AntSelect
-                    name={'Interest'}
-                    placeholder="All"
-                    mode="multiple"
-                    layout={formLayouts.empty}
-                    style={{ width: 240 }}
-                  >
-                    {interestTags}
-                  </AntSelect>
-                </div>
-              </div>
-            </div>
-            <div className={'eventDetailsWrapper'}>
-              <AntTextArea
-                name={'Event Details'}
-                placeholder={
-                  'What the volunteer would do at the event would go here.'
-                }
-                layout={formLayouts.empty}
-                style={{ height: 115 }}
-              />
-            </div>
-
-            <div className={'styledGroup'}>
-              <div className={'volunteerNumberWebsiteWrapper'}>
-                <div className={''}>
-                  <AntInput
-                    name={'Website'}
-                    layout={formLayouts.empty}
-                    style={{ width: 240 }}
-                  />
-                </div>
-                <div className={''}>
-                  <label style={{ width: 250 }}>
-                    How many volunteers do you need?
-                  </label>
-                </div>
-                <div className={'hidden'} style={{ width: 106 }}>
-                  <AntInputNumber
-                    name={'Number of Volunteers'}
-                    type="number"
-                    min={0}
-                    layout={formLayouts.empty}
-                    style={{ width: 240 }}
-                  />
-                </div>
-                <small>We recommend adding +5 to your need</small>
-              </div>
-            </div>
-
-            <div className={'otherNotesWrapper'}>
-              <AntTextArea
-                name={'Other Notes'}
-                placeholder={
-                  'Any additional helpful tips for the event go here.'
-                }
-                layout={formLayouts.empty}
-                style={{ height: 115 }}
-                notRequired
-              />
-            </div>
-          </WrappedAntForm>
-        </StyledCreateEvent>
-      </CustomStyledCard>
+        <Steps current={pageNumber - 1} progressDot size="small">
+          {steps.map(step => {
+            return (
+              <Step key={step} title={step.title} description={step.content} />
+            );
+          })}
+        </Steps>
+      </TopContent>
+      <CustomRenderDiv>
+        <RenderedFormParts
+          state={state}
+          localState={localState}
+          setLocalState={setLocalState}
+          handlePageForward={handlePageForward}
+          handlePageBack={handlePageBack}
+          cancelForm={cancelForm}
+          pageNumber={pageNumber}
+          handleChange={handleChange}
+          handleReviewSubmit={handleReviewSubmit}
+        />
+      </CustomRenderDiv>
     </StyledDiv>
   );
 };
 
-const StyledCreateEvent = styled.div`
-  width: 100%;
-  font-weight: bold;
-  text-align: left;
-  padding: 8rem;
-  .inline {
-    width: 50%;
-  }
-  .inlineTriple {
-    width: 35%;
-  }
-  .buttonStyles {
-    display: flex;
-    justify-content: space-around;
-  }
+const StyledDiv = styled.div`
+  background: ${({ theme }) => theme.gray2};
+  text-align: center;
+`;
 
-  .styledGroup {
-    background-color: #e8e8e8;
-    border-radius: 3px;
-    padding: 2rem;
-    margin-bottom: 3rem;
+const CustomRenderDiv = styled(StyledRenderDiv)`
+  .styledDiv {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-  .nameCauseWrapper {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-  }
-  .addressWrapper {
-    width: 100%;
-
-    input {
-      width: 625px;
-    }
-  }
-  .recurringWrapper {
-    display: flex;
-    margin-left: 40px;
-  }
-  .locationWrapper {
-    display: flex;
-    flex-direction: space-between;
-
-    input {
-      width: 200px;
-    }
-  }
-  .dateWrapper {
-    text-align: center;
-    input {
-      width: 175px;
-    }
-  }
-  .timeWrapper {
-    display: flex;
-  }
-  .to {
-    margin: 15px;
-  }
-  .pocWrapper {
-    display: flex;
-    flex-wrap: wrap;
-
-    input {
-      width: 175px;
-    }
-  }
-  .requirementsInterestWrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .volunteerNumberWebsiteWrapper {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .eventDetailsWrapper {
-    width: 200%;
-  }
-  .otherNotesWrapper {
-    width: 200%;
-  }
-  .hidden {
-    label {
-      display: none;
-    }
+    justify-content: center;
+    margin-top: 10px;
   }
 
   label {
-    color: ${props => props.theme.primary8};
-  }
-  small {
-    color: #bfbfbf;
-  }
-`;
+    color: ${({ theme }) => theme.primary8};
 
-const StyledDiv = styled.div`
-  background: #003d61;
+    &::before {
+      color: ${({ theme }) => theme.primary8};
+    }
+  }
 
-  h1 {
-    color: ${props => props.theme.primary8};
+  .selectMax {
+    max-width: 615px;
+  }
+
+  .inline {
+    width: 40%;
   }
 
   h4 {
-    color: ${props => props.theme.primary8};
+    margin: 30px 0px;
   }
-  padding: 2rem;
-`;
 
-const CustomStyledCard = styled(StyledCard)`
-  &&& {
-    background: #fafafa;
-    margin: 3rem;
-    text-align: center;
-    cursor: default;
-    transition: none;
-    max-width: 1088px;
-    &:hover {
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  .errorFlex {
+    dispaly: flex;
+    flex-direction: column;
+  }
+
+  .error-message.error-span.left-aligned {
+    color: red;
+    font-size: 12px;
+  }
+  .city-states-input {
+    display: flex;
+    justify-content: space-between;
+  }
+  .time-wrapper {
+    display: flex;
+    justify-content: center;
+    label {
+      margin-left: 0px;
+    }
+  }
+
+  .buttonStyles {
+    display: flex;
+    margin: 50px auto 0;
+    padding-top: 40px;
+    padding-right: 50px;
+    padding-left: 50px;
+    justify-content: space-between;
+    border-top: 2px solid ${({ theme }) => theme.primary8};
+
+    button {
+      margin-left: 5px;
+      margin-right: 5px;
     }
   }
 `;
