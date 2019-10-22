@@ -2,7 +2,7 @@ import moment from 'moment';
 
 //this function is being used to get the accumulated volunteered hours for each month for the current year 
 
-export const groupHoursByMonths = (accHours) => {
+export const groupHoursByMonths = (events) => {
   let start = moment().startOf('year');
   let end = moment().endOf('year');
   
@@ -13,7 +13,12 @@ export const groupHoursByMonths = (accHours) => {
       hours: 0});
   }
 
-  let filteredHours = accHours.filter(item => moment.unix(item.date).isBetween(moment(start).startOf('month'), moment(end).endOf('month'), null, '[]'))
+  let filteredHours = events
+    .filter(item => item.isVerified && moment.unix(item.date).isBetween(moment(start).startOf('month'), moment(end).endOf('month'), null, '[]'))
+    .map(item => ({
+      date: item.date,
+      hours: item.hours
+    }))
 
   filteredHours.sort((a, b) => a.date - b.date);
 
@@ -34,3 +39,18 @@ export const groupHoursByMonths = (accHours) => {
 
   return newArr;
 }
+
+
+/*
+expected data format (user document):
+
+registeredEvents: [
+  {
+    ...
+    date: //unix timestamp
+    hours: int,
+    isVerified: Boolean;
+  },
+  ...
+]
+*/
