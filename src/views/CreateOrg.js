@@ -199,6 +199,7 @@ export const CreateOrg = props => {
         .then(() => {
           props.history.push({
             pathname: '/org-dashboard',
+            state:{org: {...org}}
           });
         })
     }
