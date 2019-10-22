@@ -28,6 +28,7 @@ export const OrganizationDashboard = props => {
 
   useEffect(() => {
     if (props.location.state) {
+        console.log(props.location.state)
       setDisplayOrg(props.location.state.org);
       getAllEventsByOrg(props.location.state.org.orgId, dispatch);
       getAllRecurringEventsByOrg(props.location.state.org.orgId, dispatch);

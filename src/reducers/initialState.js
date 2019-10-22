@@ -80,6 +80,7 @@ export const initialState = {
     deleteOrgFailedError: '',
     error: '',
     isLoading: false,
+    newOrgId: '',
   },
   events: {
     events: [],
