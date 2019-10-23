@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Tag, Row, Col } from 'antd';
+import orgPlaceholderImage from '../../assets/orgPlaceholderImage.png';
 
 export const SecondRow = ({ localState }) => {
   const causes = localState.typesOfCauses.map(item => {
@@ -22,10 +23,7 @@ export const SecondRow = ({ localState }) => {
             <img src={localState.imageUrl} alt={localState.orgName} />
           ) : (
             <div className="placeholder-photo">
-              <img
-                src="https://images.vexels.com/media/users/3/160981/isolated/preview/2f7e8a7edc37a14c15f7708eee67d1c9-planet-earth-globe-asia-australia-silhouette-by-vexels.png"
-                alt={localState.orgName}
-              />
+              <img src={orgPlaceholderImage} alt={localState.orgName} />
             </div>
           )}
         </div>
