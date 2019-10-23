@@ -6,8 +6,8 @@ export const FourthRow = () => {
   return (
     <StyledFourthRow >
       <Col className='event-volunteers' span={16}>
-        <h4>Volunteers Attending</h4>
-        <div className='event-volunteers-cards'></div>
+        {/* <h4>Volunteers Attending</h4>
+        <div className='event-volunteers-cards'></div> */}
       </Col>
       <Col span={7} className='social-media'>
         <h4>Invite a friend!</h4>
