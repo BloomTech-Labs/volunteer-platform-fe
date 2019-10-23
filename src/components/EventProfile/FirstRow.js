@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import styled from 'styled-components';
-import { Row, Col } from 'antd';
+import { Row, Icon, Tooltip, Tag } from 'antd';
 import { StyledButton } from '../../styled';
 
 const RecurRegister = () => {
@@ -40,11 +40,11 @@ const NormalRegister = ({ localState, auth, register, unRegister }) => {
 const RecurDate = ({ localState, selectedDate }) => {
   return (
     <>
-      <h5>{moment.unix(selectedDate).format('LL')}</h5>
-      <h5>
-        {`${moment.unix(selectedDate).format('LT')} -
+      <h4>{moment.unix(selectedDate).format('LL')}</h4>
+      <h4>
+        {`${moment.unix(selectedDate).format('LT')} –
             ${moment.unix(localState.endTimeStamp).format('LT')}`}
-      </h5>
+      </h4>
     </>
   );
 };
@@ -52,15 +52,15 @@ const RecurDate = ({ localState, selectedDate }) => {
 const NormalDate = ({ localState }) => {
   return (
     <>
-      <h5>
+      <h4>
         {localState.startTimeStamp &&
           moment.unix(localState.startTimeStamp).format('LL')}
-      </h5>
-      <h5>
+      </h4>
+      <h4>
         {localState.startTimeStamp &&
-          `${moment.unix(localState.startTimeStamp).format('LT')} -
+          `${moment.unix(localState.startTimeStamp).format('LT')} –
               ${moment.unix(localState.endTimeStamp).format('LT')}`}
-      </h5>
+      </h4>
     </>
   );
 };
@@ -80,18 +80,38 @@ export const FirstRow = ({
     : localState.registeredVolunteers.length;
 
   return (
-    <StyledFirstRow type='flex' justify='space-between' align='stretch'>
-      <div className="left-col" >
-        <h2>{localState.nameOfEvent}</h2>
-        <h4>{localState.orgName}</h4>
-        <span>
-          {isRecurring && '*This is a recurring event. The next date is:'}
-        </span>
-        {isRecurring ? (
-          <RecurDate localState={localState} selectedDate={selectedDate} />
-        ) : (
-          <NormalDate localState={localState} />
-        )}
+    <StyledFirstRow type="flex" justify="space-between" align="stretch">
+      <div className="left-col">
+        <div className="title-container">
+          <h2>{localState.nameOfEvent}</h2>
+        </div>
+        <h5>
+          <a className="org-link" href={`/organization/${localState.orgId}`}>
+            {localState.orgName}
+          </a>
+        </h5>
+        <div className="date-container">
+          <div>
+            {isRecurring ? (
+              <RecurDate localState={localState} selectedDate={selectedDate} />
+            ) : (
+              <NormalDate localState={localState} />
+            )}
+          </div>
+          {isRecurring && (
+            <div className="recurring-notice">
+              <Tag color="orange" className="recurring-tag">
+                Recurring Event
+              </Tag>
+              <Tooltip
+                placement="right"
+                title="Recurring events may have multiple dates available. Scroll down to see the calender and sign up for the event that works for you."
+              >
+                <Icon type="question-circle" theme="outlined" />
+              </Tooltip>
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="right-col">
@@ -122,7 +142,7 @@ const StyledFirstRow = styled(Row)`
     box-shadow: none;
     width: 100%;
     min-height: 150px;
-    margin: 2rem 0;
+    margin: 1rem 0 2rem 0;
     flex-wrap: nowrap;
   }
 
@@ -130,6 +150,17 @@ const StyledFirstRow = styled(Row)`
   h4,
   h5 {
     margin: 0;
+  }
+
+  .title-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 88px;
+    max-width: 780px;
+    width: 100%;
+    /* margin: 0 0 8px 0; */
   }
 
   .left-col,
@@ -144,6 +175,11 @@ const StyledFirstRow = styled(Row)`
     align-items: center;
   }
 
+  .org-link {
+    font-weight: normal;
+    font-size: 18px;
+  }
+
   .needed-vols {
     background: white;
     width: 16rem;
@@ -153,6 +189,31 @@ const StyledFirstRow = styled(Row)`
     align-items: center;
     border-radius: 4px;
     padding: 0.2rem 0;
+  }
+
+  .date-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 8px;
+
+    h4 {
+      font-weight: normal;
+      &:first-child {
+        font-size: 24px;
+        margin-bottom: 8px;
+      }
+    }
+
+    .recurring-notice {
+      margin: 0px 8px 4px 48px;
+
+      .recurring-tag {
+        font-size: 1rem;
+        color: ${props => props.theme.gray9};
+      }
+    }
   }
 `;
 

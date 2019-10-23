@@ -122,15 +122,16 @@ export const EventProfile = props => {
 
     const promptRegModal = confirmModal({
       title: 'Login or register required',
-      content: 'In order to sign up for this event you must have an account with us.',
+      content:
+        'In order to sign up for this event you must have an account with us.',
       okText: 'Sign up',
       onOk: () => {
         props.history.push({
           pathname: '/signup',
-          state: { eventId: event.eventId }
-        })
-      }
-    })
+          state: { eventId: event.eventId },
+        });
+      },
+    });
 
     e.preventDefault();
     if (auth.registeredUser) {
@@ -166,7 +167,9 @@ export const EventProfile = props => {
 
   return (
     <StyledEventProfile>
-      {events.isLoading ? <StyledLoader /> : (
+      {events.isLoading ? (
+        <StyledLoader />
+      ) : (
         <>
           <div className="previous-page" onClick={backButton}>
             <Icon
@@ -202,7 +205,9 @@ export const EventProfile = props => {
             isLoading={comments.isLoadingReplyToComment}
             event={event}
           />
-          {auth.registeredUser && <Editor onSubmit={submitComment} submitting={comments.isLoading} />}
+          {auth.registeredUser && (
+            <Editor onSubmit={submitComment} submitting={comments.isLoading} />
+          )}
         </>
       )}
     </StyledEventProfile>
@@ -219,7 +224,7 @@ const StyledEventProfile = styled.div`
     align-items: center;
     cursor: pointer;
   }
-  width: 80vw;
+  /* width: 80vw; */
 `;
 
 EventProfile.propTypes = {
