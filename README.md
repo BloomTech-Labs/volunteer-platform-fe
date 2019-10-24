@@ -11,14 +11,12 @@
 
 |                                       [Shane Gooch](https://github.com/shane-gooch)                                       |                                                     [Ethan Hickey](https://github.com/ehickey08)                                                     |                                    [Jeremiah Tenbrink](https://github.com/jeremiahtenbrink)                                    |                                                     [Kimberly Mai Ho](https://github.com/)                                                    |                                        [Max David](https://github.com/maxdavid)                                       | [Penny Lee ](https://github.com/mochibot)                                                                                                     | [Blake Goms](https://github.com/Blake-Goms)                                                                              | [Oscar Ortiz](https://github.com/CleverOscar)                                                                                 |
 | :-----------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------: | --------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
-| [<img src="https://avatars1.githubusercontent.com/u/43436342?s=460&v=4" width = "200" />](https://github.com/shane-gooch) | [<img src="https://www.dalesjewelers.com/wp-content/uploads/2018/10/placeholder-silhouette-male.png" width = "200" />](https://github.com/ehickey08) | [<img src="https://avatars1.githubusercontent.com/u/17443353?s=460&v=4" width = "200" />](https://github.com/jeremiahtenbrink) | [<img src="https://avatars1.githubusercontent.com/u/49884611?s=460&v=4" width = "200" />](https://github.com/iammaiho) | [<img src="https://avatars2.githubusercontent.com/u/1081567?s=460&v=4" width = "200" />](https://github.com/maxdavid) | [<img src="https://www.dalesjewelers.com/wp-content/uploads/2018/10/placeholder-silhouette-female.png" width = "200" />](https://github.com/) | [<img src="https://avatars3.githubusercontent.com/u/49797898?s=460&v=4" width = "200" />](https://github.com/Blake-Goms) | [<img src="https://avatars2.githubusercontent.com/u/22969581?s=460&v=4" width = "200" />](https://github.com/CleverOscar)     |
-|                       [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/)                       |                               [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/jengopockets)                              |                    [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/Mister-Corn)                    |                           [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/NandoTheessen)                          |                 [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/wvandolah)                | [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/mochibot)                                                         | [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/Blake-Goms)                                  | [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/CleverOscar)                                      |
-|       [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)       |        [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/jacob-tharp-79382311b/)        |          [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)         |                 [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)                 |     [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)     | [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)                                 | [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)            | [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/clever-oscar/) |
+| [<img src="https://avatars1.githubusercontent.com/u/43436342?s=460&v=4" width = "200" />](https://github.com/shane-gooch) | [<img src="https://www.dalesjewelers.com/wp-content/uploads/2018/10/placeholder-silhouette-male.png" width = "200" />](https://github.com/ehickey08) | [<img src="https://avatars1.githubusercontent.com/u/17443353?s=460&v=4" width = "200" />](https://github.com/jeremiahtenbrink) | [<img src="https://avatars1.githubusercontent.com/u/49884611?s=460&v=4" width = "200" />](https://github.com/iammaiho) | [<img src="https://avatars2.githubusercontent.com/u/1081567?s=460&v=4" width = "200" />](https://github.com/maxdavid) | [<img src="https://avatars2.githubusercontent.com/u/9089601?s=460&v=4" width = "200" />](https://github.com/mochibot) | [<img src="https://avatars3.githubusercontent.com/u/49797898?s=460&v=4" width = "200" />](https://github.com/Blake-Goms) | [<img src="https://avatars2.githubusercontent.com/u/22969581?s=460&v=4" width = "200" />](https://github.com/CleverOscar)     |
+|                       [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/shane-gooch)                       |                               [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/jeremiahtenbrink)                              |                    [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/iammaiho)                    |                           [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/maxdavid)                          |                 [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/wvandolah)                | [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/mochibot)                                                         | [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/Blake-Goms)                                  | [<img src="https://github.com/favicon.ico" width="15"> ](https://github.com/CleverOscar)                                      |
+|       [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/shaneanthonygooch)       |        [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/ethan-hickey08)        |          [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/jeremiahtenbrink)         |                 [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/kimberly-mai-ho)                 |     [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)     | [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/pennyplee)                                 | [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/)            | [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="15"> ](https://www.linkedin.com/in/clever-oscar/) |
 
 <br>
 <br>
-
-🚫 4️⃣ Optional examples of using images with links for your tech stack, make sure to change these to fit your project
 
 ## Project Overview
 
@@ -32,10 +30,18 @@ The goal of this project is to connect volunteers and non-profits together, stre
 
 ### 4️⃣ Key Features
 
--   feature one [Initial user onboarding (one type of user); user can create a nonprofit organization; CRUD functionality on events for the nonprofit]
--   feature two
--   feature three
-
+-   release canvas 1 
+    -  Initial user onboarding (one type of user)
+    -  user can create a nonprofit organization; CRUD functionality on events for the nonprofit]
+-   release canvas 2 
+    -  Users (volunteers) are able to search and filter volunteer opportunities
+    -  Users (volunteers) can sign up (or cancel) for a specific event after searching and using interactive filters to find volunteer opportunities close by]
+-   release canvas 3 
+We unfortunately ran out of time after completion of release canvas 2 but we thought it would be nice if the following features could be incorporated:
+    -  Organizations can verify their status via uploading of 501(c)(3) form
+    -  Organizations can validate hours after volunteers had completed an event
+    -  Users (volunteers) can view history in their profiles that show events that they had completed and hours that they had accumulated
+    -  Users (volunteers) can rate the organization (on a scale of 1-5 stars) after they had completed an event
 
 ## 1️⃣ Tech Stack
 
@@ -43,17 +49,23 @@ The goal of this project is to connect volunteers and non-profits together, stre
 
 #### ReactJS
 
--   We chose React because everyone on the team knows it and we want to make use of the vast amount of npm packages built just for react.
--   React JS has a really great ways to manage component state. Our team is a huge fan of hooks and the power of Context Api(which is built in the box for react)
--   There is this styling library called Chakra.UI which works really well for our UX vision that is really compatible with react
+Our groups familiarity is only with React as a FE Framework. We are aware of other viable options (Angular, Vue, Next), however, none of us have familiarity with these frameworks and due to time, these options were not going to be considered. Since most of the group will be introduced to Firebase on the BE, we did not want to also be spending our valuable time learning another framework. React provides us with enough comfort and flexibility for this project. We will utilize React Hooks along with the other many, well-developed npm packages that have been made for React (React Router, React Joyride, etc.). The largest potential challenge we foresee will be state management and separation of concerns for our file structure.
 
+#### Front end deployed to [https://volunteer-platform.netlify.com/]
 
-🚫List the rest of the front end features and libraries in the same format as the framework above.
+#### Back end built using:
 
-#### Front end deployed to `🚫insert service here`
+#### Firebase
 
+We chose firebase for the following reasons:
 
-#### [Back end](<🚫link to back end repo here>) built using:
+- New technology that almost no one on the team had used so it is new and exciting to us
+- No need to set up backend
+- No need to use library like knex. 
+- No need to create migration files. 
+- Can change as the app changes. 
+- Subscriptions
+- Google auth comes built in.
 
 #### 🚫 back end framework goes here
 
@@ -61,46 +73,53 @@ The goal of this project is to connect volunteers and non-profits together, stre
 -   point two
 -   point three
 
-
-🚫 List the rest of the back end end features and libraries in the same format as the framework above
-
 # APIs
 
 ## 2️⃣ Authentication API here
 
-🚫Replace text below with a description of the API
+Google autho code
+```
+ useEffect (() => {
+  this.unregisterAuthObserver = firebase.auth()
+              .onAuthStateChanged( ( user ) => {
+                  if( user ){
+                      //user is logged in or just logged out.
+                  }else{
+                      //user is logged out or just logged out.
+                  }
 
-Water's like me. It's laaazy ... Boy, it always looks for the easiest way to do things A little happy sunlight shining through there. Let all these little things happen. Don't fight them. Learn to use them. Even the worst thing we can do here is good.
+              } );
+ }, [])
+```
 
 ## 2️⃣ Payment API here
 
-🚫Replace text below with a description of the API
-
-This is the way you take out your flustrations. Get away from those little Christmas tree things we used to make in school. Isn't it fantastic that you can change your mind and create all these happy things? Everything's not great in life, but we can still find beauty in it.
+We are not using any payment API
 
 ## 3️⃣ Misc API here
 
-🚫Replace text below with a description of the API
+[Geoip-db API](https://geoip-db.com/)
 
-You can do anything your heart can imagine. In life you need colors. This is where you take out all your hostilities and frustrations. It's better than kicking the puppy dog around and all that so. I'm sort of a softy, I couldn't shoot Bambi except with a camera. Trees get lonely too, so we'll give him a little friend. We'll lay all these little funky little things in there.
+Detect the user's location by IP address, for the purpose of fetching events that are close to the user.
 
-## 3️⃣ Misc API here
+Sample response format
+```
+ {
+  "country_code":"US",
+  "country_name":"United States",
+  "city": ,
+  "postal": ,
+  "latitude": ,
+  "longitude": ,
+  "IPv4": ,
+  "state": 
+ }
+```
 
-🚫Replace text below with a description of the API
-
-When you do it your way you can go anywhere you choose. Let your heart take you to wherever you want to be. If I paint something, I don't want to have to explain what it is. A tree needs to be your friend if you're going to paint him. That's a son of a gun of a cloud. Even the worst thing we can do here is good.
-
-## 3️⃣ Misc API here
-
-🚫Replace text below with a description of the API
-
-Volunteering your time; it pays you and your whole community fantastic dividends. Maybe there's a happy little waterfall happening over here. You can spend all day playing with mountains. We don't have to be committed. We are just playing here. You have freedom here. The only guide is your heart. It's cold, but it's beautiful.
 
 # 3️⃣ Environment Variables
 
 In order for the app to function correctly, the user must set up their own environment variables. There should be a .env file containing the following:
-
-🚫These are just examples, replace them with the specifics for your app
 
     *  REACT_APP_apiKey - this is your Google API key, which can be generated in the Google Cloud Console
     *  REACT_APP_authDomain - when you set up your Firebase project, this information will be in the dashboard
@@ -108,14 +127,10 @@ In order for the app to function correctly, the user must set up their own envir
     *  REACT_APP_projectID - in the Firebase dashboard
     *  REACT_APP_storageBucket - in the Firebase dashboard
     *  REACT_APP_messagingSenderId - in the Firebase dashboard
-    *  REACT_APP_stripe_API - this is your public Stripe API key, generated in the Stripe dashboard
-    *  REACT_APP_backendURL - optional for your local development server
-    *  REACT_APP_clientid - this is the Stripe_connect clientID, generated in Stripe_connect settings
-    *  REACT_APP_stripe_plan - this is the ID for a second Stripe subscription plan, generated under Stripe products
+    *  REACT_APP_ipinfoKey - API key for Geoip-db
+
 
 # 5️⃣ Content Licenses
-
-🚫For all content - images, icons, etc, use this table to document permission of use. Remove the two placeholders and add you content to this table
 
 | Image Filename | Source / Creator | License                                                                      |
 | -------------- | ---------------- | ---------------------------------------------------------------------------- |
