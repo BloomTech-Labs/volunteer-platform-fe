@@ -26,16 +26,17 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import React, {useEffect, useState} from 'react';
-import {WrappedAntForm, AntInput, AntInputNumber, successModal } from '../styled';
-import {Avatar, Card, message } from 'antd';
+            <pre class="prettyprint source linenums"><code>import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import {useStateValue} from '../hooks/useStateValue';
-import {register} from '../actions';
+import { Avatar, message, Form, Input, DatePicker } from 'antd';
+import Autocomplete from 'react-google-autocomplete';
+import { successModal, StyledCancelButton, StyledButton } from '../styled';
+import { useStateValue } from '../hooks/useStateValue';
+import { register } from '../actions';
 import sampleProfile from '../assets/undraw_profile.svg';
-import {device} from '../styled/deviceBreakpoints';
-
-export const Signup = (props) => {
+import { device } from '../styled/deviceBreakpoints';
+import moment from 'moment';
+export const Signup = props => {
   const [state, dispatch] = useStateValue();
 
   /**
@@ -44,222 +45,272 @@ export const Signup = (props) => {
   let user = {
     firstName: '',
     lastName: '',
-    city: '',
-    state: '',
-    zipCode: '',
+    address: '',
     phoneNumber: '',
     email: '',
     uid: '',
-    age: 18,
+    DOB: moment(moment().subtract(18, 'years')),
   };
-  const [localState, setState] = useState(user);
+  const [localState, setLocalState] = useState(user);
   //const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
-    if (state.auth.googleAuthUser){
+    if (state.auth.googleAuthUser) {
       user.uid = state.auth.googleAuthUser.uid;
-      if (state.auth.googleAuthUser.displayName){
-        
+      if (state.auth.googleAuthUser.displayName) {
         const name = state.auth.googleAuthUser.displayName.split(' ');
-        user.firstName = name[ 0 ];
-        user.lastName = name[ 1 ];
+        user.firstName = name[0];
+        user.lastName = name[1];
       }
-      
-      if (state.auth.googleAuthUser.email){
+
+      if (state.auth.googleAuthUser.email) {
         user.email = state.auth.googleAuthUser.email;
       }
-      
-      if (state.auth.googleAuthUser.phoneNumber){
+
+      if (state.auth.googleAuthUser.phoneNumber) {
         user.phoneNumber = state.auth.googleAuthUser.phoneNumber;
       }
-      
-      if (state.auth.googleAuthUser.photoURL){
+
+      if (state.auth.googleAuthUser.photoURL) {
         user.photoURL = state.auth.googleAuthUser.photoURL;
       }
-      setState({...user});
+      setLocalState({ ...user });
     }
   }, [state]);
-  
-  const handleSubmit = values => {
-    values.uid = localState.uid;
-    register(values, dispatch);
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    register({...localState, DOB: localState.DOB.format('LL')}, dispatch);
     regUserSuccessModal();
   };
 
   const regUserSuccessModal = successModal({
     title: 'Registration Success!',
-    maskStyle: { background: `rgba(97, 37, 0, 0.2)` }
-  })
+    maskStyle: { background: `rgba(97, 37, 0, 0.2)` },
+    onOk: () => props.history.push('/dashboard'),
+  });
 
   const cancelRegister = () => {
     message.warning('Registration is required to continue using Voluntier');
-  }
-  
+  };
+
+  const handleChange = (name, value) => {
+    setLocalState({ ...localState, [name]: value });
+  };
+
   return (
     &lt;StyledDiv>
-      &lt;div className='inner-div'>
-        &lt;CustomStyledCard style={{maxWidth: '800px', margin: `2rem 0 5rem 0`}}>
-          &lt;h1>Get Registered&lt;/h1>
-          {localState.photoURL ? (
-            &lt;Avatar
-              src={localState.photoURL}
-              shape="square"
-              size={64}
-              icon="user"
+      &lt;h1>Get Registered&lt;/h1>
+      {localState.photoURL ? (
+        &lt;Avatar
+          src={localState.photoURL}
+          shape="square"
+          size={64}
+          icon="user"
+        />
+      ) : (
+        &lt;img src={sampleProfile} alt="undraw profile" />
+      )}
+      &lt;Form layout={'vertical'} onSubmit={handleSubmit}>
+        &lt;div className="row-half">
+          &lt;Form.Item label="First Name" required>
+            &lt;Input
+              name={'firstName'}
+              value={localState.firstName}
+              onChange={e => handleChange('firstName', e.target.value)}
             />
-          ) : (
-            &lt;img src={sampleProfile} alt='undraw profile'/>
-          )}
-          &lt;WrappedAntForm
-            layout={'vertical'}
-            onSubmit={handleSubmit}
-            autofill={localState}
-            buttonType="primary"
-            submitButton
-            submitButtonText="Register"
-            buttonLoading={state.auth.isLoading}
-            cancelButton={true}
-            cancelButtonText={'Cancel'}
-            handleCancel={cancelRegister}
+          &lt;/Form.Item>
+          &lt;Form.Item label="Last Name" required>
+            &lt;Input
+              name={'lastName'}
+              value={localState.lastName}
+              onChange={e => handleChange('lastName', e.target.value)}
+            />
+          &lt;/Form.Item>
+        &lt;/div>
+        &lt;div className="row-full">
+          &lt;Form.Item label="Address" required>
+            &lt;Autocomplete
+              name="address"
+              className="google-autocomplete"
+              onPlaceSelected={place => {
+                setLocalState({
+                  ...localState,
+                  address: place.formatted_address,
+                });
+              }}
+              types={['address']}
+              componentRestrictions={{ country: 'us' }}
+              value={localState.address}
+              onChange={e => handleChange('address', e.target.value)}
+            />
+          &lt;/Form.Item>
+        &lt;/div>
+        &lt;div className="row-half">
+          &lt;Form.Item label="Email" required>
+            &lt;Input
+              name={'email'}
+              value={localState.email}
+              onChange={e => handleChange('email', e.target.value)}
+            />
+          &lt;/Form.Item>
+          &lt;Form.Item label="Phone Number" required>
+            &lt;Input
+              name={'phoneNumber'}
+              value={localState.phoneNumber}
+              onChange={e => handleChange('phoneNumber', e.target.value)}
+            />
+          &lt;/Form.Item>
+        &lt;/div>
+        &lt;div className="row-center">
+          &lt;Form.Item label="Date of Birth" required>
+            &lt;DatePicker
+              name="DOB"
+              value={localState.DOB}
+              onChange={e => handleChange('DOB', e)}
+              format={['MM/DD/YY', 'MM/DD/YYYY', 'MM-DD-YYYY', 'MM-DD-YY']}
+            />
+          &lt;/Form.Item>
+        &lt;/div>
+        &lt;div className="buttonStyles">
+          &lt;StyledCancelButton onClick={cancelRegister} type="primary">
+            Cancel
+          &lt;/StyledCancelButton>
+          &lt;StyledButton
+            onClick={handleSubmit}
+            disabled={state.auth.isLoading}
+            loading={state.auth.isLoading}
+            type="primary"
           >
-            &lt;div className='inputGroup'>
-              &lt;div className='row'>
-                &lt;AntInput name={'First Name'}
-                          layout={formItemLayout}/>
-                &lt;AntInput name={'Last Name'}
-                          layout={formItemLayout}/>
-              &lt;/div>
-              &lt;div className='row'>
-                &lt;AntInput name={'City'}
-                          layout={formItemLayout}/>
-                &lt;AntInput name={'State'}
-                          layout={formItemLayout}/>
-              
-              &lt;/div>
-              &lt;div className='row'>
-                &lt;AntInput name={'Email'}
-                          layout={formItemLayout}/>
-                &lt;AntInput name={'Zip Code'}
-                          layout={formItemLayoutShort}/>
-              &lt;/div>
-              &lt;div className='row'>
-                &lt;AntInput name={'Phone Number'}
-                          layout={formItemLayout}/>
-                &lt;AntInputNumber name={'Age'}
-                                layout={formItemLayoutShort}/>
-              &lt;/div>
-            &lt;/div>
-          &lt;/WrappedAntForm>
-        &lt;/CustomStyledCard>
-      &lt;/div>
+            Register
+          &lt;/StyledButton>
+        &lt;/div>
+      &lt;/Form>
     &lt;/StyledDiv>
   );
 };
 
 export default Signup;
 
-const CustomStyledCard = styled(Card)`
+const StyledDiv = styled.div`
   &amp;&amp; {
-  text-align: center;
-  border-radius: 0;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-center: space-between;
-  padding-bottom: 3rem;
-  
+    display: flex;
+    background: ${({ theme }) => theme.gray1};
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border-radius: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-center: space-between;
+    padding-bottom: 3rem;
+    label {
+      color: ${({ theme }) => theme.primary8};
+
+      &amp;::before {
+        color: ${({ theme }) => theme.primary8};
+      }
+    }
     img {
       width: 200px;
       margin: 1.5rem auto;
     }
 
-    button {
-      align-self: center;
-      width: 120px;
-      padding: 0.5rem 2rem;
-      font-size: 16px;
-      height: auto;
-      margin: 1.5rem 3rem;
+    form {
+      width: 100%;
+    }
 
-      @media (max-width: 650px) {
-        margin: 1.5rem 2rem;
+    .google-autocomplete {
+      width: 100%;
+      height: 32px;
+      display: inline-block;
+      padding: 4px 11px;
+      font-size: 14px;
+      line-height: 1.5;
+      background-color: #fff;
+      border-radius: 4px;
+      border: 1px solid rgb(217, 217, 217);
+      font-family: ${({ theme }) => theme.bodytext};
+
+      &amp;::placeholder {
+        color: rgba(0, 0, 0, 0.35);
+        font-size: 14px;
+        font-family: ${({ theme }) => theme.bodytext};
       }
     }
-
-    label {
-      color: ${props => props.theme.primary8};
-    }
-
-    .inputGroup {
+    .row-half,
+    .row-full {
       width: 100%;
       display: flex;
-      flex-direction: column;
-      align-items: center; 
-      margin: 2rem 0 1rem 0;
-    }
-
-    .row {
-      width: 70%;
-      display: flex;
-      justify-content: center;
-      padding-left: 3.5rem;
+      justify-content: space-between;
+      padding: 0 3.5rem;
 
       @media ${device.tablet} {
         width: 90%;
       }
 
       @media (max-width: 650px) {
-        padding-left: 0
+        padding-left: 0;
       }
     }
 
-    .ant-form-item {
+    .row-full {
+      .ant-form-item {
+        width: 100%;
+      }
+    }
+
+    .row-center {
       width: 50%;
+      margin: 0 auto;
+      .ant-calendar-picker {
+        width: 100%;
+      }
+    }
+    .row-half {
+      .ant-form-item {
+        width: 45%;
 
-      @media ${device.tablet} {
-        margin-right: 0.8rem; 
-        margin-left: 0.8rem; 
+        @media ${device.tablet} {
+          margin-right: 0.8rem;
+          margin-left: 0.8rem;
+        }
       }
     }
 
-  }
-`;
-
-const StyledDiv = styled.div`
-  background: #E5E5E5;
-  width: 100vw;
-  display: flex;
-
-  .inner-div {
-    width: 1150px
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    .buttonStyles {
+      display: flex;
+      margin: 50px auto 0;
+      padding-top: 40px;
+      padding-right: 70px;
+      padding-left: 70px;
+      justify-content: space-around;
+    }
   }
 `;
 
 const formItemLayoutShort = {
   labelCol: {
-    xs: {span: 20},
-    sm: {span: 20},
+    xs: { span: 20 },
+    sm: { span: 20 },
   },
   wrapperCol: {
-    xs: {span: 20},
-    sm: {span: 10},
+    xs: { span: 20 },
+    sm: { span: 10 },
   },
 };
 
 const formItemLayout = {
   labelCol: {
-    xs: {span: 24},
-    sm: {span: 24},
+    xs: { span: 24 },
+    sm: { span: 24 },
   },
   wrapperCol: {
-    xs: {span: 24},
-    sm: {span: 20},
+    xs: { span: 24 },
+    sm: { span: 20 },
   },
 };
-
 </code></pre>
         </article>
     </section>
@@ -276,7 +327,7 @@ const formItemLayout = {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Mon Oct 07 2019 09:44:00 GMT-0600 (Mountain Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Wed Oct 23 2019 20:13:14 GMT-0600 (Mountain Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -746,6 +746,8 @@ export const verifyHours = (event, user, hours, eventType = 'events') => {
     .catch(err => {
       console.log(err);
     });
+  
+  
 };
 
 export const updateEvents = (eventType = 'events') => {

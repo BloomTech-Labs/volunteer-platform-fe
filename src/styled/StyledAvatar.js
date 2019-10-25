@@ -8,4 +8,5 @@ export const StyledAvatar = ( { ...rest } ) => {
 
 const StyledAvatarComponent = styled( Avatar )`
 
+
 `;
