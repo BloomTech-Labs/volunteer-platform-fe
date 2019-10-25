@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { checkUserRegistered, signOut } from '../../actions';
-import { Menu, Tooltip, Badge } from 'antd';
+import { Menu, Tooltip, Badge, Icon } from 'antd';
 import styled from 'styled-components';
 import { useStateValue } from '../../hooks/useStateValue';
 import Loader from 'react-loader-spinner';
@@ -54,11 +54,11 @@ export const Navigation = props => {
       <NavbarLink />
     );
   };
-  const { SubMenu } = Menu;
+
   return (
     <StyledNavigation>
       <Menu onClick={handleClick} selectedKeys={[current]} mode="inline">
-        <Menu.Item className="nav-name">
+        <Menu.Item className="nav-name" key="Profile">
           {state.auth.registeredUser && state.auth.registeredUser.firstName ? (
             state.auth.googleAuthUser ? (
               <NavbarMenuLink to={`/profile/${state.auth.googleAuthUser.uid}`}>
@@ -153,7 +153,10 @@ export const Navigation = props => {
           (state.auth.registeredUser &&
             state.auth.registeredUser.firstName) && (
             <Menu.Item key={'Create Org'}>
-              <Link to={'/create-org'}>Create Organization</Link>
+              <Icon type="plus-circle" />
+              <span>
+                <Link to={'/create-org'}>New Organization</Link>
+              </span>
             </Menu.Item>
           )}
         <Menu.Divider />
