@@ -37,13 +37,14 @@ import { device } from './styled/deviceBreakpoints';
 
 const { Content } = Layout;
 
-function App() {
+function App(props) {
   const [state, dispatch] = useStateValue();
   const [collapsed, setCollapsed] = useState(false);
   const [dimensions, setDimensions] = useState({
     width: window.innerWidth,
     height: document.body.clientHeight,
   });
+  const [marginLeft, setMarginLeft] = useState('auto');
   const [subscriptions, setSubscriptions] = useState({});
 
   /**
@@ -98,7 +99,7 @@ function App() {
       width: window.innerWidth,
       height: document.body.scrollHeight,
     });
-    if (window.innerWidth < 1500) {
+    if (window.innerWidth < 768) {
       setCollapsed(true);
     }
   };
@@ -115,6 +116,11 @@ function App() {
               <MenuButton collapsed={collapsed} setCollapsed={setCollapsed} />
             )}
           </HeaderDiv>
+          <NavPageMask
+            collapsed={collapsed}
+            width={window.innerWidth}
+            onClick={() => setCollapsed(true)}
+          />
           <Route
             exact
             path={'/'}
@@ -123,6 +129,8 @@ function App() {
           <StyledContent
             width={dimensions.width}
             loggedIn={state.auth.loggedIn}
+            marginLeft={marginLeft}
+            collapsed={collapsed}
           >
             <Switch>
               <LoginRoute path={'/login'} component={Login} />
@@ -176,14 +184,43 @@ const StyledApp = styled.div`
   margin-top: 64px;
 `;
 
+const NavPageMask = styled.div`
+  background: rgba(0, 0, 0, 0.45);
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 101;
+  display: ${({ collapsed, width }) => {
+    return !collapsed && width < 1089 ? 'block' : 'none';
+  }};
+`;
+
 const StyledContent = styled(Content)`
   && {
     padding-bottom: ${props => props.theme.footerPadding};
     background: ${({ theme }) => theme.gray2};
-    max-width: ${({ theme }) => theme.maxWidth};
-    margin: 15px auto 45px;
+    max-width: ${props => {
+      if (props.width > 1300) {
+        return props.theme.maxWidth;
+      }
+      return '75%';
+    }};
+    margin: ${props => {
+      const margin = props.width - 1088;
+      if (props.width < 1089) {
+        return '15px auto 45px';
+      }
+      if ((margin > 420 || props.width < 1000) && props.collapsed) {
+        return '15px auto 45px';
+      }
+      return '15px 15px 45px 220px';
+    }};
     display: flex;
     flex-direction: column;
+    transition: width 0.2s;
+    transition: margin 0.2s;
 
     @media (min-width: 1088px) {
       min-width: 750px;

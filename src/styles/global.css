@@ -102,3 +102,7 @@ h4 {
   font-size: 0.72rem;
   text-align: justify;
 }
+
+.ant-affix {
+  z-index: 102;
+}
