@@ -47,6 +47,7 @@ const StyledHeader = styled(Header)`
     transition: height 0.3s;
     transition: font-size 0.3s;
     padding: 0;
+    z-index: 102;
 
     &.scrolled {
       height: 32px;

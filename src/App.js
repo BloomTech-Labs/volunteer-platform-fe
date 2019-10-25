@@ -116,6 +116,11 @@ function App(props) {
               <MenuButton collapsed={collapsed} setCollapsed={setCollapsed} />
             )}
           </HeaderDiv>
+          <NavPageMask
+            collapsed={collapsed}
+            width={window.innerWidth}
+            onClick={() => setCollapsed(true)}
+          />
           <Route
             exact
             path={'/'}
@@ -179,6 +184,19 @@ const StyledApp = styled.div`
   margin-top: 64px;
 `;
 
+const NavPageMask = styled.div`
+  background: rgba(0, 0, 0, 0.45);
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 101;
+  display: ${({ collapsed, width }) => {
+    return !collapsed && width < 1089 ? 'block' : 'none';
+  }};
+`;
+
 const StyledContent = styled(Content)`
   && {
     padding-bottom: ${props => props.theme.footerPadding};
@@ -191,6 +209,9 @@ const StyledContent = styled(Content)`
     }};
     margin: ${props => {
       const margin = props.width - 1088;
+      if (props.width < 1089) {
+        return '15px auto 45px';
+      }
       if ((margin > 420 || props.width < 1000) && props.collapsed) {
         return '15px auto 45px';
       }
@@ -198,6 +219,7 @@ const StyledContent = styled(Content)`
     }};
     display: flex;
     flex-direction: column;
+    transition: width 0.2s;
     transition: margin 0.2s;
 
     @media (min-width: 1088px) {

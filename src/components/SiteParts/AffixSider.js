@@ -45,7 +45,7 @@ const StyledSider = styled(Sider)`
     position: fixed;
     left: 0px;
     top: 64px;
-    z-index: 100;
+    z-index: 102;
     min-height: 100vh;
     height: 100vh;
     overflow-y: scroll;
