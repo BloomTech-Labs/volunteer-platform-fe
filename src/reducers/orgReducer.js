@@ -41,6 +41,11 @@ export const orgReducer = (state, action) => {
         isLoading: true,
       };
     case CREATED_ORGANIZATION:
+        return {
+            ...state,
+            isLoading: false,
+            newOrgId: action.payload.orgId
+        }
     case CREATE_ORGANIZATION_FAIL:
     case UPDATE_ORGANIZATION_FAIL:
     case UPDATE_ORGANIZATION_SUCCESS:

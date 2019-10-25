@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { checkUserRegistered, signOut } from '../../actions';
-import { Menu, Tooltip, Badge } from 'antd';
+import { Menu, Tooltip, Badge, Icon } from 'antd';
 import styled from 'styled-components';
 import { useStateValue } from '../../hooks/useStateValue';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
 export const Navigation = props => {
   const [state, dispatch] = useStateValue();
@@ -52,26 +54,28 @@ export const Navigation = props => {
       <NavbarLink />
     );
   };
-  const { SubMenu } = Menu;
+
   return (
     <StyledNavigation>
       <Menu onClick={handleClick} selectedKeys={[current]} mode="inline">
-        <Menu.Item className="nav-name">
-          {state.auth.registeredUser &&
-            (state.auth.registeredUser.firstName
-              ? `${state.auth.registeredUser.firstName} ${
+        <Menu.Item className="nav-name" key="Profile">
+          {state.auth.registeredUser && state.auth.registeredUser.firstName ? (
+            state.auth.googleAuthUser ? (
+              <NavbarMenuLink to={`/profile/${state.auth.googleAuthUser.uid}`}>
+                {`${state.auth.registeredUser.firstName} ${
                   state.auth.registeredUser.lastName[0]
-                }.`
-              : 'Welcome!')}
-        </Menu.Item>
-        <Menu.Divider />
-        <Menu.Item>
-          {state.auth.googleAuthUser && (
-            <NavbarMenuLink to={`/profile/${state.auth.googleAuthUser.uid}`}>
-              Profile
-            </NavbarMenuLink>
+                }.`}
+              </NavbarMenuLink>
+            ) : (
+              `${state.auth.registeredUser.firstName} ${
+                state.auth.registeredUser.lastName[0]
+              }.`
+            )
+          ) : (
+            <Loader type="ThreeDots" color="#00000022" width={50} height={40} />
           )}
         </Menu.Item>
+        <Menu.Divider />
         <Menu.Item key={'Messages'}>
           <Link
             to={{
@@ -96,13 +100,6 @@ export const Navigation = props => {
         <Menu.Item key="Home">
           <Link to={'/dashboard'}>Browse</Link>
         </Menu.Item>
-        {state.auth.loggedIn &&
-          (state.auth.registeredUser &&
-            state.auth.registeredUser.firstName) && (
-            <Menu.Item key={'Create Org'}>
-              <Link to={'/create-org'}>Create Organization</Link>
-            </Menu.Item>
-          )}
         {state.org.createdOrg && <Menu.Divider />}
         {state.org.createdOrg &&
           state.org.userOrganizations.map(org => {
@@ -152,6 +149,16 @@ export const Navigation = props => {
               </Menu.SubMenu>
             );
           })}
+        {state.auth.loggedIn &&
+          (state.auth.registeredUser &&
+            state.auth.registeredUser.firstName) && (
+            <Menu.Item key={'Create Org'}>
+              <Icon type="plus-circle" />
+              <span>
+                <Link to={'/create-org'}>New Organization</Link>
+              </span>
+            </Menu.Item>
+          )}
         <Menu.Divider />
         <Menu.Item className="nav-bottom" key={'Sign Out'}>
           <Link to="/dashboard">Sign Out</Link>

@@ -7,7 +7,16 @@ import { setDaysOpen } from '../../utility/setDaysOpen';
 import MapContainer from '../Map/MapContainer';
 
 export const OrgInfo = ({ displayOrg }) => {
-  const causes = displayOrg && displayOrg.causeAreas.map(item => <Tag>{(item = [item])}</Tag>)
+  const causes =
+    displayOrg &&
+    displayOrg.causeAreas.map(item => <Tag>{(item = [item])}</Tag>);
+
+  const markers = displayOrg && [
+    {
+      name: displayOrg.organizationName,
+      position: { lat: displayOrg.lat, lng: displayOrg.lng },
+    },
+  ];
 
   return (
     <OrgInfoDiv
@@ -16,17 +25,17 @@ export const OrgInfo = ({ displayOrg }) => {
         borderRadius: '3px',
         margin: '0 0 40px 0',
         width: '100%',
-        boxShadow: 'none'
-      }} 
+        boxShadow: 'none',
+      }}
     >
       <h3 style={{ marginBottom: '5px' }}>General Info</h3>
       <h5>Website</h5>
-      <p>{displayOrg.website}</p>
+      <span>{displayOrg.website}</span>
       <div className="hours-of-op">
         <h5>Hours</h5>
-        <div className='hours-row'>
+        <div className="hours-row">
           <span>{setDaysOpen(displayOrg.daysOfTheWeek)} </span>
-          <Icon type="clock-circle"/>
+          <Icon type="clock-circle" />
           <span>
             {`${moment.unix(displayOrg.startTime).format('LT')} - 
               ${moment.unix(displayOrg.endTime).format('LT')}`}
@@ -34,15 +43,29 @@ export const OrgInfo = ({ displayOrg }) => {
         </div>
       </div>
       <div className="location">
-        <Icon
-          type="environment"
-          theme={'twoTone'}
-          twoToneColor={'#005a87'}
-          className={'icon'}
-        />
-        <span>{displayOrg.address}</span>
+        <div className="address">
+          <Icon
+            type="environment"
+            theme={'twoTone'}
+            twoToneColor={'#005a87'}
+            className={'icon'}
+          />
+          <span>{displayOrg.address}</span>
+        </div>
+        <div>
+          {displayOrg.lat && (
+            <MapContainer
+              lat={displayOrg.lat}
+              lng={displayOrg.lng}
+              width={'450px'}
+              height={'150px'}
+              markers={markers}
+              zoom={16}
+            />
+          )}
+        </div>
       </div>
-      <div className='causes'>
+      <div className="causes">
         <h5>Cause{causes && causes.length > 1 ? 's' : ''}</h5>
         {causes}
       </div>
@@ -57,28 +80,30 @@ export const OrgInfo = ({ displayOrg }) => {
                     ? `${contact.fullName}`
                     : `${contact.firstName} ${contact.lastName}`}
                 </div>
-                <div className="poc-info">
-                  <Icon
-                    type="mail"
-                    theme="twoTone"
-                    twoToneColor={'#005a87'}
-                    className="icon"
-                  />
-                  {contact.email}
+                <div className="poc-row2">
+                  <div className="poc-info">
+                    <Icon
+                      type="mail"
+                      theme="twoTone"
+                      twoToneColor={'#005a87'}
+                      className="icon"
+                    />
+                    {contact.email}
+                  </div>
+                  {contact.phone && (
+                    <>
+                      <div className="poc-info">
+                        <Icon
+                          type="phone"
+                          theme="twoTone"
+                          twoToneColor={'#005a87'}
+                          className="icon"
+                        />
+                        {contact.phone}
+                      </div>
+                    </>
+                  )}
                 </div>
-                {contact.phone && (
-                  <>
-                    <div className="poc-info">
-                      <Icon
-                        type="phone"
-                        theme="twoTone"
-                        twoToneColor={'#005a87'}
-                        className="icon"
-                      />
-                      {contact.phone}
-                    </div>
-                  </>
-                )}
               </div>
             );
           })}
@@ -115,9 +140,15 @@ const OrgInfoDiv = styled(StyledCard)`
 
   .location {
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 1rem;
     width: 100%;
+
+    .address {
+      display: flex;
+      margin-bottom: 0.5rem;
+    }
   }
 
   .causes {
@@ -132,24 +163,30 @@ const OrgInfoDiv = styled(StyledCard)`
 
   .poc {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
 
     .poc-name {
       min-width: 30%;
       margin-bottom: 5px;
     }
 
-    .poc-info {
+    .poc-row2 {
       display: flex;
-      align-items: center;
-      min-width: 30%;
+      justify-content: space-between;
+      width: 100%;
+
+      .poc-info {
+        display: flex;
+        align-items: center;
+        min-width: 30%;
+      }
     }
   }
 
   .lower-info {
     display: flex;
-    flex-direction: column;    
+    flex-direction: column;
   }
 `;
 export default OrgInfo;

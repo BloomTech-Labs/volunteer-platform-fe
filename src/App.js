@@ -58,6 +58,7 @@ function App() {
       }
     });
   }, []);
+
   useEffect(() => {
     window.addEventListener('resize', updateDimensions);
     updateDimensions();
@@ -97,7 +98,7 @@ function App() {
       width: window.innerWidth,
       height: document.body.scrollHeight,
     });
-    if (window.innerWidth < 900) {
+    if (window.innerWidth < 1500) {
       setCollapsed(true);
     }
   };
@@ -106,7 +107,7 @@ function App() {
     <StyledApp className="App">
       <Layout style={{background: '#fafafa'}}>
         {state.auth.loggedIn && state.auth.signedUp && (
-          <AffixSider collapsed={collapsed} />
+          <AffixSider collapsed={collapsed} setCollapsed={setCollapsed} />
         )}
         <Layout style={{ background: '#fafafa' }}>
           <HeaderDiv loggedIn={state.auth.loggedIn}>

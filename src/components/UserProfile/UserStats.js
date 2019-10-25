@@ -9,9 +9,9 @@ export const UserStats = (props) => {
   const [accHours, setAccHours] = useState(0);
 
   useEffect(() => {
-    if (props.user.validatedHours && props.user.goals) {
-      let currProgress = volunteerProgress(props.user.goals, props.user.validatedHours);
-      let currHours = getAccHoursForDuration(props.user.goals.duration, props.user.validatedHours);
+    if (props.user.registeredEvents && props.user.goals) {
+      let currProgress = volunteerProgress(props.user.goals, props.user.registeredEvents);
+      let currHours = getAccHoursForDuration(props.user.goals.duration, props.user.registeredEvents);
       setProgress(currProgress);
       setAccHours(currHours);
     }

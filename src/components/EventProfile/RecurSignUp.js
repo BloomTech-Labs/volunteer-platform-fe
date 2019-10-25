@@ -38,7 +38,7 @@ export const RecurSignUp = ({
                 {numberOfVolunteers -
                   localState.registeredVolunteers[date].length}
               </h5>
-              {localState.registeredVolunteers[date].some(
+              {auth.googleAuthUser && localState.registeredVolunteers[date].some(
                 item => item.userId === auth.googleAuthUser.uid
               ) ? (
                 <StyledButton width={'25%'} onClick={e => unRegister(e, date)}>
@@ -58,7 +58,13 @@ export const RecurSignUp = ({
 };
 
 const StyledRecurSignUp = styled(StyledCard)`
-  width: 100%;
+  && {
+    width: 100%;
+    box-shadow: none;
+    border-radius: 3px;
+  }
+
+  
   .panel {
     width: 100%;
     background: ${({ theme }) => theme.gray3};

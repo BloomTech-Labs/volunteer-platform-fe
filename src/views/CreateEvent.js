@@ -45,6 +45,7 @@ export const CreateEvent = props => {
       repeatEveryValue: '',
       days: [],
     },
+    otherNotes: '',
   };
 
   const [localState, setLocalState] = useState(initialEvent);
@@ -138,10 +139,9 @@ export const CreateEvent = props => {
       if (event.recurringInfo.occurrenceEnds === 'After') {
         event.recurringInfo.occurrenceEndDate = '';
       }
-      // console.log('rec', event);
+
       createRecurringEvent(event, dispatch);
     } else {
-      // console.log('reg', event);
       createEvent(event, dispatch);
     }
     setPageNumber(1);

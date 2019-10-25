@@ -21,14 +21,14 @@ export const CREATE_ORGANIZATION_FAIL = 'CREATE_ORGANIZATION_FAIL';
  */
 export const registerOrganization = (org, dispatch) => {
   dispatch({ type: CREATE_ORGANIZATION_INIT });
-  store
+  return store
     .collection('organizations')
     .add(org)
     .then(res => {
-      dispatch(action(CREATED_ORGANIZATION));
+      org.orgId = res.id;
+      dispatch(action(CREATED_ORGANIZATION, org))
     })
     .catch(err => {
-      console.log(err);
       dispatch({ type: CREATE_ORGANIZATION_FAIL, payload: err.message });
     });
 };
