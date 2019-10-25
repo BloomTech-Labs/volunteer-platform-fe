@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Affix, Layout } from 'antd';
-import Navigation  from './Navigation';
+import Navigation from './Navigation';
 
 const { Sider } = Layout;
 
-export const AffixSider = ({collapsed}) => {
+export const AffixSider = ({ collapsed, setCollapsed }) => {
   const [scrollClass, setScrollClass] = useState('top');
 
   useEffect(() => {
@@ -20,13 +20,12 @@ export const AffixSider = ({collapsed}) => {
   return (
     <Affix>
       <StyledSider
+        collapsible
         height={'100%'}
-        breakpoint="md"
+        breakpoint="lg"
         collapsedWidth="0"
         theme={'light'}
-        onBreakpoint={broken => {
-          //console.log(broken);
-        }}
+        onBreakpoint={broken => {}}
         onCollapse={(collapsed, type) => {
           //console.log(collapsed, type);
         }}
@@ -35,7 +34,7 @@ export const AffixSider = ({collapsed}) => {
         reverseArrow={true}
         className={scrollClass}
       >
-        <Navigation />
+        <Navigation collapsed={collapsed ? 1 : 0} />
       </StyledSider>
     </Affix>
   );
