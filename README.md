@@ -5,7 +5,7 @@
 
 # 1️⃣ Volunteer Platform
 
-1️⃣ You can find the deployed project[Here](https://volunteer-platform.netlify.com/).
+1️⃣ You can find the deployed project[Here](https://voluntier-platform.netlify.com/).
 
 ## Contributors
 
@@ -51,7 +51,7 @@ We unfortunately ran out of time after completion of release canvas 2 but we tho
 
 Our groups familiarity is only with React as a FE Framework. We are aware of other viable options (Angular, Vue, Next), however, none of us have familiarity with these frameworks and due to time, these options were not going to be considered. Since most of the group will be introduced to Firebase on the BE, we did not want to also be spending our valuable time learning another framework. React provides us with enough comfort and flexibility for this project. We will utilize React Hooks along with the other many, well-developed npm packages that have been made for React (React Router, React Joyride, etc.). The largest potential challenge we foresee will be state management and separation of concerns for our file structure.
 
-#### Front end deployed to [https://volunteer-platform.netlify.com/]
+#### Front end deployed to [https://voluntier-platform.netlify.com/]
 
 #### Back end built using:
 
