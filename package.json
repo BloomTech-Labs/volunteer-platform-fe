@@ -2,20 +2,19 @@
   "name": "volunteer-platform",
   "version": "0.1.0",
   "private": false,
-  "description": "Web app used to connect non profits and volunteers.",
+  "description": "Web app used to connect non-profits and volunteers.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Lambda-School-Labs/volunteer-platform-fe"
+    "url": "https://github.com/jeremiahtenbrink/volunteer-platform-fe"
   },
-  "homepage": "https://volunteer-platform.netlify.com",
+  "homepage": "https://volunteerplatform.netlify.app",
   "dependencies": {
     "@sentry/browser": "^5.6.3",
     "antd": "^3.23.2",
     "axios": "^0.19.0",
-    "cypress": "^3.4.1",
-    "eslint": "6.4.0",
+    "cypress": "^4.8.0",
     "faker": "^4.1.0",
-    "firebase": "^6.5.0",
+    "firebase": "^7.15.2",
     "google-maps-react": "^2.0.2",
     "jsdoc": "^3.6.3",
     "moment": "^2.24.0",
@@ -28,7 +27,7 @@
     "react-loader-spinner": "^3.1.4",
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "3.1.1",
+    "react-scripts": "^3.4.1",
     "recharts": "^1.7.1",
     "styled-components": "^4.3.2",
     "uuid4": "^1.1.4"
